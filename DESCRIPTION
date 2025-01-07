@@ -1,11 +1,16 @@
 Package: eemanalyzeR
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: Semi-automated processing of excitation emission matrices
+Version: 1.1.0
+Authors@R: person("Katie A.", "Wampler", email = "katie.wampler@oregonstate.edu",
+  role = c("aut", "cre"),  comment = c(ORCID = "0000-0002-5584-7554"))
+Description: Provides tools for processing and analyzing raw excitation-emission matrices (EEMs) data. 
+    Includes functions for data cleaning, quality assurance, calculation of indices, and generating visualizations. 
+    Builds upon the 'eemR' and 'staRdom' packages to create a more streamlined 
+    and automated workflow that ensures consistent analysis and simplify the coding required to process the data. 
+License: AGPL (>= 3)
+URL: https://github.com/katiewampler/eemanalyzeR
+BugReports: https://github.com/katiewampler/eemanalyzeR/issues
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 7.3.2
