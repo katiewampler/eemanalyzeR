@@ -42,6 +42,8 @@ Below is a flow chart illustrating the pre-processing steps and data
 required, the functions and sub-functions contained in the main
 processing function, and the post-processing outputs and review process.
 
+<img src="man/figures/eemanalyzeR_workflow.png" alt="" width="500" />
+
 <img src="man/figures/eemanalyzeR_workflow.png" style="width:50.0%" />
 
 ## Example
