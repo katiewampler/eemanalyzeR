@@ -36,6 +36,14 @@ You can install the development version of eemanalyzeR from
 pak::pak("katiewampler/eemanalyzeR")
 ```
 
+## Workflow
+
+Below is a flow chart illustrating the pre-processing steps and data
+required, the functions and sub-functions contained in the main
+processing function, and the post-processing outputs and review process.
+
+![](man/figures/eemanalyzeR_workflow.png)
+
 ## Example
 
 This is a basic example which shows you how to solve a common problem:
