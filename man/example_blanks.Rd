@@ -7,9 +7,9 @@
 \format{
 An eemlist with three samples:
 \describe{
-  \item{ExampleBlank}{Fluoresence measured for a blank of blank Milliq water}
-  \item{ExampleTeaStd}{Fluoresence measured for a blank of blank Milliq water}
-  \item{ExampleSample}{Fluoresence measured for a blank of blank Milliq water}
+  \item{ExampleBlank}{Fluorescence measured for a blank of Type 1 water}
+  \item{ExampleTeaStd}{Fluorescence measured for a blank of Type 1 water}
+  \item{ExampleSample}{Fluorescence measured for a blank of Type 1 water}
 }
 }
 \source{

@@ -8,8 +8,8 @@
 A data.frame with 32 rows and 4 columns:
 \describe{
   \item{wavelength}{Wavelength absorbance was measured at in nanometers}
-  \item{ExampleBlank}{Absorbance measured for a sample of blank Milliq water}
-  \item{ExampleTeaStd}{Absorbance measured for a sample of dillute unsweetened tea}
+  \item{ExampleBlank}{Absorbance measured for a sample of Type 1 water}
+  \item{ExampleTeaStd}{Absorbance measured for a sample of dilute unsweetened tea}
   \item{ExampleSample}{Absorbance measures for a sample of stream water from Oregon, USA}
 }
 }

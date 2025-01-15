@@ -4,3 +4,6 @@
 ^README\.Rmd$
 ^man/figures$
 ^data-raw$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

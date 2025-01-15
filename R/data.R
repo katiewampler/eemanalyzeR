@@ -6,9 +6,9 @@
 #'
 #' @format  An eemlist with three samples:
 #' \describe{
-#'   \item{ExampleBlank}{Fluoresence measured for a blank of blank Milliq water}
-#'   \item{ExampleTeaStd}{Fluoresence measured for a blank of blank Milliq water}
-#'   \item{ExampleSample}{Fluoresence measured for a blank of blank Milliq water}
+#'   \item{ExampleBlank}{Fluorescence measured for a blank of Type 1 water}
+#'   \item{ExampleTeaStd}{Fluorescence measured for a blank of Type 1 water}
+#'   \item{ExampleSample}{Fluorescence measured for a blank of Type 1 water}
 #' }
 #' @source Oregon State University Forest Watershed Hydrology Lab
 "example_blanks"
@@ -21,9 +21,9 @@
 #'
 #' @format An eemlist with three samples:
 #' \describe{
-#'   \item{ExampleBlank}{Fluoresence measured for a sample of blank Milliq water}
-#'   \item{ExampleTeaStd}{Fluoresence measured for a sample of dillute unsweetened tea}
-#'   \item{ExampleSample}{Fluoresence measures for a sample of stream water from Oregon, USA}
+#'   \item{ExampleBlank}{Fluorescence measured for a sample of Type 1 water}
+#'   \item{ExampleTeaStd}{Fluorescence measured for a sample of dilute unsweetened tea}
+#'   \item{ExampleSample}{Fluorescence measures for a sample of stream water from Oregon, USA}
 #' }
 #' @source Oregon State University Forest Watershed Hydrology Lab
 "example_samples"
@@ -36,8 +36,8 @@
 #' @format A data.frame with 32 rows and 4 columns:
 #' \describe{
 #'   \item{wavelength}{Wavelength absorbance was measured at in nanometers}
-#'   \item{ExampleBlank}{Absorbance measured for a sample of blank Milliq water}
-#'   \item{ExampleTeaStd}{Absorbance measured for a sample of dillute unsweetened tea}
+#'   \item{ExampleBlank}{Absorbance measured for a sample of Type 1 water}
+#'   \item{ExampleTeaStd}{Absorbance measured for a sample of dilute unsweetened tea}
 #'   \item{ExampleSample}{Absorbance measures for a sample of stream water from Oregon, USA}
 #' }
 #' @source Oregon State University Forest Watershed Hydrology Lab
