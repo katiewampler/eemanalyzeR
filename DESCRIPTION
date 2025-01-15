@@ -2,8 +2,10 @@ Package: eemanalyzeR
 Type: Package
 Title: Semi-automated processing of excitation emission matrices
 Version: 1.1.0
-Authors@R: person("Katie A.", "Wampler", email = "katie.wampler@oregonstate.edu",
-  role = c("aut", "cre"),  comment = c(ORCID = "0000-0002-5584-7554"))
+Authors@R: c(person("Katie A.", "Wampler", email = "katie.wampler@oregonstate.edu",
+  role = c("aut", "cre"),  comment = c(ORCID = "0000-0002-5584-7554")),
+  person("Ryan P.", "Cole", email = "ryan.cole@oregonstate.edu",
+  role = c("aut")))
 Description: Provides tools for processing and analyzing raw excitation-emission matrices (EEMs) data. 
     Includes functions for data cleaning, quality assurance, calculation of indices, and generating visualizations. 
     Builds upon the 'eemR' and 'staRdom' packages to create a more streamlined 
