@@ -1,1 +1,24 @@
 var_name,fewsdom_name,description
+input_dir,prjpath,path to folder containing raw EEMs and absorbance data
+output_dir,NA,path to file location where processed data should be saved
+metadata_file,meta_name,"name of metadata file, can be a .csv or .xslx, should be located in input_dir"
+,process_file,
+absorbance,"abs_data, abs",data.frame containing absorbance data
+eem_list,eemlist,eemlist containing EEM data
+ex,ex,excitation wavelengths
+,eem,
+em,em,emission wavelengths
+blank_list,blanklist,eemlist containing blanks for EEM data
+metadata,meta,a data.frame containing metadata in the form of [eemanalyzeR]{metadata}
+,replace_blank,
+,raman,
+,rayleigh,
+ife,IFE,perform inner filtering correction using [eemR]{eem_inner_filter_effect}
+,raman_norm,
+dilute,dilute,perform dilution correction using dilution factors from metadata
+,ex_clip,
+,em_clip,
+,raman_width,
+,raman_mask,
+,rayleigh_width,
+,rayleigh_mask,
