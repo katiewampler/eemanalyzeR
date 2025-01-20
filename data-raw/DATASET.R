@@ -78,3 +78,6 @@ for(x in files){
     usethis::use_data(example_blanks)
     usethis::use_data(example_samples)
     usethis::use_data(example_absorbance)
+
+  metadata <- read.csv("data-raw/metadata_example.csv")
+  usethis::use_data(metadata)

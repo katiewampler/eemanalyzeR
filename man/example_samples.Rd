@@ -13,7 +13,7 @@ An eemlist with three samples:
 }
 }
 \source{
-Oregon State University Forest Watershed Hydrology Lab
+Oregon State University Forest Watershed Hydrology Lab (2022-11-14)
 }
 \usage{
 example_samples
