@@ -1,0 +1,44 @@
+#' Read directory containing excitation-emission fluorescence matrices (EEM)
+#'
+#' A wrapper for [eemR::read_eem()] to read all EEMs in a directory even when
+#' it contains other files.
+#'
+#' @param input_dir path to folder containing raw EEMs files
+#' @param pattern character string to be matched to the files in input_dir. only files matching the pattern will be loaded
+#' @param skip character string to be matched to the files in input_dir. any files matching this string will be ignored. useful for ignoring absorbance data
+#' @param file_ext character. the file extension of the EEMs
+#' @param recursive logical. should the listing recurse into directories?
+#' @param import_function character or a user-defined function to import an EEM. for more details see [eemR::read_eem()]
+
+#'
+#' @importFrom eemR eem_read
+#'
+#' @return object of class eemlist
+#' @export
+#'
+#' @examples
+#' # Load all data from directory --------------
+#' eem_list <- eem_dir_read(system.file("extdata", package = "eemanalyzeR"))
+#'
+#' # Load all data that matches a pattern from directory -------------
+#' eem_list <- eem_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern="SEM")
+#'
+eem_dir_read <- function(input_dir, pattern = NULL, skip="abs", file_ext="dat",
+                         recursive = FALSE, import_function="aqualog"){
+  #get files to read in
+    files <- list.files(input_dir, full.names = T, recursive = recursive)
+
+    #only gets files with correct file extension and ones that optionally match the pattern
+    ext <- paste0("[.]", file_ext, "$")
+      if(is.null(pattern)){
+        load_files <- files[grepl(ext, files) & !(grepl(skip, files, ignore.case=T))]
+      }else{
+        load_files <- files[grepl(ext, files) & grepl(pattern, files) & !(grepl(skip, files, ignore.case=T))]}
+
+  #read files
+    eem_list <- lapply(load_files, eemR::eem_read, import_function=import_function)
+    eem_list <- lapply(eem_list, `[[`, 1)
+    class(eem_list) <- "eemlist"
+
+    return(eem_list)
+}
