@@ -21,6 +21,10 @@ Depends:
 Suggests: 
     knitr,
     rmarkdown,
-    spelling
+    spelling,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Language: en-US
+Imports: 
+    eemR
+Config/testthat/edition: 3
