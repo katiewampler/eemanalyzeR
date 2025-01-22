@@ -14,7 +14,7 @@ A data.frame with 32 rows and 4 columns:
 }
 }
 \source{
-Oregon State University Forest Watershed Hydrology Lab
+Oregon State University Forest Watershed Hydrology Lab (2022-11-14)
 }
 \usage{
 example_absorbance
