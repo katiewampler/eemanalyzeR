@@ -13,6 +13,7 @@
 #'
 #' @importFrom eemR eem_read
 #' @importFrom purrr discard
+#' @importFrom magrittr %>%
 #'
 #' @return object of class eemlist
 #' @export

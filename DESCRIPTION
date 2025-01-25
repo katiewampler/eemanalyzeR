@@ -26,5 +26,7 @@ Suggests:
 VignetteBuilder: knitr
 Language: en-US
 Imports: 
-    eemR
+    eemR,
+    magrittr,
+    purrr
 Config/testthat/edition: 3
