@@ -1,14 +1,14 @@
 #' Read directory containing excitation-emission fluorescence matrices (EEM)
 #'
-#' A wrapper for [eemR::read_eem()] to read all EEMs in a directory even when
+#' A wrapper for \link[eemR]{eem_read} to read all EEMs in a directory even when
 #' it contains other files.
 #'
 #' @param input_dir path to folder containing raw EEMs files
-#' @param pattern character string to be matched to the files in input_dir. only files matching the pattern will be loaded
+#' @param pattern optional. character string to be matched to the files in input_dir. only files matching the pattern will be loaded
 #' @param skip character string to be matched to the files in input_dir. any files matching this string will be ignored. useful for ignoring absorbance data
 #' @param file_ext character. the file extension of the EEMs
 #' @param recursive logical. should the listing recurse into directories?
-#' @param import_function character or a user-defined function to import an EEM. for more details see [eemR::read_eem()]
+#' @param import_function character or a user-defined function to import an EEM. for more details see \link[eemR]{eem_read}
 
 #'
 #' @importFrom eemR eem_read

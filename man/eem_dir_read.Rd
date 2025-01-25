@@ -16,7 +16,7 @@ eem_dir_read(
 \arguments{
 \item{input_dir}{path to folder containing raw EEMs files}
 
-\item{pattern}{character string to be matched to the files in input_dir. only files matching the pattern will be loaded}
+\item{pattern}{optional. character string to be matched to the files in input_dir. only files matching the pattern will be loaded}
 
 \item{skip}{character string to be matched to the files in input_dir. any files matching this string will be ignored. useful for ignoring absorbance data}
 
@@ -24,13 +24,13 @@ eem_dir_read(
 
 \item{recursive}{logical. should the listing recurse into directories?}
 
-\item{import_function}{character or a user-defined function to import an EEM. for more details see [eemR::read_eem()]}
+\item{import_function}{character or a user-defined function to import an EEM. for more details see \link[eemR]{eem_read}}
 }
 \value{
 object of class eemlist
 }
 \description{
-A wrapper for [eemR::read_eem()] to read all EEMs in a directory even when
+A wrapper for \link[eemR]{eem_read} to read all EEMs in a directory even when
 it contains other files.
 }
 \examples{
