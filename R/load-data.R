@@ -12,6 +12,7 @@
 
 #'
 #' @importFrom eemR eem_read
+#' @importFrom purrr discard
 #'
 #' @return object of class eemlist
 #' @export
@@ -25,20 +26,46 @@
 #'
 eem_dir_read <- function(input_dir, pattern = NULL, skip="abs", file_ext="dat",
                          recursive = FALSE, import_function="aqualog"){
+
+  #wrapper on eemR::read_eem to try and catch errors from absorbance data being included
+    try_eem_read <- function(file, recursive=F, import_function){
+      tryCatch({eem <- eemR::eem_read(file=file, recursive=recursive, import_function = import_function)
+      return(eem)},
+      error = function(e) {
+        # Check if it's a specific error
+        if (grepl("argument of length 0", conditionMessage(e))) {
+          warning("Unable to import file: ", file, ".\nPlease use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.", call. = FALSE)
+          return(NULL)
+        } else {
+          stop("An unexpected error occurred: ", conditionMessage(e), call. = FALSE)}})
+    }
+
   #get files to read in
     files <- list.files(input_dir, full.names = T, recursive = recursive)
 
     #only gets files with correct file extension and ones that optionally match the pattern
     ext <- paste0("[.]", file_ext, "$")
       if(is.null(pattern)){
-        load_files <- files[grepl(ext, files) & !(grepl(skip, files, ignore.case=T))]
+        if(is.null(skip)){
+          load_files <- files[grepl(ext, files)]
+        }else{
+          load_files <- files[grepl(ext, files) & !(grepl(skip, files, ignore.case=T))]
+        }
       }else{
-        load_files <- files[grepl(ext, files) & grepl(pattern, files) & !(grepl(skip, files, ignore.case=T))]}
+        if(is.null(skip)){
+          load_files <- files[grepl(ext, files) & grepl(pattern, files)]
+        }else{
+          load_files <- files[grepl(ext, files) & grepl(pattern, files) & !(grepl(skip, files, ignore.case=T))]}
+        }
 
   #read files
-    eem_list <- lapply(load_files, eemR::eem_read, import_function=import_function)
+    eem_list <- lapply(load_files, try_eem_read, import_function=import_function)
     eem_list <- lapply(eem_list, `[[`, 1)
+    eem_list <- eem_list %>% purrr::discard(is.null)
     class(eem_list) <- "eemlist"
 
     return(eem_list)
 }
+
+
+
