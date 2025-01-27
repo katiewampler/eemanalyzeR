@@ -28,6 +28,8 @@
 eem_dir_read <- function(input_dir, pattern = NULL, skip="abs", file_ext="dat",
                          recursive = FALSE, import_function="aqualog"){
 
+  warnings_list <- list()  # Initialize an empty list to store warnings
+
   #wrapper on eemR::read_eem to try and catch errors from absorbance data being included
     try_eem_read <- function(file, recursive=F, import_function){
       tryCatch({eem <- eemR::eem_read(file=file, recursive=recursive, import_function = import_function)
@@ -60,7 +62,24 @@ eem_dir_read <- function(input_dir, pattern = NULL, skip="abs", file_ext="dat",
         }
 
   #read files
-    eem_list <- lapply(load_files, try_eem_read, import_function=import_function)
+    eem_list <- withCallingHandlers(lapply(load_files, try_eem_read, import_function=import_function),
+                                    warning = function(w) {
+                                      warnings_list <<- c(warnings_list, conditionMessage(w))  # Add the warning message
+                                      invokeRestart("muffleWarning")  # Prevent the warning from printing immediately
+                                    })
+
+    # Combine all collected warnings into one [probably unnecessary, I don't think anything else should generate a warning]
+    if (length(warnings_list) > 0) {
+      if(sum(grepl("Unable to import file: ", warnings_list))>0){
+        remove_warn <- grep("Unable to import file: |.\nPlease use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.", warnings_list)
+        error_files <- gsub("Unable to import file: |.\nPlease use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.", "", warnings_list)
+        abs_warning <- paste0("Unable to import file(s):\n", paste(error_files, collapse="\n"),"\nPlease use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.")
+      }
+      combined_warning <- paste(warnings_list[-remove_warn], abs_warning, collapse = "\n")
+      warning(combined_warning)
+    }
+
+    #combine eems
     eem_list <- lapply(eem_list, `[[`, 1)
     eem_list <- eem_list %>% purrr::discard(is.null)
     class(eem_list) <- "eemlist"
