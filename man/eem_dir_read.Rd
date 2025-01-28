@@ -2,7 +2,7 @@
 % Please edit documentation in R/load-data.R
 \name{eem_dir_read}
 \alias{eem_dir_read}
-\title{Read directory containing excitation-emission fluorescence matrices (EEM)}
+\title{Read excitation-emission fluorescence matrices (EEM) from directory}
 \usage{
 eem_dir_read(
   input_dir,
@@ -25,7 +25,7 @@ to use multiple strings, use the form "str1|str2".}
 
 \item{file_ext}{character. the file extension of the EEMs}
 
-\item{recursive}{logical. should the listing recurse into directories?}
+\item{recursive}{logical. should the function recurse into directories?}
 
 \item{import_function}{character or a user-defined function to import an EEM. for more details see \link[eemR]{eem_read}}
 }
