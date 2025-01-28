@@ -2,7 +2,7 @@
 % Please edit documentation in R/load-data.R
 \name{eem_dir_read}
 \alias{eem_dir_read}
-\title{Read directory containing excitation-emission fluorescence matrices (EEM)}
+\title{Read excitation-emission fluorescence matrices (EEM) from directory}
 \usage{
 eem_dir_read(
   input_dir,
@@ -16,13 +16,16 @@ eem_dir_read(
 \arguments{
 \item{input_dir}{path to folder containing raw EEMs files}
 
-\item{pattern}{optional. character string to be matched to the files in input_dir. only files matching the pattern will be loaded}
+\item{pattern}{optional. a case-sensitive character string to be matched to the files in input_dir.
+only files matching the pattern will be loaded. to use multiple strings, use the form "str1|str2".}
 
-\item{skip}{character string to be matched to the files in input_dir. any files matching this string will be ignored. useful for ignoring absorbance data}
+\item{skip}{a case-insensitive character string to be matched to the files in input_dir.
+any files matching this string will be ignored. useful for ignoring absorbance data.
+to use multiple strings, use the form "str1|str2".}
 
 \item{file_ext}{character. the file extension of the EEMs}
 
-\item{recursive}{logical. should the listing recurse into directories?}
+\item{recursive}{logical. should the function recurse into directories?}
 
 \item{import_function}{character or a user-defined function to import an EEM. for more details see \link[eemR]{eem_read}}
 }

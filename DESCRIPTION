@@ -26,7 +26,10 @@ Suggests:
 VignetteBuilder: knitr
 Language: en-US
 Imports: 
+    dplyr,
     eemR,
     magrittr,
-    purrr
+    purrr,
+    stringr,
+    tools
 Config/testthat/edition: 3
