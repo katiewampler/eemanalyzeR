@@ -1,0 +1,87 @@
+########################################################################################################################################################
+Log File: C:\Users\Dr. Amanda Hohner\Desktop\AQUALOG Analysis Files\2_Sample Analysis Results\20280108_Samanthi_ISCO Practice EEMs\AqualogSampleQLog.txt
+JYAqualogSampleQ.dll Version: 4.3.0.36
+Date: Wednesday, January 8, 2025
+Time: 8:56:16 PM
+########################################################################################################################################################
+[2025-01-08 20-56-16] 
+Aqualog Sample Q Experimental Parameters:
+[Aqualog Sample Q File] C:\Users\Dr. Amanda Hohner\Desktop\AQUALOG Analysis Files\3_Method Files\ISCOPracticeSampleAnalysis_2025_01_08.aqu
+[Aqualog Experiment File] C:\Users\Dr. Amanda Hohner\Desktop\AQUALOG Analysis Files\2_Sample Analysis Results\20280108_Samanthi_ISCO Practice EEMs\ISCOPracticeSampleAnalysis_2025_01_08_Exper_2025-01-08-20-56-16.xml
+[Output Destination Folder] C:\Users\Dr. Amanda Hohner\Desktop\AQUALOG Analysis Files\2_Sample Analysis Results\20280108_Samanthi_ISCO Practice EEMs\
+
+Aqualog Sample Q Notes:
+
+Dilution Factor: 0
+
+Blank & Sample Setup:
+[Injector Enabled] True
+[Tray 1:1A][Blank Group 1] B1-DI2501085s
+[Tray 1:1B][Blank Group 1: Sample 1] S1-BLK01250108 (Repeats=0)
+[Tray 1:1C][Blank Group 1: Sample 2] S2-preTea250108 (Repeats=0)
+[Tray 1:2A][Blank Group 1: Sample 3] S3-V10ppm10sF (Repeats=0)
+[Tray 1:2B][Blank Group 1: Sample 4] S4-V40ppm10sF (Repeats=0)
+[Tray 1:2C][Blank Group 1: Sample 5] S5-V80ppm10sF (Repeats=0)
+[Tray 1:3A][Blank Group 1: Sample 6] S6-V120ppm10sF (Repeats=0)
+[Tray 1:3B][Blank Group 1: Sample 7] S7-V10ppm30sF (Repeats=0)
+[Tray 1:3C][Blank Group 1: Sample 8] S8-V40ppm30sF (Repeats=0)
+[Tray 1:4A][Blank Group 1: Sample 9] S9-V80ppm30sF (Repeats=0)
+[Tray 1:4B][Blank Group 1: Sample 10] S10-V120ppm30sF (Repeats=0)
+[Tray 1:4C][Blank Group 1: Sample 11] S11-V10ppm60sF (Repeats=0)
+[Tray 2:1A][Blank Group 1: Sample 12] S12-BLK02250108 (Repeats=0)
+[Tray 2:1B][Blank Group 1: Sample 13] S13-V40ppm60sF (Repeats=0)
+[Tray 2:1C][Blank Group 1: Sample 14] S14-V80ppm60sF (Repeats=0)
+[Tray 2:2A][Blank Group 1: Sample 15] S15-V120ppm60sF (Repeats=0)
+[Tray 2:2B][Blank Group 1: Sample 16] S16-J10ppmF (Repeats=0)
+[Tray 2:2C][Blank Group 1: Sample 17] S17-J40ppmF (Repeats=0)
+[Tray 2:3A][Blank Group 1: Sample 18] S18-J80ppmF (Repeats=0)
+[Tray 2:3B][Blank Group 1: Sample 19] S19-J120ppmF (Repeats=0)
+[Tray 2:3C][Blank Group 1: Sample 20] S20-BZNRawFiltered (Repeats=0)
+[Tray 2:4A][Blank Group 1: Sample 21] S21-BZNAshRawFiltered (Repeats=0)
+[Tray 2:4B][Blank Group 1: Sample 22] S22-postTea250108 (Repeats=0)
+[Tray 2:4C][Blank Group 1: Sample 23] S23-BLK03250108 (Repeats=0)
+[Total Number of Samples] 23
+
+Post Processing Options:
+
+Export Options:
+ABS = True
+OGW = True
+ASCII = True
+BEM = True
+SEM = True
+
+Delay Options:
+Single Cell Kinetics = False
+Delay Before First Blank = 0 Seconds
+Delay Between Each Experiment = 0 Seconds
+################################################################################
+[2025-01-08 20-56-16] STARTING Aqualog SampleQ Execution
+[2025-01-08 20-56-16] Experiment 01 of 24 [Blank 1 - Tray 1:1A] Start Done B1
+[2025-01-08 21-49-43] Experiment 02 of 24 [Blank 1, Sample 1, Repeat 0 - Tray 1:1B] Start Done B1S1BLK01250108
+[2025-01-08 22-46-41] Experiment 03 of 24 [Blank 1, Sample 2, Repeat 0 - Tray 1:1C] Start Done B1S2preTea250108
+[2025-01-08 23-44-25] Experiment 04 of 24 [Blank 1, Sample 3, Repeat 0 - Tray 1:2A] Start Done B1S3V10ppm10sF
+[2025-01-09 00-42-08] Experiment 05 of 24 [Blank 1, Sample 4, Repeat 0 - Tray 1:2B] Start Done B1S4V40ppm10sF
+[2025-01-09 01-39-52] Experiment 06 of 24 [Blank 1, Sample 5, Repeat 0 - Tray 1:2C] Start Done B1S5V80ppm10sF
+[2025-01-09 02-36-47] Experiment 07 of 24 [Blank 1, Sample 6, Repeat 0 - Tray 1:3A] Start Done B1S6V120ppm10sF
+[2025-01-09 03-33-43] Experiment 08 of 24 [Blank 1, Sample 7, Repeat 0 - Tray 1:3B] Start Done B1S7V10ppm30sF
+[2025-01-09 04-31-12] Experiment 09 of 24 [Blank 1, Sample 8, Repeat 0 - Tray 1:3C] Start Done B1S8V40ppm30sF
+[2025-01-09 05-28-57] Experiment 10 of 24 [Blank 1, Sample 9, Repeat 0 - Tray 1:4A] Start Done B1S9V80ppm30sF
+[2025-01-09 06-25-53] Experiment 11 of 24 [Blank 1, Sample 10, Repeat 0 - Tray 1:4B] Start Done B1S10V120ppm30sF
+[2025-01-09 07-22-48] Experiment 12 of 24 [Blank 1, Sample 11, Repeat 0 - Tray 1:4C] Start Done B1S11V10ppm60sF
+[2025-01-09 08-19-45] Experiment 13 of 24 [Blank 1, Sample 12, Repeat 0 - Tray 2:1A] Start Done B1S12BLK02250108
+[2025-01-09 09-16-40] Experiment 14 of 24 [Blank 1, Sample 13, Repeat 0 - Tray 2:1B] Start Done B1S13V40ppm60sF
+[2025-01-09 10-14-24] Experiment 15 of 24 [Blank 1, Sample 14, Repeat 0 - Tray 2:1C] Start Done B1S14V80ppm60sF
+[2025-01-09 11-12-09] Experiment 16 of 24 [Blank 1, Sample 15, Repeat 0 - Tray 2:2A] Start Done B1S15V120ppm60sF
+[2025-01-09 12-09-05] Experiment 17 of 24 [Blank 1, Sample 16, Repeat 0 - Tray 2:2B] Start Done B1S16J10ppmF
+[2025-01-09 13-06-02] Experiment 18 of 24 [Blank 1, Sample 17, Repeat 0 - Tray 2:2C] Start Done B1S17J40ppmF
+[2025-01-09 14-02-59] Experiment 19 of 24 [Blank 1, Sample 18, Repeat 0 - Tray 2:3A] Start Done B1S18J80ppmF
+[2025-01-09 15-00-45] Experiment 20 of 24 [Blank 1, Sample 19, Repeat 0 - Tray 2:3B] Start Done B1S19J120ppmF
+[2025-01-09 15-58-29] Experiment 21 of 24 [Blank 1, Sample 20, Repeat 0 - Tray 2:3C] Start Done B1S20BZNRawFiltered
+[2025-01-09 16-55-27] Experiment 22 of 24 [Blank 1, Sample 21, Repeat 0 - Tray 2:4A] Start
+[2025-01-09 17-52-03] ##### WARNING: CCD SATURATION OCCURRED ##### Done B1S21BZNAshRawFiltered
+[2025-01-09 17-52-23] Experiment 23 of 24 [Blank 1, Sample 22, Repeat 0 - Tray 2:4B] Start Done B1S22postTea250108
+[2025-01-09 18-50-07] Experiment 24 of 24 [Blank 1, Sample 23, Repeat 0 - Tray 2:4C] Start Done B1S23BLK03250108
+[2025-01-09 19-47-53] COMPLETED Aqualog SampleQ Execution
+--------------------------------------------------------------------------------
+[2025-01-09 19-47-54] Aqualog Xenon Lamp Turned Off
