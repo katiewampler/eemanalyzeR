@@ -146,7 +146,7 @@ abs_read <- function(file){
 
     #give column names and make into df if not skipped
     if(is.null(abs) == F){
-      colnames(abs) <- c("wavelength", gsub(file_ext(file), "",basename(file)))
+      colnames(abs) <- c("wavelength", gsub(paste0("[.]", file_ext(file)), "",basename(file)))
       abs <- as.data.frame(abs)
 
       #thrown an error if the wavelength isn't continuous, suggesting transmittance data was added
