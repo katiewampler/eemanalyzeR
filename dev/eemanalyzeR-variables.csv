@@ -1,24 +1,31 @@
-var_name,fewsdom_name,description
-input_dir,prjpath,path to folder containing raw EEMs and absorbance data
-output_dir,NA,path to file location where processed data should be saved
-metadata_file,meta_name,"name of metadata file, can be a .csv or .xslx, should be located in input_dir"
-,process_file,
-absorbance,"abs_data, abs",data.frame containing absorbance data
-eem_list,eemlist,eemlist containing EEM data
-ex,ex,excitation wavelengths
-,eem,
-em,em,emission wavelengths
-blank_list,blanklist,eemlist containing blanks for EEM data
-metadata,meta,a data.frame containing metadata in the form of [eemanalyzeR]{metadata}
-,replace_blank,
-,raman,
-,rayleigh,
-ife,IFE,perform inner filtering correction using [eemR]{eem_inner_filter_effect}
-,raman_norm,
-dilute,dilute,perform dilution correction using dilution factors from metadata
-,ex_clip,
-,em_clip,
-,raman_width,
-,raman_mask,
-,rayleigh_width,
-,rayleigh_mask,
+type,function,name,fewsdom_name,default,description
+argument,eem_dir_read,input_dir,prjpath,,path to folder containing raw EEMs and absorbance data
+argument,,output_dir,NA,,path to file location where processed data should be saved
+argument,,metadata_file,meta_name,,"name of metadata file, can be a .csv or .xslx, should be located in input_dir"
+argument,,,process_file,,
+argument/object,,absorbance,"abs_data, abs",,data.frame containing absorbance data
+argument,,eem_list,eemlist,,eemlist containing EEM data
+argument/object,,ex,ex,,excitation wavelengths
+argument,,,eem,,
+argument/object,,em,em,,emission wavelengths
+argument/object,,blank_list,blanklist,,eemlist containing blanks for EEM data
+argument/object,,metadata,meta,,a data.frame containing metadata in the form of [eemanalyzeR]{metadata}
+argument,,,replace_blank,,
+argument,,,raman,,
+argument,,,rayleigh,,
+argument,,ife,IFE,,perform inner filtering correction using [eemR]{eem_inner_filter_effect}
+argument,,,raman_norm,,
+argument,,dilute,dilute,,perform dilution correction using dilution factors from metadata
+argument,,,ex_clip,,
+argument,,,em_clip,,
+argument,,,raman_width,,
+argument,,,raman_mask,,
+argument,,,rayleigh_width,,
+argument,,,rayleigh_mask,,
+function,eem_dir_read,eem_dir_read,load_eems,,loads raw EEMs from input_dir into R
+argument,eem_dir_read,pattern,,NULL,a case-sensitive character string to be matched to the files in input_dir. only files matching the pattern will be loaded.
+argument,eem_dir_read,skip,,"""abs""",a case-insensitive character string to be matched to the files in input_dir. any files matching this string will be ignored. useful for ignoring absorbance data.
+argument,eem_dir_read,file_ext,,""".dat""",character. the file extension of the EEMs
+argument,eem_dir_read,recursive,,F,logical. should the listing recurse into directories?
+argument,eem_dir_read,import_function,,"""aqualog""",character or a user-defined function to import an EEM
+function,abs_dir_read,abs_dir_read,"abs_preprocess, load_eems",,loads raw absorbance data from input_dir into R
