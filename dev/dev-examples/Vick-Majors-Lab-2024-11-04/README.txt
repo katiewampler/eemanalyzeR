@@ -1,0 +1,3 @@
+Data Source: Connor O'Loughlin via email on 2024-11-7
+
+Context: I have been trying to use the fewsdom package to look at our EEMs data because the package looked interesting. I keep on getting the same errors that basically say that my ABS data has too many rows or that I have undefined columns selected. I have tried my best to replicate the example data that comes with the package and I am not sure what I am doing wrong. 

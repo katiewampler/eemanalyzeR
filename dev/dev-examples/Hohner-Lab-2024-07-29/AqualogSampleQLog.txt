@@ -1,0 +1,70 @@
+##############################################################################################
+Log File: C:\Users\Dr. Amanda Hohner\Desktop\Results\CDRCK_June_20240729\AqualogSampleQLog.txt
+JYAqualogSampleQ.dll Version: 4.3.0.36
+Date: Monday, July 29, 2024
+Time: 4:18:43 PM
+##############################################################################################
+[2024-07-29 16-18-43] 
+Aqualog Sample Q Experimental Parameters:
+[Aqualog Sample Q File] C:\Users\Dr. Amanda Hohner\Desktop\Results\CDRCK_June_20240729\CDRCK240729_method.aqu
+[Aqualog Experiment File] C:\Users\Dr. Amanda Hohner\Desktop\Results\CDRCK_June_20240729\CDRCK240729_method_Exper_2024-07-29-16-18-43.xml
+[Output Destination Folder] C:\Users\Dr. Amanda Hohner\Desktop\Results\CDRCK_June_20240729\
+
+Aqualog Sample Q Notes:
+
+Dilution Factor: 0
+
+Blank & Sample Setup:
+[Injector Enabled] True
+[Tray 1:1A][Blank Group 1] B1-B1
+[Tray 1:1B][Blank Group 1: Sample 1] S1-BLK2407291 (Repeats=0)
+[Tray 1:1C][Blank Group 1: Sample 2] S2-CDRCKJ01Tre (Repeats=0)
+[Tray 1:2A][Blank Group 1: Sample 3] S3-CDRCKJ01DUPTre (Repeats=0)
+[Tray 1:2B][Blank Group 1: Sample 4] S4-CDRCKJ02Tre (Repeats=0)
+[Tray 1:2C][Blank Group 1: Sample 5] S5-CDRCKJ03Tre (Repeats=0)
+[Tray 1:3A][Blank Group 1: Sample 6] S6-CDRCKJ04Tre (Repeats=0)
+[Tray 1:3B][Blank Group 1: Sample 7] S7-CDRCKJ05Tre (Repeats=0)
+[Tray 1:3C][Blank Group 1: Sample 8] S8-CDRCKJ06Tre (Repeats=0)
+[Tray 1:4A][Blank Group 1: Sample 9] S9-CDRCKJ07Tre (Repeats=0)
+[Tray 1:4B][Blank Group 1: Sample 10] S10-CDRCKJ07DUPTre (Repeats=0)
+[Tray 1:4C][Blank Group 1: Sample 11] S11-BLK2407292 (Repeats=0)
+[Tray 2:1A][Blank Group 1: Sample 12] S12-CDRCKJ08Tre (Repeats=0)
+[Tray 2:1B][Blank Group 1: Sample 13] S13-CDRCKJ09Tre (Repeats=0)
+[Tray 2:1C][Blank Group 1: Sample 14] S14-CDRCKJ10Tre (Repeats=0)
+[Tray 2:2A][Blank Group 1: Sample 15] S15-BLK2407293 (Repeats=0)
+[Total Number of Samples] 15
+
+Post Processing Options:
+
+Export Options:
+ABS = True
+OGW = True
+ASCII = True
+BEM = True
+SEM = True
+
+Delay Options:
+Single Cell Kinetics = False
+Delay Before First Blank = 0 Seconds
+Delay Between Each Experiment = 0 Seconds
+################################################################################
+[2024-07-29 16-18-43] STARTING Aqualog SampleQ Execution
+[2024-07-29 16-18-43] Experiment 01 of 16 [Blank 1 - Tray 1:1A] Start Done 2024-07-29-16-23-36-B1
+[2024-07-29 16-39-55] Experiment 02 of 16 [Blank 1, Sample 1, Repeat 0 - Tray 1:1B] Start Done 2024-07-29-16-44-12-B1S1BLK2407291
+[2024-07-29 17-01-47] Experiment 03 of 16 [Blank 1, Sample 2, Repeat 0 - Tray 1:1C] Start Done 2024-07-29-17-06-04-B1S2CDRCKJ01Tre
+[2024-07-29 17-23-55] Experiment 04 of 16 [Blank 1, Sample 3, Repeat 0 - Tray 1:2A] Start Done 2024-07-29-17-28-11-B1S3CDRCKJ01DUPTre
+[2024-07-29 17-46-03] Experiment 05 of 16 [Blank 1, Sample 4, Repeat 0 - Tray 1:2B] Start Done 2024-07-29-17-50-20-B1S4CDRCKJ02Tre
+[2024-07-29 18-07-55] Experiment 06 of 16 [Blank 1, Sample 5, Repeat 0 - Tray 1:2C] Start Done 2024-07-29-18-12-12-B1S5CDRCKJ03Tre
+[2024-07-29 18-30-03] Experiment 07 of 16 [Blank 1, Sample 6, Repeat 0 - Tray 1:3A] Start Done 2024-07-29-18-34-20-B1S6CDRCKJ04Tre
+[2024-07-29 18-52-11] Experiment 08 of 16 [Blank 1, Sample 7, Repeat 0 - Tray 1:3B] Start Done 2024-07-29-18-56-28-B1S7CDRCKJ05Tre
+[2024-07-29 19-14-04] Experiment 09 of 16 [Blank 1, Sample 8, Repeat 0 - Tray 1:3C] Start Done 2024-07-29-19-18-22-B1S8CDRCKJ06Tre
+[2024-07-29 19-36-12] Experiment 10 of 16 [Blank 1, Sample 9, Repeat 0 - Tray 1:4A] Start Done 2024-07-29-19-40-29-B1S9CDRCKJ07Tre
+[2024-07-29 19-58-19] Experiment 11 of 16 [Blank 1, Sample 10, Repeat 0 - Tray 1:4B] Start Done 2024-07-29-20-02-37-B1S10CDRCKJ07DUPTre
+[2024-07-29 20-20-27] Experiment 12 of 16 [Blank 1, Sample 11, Repeat 0 - Tray 1:4C] Start Done 2024-07-29-20-24-45-B1S11BLK2407292
+[2024-07-29 20-42-36] Experiment 13 of 16 [Blank 1, Sample 12, Repeat 0 - Tray 2:1A] Start Done 2024-07-29-20-46-54-B1S12CDRCKJ08Tre
+[2024-07-29 21-04-44] Experiment 14 of 16 [Blank 1, Sample 13, Repeat 0 - Tray 2:1B] Start Done 2024-07-29-21-09-02-B1S13CDRCKJ09Tre
+[2024-07-29 21-26-52] Experiment 15 of 16 [Blank 1, Sample 14, Repeat 0 - Tray 2:1C] Start Done 2024-07-29-21-31-10-B1S14CDRCKJ10Tre
+[2024-07-29 21-48-45] Experiment 16 of 16 [Blank 1, Sample 15, Repeat 0 - Tray 2:2A] Start Done 2024-07-29-21-53-02-B1S15BLK2407293
+[2024-07-29 22-10-53] COMPLETED Aqualog SampleQ Execution
+--------------------------------------------------------------------------------
+[2024-07-29 22-10-54] Aqualog Xenon Lamp Turned Off

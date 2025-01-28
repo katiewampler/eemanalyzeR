@@ -1,0 +1,5 @@
+Data Source: Samanthi Wijerathna via email/google drive on 2025-01-13 
+
+link: https://nam04.safelinks.protection.outlook.com/?url=https%3A%2F%2Fdrive.google.com%2Ffile%2Fd%2F1m12XE02BAyzU6sBlqrYVUfhwXQDpaKtF%2Fview%3Fusp%3Ddrive_web&data=05%7C02%7Ckatie.wampler%40oregonstate.edu%7C148e29ee48b64ede3a7908dd34f4eb42%7Cce6d05e13c5e4d6287a84c4a2713c113%7C0%7C0%7C638724948714864834%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=zfLVDJ2kjBx0q6wVDoNJGv5%2F%2BzUt1tFkeQPIpGls17I%3D&reserved=0 
+
+Context: We tried running a set of samples with 1 nm increments, and it took twice the time as usual. I figured the code needed to be adjusted accordingly. However, I can't figure out where I should change the code to process absorbance files containing 1 nm increments. Would you be able to help with this?
