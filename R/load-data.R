@@ -303,6 +303,12 @@ meta_read <- function(input_dir, name=NULL, sheet=NULL, validate=T){
     #ensure integration time and RSU adjust area (and DOC/dilution are numeric)
       meta <- meta %>% dplyr::mutate(dplyr::across(dplyr::any_of(c("integration_time_s","RSU_area_1s", "dilution", "DOC_mg_L")), as.numeric))
 
+
+    #ensure data_identifier isn't missing data
+      if(any(is.na(meta$data_identifier) | is.character(meta$data_identifier) == F)){
+        stop("metadata (", basename(meta_file), ") missing data identifiers for one or more samples, \nsee help(eemanalyzeR::metadata) for more info")
+      }
+
    #make sure there aren't any duplicated samples
       unique_ID <- paste(meta$data_identifier, meta$replicate_no, meta$integration_time_s, sep="_")
       if(any(duplicated(unique_ID))){
