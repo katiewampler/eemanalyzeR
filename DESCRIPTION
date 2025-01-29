@@ -30,6 +30,8 @@ Imports:
     eemR,
     magrittr,
     purrr,
+    readxl,
     stringr,
-    tools
+    tools,
+    utils
 Config/testthat/edition: 3
