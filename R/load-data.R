@@ -4,11 +4,10 @@
 #' it contains other files.
 #'
 #' @param input_dir path to folder containing raw EEMs files
-#' @param pattern optional. a case-sensitive character string to be matched to the files in input_dir.
-#' only files matching the pattern will be loaded. to use multiple strings, use the form "str1|str2".
-#' @param skip a case-insensitive character string to be matched to the files in input_dir.
+#' @param pattern optional. a character string containing a \code{\link[base]{regular expression}} to be matched to the files in input_dir.
+#' only files matching the pattern will be loaded.
+#' @param skip a character string containing a \code{\link[base]{regular expression}} to be matched to the files in input_dir.
 #' any files matching this string will be ignored. useful for ignoring absorbance data.
-#' to use multiple strings, use the form "str1|str2".
 #' @param file_ext character. the file extension of the EEMs
 #' @param recursive logical. should the function recurse into directories?
 #' @param import_function character or a user-defined function to import an EEM. for more details see \link[eemR]{eem_read}
@@ -28,7 +27,7 @@
 #' # Load all data that matches a pattern from directory -------------
 #' eem_list <- eem_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern="SEM")
 #'
-eem_dir_read <- function(input_dir, pattern = NULL, skip="abs", file_ext="dat",
+eem_dir_read <- function(input_dir, pattern = NULL, skip="(?i)abs", file_ext="dat",
                          recursive = FALSE, import_function="aqualog"){
   stopifnot(dir.exists(input_dir))
 
@@ -56,13 +55,13 @@ eem_dir_read <- function(input_dir, pattern = NULL, skip="abs", file_ext="dat",
         if(is.null(skip)){
           load_files <- files[grepl(ext, files)]
         }else{
-          load_files <- files[grepl(ext, files) & !(grepl(skip, files, ignore.case=T))]
+          load_files <- files[grepl(ext, files) & !(grepl(skip, files))]
         }
       }else{
         if(is.null(skip)){
           load_files <- files[grepl(ext, files) & grepl(pattern, files)]
         }else{
-          load_files <- files[grepl(ext, files) & grepl(pattern, files) & !(grepl(skip, files, ignore.case=T))]}
+          load_files <- files[grepl(ext, files) & grepl(pattern, files) & !(grepl(skip, files))]}
         }
 
   #read files
@@ -165,11 +164,10 @@ abs_read <- function(file){
 #' it contains other files.
 #'
 #' @param input_dir path to folder containing raw absorbance files
-#' @param pattern optional. a case-sensitive character string to be matched to the files in input_dir.
-#' only files matching the pattern will be loaded. to use multiple strings, use the form "str1|str2".
-#' @param skip a case-insensitive character string to be matched to the files in input_dir.
-#' any files matching this string will be ignored. useful for ignoring absorbance data.
-#' to use multiple strings, use the form "str1|str2".
+#' @param pattern optional. optional. a character string containing a \code{\link[base]{regular expression}} to be matched to the files in input_dir.
+#' only files matching the pattern will be loaded.
+#' @param skip optional. a character string containing a \code{\link[base]{regular expression}} to be matched to the files in input_dir.
+#' any files matching this string will be ignored. useful for ignoring EEM's data.
 #' @param file_ext character. the file extension of the EEMs
 #' @param recursive logical. should the function recurse into directories?
 #'
@@ -191,7 +189,7 @@ abs_read <- function(file){
 #'
 
 #'
-abs_dir_read <- function(input_dir, pattern = NULL, skip="SEM|BEM|waterfall", file_ext="dat",
+abs_dir_read <- function(input_dir, pattern = NULL, skip="SEM|BEM|Waterfall", file_ext="dat",
                          recursive = FALSE){
   stopifnot(dir.exists(input_dir))
   warnings_list <- list()  # Initialize an empty list to store warnings
@@ -205,13 +203,13 @@ abs_dir_read <- function(input_dir, pattern = NULL, skip="SEM|BEM|waterfall", fi
     if(is.null(skip)){
       load_files <- files[grepl(ext, files)]
     }else{
-      load_files <- files[grepl(ext, files) & !(grepl(skip, files, ignore.case=T))]
+      load_files <- files[grepl(ext, files) & !(grepl(skip, files))]
     }
   }else{
     if(is.null(skip)){
       load_files <- files[grepl(ext, files) & grepl(pattern, files)]
     }else{
-      load_files <- files[grepl(ext, files) & grepl(pattern, files) & !(grepl(skip, files, ignore.case=T))]}
+      load_files <- files[grepl(ext, files) & grepl(pattern, files) & !(grepl(skip, files))]}
   }
 
   #read files
