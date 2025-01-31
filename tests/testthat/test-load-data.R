@@ -13,18 +13,26 @@
 
     test_that("eems selection loading works", {
       expect_length(eem_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern = "SEM"), 3)
-      expect_length(eem_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "SEM|ABS"), 3)
+      expect_length(eem_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "SEM|ABS|Abs"), 3)
       })
 
 
 #testing loading absorbance data
     test_that("single absorbance data loads", {
       expect_s3_class(abs_read(list.files(system.file("extdata", package = "eemanalyzeR"),full.names=TRUE, pattern="ABS")[1]),
-                  "data.frame")
+                  "abs")
+    })
+
+    test_that("abs class initializes", {
+      abs <- abs_read(list.files(system.file("extdata", package = "eemanalyzeR"),full.names=TRUE, pattern="ABS")[1])
+      expect_equal(attr(abs, "names"), c("file", "sample", "n", "data", "dilution", "location"))
+      expect_s3_class(abs$data, "data.frame")
+
     })
 
     test_that("all absorbance data loads", {
-      expect_s3_class(abs_dir_read(system.file("extdata", package = "eemanalyzeR")),"data.frame")
+      expect_s3_class(abs_dir_read(system.file("extdata", package = "eemanalyzeR")),"abs_list")
+      expect_s3_class(abs_dir_read(system.file("extdata", package = "eemanalyzeR"))[[1]],"abs")
     })
 
     test_that("eems data throws warning", {
@@ -32,14 +40,8 @@
     })
 
     test_that("abs selection loading works", {
-      expect_equal(dim(abs_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern = "Abs")), c(188,2))
-      expect_equal(dim(abs_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "manual|BEM|SEM")), c(32,4))
-    })
-
-    test_that("column naming works for abs", {
-      expect_equal(colnames(abs_dir_read(system.file("extdata", package = "eemanalyzeR"))),
-                            c("wavelength", "B1S1ExampleBlankABS","B1S2ExampleTeaStdABS",
-                              "B1S3ExampleSampleABS","ExampleAbsManual-Abs_Spectra_Graphs"))
+      expect_equal(length(abs_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern = "Abs")), 1)
+      expect_equal(length(abs_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "manual|BEM|SEM")), 4)
     })
 
 #testing loading metadata
