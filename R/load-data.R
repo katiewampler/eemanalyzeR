@@ -100,8 +100,15 @@ eem_dir_read <- function(input_dir, pattern = NULL, skip="(?i)abs", file_ext="da
 #' @importFrom stringr str_extract_all
 #' @importFrom tools file_ext
 #'
-#' @returns a data.frame with 2 columns where the first column is the absorbance wavelength and the second column
-#' is the absorbance measured.
+#' @return An object of class \code{abs} containing:
+#' \itemize{
+#'  \item file The filename of the absorbance data.
+#'  \item sample The sample name of the absorbance data.
+#'  \item n The number of wavelengths absorbance was measured at.
+#'  \item data A \code{data.frame} with absorbance data.
+#'  \item dilution The dilution factor for the absorbance data.
+#'  \item location Directory of the absorbance data.
+#' }
 #' @export
 #'
 #' @examples
@@ -145,16 +152,34 @@ abs_read <- function(file){
 
     #give column names and make into df if not skipped
     if(is.null(abs) == F){
-      colnames(abs) <- c("wavelength", gsub(paste0("[.]", file_ext(file)), "",basename(file)))
+      colnames(abs) <- c("wavelength", "absorbance")
       abs <- as.data.frame(abs)
 
       #thrown an error if the wavelength isn't continuous, suggesting transmittance data was added
       if(sum(diff(abs$wavelength) > 0) > 0){
         stop("wavelengths aren't continuous, please ensure transmitance data wasn't included in absorbance file:\n", file)
       }
+
+      #create into class "abs"
+      obj <- list(file = file,
+                  sample = gsub(paste0("[.]", file_ext(file)), "",basename(file)),
+                  n = nrow(abs),
+                  data = abs,
+                  dilution = NA,
+                  location =dirname(file)
+      )
+
+      class(obj) <- "abs"
+
+      attr(obj, "is_dilution_corrected") <- FALSE
+      attr(obj, "is_DOC_normalized") <- FALSE
+    }else{
+      obj <- NULL
     }
 
-    return(abs)
+
+
+    return(obj)
   }
 
 
@@ -175,9 +200,8 @@ abs_read <- function(file){
 #' @importFrom magrittr %>%
 #' @importFrom dplyr full_join
 #'
-#' @returns a data.frame where the first column is the wavelengths the absorbance was measured at and each
-#' subsequent column is the absorbance for a sample where the column name is the sample name.
-#'
+#' @returns An object of class \code{abs_list} containing a list of \code{abs}.
+#' For more details see \link[eemanalyzeR]{abs_read}
 #' @export
 #'
 #' @examples
@@ -222,9 +246,8 @@ abs_dir_read <- function(input_dir, pattern = NULL, skip="SEM|BEM|Waterfall", fi
     #remove nulls from trying to load eems
       abs_list <- abs_list %>% purrr::discard(is.null)
 
-  #merge files together by wavelength
-      abs <- purrr::reduce(abs_list, function(x, y) dplyr::full_join(x, y, by = "wavelength"))
-      abs <- abs[order(abs$wavelength, decreasing = T),]
+    #make into abs_list
+      class(abs_list) <- "abs_list"
 
   # Combine all collected warnings into one [probably unnecessary, I don't think anything else should generate a warning]
       if (length(warnings_list) > 0) {
@@ -237,6 +260,6 @@ abs_dir_read <- function(input_dir, pattern = NULL, skip="SEM|BEM|Waterfall", fi
         warning(combined_warning)
       }
 
-    return(abs)
+    return(abs_list)
   }
 

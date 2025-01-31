@@ -26,8 +26,8 @@ any files matching this string will be ignored. useful for ignoring EEM's data.}
 \item{recursive}{logical. should the function recurse into directories?}
 }
 \value{
-a data.frame where the first column is the wavelengths the absorbance was measured at and each
-subsequent column is the absorbance for a sample where the column name is the sample name.
+An object of class \code{abs_list} containing a list of \code{abs}.
+For more details see \link[eemanalyzeR]{abs_read}
 }
 \description{
 A flexible function that will read all absorbance files in a directory even when

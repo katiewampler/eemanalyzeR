@@ -10,8 +10,15 @@ abs_read(file)
 \item{file}{file path to the absorbance file to load}
 }
 \value{
-a data.frame with 2 columns where the first column is the absorbance wavelength and the second column
-is the absorbance measured.
+An object of class \code{abs} containing:
+\itemize{
+ \item file The filename of the absorbance data.
+ \item sample The sample name of the absorbance data.
+ \item n The number of wavelengths absorbance was measured at.
+ \item data A \code{data.frame} with absorbance data.
+ \item dilution The dilution factor for the absorbance data.
+ \item location Directory of the absorbance data.
+}
 }
 \description{
 Will accept absorbance files run via Aqualog exported using the sample Q or manually. If the function tries
