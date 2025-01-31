@@ -36,7 +36,10 @@ eem_dir_read <- function(input_dir, pattern = NULL, skip="(?i)abs", file_ext="da
   #wrapper on eemR::read_eem to try and catch errors from absorbance data being included
     .try_eem_read <- function(file, recursive=F, import_function){
       tryCatch({eem <- eemR::eem_read(file=file, recursive=recursive, import_function = import_function)
-      return(eem)},
+        #add additional attributes
+        attr(eem[[1]], "is_doc_normalized") <- FALSE
+        attr(eem[[1]], "is_dil_corrected") <- FALSE
+        return(eem)},
       error = function(e) {
         # Check if it's a specific error
         if (grepl("argument of length 0", conditionMessage(e))) {
