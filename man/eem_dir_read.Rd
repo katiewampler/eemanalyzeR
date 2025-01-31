@@ -7,7 +7,7 @@
 eem_dir_read(
   input_dir,
   pattern = NULL,
-  skip = "abs",
+  skip = "(?i)abs",
   file_ext = "dat",
   recursive = FALSE,
   import_function = "aqualog"
@@ -16,12 +16,11 @@ eem_dir_read(
 \arguments{
 \item{input_dir}{path to folder containing raw EEMs files}
 
-\item{pattern}{optional. a case-sensitive character string to be matched to the files in input_dir.
-only files matching the pattern will be loaded. to use multiple strings, use the form "str1|str2".}
+\item{pattern}{optional. a character string containing a \code{\link[base]{regular expression}} to be matched to the files in input_dir.
+only files matching the pattern will be loaded.}
 
-\item{skip}{a case-insensitive character string to be matched to the files in input_dir.
-any files matching this string will be ignored. useful for ignoring absorbance data.
-to use multiple strings, use the form "str1|str2".}
+\item{skip}{a character string containing a \code{\link[base]{regular expression}} to be matched to the files in input_dir.
+any files matching this string will be ignored. useful for ignoring absorbance data.}
 
 \item{file_ext}{character. the file extension of the EEMs}
 

@@ -7,7 +7,7 @@
 abs_dir_read(
   input_dir,
   pattern = NULL,
-  skip = "SEM|BEM|waterfall",
+  skip = "SEM|BEM|Waterfall",
   file_ext = "dat",
   recursive = FALSE
 )
@@ -15,20 +15,19 @@ abs_dir_read(
 \arguments{
 \item{input_dir}{path to folder containing raw absorbance files}
 
-\item{pattern}{optional. a case-sensitive character string to be matched to the files in input_dir.
-only files matching the pattern will be loaded. to use multiple strings, use the form "str1|str2".}
+\item{pattern}{optional. optional. a character string containing a \code{\link[base]{regular expression}} to be matched to the files in input_dir.
+only files matching the pattern will be loaded.}
 
-\item{skip}{a case-insensitive character string to be matched to the files in input_dir.
-any files matching this string will be ignored. useful for ignoring absorbance data.
-to use multiple strings, use the form "str1|str2".}
+\item{skip}{optional. a character string containing a \code{\link[base]{regular expression}} to be matched to the files in input_dir.
+any files matching this string will be ignored. useful for ignoring EEM's data.}
 
 \item{file_ext}{character. the file extension of the EEMs}
 
 \item{recursive}{logical. should the function recurse into directories?}
 }
 \value{
-a data.frame where the first column is the wavelengths the absorbance was measured at and each
-subsequent column is the absorbance for a sample where the column name is the sample name.
+An object of class \code{abs_list} containing a list of \code{abs}.
+For more details see \link[eemanalyzeR]{abs_read}
 }
 \description{
 A flexible function that will read all absorbance files in a directory even when

@@ -18,3 +18,6 @@
   .is_eemlist <- function(eem) {
     ifelse(class(eem) == "eemlist", TRUE, FALSE)
   }
+
+
+  #abs_list <- function()
