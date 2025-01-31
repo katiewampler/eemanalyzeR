@@ -11,23 +11,19 @@
     input_dir <- "~/Katie Coding/eemanalyzeR/dev/dev-examples/Hohner-Lab-2024-07-29"
     abs <- abs_dir_read(input_dir)
     eems <- eem_dir_read(input_dir)
-    metadata <- meta_read(input_dir)
 
   #example 2: Hohner-Lab-2025-01-08
     input_dir <- "~/Katie Coding/eemanalyzeR/dev/dev-examples/Hohner-Lab-2025-01-08"
     abs <- abs_dir_read(input_dir)
     eems <- eem_dir_read(input_dir)
-    metadata <- meta_read(input_dir) #throws an error about RSU adjust area (which is missing so that's good)
 
   #example 3: PNNL-2022-11-10
     input_dir <- "~/Katie Coding/eemanalyzeR/dev/dev-examples/PNNL-2022-11-10"
     abs <- abs_dir_read(input_dir) # like this, we get warnings, but still loads
     abs <- abs_dir_read(input_dir, pattern="Abs") #like this we don't get warnings
     eems <- eem_dir_read(input_dir)
-    metadata <- meta_read(input_dir)
 
   #example 4: Vick-Majors-Lab-2024-11-04
     input_dir <- "~/Katie Coding/eemanalyzeR/dev/dev-examples/Vick-Majors-Lab-2024-11-04"
     abs <- abs_dir_read(input_dir)
     eems <- eem_dir_read(input_dir)
-    metadata <- meta_read(input_dir)

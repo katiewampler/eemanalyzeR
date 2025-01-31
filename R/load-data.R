@@ -365,3 +365,21 @@ meta_read <- function(input_dir, name=NULL, sheet=NULL, validate=T){
 
   return(meta)
 }
+
+add_meta <- function(meta, abs=NULL, eem=NULL){
+  stopifnot(class(meta) == "data.frame")
+
+  #add metadata to absorbance data
+  if(!is.null(abs)){
+    names <- abs_names(abs)
+
+    meta_order <- sapply(meta$data_identifier, grep, names) #get order of absorbance in metadata
+
+    if(length(abs) > length(meta_order)){
+      #give warning about samples not in metadata
+      missing_meta <- setdiff(1:length(abs), as.numeric(meta_order))
+        warning("the following absorbance data are missing from metadata:\n", paste(names[missing_meta]), sep="\n")
+    }
+  }
+
+}

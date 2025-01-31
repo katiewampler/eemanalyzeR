@@ -26,7 +26,7 @@ any files matching this string will be ignored. useful for ignoring EEM's data.}
 \item{recursive}{logical. should the function recurse into directories?}
 }
 \value{
-An object of class \code{abs_list} containing a list of \code{abs}.
+An object of class \code{abslist} containing a list of \code{abs}.
 For more details see \link[eemanalyzeR]{abs_read}
 }
 \description{
