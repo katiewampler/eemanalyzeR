@@ -4,11 +4,10 @@
 #' it contains other files.
 #'
 #' @param input_dir path to folder containing raw EEMs files
-#' @param pattern optional. a case-sensitive character string to be matched to the files in input_dir.
-#' only files matching the pattern will be loaded. to use multiple strings, use the form "str1|str2".
-#' @param skip a case-insensitive character string to be matched to the files in input_dir.
+#' @param pattern optional. a character string containing a \code{\link[base]{regular expression}} to be matched to the files in input_dir.
+#' only files matching the pattern will be loaded.
+#' @param skip a character string containing a \code{\link[base]{regular expression}} to be matched to the files in input_dir.
 #' any files matching this string will be ignored. useful for ignoring absorbance data.
-#' to use multiple strings, use the form "str1|str2".
 #' @param file_ext character. the file extension of the EEMs
 #' @param recursive logical. should the function recurse into directories?
 #' @param import_function character or a user-defined function to import an EEM. for more details see \link[eemR]{eem_read}
@@ -28,7 +27,7 @@
 #' # Load all data that matches a pattern from directory -------------
 #' eem_list <- eem_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern="SEM")
 #'
-eem_dir_read <- function(input_dir, pattern = NULL, skip="abs", file_ext="dat",
+eem_dir_read <- function(input_dir, pattern = NULL, skip="(?i)abs", file_ext="dat",
                          recursive = FALSE, import_function="aqualog"){
   stopifnot(dir.exists(input_dir))
 
@@ -37,7 +36,10 @@ eem_dir_read <- function(input_dir, pattern = NULL, skip="abs", file_ext="dat",
   #wrapper on eemR::read_eem to try and catch errors from absorbance data being included
     .try_eem_read <- function(file, recursive=F, import_function){
       tryCatch({eem <- eemR::eem_read(file=file, recursive=recursive, import_function = import_function)
-      return(eem)},
+        #add additional attributes
+        attr(eem[[1]], "is_doc_normalized") <- FALSE
+        attr(eem[[1]], "is_dil_corrected") <- FALSE
+        return(eem)},
       error = function(e) {
         # Check if it's a specific error
         if (grepl("argument of length 0", conditionMessage(e))) {
@@ -56,13 +58,13 @@ eem_dir_read <- function(input_dir, pattern = NULL, skip="abs", file_ext="dat",
         if(is.null(skip)){
           load_files <- files[grepl(ext, files)]
         }else{
-          load_files <- files[grepl(ext, files) & !(grepl(skip, files, ignore.case=T))]
+          load_files <- files[grepl(ext, files) & !(grepl(skip, files))]
         }
       }else{
         if(is.null(skip)){
           load_files <- files[grepl(ext, files) & grepl(pattern, files)]
         }else{
-          load_files <- files[grepl(ext, files) & grepl(pattern, files) & !(grepl(skip, files, ignore.case=T))]}
+          load_files <- files[grepl(ext, files) & grepl(pattern, files) & !(grepl(skip, files))]}
         }
 
   #read files
@@ -101,8 +103,15 @@ eem_dir_read <- function(input_dir, pattern = NULL, skip="abs", file_ext="dat",
 #' @importFrom stringr str_extract_all
 #' @importFrom tools file_ext
 #'
-#' @returns a data.frame with 2 columns where the first column is the absorbance wavelength and the second column
-#' is the absorbance measured.
+#' @return An object of class \code{abs} containing:
+#' \itemize{
+#'  \item file The filename of the absorbance data.
+#'  \item sample The sample name of the absorbance data.
+#'  \item n The number of wavelengths absorbance was measured at.
+#'  \item data A \code{data.frame} with absorbance data.
+#'  \item dilution The dilution factor for the absorbance data.
+#'  \item location Directory of the absorbance data.
+#' }
 #' @export
 #'
 #' @examples
@@ -146,16 +155,34 @@ abs_read <- function(file){
 
     #give column names and make into df if not skipped
     if(is.null(abs) == F){
-      colnames(abs) <- c("wavelength", gsub(paste0("[.]", file_ext(file)), "",basename(file)))
+      colnames(abs) <- c("wavelength", "absorbance")
       abs <- as.data.frame(abs)
 
       #thrown an error if the wavelength isn't continuous, suggesting transmittance data was added
       if(sum(diff(abs$wavelength) > 0) > 0){
         stop("wavelengths aren't continuous, please ensure transmitance data wasn't included in absorbance file:\n", file)
       }
+
+      #create into class "abs"
+      obj <- list(file = file,
+                  sample = gsub(paste0("[.]", file_ext(file)), "",basename(file)),
+                  n = nrow(abs),
+                  data = abs,
+                  dilution = NA,
+                  location =dirname(file)
+      )
+
+      class(obj) <- "abs"
+
+      attr(obj, "is_dilution_corrected") <- FALSE
+      attr(obj, "is_DOC_normalized") <- FALSE
+    }else{
+      obj <- NULL
     }
 
-    return(abs)
+
+
+    return(obj)
   }
 
 
@@ -165,11 +192,10 @@ abs_read <- function(file){
 #' it contains other files.
 #'
 #' @param input_dir path to folder containing raw absorbance files
-#' @param pattern optional. a case-sensitive character string to be matched to the files in input_dir.
-#' only files matching the pattern will be loaded. to use multiple strings, use the form "str1|str2".
-#' @param skip a case-insensitive character string to be matched to the files in input_dir.
-#' any files matching this string will be ignored. useful for ignoring absorbance data.
-#' to use multiple strings, use the form "str1|str2".
+#' @param pattern optional. optional. a character string containing a \code{\link[base]{regular expression}} to be matched to the files in input_dir.
+#' only files matching the pattern will be loaded.
+#' @param skip optional. a character string containing a \code{\link[base]{regular expression}} to be matched to the files in input_dir.
+#' any files matching this string will be ignored. useful for ignoring EEM's data.
 #' @param file_ext character. the file extension of the EEMs
 #' @param recursive logical. should the function recurse into directories?
 #'
@@ -177,9 +203,8 @@ abs_read <- function(file){
 #' @importFrom magrittr %>%
 #' @importFrom dplyr full_join
 #'
-#' @returns a data.frame where the first column is the wavelengths the absorbance was measured at and each
-#' subsequent column is the absorbance for a sample where the column name is the sample name.
-#'
+#' @returns An object of class \code{abs_list} containing a list of \code{abs}.
+#' For more details see \link[eemanalyzeR]{abs_read}
 #' @export
 #'
 #' @examples
@@ -191,7 +216,7 @@ abs_read <- function(file){
 #'
 
 #'
-abs_dir_read <- function(input_dir, pattern = NULL, skip="SEM|BEM|waterfall", file_ext="dat",
+abs_dir_read <- function(input_dir, pattern = NULL, skip="SEM|BEM|Waterfall", file_ext="dat",
                          recursive = FALSE){
   stopifnot(dir.exists(input_dir))
   warnings_list <- list()  # Initialize an empty list to store warnings
@@ -205,13 +230,13 @@ abs_dir_read <- function(input_dir, pattern = NULL, skip="SEM|BEM|waterfall", fi
     if(is.null(skip)){
       load_files <- files[grepl(ext, files)]
     }else{
-      load_files <- files[grepl(ext, files) & !(grepl(skip, files, ignore.case=T))]
+      load_files <- files[grepl(ext, files) & !(grepl(skip, files))]
     }
   }else{
     if(is.null(skip)){
       load_files <- files[grepl(ext, files) & grepl(pattern, files)]
     }else{
-      load_files <- files[grepl(ext, files) & grepl(pattern, files) & !(grepl(skip, files, ignore.case=T))]}
+      load_files <- files[grepl(ext, files) & grepl(pattern, files) & !(grepl(skip, files))]}
   }
 
   #read files
@@ -224,9 +249,8 @@ abs_dir_read <- function(input_dir, pattern = NULL, skip="SEM|BEM|waterfall", fi
     #remove nulls from trying to load eems
       abs_list <- abs_list %>% purrr::discard(is.null)
 
-  #merge files together by wavelength
-      abs <- purrr::reduce(abs_list, function(x, y) dplyr::full_join(x, y, by = "wavelength"))
-      abs <- abs[order(abs$wavelength, decreasing = T),]
+    #make into abs_list
+      class(abs_list) <- "abs_list"
 
   # Combine all collected warnings into one [probably unnecessary, I don't think anything else should generate a warning]
       if (length(warnings_list) > 0) {
@@ -239,7 +263,7 @@ abs_dir_read <- function(input_dir, pattern = NULL, skip="SEM|BEM|waterfall", fi
         warning(combined_warning)
       }
 
-    return(abs)
+    return(abs_list)
   }
 
 #' Read metadata file from directory
