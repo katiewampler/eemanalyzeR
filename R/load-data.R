@@ -203,7 +203,7 @@ abs_read <- function(file){
 #' @importFrom magrittr %>%
 #' @importFrom dplyr full_join
 #'
-#' @returns An object of class \code{abs_list} containing a list of \code{abs}.
+#' @returns An object of class \code{abslist} containing a list of \code{abs}.
 #' For more details see \link[eemanalyzeR]{abs_read}
 #' @export
 #'
@@ -250,7 +250,7 @@ abs_dir_read <- function(input_dir, pattern = NULL, skip="SEM|BEM|Waterfall", fi
       abs_list <- abs_list %>% purrr::discard(is.null)
 
     #make into abs_list
-      class(abs_list) <- "abs_list"
+      class(abs_list) <- "abslist"
 
   # Combine all collected warnings into one [probably unnecessary, I don't think anything else should generate a warning]
       if (length(warnings_list) > 0) {
