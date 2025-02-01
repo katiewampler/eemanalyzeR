@@ -25,14 +25,14 @@ downscale_eems <- function(file, factor=6){
     }
 
     data <- c(line1, line2)
-    write_lines(data, file.path("data-raw",file))
+    readr::write_lines(data, file.path("data-raw",file))
   }
 
   #downscale absorbance
   if(grepl("ABS", file)){
     data <- readLines(file.path("data-raw/fullsize data",file)) #read in file
     data <- data[seq(1, length(data), 6)]
-    write_lines(data, file.path("data-raw",file))
+    readr::write_lines(data, file.path("data-raw",file))
 
   }}
 
@@ -75,9 +75,9 @@ for(x in files){
       }else{example_absorbance <- cbind(example_absorbance, abs[2])}
     }
 
-    usethis::use_data(example_blanks)
-    usethis::use_data(example_samples)
-    usethis::use_data(example_absorbance)
+    usethis::use_data(example_blanks, overwrite = T)
+    usethis::use_data(example_samples, overwrite = T)
+    usethis::use_data(example_absorbance, overwrite = T)
 
   metadata <- read.csv("data-raw/metadata_example.csv")
-  usethis::use_data(metadata)
+  usethis::use_data(metadata, overwrite = T)

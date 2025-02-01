@@ -29,7 +29,7 @@ any files matching this string will be ignored. useful for ignoring absorbance d
 \item{import_function}{character or a user-defined function to import an EEM. for more details see \link[eemR]{eem_read}}
 }
 \value{
-object of class eemlist
+object of class \code{eemlist}. See \link[eemR]{eem_read} for more details on class structure.
 }
 \description{
 A wrapper for \link[eemR]{eem_read} to read all EEMs in a directory even when
@@ -37,9 +37,9 @@ it contains other files.
 }
 \examples{
 # Load all data from directory --------------
-eem_list <- eem_dir_read(system.file("extdata", package = "eemanalyzeR"))
+eemlist <- eem_dir_read(system.file("extdata", package = "eemanalyzeR"))
 
 # Load all data that matches a pattern from directory -------------
-eem_list <- eem_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern="SEM")
+eemlist <- eem_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern="SEM")
 
 }

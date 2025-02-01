@@ -40,5 +40,4 @@ abs <- abs_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern = "
 #load samples by using skip to exclude EEM's and other samples
 abs <- abs_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "SEM|BEM|waterfall")
 
-
 }

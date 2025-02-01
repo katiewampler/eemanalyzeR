@@ -10,7 +10,7 @@ meta_check(meta)
 \item{meta}{a data.frame with metadata}
 }
 \value{
-a data.frame (meta), with errors fixed
+a \code{data.frame} (meta), with errors fixed
 }
 \description{
 Run tests to validate metadata

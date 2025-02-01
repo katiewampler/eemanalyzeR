@@ -17,12 +17,19 @@ An object of class \code{abs} containing:
  \item n The number of wavelengths absorbance was measured at.
  \item data A \code{data.frame} with absorbance data.
  \item dilution The dilution factor for the absorbance data.
+ \item analysis_date The date the sample was run.
+ \item description Optional description of sample.
+ \item doc_mgL The concentration of dissolved organic carbon in the sample given in mg L^{-1}
+ \item notes Optional notes related to the sample or sample collection.
  \item location Directory of the absorbance data.
 }
 }
 \description{
 Will accept absorbance files run via Aqualog exported using the sample Q or manually. If the function tries
 to load an EEM's file it will return a warning and a NULL value for absorbance.
+}
+\note{
+\code{abs} attributes dilution through notes will remain empty until merged with metadata in \link[eemanalyzeR]{meta_add}
 }
 \examples{
 abs_files <- list.files(system.file("extdata", package = "eemanalyzeR"),
