@@ -25,13 +25,14 @@
 
     test_that("abs class initializes", {
       abs <- abs_read(list.files(system.file("extdata", package = "eemanalyzeR"),full.names=TRUE, pattern="ABS")[1])
-      expect_equal(attr(abs, "names"), c("file", "sample", "n", "data", "dilution", "location"))
+      expect_equal(attr(abs, "names"), c("file", "sample", "n", "data", "dilution", "analysis_date",
+      "description", "doc_mgL", "notes", "location"))
       expect_s3_class(abs$data, "data.frame")
 
     })
 
     test_that("all absorbance data loads", {
-      expect_s3_class(abs_dir_read(system.file("extdata", package = "eemanalyzeR")),"abs_list")
+      expect_s3_class(abs_dir_read(system.file("extdata", package = "eemanalyzeR")),"abslist")
       expect_s3_class(abs_dir_read(system.file("extdata", package = "eemanalyzeR"))[[1]],"abs")
     })
 
