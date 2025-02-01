@@ -403,7 +403,7 @@ meta_check <- function(meta){
 #' abs_agument <- abs_add_meta(metadata, abs)
 
 abs_add_meta <- function(meta, abslist){
-  stopifnot(class(meta) == "data.frame", class(abslist) == "abslist")
+  stopifnot("data.frame" %in% class(meta), class(abslist) == "abslist")
 
     names <- abs_names(abslist)
 
@@ -471,7 +471,7 @@ abs_add_meta <- function(meta, abslist){
 #' eem_agument <- eem_add_meta(metadata, example_samples)
 
 eem_add_meta <- function(meta, eemlist){
-  stopifnot(class(meta) == "data.frame", class(eemlist) == "eemlist")
+  stopifnot("data.frame" %in% class(meta), class(eemlist) == "eemlist")
 
   names <- eemR::eem_names(eemlist)
 
