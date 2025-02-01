@@ -9,7 +9,7 @@ abs_add_meta(meta, abslist)
 \arguments{
 \item{meta}{a \code{data.frame} of metadata}
 
-\item{abs}{a \code{abslist} object containing the corresponding absorbance data}
+\item{abslist}{a \code{abslist} object containing the corresponding absorbance data}
 }
 \value{
 a \code{abslist} object

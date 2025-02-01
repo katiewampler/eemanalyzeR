@@ -25,13 +25,14 @@
 
     test_that("abs class initializes", {
       abs <- abs_read(list.files(system.file("extdata", package = "eemanalyzeR"),full.names=TRUE, pattern="ABS")[1])
-      expect_equal(attr(abs, "names"), c("file", "sample", "n", "data", "dilution", "location"))
+      expect_equal(attr(abs, "names"), c("file", "sample", "n", "data", "dilution", "analysis_date",
+      "description", "doc_mgL", "notes", "location"))
       expect_s3_class(abs$data, "data.frame")
 
     })
 
     test_that("all absorbance data loads", {
-      expect_s3_class(abs_dir_read(system.file("extdata", package = "eemanalyzeR")),"abs_list")
+      expect_s3_class(abs_dir_read(system.file("extdata", package = "eemanalyzeR")),"abslist")
       expect_s3_class(abs_dir_read(system.file("extdata", package = "eemanalyzeR"))[[1]],"abs")
     })
 
@@ -142,3 +143,29 @@
     expect_no_error(meta_check(meta))
 
   })
+
+#checks to make sure metadata merges with absorbance and eem's data
+  test_that("missing samples are warned", {
+    meta <- meta_read(system.file("extdata", package = "eemanalyzeR"))
+    meta <- rbind(meta, meta[1,])
+    meta$data_identifier[4] <- "missing_sample"
+    abs <- abs_dir_read(system.file("extdata", package = "eemanalyzeR"))
+
+    expect_warning(abs_add_meta(meta, abs), "the following sample is in metadata but was missing in absorbance data")
+
+    meta <- meta[1,]
+    expect_warning(abs_add_meta(meta, abs), "the following absorbance data are missing from metadata")
+
+    eems <- eem_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern = "SEM")
+    meta <- meta_read(system.file("extdata", package = "eemanalyzeR"))
+    meta <- rbind(meta, meta[1,])
+    meta$data_identifier[4] <- "missing_sample"
+
+    expect_warning(eem_add_meta(meta, eems), "the following sample is in metadata but was missing in EEM's data")
+
+    meta <- meta[1,]
+    expect_warning(eem_add_meta(meta, eems), "the following EEM's data are missing from metadata")
+  })
+
+  #test that things are added
+  #test that objects are still abslist and eemlist

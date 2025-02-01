@@ -112,12 +112,13 @@ eem_dir_read <- function(input_dir, pattern = NULL, skip="(?i)abs", file_ext="da
 #'  \item dilution The dilution factor for the absorbance data.
 #'  \item analysis_date The date the sample was run.
 #'  \item description Optional description of sample.
-#'  \item doc_mgL The concentration of dissolved organic carbon in the sample given in mg L^{-1}
+#'  \item doc_mgL The concentration of dissolved organic carbon in the sample given in mg \ifelse{html}{\out{L<sup>-1</sup>}}{\eqn{L^{-1}}}
+
 #'  \item notes Optional notes related to the sample or sample collection.
 #'  \item location Directory of the absorbance data.
 #' }
 #' @export
-#' @note \code{abs} attributes dilution through notes will remain empty until merged with metadata in \link[eemanalyzeR]{meta_add}
+#' @note \code{abs} attributes dilution through notes will remain empty until merged with metadata in \link[eemanalyzeR]{abs_add_meta}
 #' @examples
 #' abs_files <- list.files(system.file("extdata", package = "eemanalyzeR"),
 #' full.names=TRUE, pattern="ABS")
@@ -391,7 +392,7 @@ meta_check <- function(meta){
 #' Add metadata to absorbance data
 #'
 #' @param meta a \code{data.frame} of metadata
-#' @param abs a \code{abslist} object containing the corresponding absorbance data
+#' @param abslist a \code{abslist} object containing the corresponding absorbance data
 #'
 #' @returns a \code{abslist} object
 #'
