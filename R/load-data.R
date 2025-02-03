@@ -11,7 +11,6 @@
 #' @param file_ext character. the file extension of the EEMs
 #' @param recursive logical. should the function recurse into directories?
 #' @param import_function character or a user-defined function to import an EEM. for more details see \link[eemR]{eem_read}
-
 #'
 #' @importFrom eemR eem_read
 #' @importFrom purrr discard
@@ -109,16 +108,9 @@ eem_dir_read <- function(input_dir, pattern = NULL, skip="(?i)abs", file_ext="da
 #'  \item sample The sample name of the absorbance data.
 #'  \item n The number of wavelengths absorbance was measured at.
 #'  \item data A \code{data.frame} with absorbance data.
-#'  \item dilution The dilution factor for the absorbance data.
-#'  \item analysis_date The date the sample was run.
-#'  \item description Optional description of sample.
-#'  \item doc_mgL The concentration of dissolved organic carbon in the sample given in mg \ifelse{html}{\out{L<sup>-1</sup>}}{\eqn{L^{-1}}}
-
-#'  \item notes Optional notes related to the sample or sample collection.
 #'  \item location Directory of the absorbance data.
 #' }
 #' @export
-#' @note \code{abs} attributes dilution through notes will remain empty until merged with metadata in \link[eemanalyzeR]{abs_add_meta}
 #' @examples
 #' abs_files <- list.files(system.file("extdata", package = "eemanalyzeR"),
 #' full.names=TRUE, pattern="ABS")
@@ -173,11 +165,6 @@ abs_read <- function(file){
                   sample = gsub(paste0("[.]", file_ext(file)), "",basename(file)),
                   n = nrow(abs),
                   data = abs,
-                  dilution = NA,
-                  analysis_date = NA,
-                  description = NA,
-                  doc_mgL = NA,
-                  notes =NA,
                   location =dirname(file)
       )
 
@@ -389,19 +376,33 @@ meta_check <- function(meta){
   return(meta)
 }
 
-#' Add metadata to absorbance data
+#' Add metadata to absorbance and EEM's data
 #'
 #' @param meta a \code{data.frame} of metadata
-#' @param abslist a \code{abslist} object containing the corresponding absorbance data
+#' @param abslist an \code{abslist} object containing the corresponding absorbance data
+#' @param eemlist an \code{eemlist} object containing the corresponding EEM's data
 #'
-#' @returns a \code{abslist} object
+#' @returns returns an object of the same class as the object input into the function (\code{abslist} or \code{eemlist}) with metadata added in
+#' The following items are added for each sample, if available in the metadata:
+#' \itemize{
+#'  \item dilution: the dilution factor for the sample.
+#'  \item analysis_date: the date the sample was run.
+#'  \item description: optional description of sample.
+#'  \item doc_mgL: the concentration of dissolved organic carbon in the sample given in mg \ifelse{html}{\out{L<sup>-1</sup>}}{\eqn{L^{-1}}}
+#'  \item notes: optional notes related to the sample or sample collection.
+#' }
 #'
+#' @rdname add_meta
+#' @name add_meta
 #' @export
 #'
 #' @examples
-#' metadata <- meta_read(system.file("extdata", package = "eemanalyzeR"))
-#' abs <- abs_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern="ABS")
-#' abs_agument <- abs_add_meta(metadata, abs)
+#'
+#' #add metadata to absorbance data
+#' abs_augment <- abs_add_meta(metadata, example_absorbance)
+#'
+#' #add metadata to EEM's data
+#' eem_augment <- eem_add_meta(metadata, example_samples)
 
 abs_add_meta <- function(meta, abslist){
   stopifnot("data.frame" %in% class(meta), class(abslist) == "abslist")
@@ -459,17 +460,9 @@ abs_add_meta <- function(meta, abslist){
 
       return(abslist)}
 
-#' Add metadata to EEM's data
-#'
-#' @param meta a \code{data.frame} of metadata
-#' @param eemlist a \code{eemlist} object containing the corresponding EEM's data
-#'
-#' @returns a \code{eemlist} object
-#'
+#' @rdname add_meta
 #' @export
 #'
-#' @examples
-#' eem_agument <- eem_add_meta(metadata, example_samples)
 
 eem_add_meta <- function(meta, eemlist){
   stopifnot("data.frame" %in% class(meta), class(eemlist) == "eemlist")
