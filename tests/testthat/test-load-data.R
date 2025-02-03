@@ -63,7 +63,7 @@
 
     })
 
-    test_that("columns are made numeric",{
+    test_that("columns are made correct type",{
       meta <- meta_read(system.file("extdata", package = "eemanalyzeR"))
       meta <- meta %>% dplyr::mutate(dplyr::across(dplyr::any_of(c("integration_time_s","RSU_area_1s", "dilution", "DOC_mg_L")), as.character))
       meta <- meta_check(meta)
@@ -72,6 +72,8 @@
       expect_true(is.numeric(meta$RSU_area_1s))
       expect_true(is.numeric(meta$dilution))
       expect_true(is.numeric(meta$DOC_mg_L))
+
+      expect_s3_class(meta$analysis_date, "POSIXct") #dates are converted to dates
     })
 
   test_that("missing data identifiers are caught",{
