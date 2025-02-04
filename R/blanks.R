@@ -36,8 +36,9 @@ add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$"){
   }
 
   #if no blanks are provided
+  eem_plus <- ifelse("file_name" %in% unlist(lapply(eemlist, names)), T, F) #has additional data been a
   if(is.null(blanklist)){
-    if("file_name" %in% unlist(lapply(eemlist, names))){
+    if(eem_plus == T){
       #separate into blanklist and eemlist based on pattern given
       blanklist <- eem_get_blank(eemlist, pattern=pattern, info="file_name")
       eemlist <- eem_rm_blank(eemlist, pattern=pattern, info="file_name")
@@ -77,7 +78,7 @@ add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$"){
 
     }else if(length(blanklist) == length(eemlist)){
       #if same as eemlist try to match
-      eem_names(eemlist)
+      (eemlist)
       eem_names(blanklist)
 
     }else{
