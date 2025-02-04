@@ -6,15 +6,17 @@
 \alias{eem_rm_blank}
 \title{Extract blanks from eemlist}
 \usage{
-eem_get_blank(eemlist, pattern)
+eem_get_blank(eemlist, pattern, info = "sample")
 
-eem_rm_blank(eemlist, pattern)
+eem_rm_blank(eemlist, pattern, info = "sample")
 }
 \arguments{
 \item{eemlist}{an object of class \code{eemlist}}
 
 \item{pattern}{a character string containing a \code{\link[base]{regular expression}}
 used to specify the sample names of the blanks.}
+
+\item{info}{the name of the component within the \code{eem} to check for the pattern. default is 'sample'}
 }
 \value{
 an object of class \code{eemlist} either with only the blanks (\code{eem_get_blank})
@@ -25,6 +27,10 @@ Using a regular expression, the \code{eemlist} will be cut to include either
 only the blank samples (\code{eem_get_blank}) or remove all blank samples (\code{eem_rm_blank}).
 This function is similar to the \link[eemR]{eem_remove_blank} function, except it is more
 flexible to include different patterns for the blank.
+}
+\note{
+see \link[eemR]{eem} for base \code{eem} component names and \link[eemanalyzeR]{add_meta}
+for extended \code{eem} component names.
 }
 \examples{
 blanks <- eem_get_blank(example_eems, pattern = "BEM")

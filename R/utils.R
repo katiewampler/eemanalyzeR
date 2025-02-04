@@ -116,7 +116,7 @@
  eem_get_blank <- function(eemlist, pattern, info="sample"){
 
    blank_names <- grep(pattern, eem_get_info(eemlist, info), value = T)
-   eemlist <- eemR::eem_extract(eemlist, blank_names, keep = TRUE, ignore_case = TRUE,verbose = FALSE)
+   eemlist <- eem_select(eemlist, info, blank_names, keep = TRUE, ignore_case = TRUE,verbose = FALSE)
    class(eemlist) <- "eemlist"
    return(eemlist)
  }
@@ -126,22 +126,32 @@
 
  eem_rm_blank <- function(eemlist, pattern, info="sample"){
    blank_names <- grep(pattern, eem_get_info(eemlist, info), value = T)
-   eemlist <- eemR::eem_extract(eemlist, blank_names, keep = FALSE, ignore_case = TRUE,verbose = FALSE)
+   eemlist <- eem_select(eemlist, info, blank_names, keep = FALSE, ignore_case = TRUE,verbose = FALSE)
    class(eemlist) <- "eemlist"
    return(eemlist)
  }
 
-#' Extract information from an eem or eemlist object
+#' Subset eemlist using components
 #'
-#' This is a helper function that builds upon the \link[eemR]{eem_names} function by
-#' extending it to extract any component of the \code{eem} as a vector.
+#' These are helper functions that build upon the \link[eemR]{eem_names} and \link[eemR]{eem_extract}
+#' functions. \code{eem_get_info} will extract components of an \code{eem} object. While
+#' \code{eem_select} will select or remove samples based on the info extracted by \code{eem_get_info}.
+#' These functions allow selection based on components besides just the sample name.
 #'
 #' @param eem an object of class \code{eem} of \code{eemlist}
+#' @param sample a vector of the names or other info to use to select EEM's from \code{eemlist}
 #' @param info the name of the component within the \code{eem} to extract.
 #' see \link[eemR]{eem} for base \code{eem} component names and \link[eemanalyzeR]{add_meta}
 #' for extended \code{eem} component names.
+#' @param keep logical. If TRUE, the specified sample will be returned. If FALSE, they will be removed.
+#' @param ignore_case logical, should sample name case should be ignored (TRUE) or not (FALSE). Default is FALSE.
+#' @param verbose logical determining if removed/extracted eems should be printed on screen.
 #'
-#' @returns a vector containing the info from the EEM's
+#' @rdname subset-eems
+#' @name subset-eems
+#' @returns \code{eem_get_info} returns a vector containing the info from the EEM's.
+#'
+#' \code{eem_select} returns an object of class \code{eemlist} with the samples excluded or selected based on the 'sample' vector.
 #' @export
 #'
 #' @examples
@@ -149,12 +159,23 @@
 #' eem_get_info(example_eems, "sample")
 #'
 #' #get analysis_date
-#' eemlist <- eem_add_meta(meta, example_eems)
+#' eemlist <- eem_add_meta(metadata, example_eems)
 #' eem_get_info(eemlist, "analysis_date")
 #'
 #' #get doc
-#' eemlist <- eem_add_meta(meta, example_eems)
+#' eemlist <- eem_add_meta(metadata, example_eems)
 #' eem_get_info(eemlist, "doc_mgL")
+#'
+#' #subset by name
+#' names <- eem_get_info(example_eems, "sample")
+#' eem_subset <- eem_select(example_eems, "sample", names[1]) #default is to remove
+#' eem_subset <- eem_select(example_eems,"sample", names[1], keep=T) #but use keep to keep instead
+#'
+#' #subset by file_name
+#' eemlist <- eem_add_meta(metadata, example_eems)
+#' names <- eem_get_info(eemlist, "file_name")
+#' eem_subset <- eem_select(eemlist, "file_name", names[1]) #default is to remove
+#'
 
   eem_get_info <- function(eem, info){
    stopifnot(.is_eemlist(eem) | .is_eem(eem))
@@ -164,6 +185,28 @@
      res <- eem[[info]]
    }
    return(res)
- }
+  }
+
+#' @rdname subset-eems
+#' @export
+
+  eem_select <- function(eem, info, sample, keep=F, ignore_case=F,
+                         verbose=T){
+    stopifnot(class(eem) == "eemlist", info %in% unlist(lapply(eem,names)))
+    values <- eem_get_info(eem, info)
+    to_remove <- grepl(paste(sample, collapse = "|"), values,
+                         ignore.case = ignore_case)
+      eem[xor(to_remove, keep)] <- NULL
+      if (verbose) {
+        if (all(to_remove == FALSE)) {
+          cat("Nothing to remove.")
+        }
+        else {
+          cat(ifelse(keep, "Extracted sample(s):", "Removed sample(s):"),
+              values[to_remove], "\n")
+        }
+      }
+    return(eem)
+  }
 
 
