@@ -45,17 +45,13 @@ for(x in files){
 }
 
 #read into R environment
-  #read in blanks
-  example_blanks <- eem_dir_read("data-raw", pattern="BEM[.]dat")
-
-  #read in samples
-  example_samples <- eem_dir_read("data-raw", pattern="SEM[.]dat")
+  #read in samples and blanks
+  example_eems <- eem_dir_read("data-raw", pattern="SEM|BEM")
 
   #read in absorbance
   example_absorbance <- abs_dir_read("data-raw", pattern="ABS[.]dat")
 
-    usethis::use_data(example_blanks, overwrite = T)
-    usethis::use_data(example_samples, overwrite = T)
+    usethis::use_data(example_eems, overwrite = T)
     usethis::use_data(example_absorbance, overwrite = T)
 
   metadata <- read.csv("data-raw/metadata_example.csv")
