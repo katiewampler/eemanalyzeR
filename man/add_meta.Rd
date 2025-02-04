@@ -21,6 +21,7 @@ eem_add_meta(meta, eemlist)
 returns an object of the same class as the object input into the function (\code{abslist} or \code{eemlist}) with metadata added in
 The following items are added for each sample, if available in the metadata:
 \itemize{
+ \item file_name: the full data file name of the sample.
  \item dilution: the dilution factor for the sample.
  \item analysis_date: the date the sample was run.
  \item description: optional description of sample.
@@ -31,11 +32,16 @@ The following items are added for each sample, if available in the metadata:
 \description{
 Add metadata to absorbance and EEM's data
 }
+\note{
+if \code{eemlist} contains blanks, the blanks will get the metadata of the corresponding sample.
+In the original \link[eemR]{eem} object, 'sample' is the file name, in the output from this function, 'sample' is replaced with the
+'data_identifier' from the metadata, and the file name is moved to 'file_name'
+}
 \examples{
 
 #add metadata to absorbance data
 abs_augment <- abs_add_meta(metadata, example_absorbance)
 
 #add metadata to EEM's data
-eem_augment <- eem_add_meta(metadata, example_samples)
+eem_augment <- eem_add_meta(metadata, example_eems)
 }

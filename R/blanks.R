@@ -21,7 +21,7 @@
 #' @export
 #'
 #' @examples
-#' eemlist <- eem_dir_read(system.file("extdata", package = "eemanalyzeR"))
+#' eemlist <- eem_add_meta(metadata, example_eems)
 #' augment_eemlist <- add_blanks(eemlist)
 
 add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$"){
@@ -37,9 +37,16 @@ add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$"){
 
   #if no blanks are provided
   if(is.null(blanklist)){
-    #separate into blanklist and eemlist based on pattern given
-    blanklist <- eem_get_blanks(eemlist)
-    eemlist <- eem_rm_blanks(eemlist)
+    if("file_name" %in% unlist(lapply(eemlist, names))){
+      #separate into blanklist and eemlist based on pattern given
+      blanklist <- eem_get_blank(eemlist, pattern=pattern, info="file_name")
+      eemlist <- eem_rm_blank(eemlist, pattern=pattern, info="file_name")
+    }else{
+      #separate into blanklist and eemlist based on pattern given
+      blanklist <- eem_get_blank(eemlist, pattern=pattern, info="sample")
+      eemlist <- eem_rm_blank(eemlist, pattern=pattern, info="sample")
+    }
+
   }
 
   #only plot unique blanks (replace with my plotting function once written)
@@ -55,16 +62,27 @@ add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$"){
     continue <- readline(prompt = "After reviewing blank(s), do you want to continue processing samples (Y/N): ")
   }
 
+  .add_x_blk <- function(eem, eem_blk){
+    if(any(eem$em != eem_blk$em) | any(eem$ex != eem_blk$ex)){
+      stop("excitation and/or emission wavelengths as mismatched between sample and blank")
+    }
+    eem$x_blk <- eem_blk$x
+    class(eem) <- "eem"
+    return(eem)
+  }
   if(toupper(continue) == "Y"){
     if(length(blanklist) == 1){
       #if only one eem, add to all eems
-
+      eemlist <- lapply(eemlist, .add_x_blk, blanklist[[1]])
 
     }else if(length(blanklist) == length(eemlist)){
       #if same as eemlist try to match
+      eem_names(eemlist)
+      eem_names(blanklist)
 
     }else{
       #if not, stop and give error
+      stop("more than one blank was provided, but blank names do not match samples")
     }
 
   }else{

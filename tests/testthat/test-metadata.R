@@ -101,27 +101,34 @@
 
 #testing loaded metadata
   test_that("missing samples are warned", {
-  meta <- meta_read(system.file("extdata", package = "eemanalyzeR"))
-  meta <- rbind(meta, meta[1,])
-  meta$data_identifier[4] <- "missing_sample"
-  abs <- abs_dir_read(system.file("extdata", package = "eemanalyzeR"))
-
-  expect_warning(abs_add_meta(meta, abs), "the following sample is in metadata but was missing in absorbance data")
-
-  meta <- meta[1,]
-  expect_warning(abs_add_meta(meta, abs), "the following absorbance data are missing from metadata")
-
-  eems <- eem_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern = "SEM")
-  meta <- meta_read(system.file("extdata", package = "eemanalyzeR"))
-  meta <- rbind(meta, meta[1,])
+  meta <- rbind(metadata, metadata[1,])
   meta$data_identifier[4] <- "missing_sample"
 
-  expect_warning(eem_add_meta(meta, eems), "the following sample is in metadata but was missing in EEM's data")
+  expect_warning(abs_test <- abs_add_meta(meta, example_absorbance), "the following sample is in metadata but was missing in absorbance data")
+  expect_s3_class(abs_test, "abslist")
+  expect_equal(length(abs_test), 3)
+
+  meta <- metadata[1,]
+  expect_warning(abs_test <- abs_add_meta(meta, example_absorbance), "the following absorbance data are missing from metadata")
+  expect_s3_class(abs_test, "abslist")
+  expect_equal(length(abs_test), 1)
+
+  meta <- rbind(metadata, metadata[1,])
+  meta$data_identifier[4] <- "missing_sample"
+
+  expect_warning(eem_test <- eem_add_meta(meta, example_eems), "the following sample is in metadata but was missing in EEM's data")
+  expect_s3_class(eem_test, "eemlist")
+  expect_equal(length(eem_test), 6)
 
   meta <- meta[1,]
-  expect_warning(eem_add_meta(meta, eems), "the following EEM's data are missing from metadata")
+  expect_warning(eem_test <- eem_add_meta(meta, example_eems), "the following EEM's data are missing from metadata")
+  expect_s3_class(eem_test, "eemlist")
+  expect_equal(length(eem_test), 2)
 })
 
 
 #test that things are added
 #test that objects are still abslist and eemlist
+#test that names are given even if missing one blank
+#make sure names are all given
+  #make sure works with blanks/with just samples

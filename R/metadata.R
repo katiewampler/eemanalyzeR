@@ -122,9 +122,14 @@ meta_check <- function(meta){
 #' @param abslist an \code{abslist} object containing the corresponding absorbance data
 #' @param eemlist an \code{eemlist} object containing the corresponding EEM's data
 #'
+#' @note if \code{eemlist} contains blanks, the blanks will get the metadata of the corresponding sample.
+#' In the original \link[eemR]{eem} object, 'sample' is the file name, in the output from this function, 'sample' is replaced with the
+#' 'data_identifier' from the metadata, and the file name is moved to 'file_name'
+#'
 #' @returns returns an object of the same class as the object input into the function (\code{abslist} or \code{eemlist}) with metadata added in
 #' The following items are added for each sample, if available in the metadata:
 #' \itemize{
+#'  \item file_name: the full data file name of the sample.
 #'  \item dilution: the dilution factor for the sample.
 #'  \item analysis_date: the date the sample was run.
 #'  \item description: optional description of sample.
@@ -142,47 +147,57 @@ meta_check <- function(meta){
 #' abs_augment <- abs_add_meta(metadata, example_absorbance)
 #'
 #' #add metadata to EEM's data
-#' eem_augment <- eem_add_meta(metadata, example_samples)
+#' eem_augment <- eem_add_meta(metadata, example_eems)
 
 abs_add_meta <- function(meta, abslist){
   stopifnot("data.frame" %in% class(meta), class(abslist) == "abslist")
 
   names <- abs_names(abslist)
 
-  meta_order <- sapply(meta$data_identifier, grep, names) #get order of absorbance in metadata
-  #meta_order is in the order of the metadata, where the number indicates the position of that sample in the abslist
+  meta_order <- data.frame(eem_pos = 1:length(names), meta_row=NA)
 
-  #check for missing samples either in metadata or in abs
-  if(length(abslist) > length(meta_order)){
-    #give warning about samples not in metadata
-    missing_meta <- setdiff(1:length(abslist), as.numeric(meta_order))
-    warning("the following absorbance data are missing from metadata:\n", paste(names[missing_meta], collapse="\n"), "\nthese sample will be removed from further processing")
-    abslist <- abslist[-missing_meta]
+  .get_row_meta <- function(name, meta){
+    row <- which(sapply(meta$data_identifier, grep, name) == 1)
+    if(length(row) == 0){row <- NA}
+    return(row)
   }
 
-  if(any(is.na(as.numeric(meta_order)))){
+  meta_order <- sapply(names, .get_row_meta, meta) #get order of eems in metadata
+  names(meta_order) <- names
+  #meta_order is the order of the eems where the number is the corresponding row of the metadata
+
+  #check for missing samples either in metadata or in abs
+  if(any(is.na(meta_order))){
+    #give warning about samples not in metadata
+    missing_meta <- names[is.na(meta_order)]
+    warning("the following absorbance data are missing from metadata:\n", paste(missing_meta, collapse="\n"), "\nthese sample will be removed from further processing")
+    abslist <- abslist[!is.na(meta_order)]
+    meta_order <- na.omit(meta_order)
+  }
+
+  if(length(unique(meta_order)) < nrow(meta)){
     warning("the following sample is in metadata but was missing in absorbance data:\n",
-            paste(names(meta_order)[is.na(as.numeric(meta_order))], collapse="\n"), "\nthese sample will be removed from further processing")
-    meta <- meta[!is.na(as.numeric(meta_order)),]
-    meta_order <- unlist(meta_order[!is.na(as.numeric(meta_order))])
+            paste(meta$data_identifier[setdiff(1:nrow(meta), meta_order)], collapse="\n"), "\nthese sample will be removed from further processing")
+    meta <- meta[-setdiff(1:nrow(meta), meta_order),]
   }
 
   #add metadata info to abs object
   #get data from metadata, keeping as numeric/character
   meta_data <- list(
-    sample = meta$data_identifier,
-    dilution = meta$dilution,
-    analysis_date = if("analysis_date" %in% colnames(meta)) meta$analysis_date else NULL,
-    description = if("description" %in% colnames(meta)) meta$description else NULL,
-    doc_mgL = if("DOC_mg_L" %in% colnames(meta)) meta$DOC_mg_L else NULL,
-    notes = if("Notes" %in% colnames(meta)) meta$Notes else NULL
+    sample = meta$data_identifier[meta_order],
+    dilution = meta$dilution[meta_order],
+    analysis_date = if("analysis_date" %in% colnames(meta)) meta$analysis_date[meta_order] else NULL,
+    description = if("description" %in% colnames(meta)) meta$description[meta_order] else NULL,
+    doc_mgL = if("DOC_mg_L" %in% colnames(meta)) meta$DOC_mg_L[meta_order] else NULL,
+    notes = if("Notes" %in% colnames(meta)) meta$Notes[meta_order] else NULL
   )
 
   # loop across the metadata
   abslist <- lapply(1:length(meta_order), function(x) {
-    obj <- abslist[[meta_order[x]]]
+    obj <- abslist[[x]]
 
     # assign sample name and dilution
+    obj$file_name <- obj$sample
     obj$sample <- meta_data$sample[x]
     obj$dilution <- meta_data$dilution[x]
 
@@ -207,42 +222,53 @@ abs_add_meta <- function(meta, abslist){
 eem_add_meta <- function(meta, eemlist){
   stopifnot("data.frame" %in% class(meta), class(eemlist) == "eemlist")
 
-  names <- eemR::eem_names(eemlist)
+  names <- eem_get_info(eemlist, "sample")
 
-  meta_order <- sapply(meta$data_identifier, grep, names) #get order of absorbance in metadata
-  #meta_order is in the order of the metadata, where the number indicates the position of that sample in the abslist
+  meta_order <- data.frame(eem_pos = 1:length(names), meta_row=NA)
 
-  #check for missing samples either in metadata or in abs
-  if(length(eemlist) > length(meta_order)){
+  .get_row_meta <- function(name, meta){
+    row <- which(sapply(meta$data_identifier, grep, name) == 1)
+    if(length(row) == 0){row <- NA}
+    return(row)
+  }
+
+  meta_order <- sapply(names, .get_row_meta, meta) #get order of eems in metadata
+  names(meta_order) <- names
+  #meta_order is the order of the eems where the number is the corresponding row of the metadata
+
+  #check for missing samples either in metadata or in EEMs
+  if(any(is.na(meta_order))){
     #give warning about samples not in metadata
-    missing_meta <- setdiff(1:length(eemlist), as.numeric(meta_order))
-    warning("the following EEM's data are missing from metadata:\n", paste(names[missing_meta], collapse="\n"), "\nthese sample will be removed from further processing")
-    eemlist <- eemlist[-missing_meta]
+    missing_meta <- names[is.na(meta_order)]
+    warning("the following EEM's data are missing from metadata:\n", paste(missing_meta, collapse="\n"), "\nthese sample will be removed from further processing")
+    eemlist <- eemlist[!is.na(meta_order)]
+    meta_order <- na.omit(meta_order)
+
   }
 
-  if(any(is.na(as.numeric(meta_order)))){
+  if(length(unique(meta_order)) < nrow(meta)){
     warning("the following sample is in metadata but was missing in EEM's data:\n",
-            paste(names(meta_order)[is.na(as.numeric(meta_order))], collapse="\n"), "\nthese sample will be removed from further processing")
-    meta <- meta[!is.na(as.numeric(meta_order)),]
-    meta_order <- unlist(meta_order[!is.na(as.numeric(meta_order))])
+            paste(meta$data_identifier[setdiff(1:nrow(meta), meta_order)], collapse="\n"), "\nthese sample will be removed from further processing")
+    meta <- meta[-setdiff(1:nrow(meta), meta_order),]
   }
 
-  #add metadata info to abs object
+  #add metadata info to eems object
   #get data from metadata, keeping as numeric/character
   meta_data <- list(
-    sample = meta$data_identifier,
-    dilution = meta$dilution,
-    analysis_date = if("analysis_date" %in% colnames(meta)) meta$analysis_date else NULL,
-    description = if("description" %in% colnames(meta)) meta$description else NULL,
-    doc_mgL = if("DOC_mg_L" %in% colnames(meta)) meta$DOC_mg_L else NULL,
-    notes = if("Notes" %in% colnames(meta)) meta$Notes else NULL
+    sample = meta$data_identifier[meta_order],
+    dilution = meta$dilution[meta_order],
+    analysis_date = if("analysis_date" %in% colnames(meta)) meta$analysis_date[meta_order] else NULL,
+    description = if("description" %in% colnames(meta)) meta$description[meta_order] else NULL,
+    doc_mgL = if("DOC_mg_L" %in% colnames(meta)) meta$DOC_mg_L[meta_order] else NULL,
+    notes = if("Notes" %in% colnames(meta)) meta$Notes[meta_order] else NULL
   )
 
   # loop across the metadata
   eemlist <- lapply(1:length(meta_order), function(x) {
-    obj <- eemlist[[meta_order[x]]]
+    obj <- eemlist[[x]]
 
     # assign sample name and dilution
+    obj$file_name <- obj$sample #shouldn't have a [x], since pulling from obj
     obj$sample <- meta_data$sample[x]
     obj$dilution <- meta_data$dilution[x]
 

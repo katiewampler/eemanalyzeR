@@ -98,6 +98,10 @@
 #' @param eemlist an object of class \code{eemlist}
 #' @param pattern a character string containing a \code{\link[base]{regular expression}}
 #' used to specify the sample names of the blanks.
+#' @param info the name of the component within the \code{eem} to check for the pattern. default is 'sample'
+
+#' @note see \link[eemR]{eem} for base \code{eem} component names and \link[eemanalyzeR]{add_meta}
+#' for extended \code{eem} component names.
 #'
 #' @returns an object of class \code{eemlist} either with only the blanks (\code{eem_get_blank})
 #' or only the samples (\code{eem_rm_blank})
@@ -109,8 +113,9 @@
 #' @examples
 #' blanks <- eem_get_blank(example_eems, pattern = "BEM")
 #' samples <- eem_rm_blank(example_eems, pattern = "BEM")
- eem_get_blank <- function(eemlist, pattern){
-   blank_names <- grep(pattern, eemR::eem_names(eemlist), value = T)
+ eem_get_blank <- function(eemlist, pattern, info="sample"){
+
+   blank_names <- grep(pattern, eem_get_info(eemlist, info), value = T)
    eemlist <- eemR::eem_extract(eemlist, blank_names, keep = TRUE, ignore_case = TRUE,verbose = FALSE)
    class(eemlist) <- "eemlist"
    return(eemlist)
@@ -119,9 +124,46 @@
 #' @rdname extract-blanks
 #' @export
 
- eem_rm_blank <- function(eemlist, pattern){
-   blank_names <- grep(pattern, eemR::eem_names(eemlist), value = T)
+ eem_rm_blank <- function(eemlist, pattern, info="sample"){
+   blank_names <- grep(pattern, eem_get_info(eemlist, info), value = T)
    eemlist <- eemR::eem_extract(eemlist, blank_names, keep = FALSE, ignore_case = TRUE,verbose = FALSE)
    class(eemlist) <- "eemlist"
    return(eemlist)
  }
+
+#' Extract information from an eem or eemlist object
+#'
+#' This is a helper function that builds upon the \link[eemR]{eem_names} function by
+#' extending it to extract any component of the \code{eem} as a vector.
+#'
+#' @param eem an object of class \code{eem} of \code{eemlist}
+#' @param info the name of the component within the \code{eem} to extract.
+#' see \link[eemR]{eem} for base \code{eem} component names and \link[eemanalyzeR]{add_meta}
+#' for extended \code{eem} component names.
+#'
+#' @returns a vector containing the info from the EEM's
+#' @export
+#'
+#' @examples
+#' #get names
+#' eem_get_info(example_eems, "sample")
+#'
+#' #get analysis_date
+#' eemlist <- eem_add_meta(meta, example_eems)
+#' eem_get_info(eemlist, "analysis_date")
+#'
+#' #get doc
+#' eemlist <- eem_add_meta(meta, example_eems)
+#' eem_get_info(eemlist, "doc_mgL")
+
+  eem_get_info <- function(eem, info){
+   stopifnot(.is_eemlist(eem) | .is_eem(eem))
+   if (.is_eemlist(eem)) {
+     res <- unlist(lapply(eem, function(x) x[[info]]))
+   }else{
+     res <- eem[[info]]
+   }
+   return(res)
+ }
+
+

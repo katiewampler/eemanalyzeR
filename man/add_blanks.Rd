@@ -29,6 +29,6 @@ Adding the blanks into the sample data can be done two ways:
 }
 }
 \examples{
-eemlist <- eem_dir_read(system.file("extdata", package = "eemanalyzeR"))
+eemlist <- eem_add_meta(metadata, example_eems)
 augment_eemlist <- add_blanks(eemlist)
 }
