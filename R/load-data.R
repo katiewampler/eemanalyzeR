@@ -53,24 +53,36 @@ eem_dir_read <- function(input_dir, pattern = NULL, skip="(?i)abs", file_ext="da
     files <- list.files(input_dir, full.names = T, recursive = recursive)
 
     #only gets files with correct file extension and ones that optionally match the pattern
-    ext <- paste0("[.]", file_ext, "$")
-      if(is.null(pattern)){
-        if(is.null(skip)){
-          load_files <- files[grepl(ext, files)]
-        }else{
-          load_files <- files[grepl(ext, files) & !(grepl(skip, files))]
-        }
-      }else{
-        if(is.null(skip)){
-          load_files <- files[grepl(ext, files) & grepl(pattern, files)]
-        }else{
-          load_files <- files[grepl(ext, files) & grepl(pattern, files) & !(grepl(skip, files))]}
-        }
+    # RPC refactored this because I don't like nested loops. Also wanted to check the tests
+    if (is.null(pattern)) {
+      pattern_choices <- rep(TRUE, length(files)) # We want NULL to select all files
+    } else {
+      pattern_choices <- grepl(pattern, files)
+    }
+    skip_choices <- !grepl(skip, files)
+    ext_choices <- tools::file_ext(files) == file_ext
+    load_files <- files[which(pattern_choices & skip_choices & ext_choices)]
+
+    # ext <- paste0("[.]", file_ext, "$")
+      # if(is.null(pattern)){
+      #   if(is.null(skip)){
+      #     load_filesnest <- files[grepl(ext, files)]
+      #   }else{
+      #     load_filesnest <- files[grepl(ext, files) & !(grepl(skip, files))]
+      #   }
+      # }else{
+      #   if(is.null(skip)){
+      #     load_filesnest <- files[grepl(ext, files) & grepl(pattern, files)]
+      #   }else{
+      #     load_filesnest <- files[grepl(ext, files) & grepl(pattern, files) & !(grepl(skip, files))]}
+      #   }
 
   #read files
     eem_list <- withCallingHandlers(lapply(load_files, .try_eem_read, import_function=import_function),
                                     warning = function(w) {
                                       warnings_list <<- c(warnings_list, conditionMessage(w))  # Add the warning message
+                                      # TODO add warning list to base package environment if used by more functions.
+                                      # <<- can result in weird behavior
                                       invokeRestart("muffleWarning")  # Prevent the warning from printing immediately
                                     })
 
@@ -225,19 +237,28 @@ abs_dir_read <- function(input_dir, pattern = NULL, skip="SEM|BEM|Waterfall", fi
   files <- list.files(input_dir, full.names = T, recursive = recursive)
 
   #only gets files with correct file extension and ones that optionally match the pattern
-  ext <- paste0("[.]", file_ext, "$")
-  if(is.null(pattern)){
-    if(is.null(skip)){
-      load_files <- files[grepl(ext, files)]
-    }else{
-      load_files <- files[grepl(ext, files) & !(grepl(skip, files))]
-    }
-  }else{
-    if(is.null(skip)){
-      load_files <- files[grepl(ext, files) & grepl(pattern, files)]
-    }else{
-      load_files <- files[grepl(ext, files) & grepl(pattern, files) & !(grepl(skip, files))]}
+  # RPC refactored this because I don't like nested loops. Also wanted to check the tests
+  if (is.null(pattern)) {
+    pattern_choices <- rep(TRUE, length(files)) # We want NULL to select all files
+  } else {
+    pattern_choices <- grepl(pattern, files)
   }
+  skip_choices <- !grepl(skip, files)
+  ext_choices <- tools::file_ext(files) == file_ext
+  load_files <- files[which(pattern_choices & skip_choices & ext_choices)]
+  # ext <- paste0("[.]", file_ext, "$")
+  # if(is.null(pattern)){
+  #   if(is.null(skip)){
+  #     load_files <- files[grepl(ext, files)]
+  #   }else{
+  #     load_files <- files[grepl(ext, files) & !(grepl(skip, files))]
+  #   }
+  # }else{
+  #   if(is.null(skip)){
+  #     load_files <- files[grepl(ext, files) & grepl(pattern, files)]
+  #   }else{
+  #     load_files <- files[grepl(ext, files) & grepl(pattern, files) & !(grepl(skip, files))]}
+  # }
 
   #read files
   abs_list <- withCallingHandlers(lapply(load_files, abs_read),
