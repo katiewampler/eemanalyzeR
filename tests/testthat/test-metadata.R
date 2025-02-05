@@ -126,7 +126,25 @@
   expect_equal(length(eem_test), 2)
 })
 
+  test_that("metadata is added", {
+    abs_names <- lapply(abs_add_meta(metadata, example_absorbance), names)
+    expect_length(abs_names[[1]], 11)
+    expect_equal(abs_names[[1]], abs_names[[3]])
+    expect_equal(abs_names[[1]], c("file","sample", "n", "data","location","meta_name","dilution","analysis_date", "description","doc_mgL","notes"))
 
+
+    eem_names <- lapply(eem_add_meta(metadata, example_eems), names)
+    expect_length(eem_names[[1]], 12)
+    expect_equal(eem_names[[1]], eem_names[[6]])
+    expect_equal(eem_names[[1]], c("file","sample", "x", "ex", "em", "location","meta_name","dilution","analysis_date", "description","doc_mgL","notes"))
+
+    abs_aug <- abs_add_meta(metadata, example_absorbance)
+    eem_aug <- eem_add_meta(metadata, example_eems)
+
+    expect_equal(get_info(eem_aug, "meta_name"), rep(c("ExampleBlank", "ExampleTeaStd", "ExampleSample"), each=2))
+    expect_equal(get_info(eem_aug, "meta_name"), rep(c("ExampleBlank", "ExampleTeaStd", "ExampleSample"), each=2))
+
+  })
 #test that things are added
 #test that objects are still abslist and eemlist
 #test that names are given even if missing one blank

@@ -123,13 +123,11 @@ meta_check <- function(meta){
 #' @param eemlist an \code{eemlist} object containing the corresponding EEM's data
 #'
 #' @note if \code{eemlist} contains blanks, the blanks will get the metadata of the corresponding sample.
-#' In the original \link[eemR]{eem} object, 'sample' is the file name, in the output from this function, 'sample' is replaced with the
-#' 'data_identifier' from the metadata, and the file name is moved to 'file_name'
 #'
 #' @returns returns an object of the same class as the object input into the function (\code{abslist} or \code{eemlist}) with metadata added in
 #' The following items are added for each sample, if available in the metadata:
 #' \itemize{
-#'  \item file_name: the full data file name of the sample.
+#'  \item meta_name: the data identifier of the sample.
 #'  \item dilution: the dilution factor for the sample.
 #'  \item analysis_date: the date the sample was run.
 #'  \item description: optional description of sample.
@@ -152,7 +150,7 @@ meta_check <- function(meta){
 abs_add_meta <- function(meta, abslist){
   stopifnot("data.frame" %in% class(meta), class(abslist) == "abslist")
 
-  names <- abs_names(abslist)
+  names <- get_info(abslist, "sample")
 
   meta_order <- data.frame(eem_pos = 1:length(names), meta_row=NA)
 
@@ -184,7 +182,7 @@ abs_add_meta <- function(meta, abslist){
   #add metadata info to abs object
   #get data from metadata, keeping as numeric/character
   meta_data <- list(
-    sample = meta$data_identifier[meta_order],
+    meta_name = meta$data_identifier[meta_order],
     dilution = meta$dilution[meta_order],
     analysis_date = if("analysis_date" %in% colnames(meta)) meta$analysis_date[meta_order] else NULL,
     description = if("description" %in% colnames(meta)) meta$description[meta_order] else NULL,
@@ -197,8 +195,7 @@ abs_add_meta <- function(meta, abslist){
     obj <- abslist[[x]]
 
     # assign sample name and dilution
-    obj$file_name <- obj$sample
-    obj$sample <- meta_data$sample[x]
+    obj$meta_name <- meta_data$meta_name[x]
     obj$dilution <- meta_data$dilution[x]
 
     # assign values if they are in metadata
@@ -222,7 +219,7 @@ abs_add_meta <- function(meta, abslist){
 eem_add_meta <- function(meta, eemlist){
   stopifnot("data.frame" %in% class(meta), class(eemlist) == "eemlist")
 
-  names <- eem_get_info(eemlist, "sample")
+  names <- get_info(eemlist, "sample")
 
   meta_order <- data.frame(eem_pos = 1:length(names), meta_row=NA)
 
@@ -255,7 +252,7 @@ eem_add_meta <- function(meta, eemlist){
   #add metadata info to eems object
   #get data from metadata, keeping as numeric/character
   meta_data <- list(
-    sample = meta$data_identifier[meta_order],
+    meta_name = meta$data_identifier[meta_order],
     dilution = meta$dilution[meta_order],
     analysis_date = if("analysis_date" %in% colnames(meta)) meta$analysis_date[meta_order] else NULL,
     description = if("description" %in% colnames(meta)) meta$description[meta_order] else NULL,
@@ -268,8 +265,7 @@ eem_add_meta <- function(meta, eemlist){
     obj <- eemlist[[x]]
 
     # assign sample name and dilution
-    obj$file_name <- obj$sample #shouldn't have a [x], since pulling from obj
-    obj$sample <- meta_data$sample[x]
+    obj$meta_name <- meta_data$meta_name[x]
     obj$dilution <- meta_data$dilution[x]
 
     # assign values if they are in metadata

@@ -174,7 +174,7 @@ abs_dir_read <- function(input_dir, pattern = NULL, skip="SEM|BEM|Waterfall", fi
 #'  \item file The filename of the absorbance data.
 #'  \item sample The sample name of the absorbance data.
 #'  \item n The number of wavelengths absorbance was measured at.
-#'  \item data A \code{data.frame} with absorbance data.
+#'  \item data A matrix with two columns: wavelengths and absorbance data.
 #'  \item location Directory of the absorbance data.
 #' }
 #' @export
@@ -219,11 +219,8 @@ abs_read <- function(file){
 
     #give column names and make into df if not skipped
     if(is.null(abs) == F){
-      colnames(abs) <- c("wavelength", "absorbance")
-      abs <- as.data.frame(abs)
-
       #thrown an error if the wavelength isn't continuous, suggesting transmittance data was added
-      if(sum(diff(abs$wavelength) > 0) > 0){
+      if(sum(diff(abs[,1]) > 0) > 0){
         stop("wavelengths aren't continuous, please ensure transmitance data wasn't included in absorbance file:\n", file)
       }
 

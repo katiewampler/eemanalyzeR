@@ -54,5 +54,5 @@ for(x in files){
     usethis::use_data(example_eems, overwrite = T)
     usethis::use_data(example_absorbance, overwrite = T)
 
-  metadata <- read.csv("data-raw/metadata_example.csv")
+  metadata <- meta_read("data-raw")
   usethis::use_data(metadata, overwrite = T)

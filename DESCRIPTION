@@ -32,6 +32,8 @@ Imports:
     magrittr,
     purrr,
     readxl,
+    staRdom,
+    stats,
     stringr,
     tools,
     utils

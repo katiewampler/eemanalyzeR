@@ -19,7 +19,7 @@ an \code{eemlist} where each \code{eem} object has an additional item: 'x_blk' w
 }
 \description{
 Allows user to visually check excitation emissions matrix plots of the blanks, and then, if approved, the blanks will
-be added to the \code{eem} objects for use in futher processing.
+be added to the \code{eem} objects for use in further processing.
 }
 \details{
 Adding the blanks into the sample data can be done two ways:
@@ -29,6 +29,8 @@ Adding the blanks into the sample data can be done two ways:
 }
 }
 \examples{
-eemlist <- eem_add_meta(metadata, example_eems)
+\dontrun{
+#' eemlist <- eem_add_meta(metadata, example_eems)
 augment_eemlist <- add_blanks(eemlist)
+}
 }
