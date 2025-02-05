@@ -209,6 +209,7 @@ abs_add_meta <- function(meta, abslist){
 
   # ensure object returned is abslist
   class(abslist) <- "abslist"
+  stopifnot(.is_abslist(abslist))
 
   return(abslist)}
 
@@ -277,8 +278,9 @@ eem_add_meta <- function(meta, eemlist){
     return(obj)
   })
 
-  # ensure object returned is abslist
+  # ensure object returned is eemlist
   class(eemlist) <- "eemlist"
+  stopifnot(.is_eemlist(eemlist))
 
   return(eemlist)}
 
