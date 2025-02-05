@@ -29,7 +29,7 @@ Oregon State University Forest Watershed Hydrology Lab (2022-11-14)
 metadata
 }
 \description{
-Metadata associated with the samples in \link{example_samples}. Provides an example of the structure
+Metadata associated with the samples in \link{example_eems}. Provides an example of the structure
 and requirements for metadata needed to run samples.
 }
 \keyword{datasets}

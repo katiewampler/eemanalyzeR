@@ -17,7 +17,7 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
 Depends: 
-    R (>= 2.10)
+    R (>= 3.5)
 Suggests: 
     knitr,
     rmarkdown,
@@ -26,10 +26,15 @@ Suggests:
 VignetteBuilder: knitr
 Language: en-US
 Imports: 
+    anytime,
     dplyr,
     eemR,
     magrittr,
     purrr,
+    readxl,
+    staRdom,
+    stats,
     stringr,
-    tools
+    tools,
+    utils
 Config/testthat/edition: 3

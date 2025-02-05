@@ -1,0 +1,24 @@
+index,analysis_date,description,data_identifier,replicate_no,integration_time_s,dilution,RSU_area_1s,run_type,collect_date,DOC_mg_L
+1,2025-01-08,Sample Blank 1,BLK01250108,1,5,1,NA,sampleQ,NA,NA
+2,2025-01-08,PreTea 1% SRM,preTea250108,1,5,1,NA,sampleQ,NA,NA
+3,2025-01-08,Vial-10ppm-10s-Filtered,V10ppm10sF,1,5,1,NA,sampleQ,NA,3.478
+4,2025-01-08,Vial-40ppm-10s-Filtered,V40ppm10sF,1,5,1,NA,sampleQ,NA,2.852
+5,2025-01-08,Vial-80ppm-10s-Filtered,V80ppm10sF,1,5,1,NA,sampleQ,NA,2.307
+6,2025-01-08,Vial-120ppm-10s-Filtered,V120ppm10sF,1,5,1,NA,sampleQ,NA,1.99
+7,2025-01-08,Vial-10ppm-30s-Filtered,V10ppm30sF,1,5,1,NA,sampleQ,NA,3.421
+8,2025-01-08,Vial-40ppm-30s-Filtered,V40ppm30sF,1,5,1,NA,sampleQ,NA,2.815
+9,2025-01-08,Vial-80ppm-30s-Filtered,V80ppm30sF,1,5,1,NA,sampleQ,NA,2.253
+10,2025-01-08,Vial-120ppm-30s-Filtered,V120ppm30sF,1,5,1,NA,sampleQ,NA,1.966
+11,2025-01-08,Vial-10ppm-60s-Filtered,V10ppm60sF,1,5,1,NA,sampleQ,NA,3.362
+12,2025-01-08,Sample Blank 2,BLK02250108,1,5,1,NA,sampleQ,NA,NA
+13,2025-01-08,Vial-40ppm-60s-Filtered,V40ppm60sF,1,5,1,NA,sampleQ,NA,2.716
+14,2025-01-08,Vial-80ppm-60s-Filtered,V80ppm60sF,1,5,1,NA,sampleQ,NA,2.279
+15,2025-01-08,Vial-120ppm-60s-Filtered,V120ppm60sF,1,5,1,NA,sampleQ,NA,1.936
+16,2025-01-08,Jar-10ppm-Filtered,J10ppmF,1,5,1,NA,sampleQ,NA,3.188
+17,2025-01-08,Jar-40ppm-Filtered,J40ppmF,1,5,1,NA,sampleQ,NA,2.463
+18,2025-01-08,Jar-80ppm-Filtered,J80ppmF,1,5,1,NA,sampleQ,NA,2.043
+19,2025-01-08,Jar-120ppm-Filtered,J120ppmF,1,5,1,NA,sampleQ,NA,1.845
+20,2025-01-08,BZN Raw water-filtered,BZNRawFiltered,1,5,1,NA,sampleQ,NA,1.256
+21,2025-01-08,BZN Ash leached raw-filtered,BZNAshRawFiltered,1,5,1,NA,sampleQ,NA,3.368
+22,2025-01-08,PostTea 1% SRM,postTea250108,1,5,1,NA,sampleQ,NA,NA
+23,2025-01-08,Sample Blank 3,BLK03250108,1,5,1,NA,sampleQ,NA,NA

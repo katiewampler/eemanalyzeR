@@ -25,14 +25,14 @@ downscale_eems <- function(file, factor=6){
     }
 
     data <- c(line1, line2)
-    write_lines(data, file.path("data-raw",file))
+    readr::write_lines(data, file.path("data-raw",file))
   }
 
   #downscale absorbance
   if(grepl("ABS", file)){
     data <- readLines(file.path("data-raw/fullsize data",file)) #read in file
     data <- data[seq(1, length(data), 6)]
-    write_lines(data, file.path("data-raw",file))
+    readr::write_lines(data, file.path("data-raw",file))
 
   }}
 
@@ -45,39 +45,14 @@ for(x in files){
 }
 
 #read into R environment
-  #read in blanks
-    files <- list.files("data-raw", pattern="BEM[.]dat")
-    for(x in files){
-      eemlist <- eemR::eem_read(file.path("data-raw", x), import_function = "aqualog")
-      eemlist[[1]]$sample <- gsub("BEM", "", gsub("B1S[1-9]", "",  eemlist[[1]]$sample)) #tidy name
-      if(x == files[1]){
-        example_blanks <- eemlist
-      }else{example_blanks <- eemR::eem_bind(example_blanks, eemlist)}
-    }
-
-  #read in samples
-    files <- list.files("data-raw", pattern="SEM[.]dat")
-    for(x in files){
-      eemlist <- eemR::eem_read(file.path("data-raw", x), import_function = "aqualog")
-      eemlist[[1]]$sample <- gsub("SEM", "", gsub("B1S[1-9]", "",  eemlist[[1]]$sample)) #tidy name
-      if(x == files[1]){
-        example_samples <- eemlist
-      }else{example_samples <- eemR::eem_bind(example_samples, eemlist)}
-    }
+  #read in samples and blanks
+  example_eems <- eem_dir_read("data-raw", pattern="SEM|BEM")
 
   #read in absorbance
-    files <- list.files("data-raw", pattern="ABS[.]dat")
-    for(x in files){
-      abs <- read.table(file.path("data-raw", x))
-      colnames(abs) <- c("wavelength", gsub(".dat", "", gsub("ABS", "", gsub("B1S[1-9]", "", x))))
-      if(x == files[1]){
-        example_absorbance <- abs
-      }else{example_absorbance <- cbind(example_absorbance, abs[2])}
-    }
+  example_absorbance <- abs_dir_read("data-raw", pattern="ABS[.]dat")
 
-    usethis::use_data(example_blanks)
-    usethis::use_data(example_samples)
-    usethis::use_data(example_absorbance)
+    usethis::use_data(example_eems, overwrite = T)
+    usethis::use_data(example_absorbance, overwrite = T)
 
-  metadata <- read.csv("data-raw/metadata_example.csv")
-  usethis::use_data(metadata)
+  metadata <- meta_read("data-raw")
+  usethis::use_data(metadata, overwrite = T)
