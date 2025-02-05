@@ -105,18 +105,18 @@
 #'
 #' @examples
 #' #get names
-#' get_info(example_eems, "sample")
-#' get_info(example_absorbance, "sample")
+#' get_sample_info(example_eems, "sample")
+#' get_sample_info(example_absorbance, "sample")
 #'
 #' #get analysis_date
 #' eemlist <- eem_add_meta(metadata, example_eems)
-#' get_info(eemlist, "analysis_date")
+#' get_sample_info(eemlist, "analysis_date")
 #'
 #' #get doc for fifth eem
 #' eemlist <- eem_add_meta(metadata, example_eems)
-#' get_info(eemlist[[5]], "doc_mgL")
+#' get_sample_info(eemlist[[5]], "doc_mgL")
 
-  get_info <- function(x, info) {
+  get_sample_info <- function(x, info) {
     stopifnot(.is_eemlist(x) | .is_eem(x) | .is_abslist(x) | .is_abs(x))
 
     if(inherits(x, "eemlist") | inherits(x, "abslist") ){
@@ -132,7 +132,7 @@
 #' Subset eemlist or abslist using components
 #'
 #' Helper function that build upon \link[eemR]{eem_extract} function. Used to select or remove samples based on the info extracted by
-#' \link[eemanalyzeR]{get_info} allowing selection of samples based on components besides just the sample name.
+#' \link[eemanalyzeR]{get_sample_info} allowing selection of samples based on components besides just the sample name.
 #'
 #' @param x an object of class \code{eemlist} or \code{abslist}
 #' @param sample a vector of the names or other info to use to select EEM's from \code{eemlist} or absorbance from \code{abslist}
@@ -148,20 +148,20 @@
 #' @export
 #' @examples
 #'  #subset by name
-#' names <- get_info(example_eems, "sample")
-#' eem_subset <- get_samples(example_eems, "sample", names[1]) #default is to remove
-#' eem_subset <- get_samples(example_eems,"sample", names[1], keep=TRUE) #but use keep to keep instead
+#' names <- get_sample_info(example_eems, "sample")
+#' eem_subset <- subset_samples(example_eems, "sample", names[1]) #default is to remove
+#' eem_subset <- subset_samples(example_eems,"sample", names[1], keep=TRUE) #but use keep to keep instead
 #'
 #' #subset by file_name
 #' eemlist <- eem_add_meta(metadata, example_eems)
-#' names <- get_info(eemlist, "meta_name")
-#' eem_subset <- get_samples(eemlist, "meta_name", names[1]) #default is to remove
+#' names <- subset_samples(eemlist, "meta_name")
+#' eem_subset <- subset_samples(eemlist, "meta_name", names[1]) #default is to remove
 #'
 
-get_samples <- function(x, info, sample, keep=F, ignore_case=F,
+subset_samples <- function(x, info, sample, keep=F, ignore_case=F,
                          verbose=T){
     stopifnot(inherits(x, "eemlist") | inherits(x, "abslist"), info %in% unlist(lapply(x,names)))
-    values <- get_info(x, info)
+    values <- get_sample_info(x, info)
     to_remove <- grepl(paste(sample, collapse = "|"), values,
                          ignore.case = ignore_case)
       x[xor(to_remove, keep)] <- NULL

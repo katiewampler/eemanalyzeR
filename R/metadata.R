@@ -150,7 +150,7 @@ meta_check <- function(meta){
 abs_add_meta <- function(meta, abslist){
   stopifnot("data.frame" %in% class(meta), class(abslist) == "abslist")
 
-  names <- get_info(abslist, "sample")
+  names <- get_sample_info(abslist, "sample")
 
   meta_order <- data.frame(eem_pos = 1:length(names), meta_row=NA)
 
@@ -219,7 +219,7 @@ abs_add_meta <- function(meta, abslist){
 eem_add_meta <- function(meta, eemlist){
   stopifnot("data.frame" %in% class(meta), class(eemlist) == "eemlist")
 
-  names <- get_info(eemlist, "sample")
+  names <- get_sample_info(eemlist, "sample")
 
   meta_order <- data.frame(eem_pos = 1:length(names), meta_row=NA)
 

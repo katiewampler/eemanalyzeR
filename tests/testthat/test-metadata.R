@@ -141,8 +141,8 @@
     abs_aug <- abs_add_meta(metadata, example_absorbance)
     eem_aug <- eem_add_meta(metadata, example_eems)
 
-    expect_equal(get_info(eem_aug, "meta_name"), rep(c("ExampleBlank", "ExampleTeaStd", "ExampleSample"), each=2))
-    expect_equal(get_info(eem_aug, "meta_name"), rep(c("ExampleBlank", "ExampleTeaStd", "ExampleSample"), each=2))
+    expect_equal(get_sample_info(eem_aug, "meta_name"), rep(c("ExampleBlank", "ExampleTeaStd", "ExampleSample"), each=2))
+    expect_equal(get_sample_info(eem_aug, "meta_name"), rep(c("ExampleBlank", "ExampleTeaStd", "ExampleSample"), each=2))
 
   })
 #test that things are added

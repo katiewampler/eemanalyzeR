@@ -25,8 +25,8 @@
 #' samples <- eem_rm_blank(example_eems, pattern = "BEM")
 eem_get_blank <- function(eemlist, pattern, info="sample"){
 
-  blank_names <- grep(pattern, get_info(eemlist, info), value = T)
-  eemlist <- get_samples(eemlist, info, blank_names, keep = TRUE, ignore_case = TRUE,verbose = FALSE)
+  blank_names <- grep(pattern, get_sample_info(eemlist, info), value = T)
+  eemlist <- subset_samples(eemlist, info, blank_names, keep = TRUE, ignore_case = TRUE,verbose = FALSE)
   class(eemlist) <- "eemlist"
   return(eemlist)
 }
@@ -35,8 +35,8 @@ eem_get_blank <- function(eemlist, pattern, info="sample"){
 #' @export
 
 eem_rm_blank <- function(eemlist, pattern, info="sample"){
-  blank_names <- grep(pattern, get_info(eemlist, info), value = T)
-  eemlist <- get_samples(eemlist, info, blank_names, keep = FALSE, ignore_case = TRUE,verbose = FALSE)
+  blank_names <- grep(pattern, get_sample_info(eemlist, info), value = T)
+  eemlist <- subset_samples(eemlist, info, blank_names, keep = FALSE, ignore_case = TRUE,verbose = FALSE)
   class(eemlist) <- "eemlist"
   return(eemlist)
 }
@@ -119,8 +119,8 @@ add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$"){
 
     }else if(length(blanklist) == length(eemlist)){
       #if same as eemlist try to match
-      eem_names <- get_info(eemlist, "meta_name")
-      blank_names <- get_info(blanklist, "meta_name")
+      eem_names <- get_sample_info(eemlist, "meta_name")
+      blank_names <- get_sample_info(blanklist, "meta_name")
 
       if(length(setdiff(eem_names, blank_names)) > 0){
         stop("more than one blank was provided, but blank names do not match samples")
