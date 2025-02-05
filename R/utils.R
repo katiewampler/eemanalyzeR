@@ -181,6 +181,7 @@ subset_samples <- function(x, info, sample, keep=F, ignore_case=F,
 #' Returns eemanalyzeR package version loaded
 #'
 #' @return text string with eemanalyzeR package version
+#' @noRd
 .eemanalyzeR_ver <- function() {
   paste0("eemanalyzeR_", utils::packageVersion("eemanalyzeR"))
 }
@@ -188,7 +189,7 @@ subset_samples <- function(x, info, sample, keep=F, ignore_case=F,
 #' Generate spectral index documenation for
 #'
 #' @return data.frame with information documenting column lables of spectral indices spreadsheet
-#'
+#' @noRd
 .document_indices <- function() {
 
   eemanalyzeR_version <- .eemanalyzeR_ver()
@@ -267,9 +268,7 @@ subset_samples <- function(x, info, sample, keep=F, ignore_case=F,
 #' @param overwrite if FALSE (the default) it appends the line of text to the process file. If TRUE, creates a new process file (for fresh processing of data).
 #'
 #' @return invisible copy of text written to process file
-#' @export
-#'
-#' @examples
+#'@noRd
 .write_processing_tracking <- function(text,
                                        overwrite = FALSE) {
 
@@ -300,7 +299,8 @@ subset_samples <- function(x, info, sample, keep=F, ignore_case=F,
 }
 
 
-# Answer validation questions yes or no
+#' Answer validation questions yes or no
+#' @noRd
 .yesorno <- function(question,
                      y_response,
                      n_response) {
