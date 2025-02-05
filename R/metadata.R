@@ -77,7 +77,7 @@ meta_check <- function(meta){
   #ensure integration time and RSU adjust area (and DOC/dilution are numeric)
   meta <- meta %>% dplyr::mutate(dplyr::across(dplyr::any_of(c("integration_time_s","RSU_area_1s", "dilution", "DOC_mg_L")), as.numeric))
 
-  #ensure datas are numeric
+  #ensure datas are dates
   meta <- meta %>% dplyr::mutate(dplyr::across(dplyr::any_of(c("analysis_date", "collect_date")), anytime::anytime))
 
   #ensure data_identifier isn't missing data
