@@ -32,11 +32,12 @@ Helper function that build upon \link[eemR]{eem_extract} function. Used to selec
  #subset by name
 names <- get_sample_info(example_eems, "sample")
 eem_subset <- subset_samples(example_eems, "sample", names[1]) #default is to remove
-eem_subset <- subset_samples(example_eems,"sample", names[1], keep=TRUE) #but use keep to keep instead
+#but use keep=T to keep instead
+eem_subset <- subset_samples(example_eems,"sample", names[1], keep=TRUE)
 
 #subset by file_name
 eemlist <- eem_add_meta(metadata, example_eems)
-names <- subset_samples(eemlist, "meta_name")
+names <- get_sample_info(eemlist, "meta_name")
 eem_subset <- subset_samples(eemlist, "meta_name", names[1]) #default is to remove
 
 }
