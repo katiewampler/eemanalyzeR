@@ -176,4 +176,151 @@ subset_samples <- function(x, info, sample, keep=F, ignore_case=F,
         }
       }
     return(x)
+}
+
+#' Returns eemanalyzeR package version loaded
+#'
+#' @return text string with eemanalyzeR package version
+.eemanalyzeR_ver <- function() {
+  paste0("eemanalyzeR_", utils::packageVersion("eemanalyzeR"))
+}
+
+#' Generate spectral index documenation for
+#'
+#' @return data.frame with information documenting column lables of spectral indices spreadsheet
+#'
+.document_indices <- function() {
+
+  eemanalyzeR_version <- .eemanalyzeR_ver()
+
+  documentation <- data.frame(c(paste0("Peaks extracted using ", eemanalyzeR_version, " package in R."),
+                                "For peak definitions see 'eem_coble_peaks2' and 'abs_parm' functions in the eemanalyzeR package.",
+                                "The package can be downloaded from https://github.com/katiewampler/eemanalyzeR",
+                                "",
+                                "Sheet fluor_indices_DOC contains fluorsecence indices normalized by DOC concentration",
+                                "Sheet fluor_indices contains raw fluorsecence indices",
+                                "sheet abs_indices contains absorbance indices",
+                                "",
+                                "Fluorescence Indices",
+                                "Coble peaks are based on Coble et al. 2014 and are defined as follows:",
+                                "Peak B (pB): ex = 270:280 nm, em = 300:320 nm, Tyrosine-like",
+                                "Peak T (pT): ex = 270:280 nm, em = 320:350 nm, Tryptophan-like",
+                                "Peak A (pA): ex = 250:260 nm, em = 380:480 nm, Humic-like.",
+                                "Peak M (pM): ex = 310:320 nm, em = 380:420 nm, Marine humic-like",
+                                "Peak C (pC): ex = 330:350 nm, em = 420:480 nm, Humic-like",
+                                "Peak D (pD): ex = 390 nm, em = 509 nm, Soil fulvic acid",
+                                "Peak E (pE): ex = 455 nm, em = 521 nm, Soil fulvic acid",
+                                "Peak N (pN): ex = 280 nm, em = 370 nm, Plankton derived",
+                                "Given that peaks A, B, C, M, and T are not defined at fixed excitation and emission wavelength, the maximum fluorescence value in the region is extracted.",
+                                "",
+                                "Additional fluorescence indices are based on Hansen et al. 2016.",
+                                "Measurements are defined as follows:",
+                                "rAT: The ratio of peak A to peak T, indication of the amount of humic like (recalcitrant) to fresh (liable) DOM.",
+                                "rCA: The ratio of peak C to peak A, indication of the amount of humic like to fumic like DOM.",
+                                "rCM: The ratio of peak C to peak M, indication of the amount of diagenetically altered (blueshifted) DOM.",
+                                "rCT: The ratio of peak C to peak T, indication of the amount of humic like (recalcitrant) to fresh (liable) DOM.",
+                                "Fluorescence Index (FI): Ratio of fluorescence at ex = 370 nm, em = 470 nm to em = 520 nm.",
+                                "Identifies the relative contributions of terrestrial to microbial DOM sources.",
+                                "",
+                                "Humification Index (HIX): ex = 254 nm, em =sum(435:480 divided by em =sum(435:480, sum(300:345.",
+                                "An indication of humic substances or extent of humification. Higher values indicate an higher degree of humification.",
+                                "",
+                                "Humification Index (HIX_ohno): ex = 254 nm, em =sum(435:480 divided by em =sum(435:480, sum(300:345. HIX proposed by Ohno (2002), both versions of HIX are used throughout the literature. Ohno is better when samples have higher absorbance because it accounts for inner filter effects better.",
+                                "Freshness Index (beta/alpha fresh): ex = 310 nm, ratio of em = 380 nm to max in em = 420:435 nm.",
+                                "An indication of recently produced DOM, higher values indicate more recently produced DOM.",
+                                "",
+                                "Relative Fluorescence Efficiency (RFE): Ratio of fluorescence at ex = 370 nm, em = 460 nm to",
+                                "absorbance at 370 nm. An indicator of the relative amount of algal to non-algal DOM.",
+                                "",
+                                "Biological Index (BIX): ex = 310 nm, ratio of em = 380 nm to em = 430 nm.",
+                                "An indicator of autotrophic productivity, values above 1 indicate recently produced",
+                                "autochthonous DOM.",
+                                "",
+                                "Absorbance indices",
+                                "Absorbance indices based on Hansen et al. 2016. Measurements are defined as follows:",
+                                "",
+                                "SUVA254, SUVA280, SUVA350, SUVA370: SUVA at 254, 280, 350, and 370 nm.",
+                                "Units of L mgC^-1 m^-1.",
+                                "Typically higher values are associated with greater aromatic content.",
+                                "",
+                                "SVA412, SVA440, SVA480, SVA510,",
+                                "SVA532, SVA555: SVA at 412, 440, 480, 510, 532, 555 nm.",
+                                "Units of L mgC^-1 m^-1.",
+                                "Typically higher values are associated with greater aromatic content.",
+                                "",
+                                "S275_295: Spectral slope between 275 to 295 nm.",
+                                "",
+                                "S350_400: Spectral slope between 350 to 400 nm.",
+                                "",
+                                "Spectral slopes are found with a nonlinear fit of an exponential function to",
+                                "the absorption spectrum, typically higher  values are associated with",
+                                "lower molecular weight materials and/or lower aromaticity.",
+                                "",
+                                "SR: Spectral slope S275_295 divided by spectral slope S350_400, negatively correlated to DOM molecular weight",
+                                "and generally increases on irradiation."))
+  return(documentation)
+}
+
+#' Write a line of text to the process file that tracks processing tracking
+#'
+#' @param text Line of text to write to the process file
+#' @param overwrite if FALSE (the default) it appends the line of text to the process file. If TRUE, creates a new process file (for fresh processing of data).
+#'
+#' @return invisible copy of text written to process file
+#' @export
+#'
+#' @examples
+.write_processing_tracking <- function(text,
+                                       overwrite = FALSE) {
+
+  process_file <- get_process_file()
+  # Check that we want to do this otherwise exit the function
+  stopifnot(is.character(text) | !is.null(process_file))
+
+  #create text file to track processing changes
+  if (overwrite) {
+    # If the file should be overwritten (new processing run), create a new file
+    file.create(process_file)
+    line_write <- paste0("PROCESSING STEPS ON ", round(Sys.time(), "secs"), " using ", .eemanalyzeR_ver())
+    write(line_write,
+          file = process_file)
+  } else {
+    # This case we just append a new line to the end of the file with the text
+    line_write <- paste(round(Sys.time(),
+                              "secs"),
+                        text,
+                        sep = " - ")
+    write(line_write,
+          file = process_file,
+          append = TRUE)
   }
+
+  invisible(line_write)
+
+}
+
+
+# Answer validation questions yes or no
+.yesorno <- function(question,
+                     y_response,
+                     n_response) {
+  stopifnot(is.character(question) |
+              is.character(y_response) |
+              is.character(n_response))
+  cont <- readline(paste0(question, " [y/n]"))
+  if(grepl("^y$", cont, ignore.case = TRUE)) {
+    cat(y_response, "\n")
+    return(TRUE)
+  } else if(grepl("^n$", cont, ignore.case = TRUE)){
+    cat(n_response, "\n")
+    return(FALSE)
+  } else {
+    cat("Improper response, please respond y or n", "\n")
+    .yesorno(question,
+             y_response,
+             n_response)
+  }
+}
+
+
+
