@@ -26,9 +26,9 @@ Suggests:
 VignetteBuilder: knitr
 Language: en-US
 Imports: 
-    anytime,
     dplyr,
     eemR,
+    lubridate,
     magrittr,
     purrr,
     readxl,

@@ -150,3 +150,4 @@
 #test that names are given even if missing one blank
 #make sure names are all given
   #make sure works with blanks/with just samples
+#test that converting dates works with different date types

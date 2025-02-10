@@ -57,8 +57,7 @@ meta_read <- function(input_dir, name=NULL, sheet=NULL, validate=T){
 #' Run tests to validate metadata
 #'
 #' @param meta a data.frame with metadata
-#' @importFrom anytime anytime
-#'
+#' @importFrom lubridate parse_date_time
 #' @returns a \code{data.frame} (meta), with errors fixed
 #'
 #' @examples
@@ -78,7 +77,8 @@ meta_check <- function(meta){
   meta <- meta %>% dplyr::mutate(dplyr::across(dplyr::any_of(c("integration_time_s","RSU_area_1s", "dilution", "DOC_mg_L")), as.numeric))
 
   #ensure datas are dates
-  meta <- meta %>% dplyr::mutate(dplyr::across(dplyr::any_of(c("analysis_date", "collect_date")), anytime::anytime))
+  conv_dates <- unlist(lapply(meta, class))
+  meta <- meta %>% dplyr::mutate(dplyr::across(dplyr::any_of(c("analysis_date", "collect_date")), \(x) lubridate::parse_date_time(x, tz=Sys.timezone(), orders=c("ymd", "mdy"))))
 
   #ensure data_identifier isn't missing data
   if(any(is.na(meta$data_identifier) | is.character(meta$data_identifier) == F)){

@@ -20,7 +20,7 @@
     abs <- abs_dir_read(input_dir)
     eems <- eem_dir_read(input_dir)
     meta <- meta_read(input_dir, name="bad_meta.csv") #missing RSU so throws an error as it should [make two copies on with RSU to continue to test dataset]
-    meta <- meta_read(input_dir, name="good_meta.csv") #this has RSU so it should be fine
+    meta <- meta_read(input_dir, name="good_meta.csv", validate = F) #this has RSU so it should be fine
     abs <- abs_add_meta(meta, abs)
     eems <- eem_add_meta(meta, eems)
 
