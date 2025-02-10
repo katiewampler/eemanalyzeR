@@ -1,47 +1,3 @@
-#' Extract blanks from eemlist
-#'
-#' Using a regular expression, the \code{eemlist} will be cut to include either
-#' only the blank samples (\code{eem_get_blank}) or remove all blank samples (\code{eem_rm_blank}).
-#' This function is similar to the \link[eemR]{eem_remove_blank} function, except it is more
-#' flexible to include different patterns for the blank.
-#'
-#' @param eemlist an object of class \code{eemlist}
-#' @param pattern a character string containing a \code{\link[base]{regular expression}}
-#' used to specify the sample names of the blanks.
-#' @param info the name of the component within the \code{eem} to check for the pattern. default is 'sample'
-
-#' @note see \link[eemR]{eem} for base \code{eem} component names and \link[eemanalyzeR]{add_meta}
-#' for extended \code{eem} component names.
-#'
-#' @returns an object of class \code{eemlist} either with only the blanks (\code{eem_get_blank})
-#' or only the samples (\code{eem_rm_blank})
-#' @export
-#'
-#' @rdname extract-blanks
-#' @name extract-blanks
-#'
-#' @examples
-#' blanks <- eem_get_blank(example_eems, pattern = "BEM")
-#' samples <- eem_rm_blank(example_eems, pattern = "BEM")
-eem_get_blank <- function(eemlist, pattern, info="sample"){
-
-  blank_names <- grep(pattern, get_sample_info(eemlist, info), value = T)
-  eemlist <- subset_samples(eemlist, info, blank_names, keep = TRUE, ignore_case = TRUE,verbose = FALSE)
-  class(eemlist) <- "eemlist"
-  return(eemlist)
-}
-
-#' @rdname extract-blanks
-#' @export
-
-eem_rm_blank <- function(eemlist, pattern, info="sample"){
-  blank_names <- grep(pattern, get_sample_info(eemlist, info), value = T)
-  eemlist <- subset_samples(eemlist, info, blank_names, keep = FALSE, ignore_case = TRUE,verbose = FALSE)
-  class(eemlist) <- "eemlist"
-  return(eemlist)
-}
-
-
 #' Check blanks and add to sample data
 #'
 #' Allows user to visually check excitation emissions matrix plots of the blanks, and then, if approved, the blanks will
@@ -65,7 +21,7 @@ eem_rm_blank <- function(eemlist, pattern, info="sample"){
 #' @importFrom staRdom ggeem
 #' @examples
 #' \dontrun{
-#' #' eemlist <- eem_add_meta(metadata, example_eems)
+#' #' eemlist <- add_metadata(metadata, example_eems)
 #' augment_eemlist <- add_blanks(eemlist)
 #' }
 
