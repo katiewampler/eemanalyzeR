@@ -57,8 +57,7 @@ meta_read <- function(input_dir, name=NULL, sheet=NULL, validate=T){
 #' Run tests to validate metadata
 #'
 #' @param meta a data.frame with metadata
-#' @importFrom anytime anytime
-#'
+#' @importFrom lubridate parse_date_time
 #' @returns a \code{data.frame} (meta), with errors fixed
 #'
 #' @examples
@@ -77,9 +76,9 @@ meta_check <- function(meta){
   #ensure integration time and RSU adjust area (and DOC/dilution are numeric)
   meta <- meta %>% dplyr::mutate(dplyr::across(dplyr::any_of(c("integration_time_s","RSU_area_1s", "dilution", "DOC_mg_L")), as.numeric))
 
-  #ensure dates are dates
-
-  meta <- meta %>% dplyr::mutate(dplyr::across(dplyr::any_of(c("analysis_date", "collect_date")), anytime::anytime))
+  #ensure datas are dates
+  conv_dates <- unlist(lapply(meta, class))
+  meta <- meta %>% dplyr::mutate(dplyr::across(dplyr::any_of(c("analysis_date", "collect_date")), \(x) lubridate::parse_date_time(x, tz=Sys.timezone(), orders=c("ymd", "mdy"))))
 
   #ensure data_identifier isn't missing data
   if(any(is.na(meta$data_identifier) | is.character(meta$data_identifier) == F)){
@@ -151,7 +150,7 @@ meta_check <- function(meta){
 abs_add_meta <- function(meta, abslist){
   stopifnot("data.frame" %in% class(meta), class(abslist) == "abslist")
 
-  names <- get_sample_info(abslist, "sample")
+  names <- get_info(abslist, "sample")
 
   meta_order <- data.frame(eem_pos = 1:length(names), meta_row=NA)
 
@@ -210,6 +209,7 @@ abs_add_meta <- function(meta, abslist){
 
   # ensure object returned is abslist
   class(abslist) <- "abslist"
+  stopifnot(.is_abslist(abslist))
 
   return(abslist)}
 
@@ -220,7 +220,7 @@ abs_add_meta <- function(meta, abslist){
 eem_add_meta <- function(meta, eemlist){
   stopifnot("data.frame" %in% class(meta), class(eemlist) == "eemlist")
 
-  names <- get_sample_info(eemlist, "sample")
+  names <- get_info(eemlist, "sample")
 
   meta_order <- data.frame(eem_pos = 1:length(names), meta_row=NA)
 
@@ -278,8 +278,9 @@ eem_add_meta <- function(meta, eemlist){
     return(obj)
   })
 
-  # ensure object returned is abslist
+  # ensure object returned is eemlist
   class(eemlist) <- "eemlist"
+  stopifnot(.is_eemlist(eemlist))
 
   return(eemlist)}
 
