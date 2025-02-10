@@ -15,8 +15,8 @@
 #' @param import_function character or a user-defined function to import an EEM.
 #' for more details see \link[eemR]{eem_read}
 
-#' @name dir-read
-#' @rdname dir-read
+#' @name dir_read
+#' @rdname dir_read
 #' @importFrom eemR eem_read
 #' @importFrom purrr discard
 #' @importFrom magrittr %>%
@@ -112,7 +112,7 @@ eem_dir_read <- function(input_dir, pattern = NULL, skip="(?i)abs", file_ext="da
   return(eem_list)
 }
 
-#' @rdname dir-read
+#' @rdname dir_read
 #' @export
 abs_dir_read <- function(input_dir, pattern = NULL, skip="SEM|BEM|Waterfall", file_ext="dat",
                          recursive = FALSE){

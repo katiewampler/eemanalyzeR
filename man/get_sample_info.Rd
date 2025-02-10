@@ -17,7 +17,7 @@ get_sample_info(x, info)
 
 \item{info}{the name of the component within the \code{eem} or \code{abs} to extract.
 see \link[eemR]{eem} for base \code{eem} component names and \link[eemanalyzeR]{abs_read} for base \code{abs} names.
-see \link[eemanalyzeR]{add-metadata} for extended \code{eem} component names.}
+see \link[eemanalyzeR]{add_metadata} for extended \code{eem} component names.}
 }
 \value{
 returns a vector containing the info from the EEM's or absorbance.

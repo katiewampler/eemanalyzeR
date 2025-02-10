@@ -43,8 +43,8 @@
 #' @param x an object of class \code{eemlist} or \code{abslist}
 #' @param ... additional arguments passed to \link[base]{unique}
 
-#' @rdname unique-samples
-#' @name unique-samples
+#' @rdname unique_samples
+#' @name unique_samples
 #' @method unique eemlist
 #' @returns an object of class \code{eemlist} or \code{abslist} with samples with duplicate EEM's matrices (eem$x) or absorbance data (abs$data) removed.
 #'
@@ -67,7 +67,7 @@
     return(x)
   }
 
-#' @rdname unique-samples
+#' @rdname unique_samples
 #' @method unique abslist
 #' @export
   unique.abslist <- function(x, ...){
