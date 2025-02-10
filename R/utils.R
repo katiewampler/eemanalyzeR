@@ -97,7 +97,7 @@
 #' }
 #' @param info the name of the component within the \code{eem} or \code{abs} to extract.
 #' see \link[eemR]{eem} for base \code{eem} component names and \link[eemanalyzeR]{abs_read} for base \code{abs} names.
-#' see \link[eemanalyzeR]{add_meta} for extended \code{eem} component names.
+#' see \link[eemanalyzeR]{add_metadata} for extended \code{eem} component names.
 #'
 #' @returns returns a vector containing the info from the EEM's or absorbance.
 #'
@@ -109,11 +109,11 @@
 #' get_sample_info(example_absorbance, "sample")
 #'
 #' #get analysis_date
-#' eemlist <- eem_add_meta(metadata, example_eems)
+#' eemlist <- add_metadata(metadata, example_eems)
 #' get_sample_info(eemlist, "analysis_date")
 #'
 #' #get doc for fifth eem
-#' eemlist <- eem_add_meta(metadata, example_eems)
+#' eemlist <- add_metadata(metadata, example_eems)
 #' get_sample_info(eemlist[[5]], "doc_mgL")
 
   get_sample_info <- function(x, info) {
@@ -138,7 +138,7 @@
 #' @param sample a vector of the names or other info to use to select EEM's from \code{eemlist} or absorbance from \code{abslist}
 #' @param info the name of the component within the \code{eem} or \code{abs} to extract.
 #' see \link[eemR]{eem} for base \code{eem} component names and \link[eemanalyzeR]{abs_read} for base \code{abs} names.
-#' see \link[eemanalyzeR]{add_meta} for extended \code{eem} component names.
+#' see \link[eemanalyzeR]{add_metadata} for extended \code{eem} component names.
 #' @param keep logical. If TRUE, the specified sample will be returned. If FALSE, they will be removed.
 #' @param ignore_case logical, should sample name case should be ignored (TRUE) or not (FALSE). Default is FALSE.
 #' @param verbose logical determining if removed/extracted eems should be printed on screen.
@@ -154,7 +154,7 @@
 #' eem_subset <- subset_samples(example_eems,"sample", names[1], keep=TRUE)
 #'
 #' #subset by file_name
-#' eemlist <- eem_add_meta(metadata, example_eems)
+#' eemlist <- add_metadata(metadata, example_eems)
 #' names <- get_sample_info(eemlist, "meta_name")
 #' eem_subset <- subset_samples(eemlist, "meta_name", names[1]) #default is to remove
 #'

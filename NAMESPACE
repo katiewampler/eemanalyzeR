@@ -2,11 +2,10 @@
 
 S3method(unique,abslist)
 S3method(unique,eemlist)
-export(abs_add_meta)
 export(abs_dir_read)
 export(abs_read)
 export(add_blanks)
-export(eem_add_meta)
+export(add_metadata)
 export(eem_dir_read)
 export(eem_get_blank)
 export(eem_rm_blank)

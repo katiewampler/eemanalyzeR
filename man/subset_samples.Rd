@@ -11,7 +11,7 @@ subset_samples(x, info, sample, keep = F, ignore_case = F, verbose = T)
 
 \item{info}{the name of the component within the \code{eem} or \code{abs} to extract.
 see \link[eemR]{eem} for base \code{eem} component names and \link[eemanalyzeR]{abs_read} for base \code{abs} names.
-see \link[eemanalyzeR]{add_meta} for extended \code{eem} component names.}
+see \link[eemanalyzeR]{add-metadata} for extended \code{eem} component names.}
 
 \item{sample}{a vector of the names or other info to use to select EEM's from \code{eemlist} or absorbance from \code{abslist}}
 
@@ -36,7 +36,7 @@ eem_subset <- subset_samples(example_eems, "sample", names[1]) #default is to re
 eem_subset <- subset_samples(example_eems,"sample", names[1], keep=TRUE)
 
 #subset by file_name
-eemlist <- eem_add_meta(metadata, example_eems)
+eemlist <- add_metadata(metadata, example_eems)
 names <- get_sample_info(eemlist, "meta_name")
 eem_subset <- subset_samples(eemlist, "meta_name", names[1]) #default is to remove
 
