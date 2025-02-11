@@ -44,8 +44,3 @@
     expect_equal(get_sample_info(eem_aug, "meta_name"), rep(c("ExampleBlank", "ExampleTeaStd", "ExampleSample"), each=2))
 
   })
-#test that things are added
-#test that objects are still abslist and eemlist
-#test that names are given even if missing one blank
-#make sure names are all given
-  #make sure works with blanks/with just samples

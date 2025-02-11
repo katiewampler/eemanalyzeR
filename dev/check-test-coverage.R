@@ -2,6 +2,7 @@
   #see covr for more details
 
 #test all package coverage (takes a minute because it runs all tests)
-    output <- package_coverage(path=getwd())
+    detach("package:eemanalyzeR", unload = TRUE)
+    output <- package_coverage()
 
     report(output) #used to visualize the spots where there's gaps in testing

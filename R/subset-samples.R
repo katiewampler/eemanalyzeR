@@ -37,10 +37,10 @@ subset_samples <- function(x, info, sample, keep=F, ignore_case=F,
   x[xor(to_remove, keep)] <- NULL
   if (verbose) {
     if (all(to_remove == FALSE)) {
-      cat("Nothing to remove.")
+      message("Nothing to remove.")
     }
     else {
-      cat(ifelse(keep, "Extracted sample(s):", "Removed sample(s):"),
+      message(ifelse(keep, "Extracted sample(s):", "Removed sample(s):"),
           values[to_remove], "\n")
     }
   }

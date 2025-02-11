@@ -21,7 +21,7 @@
 #' @importFrom staRdom ggeem
 #' @examples
 #' \dontrun{
-#' #' eemlist <- add_metadata(metadata, example_eems)
+#' eemlist <- add_metadata(metadata, example_eems)
 #' augment_eemlist <- add_blanks(eemlist)
 #' }
 

@@ -35,7 +35,7 @@ get_sample_info <- function(x, info) {
   stopifnot(.is_eemlist(x) | .is_eem(x) | .is_abslist(x) | .is_abs(x))
 
   if(inherits(x, "eemlist") | inherits(x, "abslist") ){
-    res <- unlist(lapply(x, function(y) y[[info]]))
+    res <- do.call("c", lapply(x, function(y) y[[info]]))
   }
   if(inherits(x, "eem") | inherits(x, "abs")){
     res <- x[[info]]
