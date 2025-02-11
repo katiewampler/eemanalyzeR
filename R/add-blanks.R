@@ -25,7 +25,7 @@
 #' augment_eemlist <- add_blanks(eemlist)
 #' }
 
-
+#to do: add blank file location to eem
 add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$"){
   stopifnot(class(eemlist) %in% c("eemlist"),
             class(blanklist) %in% c("NULL", "eem", "eemlist"),
