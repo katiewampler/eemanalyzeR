@@ -15,13 +15,21 @@ add_blanks(eemlist, blanklist = NULL, pattern = "BEM|Blank$")
 used to specify the names of the samples to be used for blanks.}
 }
 \value{
-an \code{eemlist} where each \code{eem} object has an additional item: 'x_blk' which is the blank associated with each sample
+an \code{eemlist} where each \code{eem} object has two additional items:
+\itemize{
+\item \code{blk_file}: the file location for the blank associated with the sample
+\item \code{blk_x}: the blank EEM associated with the sample
+}
 }
 \description{
 Allows user to visually check excitation emissions matrix plots of the blanks, and then, if approved, the blanks will
 be added to the \code{eem} objects for use in further processing.
 }
 \details{
+If more than one blank is supplied, the function links the blank and sample by the metadata
+name which should be the same between the sample and the blank, because of this,
+samples must have metadata already added to the samples using \link[eemanalyzeR]{add_metadata}.
+
 Adding the blanks into the sample data can be done two ways:
 \enumerate{
  \item Include an \code{eemlist} containing EEM's data for both sample and blank: Need to specify a \code{pattern} to identify blanks
@@ -29,8 +37,7 @@ Adding the blanks into the sample data can be done two ways:
 }
 }
 \examples{
-\dontrun{
-#' eemlist <- add_metadata(metadata, example_eems)
+eemlist <- add_metadata(metadata, example_eems)
 augment_eemlist <- add_blanks(eemlist)
-}
+
 }

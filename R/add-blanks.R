@@ -4,6 +4,10 @@
 #' be added to the \code{eem} objects for use in further processing.
 #'
 #' @details
+#' If more than one blank is supplied, the function links the blank and sample by the metadata
+#' name which should be the same between the sample and the blank, because of this,
+#' samples must have metadata already added to the samples using \link[eemanalyzeR]{add_metadata}.
+#'
 #' Adding the blanks into the sample data can be done two ways:
 #' \enumerate{
 #'  \item Include an \code{eemlist} containing EEM's data for both sample and blank: Need to specify a \code{pattern} to identify blanks
@@ -15,15 +19,20 @@
 #' @param pattern optional. a character string containing a \code{\link[base]{regular expression}}
 #' used to specify the names of the samples to be used for blanks.
 #'
-#' @returns an \code{eemlist} where each \code{eem} object has an additional item: 'x_blk' which is the blank associated with each sample
+#' @returns an \code{eemlist} where each \code{eem} object has two additional items:
+#' \itemize{
+#' \item \code{blk_file}: the file location for the blank associated with the sample
+#' \item \code{blk_x}: the blank EEM associated with the sample
+#' }
 #' @export
 #'
 #' @importFrom staRdom ggeem
 #' @examples
-#' \dontrun{
 #' eemlist <- add_metadata(metadata, example_eems)
 #' augment_eemlist <- add_blanks(eemlist)
-#' }
+#'
+
+
 
 #to do: add blank file location to eem
 add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$"){
@@ -42,19 +51,26 @@ add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$"){
       #separate into blanklist and eemlist based on pattern given
       blanklist <- eem_get_blank(eemlist, pattern=pattern, info="sample")
       eemlist <- eem_rm_blank(eemlist, pattern=pattern, info="sample")
+  }
+
+  #make sure there's metadata added to samples
+    if(!any(.meta_added(eemlist) & .meta_added(blanklist))& length(blanklist) > 1){
+      stop("metadata must be added to link the samples and blanks, please run 'eemanalyzeR::add_metadata' first")
     }
 
   #only plot unique blanks (replace with my plotting function once written)
   plot_check <- staRdom::ggeem(unique(blanklist))
 
-  #return to user
-  print(plot_check)
+  #only ask if in an interactive session
+  if(interactive()){
+    #return to user
+    print(plot_check)
 
-  #ask user if processing should continue
-  continue <- readline(prompt = "After reviewing blank(s), do you want to continue processing samples (Y/N): ")
+    #ask user if processing should continue
+    continue <- .yesorno("After reviewing blank(s), do you want to continue processing samples", "","")
 
-  while(!(toupper(continue) %in% c("Y", "N"))){
-    continue <- readline(prompt = "After reviewing blank(s), do you want to continue processing samples (Y/N): ")
+  }else{
+    continue <- TRUE
   }
 
   #makes sure blank has same wavelengths as sample then adds into eem as x_blK
@@ -63,17 +79,20 @@ add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$"){
     if(any(eem$em != eem_blk$em) | any(eem$ex != eem_blk$ex)){
       stop("excitation and/or emission wavelengths as mismatched between sample and blank")
     }
-    eem$x_blk <- eem_blk$x
+    eem$blk_file <- eem_blk$file
+    eem$blk_x <- eem_blk$x
     class(eem) <- "eem"
     return(eem)
   }
-  if(toupper(continue) == "Y"){
+  if(continue){
     if(length(blanklist) == 1){
       #if only one eem, add to all eems
       eemlist <- lapply(eemlist, .add_x_blk, blanklist[[1]])
       class(eemlist) <- "eemlist"
 
     }else if(length(blanklist) == length(eemlist)){
+
+
       #if same as eemlist try to match
       eem_names <- get_sample_info(eemlist, "meta_name")
       blank_names <- get_sample_info(blanklist, "meta_name")

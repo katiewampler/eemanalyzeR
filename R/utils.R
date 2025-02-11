@@ -167,15 +167,15 @@
   stopifnot(is.character(question) |
               is.character(y_response) |
               is.character(n_response))
-  cont <- readline(paste0(question, " [y/n]"))
+  cont <- readline(paste0(question, " [y/n]: "))
   if(grepl("^y$", cont, ignore.case = TRUE)) {
-    cat(y_response, "\n")
+    message(y_response, "\n")
     return(TRUE)
   } else if(grepl("^n$", cont, ignore.case = TRUE)){
-    cat(n_response, "\n")
+    message(n_response, "\n")
     return(FALSE)
   } else {
-    cat("Improper response, please respond y or n", "\n")
+    warning("Improper response, please respond 'y' or 'n'", "\n")
     .yesorno(question,
              y_response,
              n_response)
@@ -183,4 +183,34 @@
 }
 
 
+#' Checks if the eems or absorbance has had metadata added
+#' @noRd
+.meta_added <- function(x){
+  stopifnot(class(x) %in% c("eemlist", "eem", "abs", "abslist"))
 
+  if(inherits(x, c("eem","abs"))){
+    items <- names(x)
+    augment_names <- c("meta_name","dilution","analysis_date", "description","doc_mgL","notes")
+    augmented <- all(augment_names %in% items)
+   }else{
+    augmented <- unlist(lapply(x, .meta_added))
+   }
+  return(augmented)
+
+}
+
+#' Checks if the eems or absorbance has had blank added
+#' @noRd
+.blk_added <- function(x){
+  stopifnot(class(x) %in% c("eemlist", "eem", "abs", "abslist"))
+
+  if(inherits(x, c("eem","abs"))){
+    items <- names(x)
+    augment_names <- c("blk_file", "blk_x")
+    augmented <- all(augment_names %in% items)
+  }else{
+    augmented <- unlist(lapply(x, .blk_added))
+  }
+  return(augmented)
+
+}

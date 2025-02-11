@@ -6,9 +6,9 @@
 \alias{eem_rm_blank}
 \title{Extract blanks from eemlist}
 \usage{
-eem_get_blank(eemlist, pattern, info = "sample")
+eem_get_blank(eemlist, pattern = "BEM", info = "sample")
 
-eem_rm_blank(eemlist, pattern, info = "sample")
+eem_rm_blank(eemlist, pattern = "BEM", info = "sample")
 }
 \arguments{
 \item{eemlist}{an object of class \code{eemlist}}

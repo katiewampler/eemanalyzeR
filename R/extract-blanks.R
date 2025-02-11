@@ -23,7 +23,7 @@
 #' @examples
 #' blanks <- eem_get_blank(example_eems, pattern = "BEM")
 #' samples <- eem_rm_blank(example_eems, pattern = "BEM")
-eem_get_blank <- function(eemlist, pattern, info="sample"){
+eem_get_blank <- function(eemlist, pattern = "BEM", info="sample"){
 
   blank_names <- grep(pattern, get_sample_info(eemlist, info), value = T)
   eemlist <- subset_samples(eemlist, info, blank_names, keep = TRUE, ignore_case = TRUE,verbose = FALSE)
@@ -34,7 +34,7 @@ eem_get_blank <- function(eemlist, pattern, info="sample"){
 #' @rdname extract_blanks
 #' @export
 
-eem_rm_blank <- function(eemlist, pattern, info="sample"){
+eem_rm_blank <- function(eemlist, pattern= "BEM", info="sample"){
   blank_names <- grep(pattern, get_sample_info(eemlist, info), value = T)
   eemlist <- subset_samples(eemlist, info, blank_names, keep = FALSE, ignore_case = TRUE,verbose = FALSE)
   class(eemlist) <- "eemlist"
