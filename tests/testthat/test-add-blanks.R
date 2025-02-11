@@ -1,6 +1,8 @@
 #note: due to the user input, tests are quite challenging to write as it requires the relatively new
   #with_mocked_bindings function from withr. It took a while to figure out how to use the function, but finally
   #the solution from snaut here worked: https://stackoverflow.com/questions/51294489/how-to-test-behavior-that-depends-on-a-package-being-installed-or-not
+
+#can't easily test for a "N" because of the way the function had to be written to pass a Y if interactive for examples
 with_mocked_bindings(
   .yesorno = function(question,
                       y_response,
@@ -111,4 +113,31 @@ with_mocked_bindings(
       expect_s3_class(eemlist, "eemlist")
     })
   )
+
+#mismatched wavelengths gives an error
+  with_mocked_bindings(
+    .yesorno = function(question,
+                        y_response,
+                        n_response) TRUE,
+    test_that("mismatched wavelengths gives an error",{
+      eemlist <- add_metadata(metadata, example_eems)
+      eemlist[[1]]$ex <- eemlist[[1]]$ex[-1]
+      eemlist[[1]]$x <- eemlist[[1]]$x[,-1]
+      expect_error(add_blanks(eemlist), "excitation and/or emission wavelengths as mismatched between sample and blank")
+    })
+  )
+
+
+#names of blanks don't match samples returns an error
+  with_mocked_bindings(
+    .yesorno = function(question,
+                        y_response,
+                        n_response) TRUE,
+    test_that("mismatched names gives an error",{
+      eemlist <- add_metadata(metadata, example_eems)
+      eemlist[[1]]$meta_name <- "wrong name"
+      expect_error(add_blanks(eemlist), "more than one blank was provided, but blank names do not match samples")
+    })
+  )
+
 

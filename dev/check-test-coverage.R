@@ -2,7 +2,8 @@
   #see covr for more details
 
 #test all package coverage (takes a minute because it runs all tests)
-    detach("package:eemanalyzeR", unload = TRUE)
+library(covr)
+    if(any(grepl("package:eemanalyzeR", search()))) detach("package:eemanalyzeR")
     output <- package_coverage()
 
     report(output) #used to visualize the spots where there's gaps in testing
