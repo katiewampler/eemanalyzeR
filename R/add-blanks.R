@@ -111,7 +111,7 @@ add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$"){
     }
 
   }else{
-    stop("Processing stopped by user \nif you want to use an alternative blank please use 'argument here' to replace the existing blank")
+    stop("Processing stopped by user \nto use an alternative blank, provide a different blank via the 'blanklist' argument")
   }
 
   return(eemlist)
