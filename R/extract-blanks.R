@@ -26,7 +26,11 @@
 eem_get_blank <- function(eemlist, pattern = "BEM", info="sample"){
 
   blank_names <- grep(pattern, get_sample_info(eemlist, info), value = T)
-  eemlist <- subset_samples(eemlist, info, blank_names, keep = TRUE, ignore_case = TRUE,verbose = FALSE)
+  if(length(blank_names) > 0){
+    eemlist <- subset_samples(eemlist, info, blank_names, keep = TRUE, ignore_case = TRUE,verbose = FALSE)
+  }else{
+    eemlist <- list()
+  }
   class(eemlist) <- "eemlist"
   return(eemlist)
 }
@@ -36,7 +40,11 @@ eem_get_blank <- function(eemlist, pattern = "BEM", info="sample"){
 
 eem_rm_blank <- function(eemlist, pattern= "BEM", info="sample"){
   blank_names <- grep(pattern, get_sample_info(eemlist, info), value = T)
-  eemlist <- subset_samples(eemlist, info, blank_names, keep = FALSE, ignore_case = TRUE,verbose = FALSE)
+  if(length(blank_names) > 0){
+    eemlist <- subset_samples(eemlist, info, blank_names, keep = FALSE, ignore_case = TRUE,verbose = FALSE)
+  }else{
+    eemlist <- eemlist
+  }
   class(eemlist) <- "eemlist"
   return(eemlist)
 }

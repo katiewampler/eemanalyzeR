@@ -66,10 +66,10 @@ add_metadata <- function(meta, x){
   meta_data <- list(
     meta_name = meta$data_identifier[meta_order],
     dilution = meta$dilution[meta_order],
-    analysis_date = if("analysis_date" %in% colnames(meta)) meta$analysis_date[meta_order] else NULL,
-    description = if("description" %in% colnames(meta)) meta$description[meta_order] else NULL,
-    doc_mgL = if("DOC_mg_L" %in% colnames(meta)) meta$DOC_mg_L[meta_order] else NULL,
-    notes = if("Notes" %in% colnames(meta)) meta$Notes[meta_order] else NULL
+    analysis_date = if("analysis_date" %in% colnames(meta)) meta$analysis_date[meta_order] else NA,
+    description = if("description" %in% colnames(meta)) meta$description[meta_order] else NA,
+    doc_mgL = if("DOC_mg_L" %in% colnames(meta)) meta$DOC_mg_L[meta_order] else NA,
+    notes = if("Notes" %in% colnames(meta)) meta$Notes[meta_order] else NA
   )
 
   # loop across the metadata
@@ -81,10 +81,10 @@ add_metadata <- function(meta, x){
     obj$dilution <- meta_data$dilution[y]
 
     # assign values if they are in metadata
-    if (!is.null(meta_data$analysis_date)) obj$analysis_date <- meta_data$analysis_date[y]
-    if (!is.null(meta_data$description)) obj$description <- meta_data$description[y]
-    if (!is.null(meta_data$doc_mgL)) obj$doc_mgL <- meta_data$doc_mgL[y]
-    if (!is.null(meta_data$notes)) obj$notes <- meta_data$notes[y]
+    obj$analysis_date <- meta_data$analysis_date[y]
+    obj$description <- meta_data$description[y]
+    obj$doc_mgL <- meta_data$doc_mgL[y]
+    obj$notes <- meta_data$notes[y]
 
     return(obj)
   })

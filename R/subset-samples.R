@@ -32,6 +32,7 @@ subset_samples <- function(x, info, sample, keep=F, ignore_case=F,
                            verbose=T){
   stopifnot(inherits(x, "eemlist") | inherits(x, "abslist"), info %in% unlist(lapply(x,names)))
   values <- get_sample_info(x, info)
+  sample <- gsub("([\\(\\)\\-])", "\\\\\\1", sample) #escape special characters
   to_remove <- grepl(paste(sample, collapse = "|"), values,
                      ignore.case = ignore_case)
   x[xor(to_remove, keep)] <- NULL

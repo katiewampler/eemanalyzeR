@@ -53,8 +53,12 @@ add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$"){
       eemlist <- eem_rm_blank(eemlist, pattern=pattern, info="sample")
   }
 
+  if(length(blanklist) == 0 | length(eemlist) == 0){
+    stop("eemlist or blanklist had zero samples, please ensure 'pattern' argument is correct")
+  }
+
   #make sure there's metadata added to samples
-    if(!any(.meta_added(eemlist) & .meta_added(blanklist))& length(blanklist) > 1){
+    if(!any(.meta_added(eemlist) & .meta_added(blanklist)) & length(blanklist) > 1){
       stop("metadata must be added to link the samples and blanks, please run 'eemanalyzeR::add_metadata' first")
     }
 

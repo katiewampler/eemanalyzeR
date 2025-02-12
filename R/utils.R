@@ -196,7 +196,6 @@
     augmented <- unlist(lapply(x, .meta_added))
    }
   return(augmented)
-
 }
 
 #' Checks if the eems or absorbance has had blank added
