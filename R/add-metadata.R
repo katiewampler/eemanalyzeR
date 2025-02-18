@@ -35,7 +35,8 @@ add_metadata <- function(meta, x){
   meta_order <- data.frame(eem_pos = 1:length(names), meta_row=NA)
 
   .get_row_meta <- function(name, meta){
-    row <- which(sapply(meta$data_identifier, grep, name) == 1)
+    name <- gsub("([\\(\\)\\-])", "\\\\\\1", name) #escape special characters
+    row <- which(sapply(gsub("([\\(\\)\\-])", "\\\\\\1", meta$data_identifier), grep, name, fixed=T) == 1)
     if(length(row) == 0){row <- NA}
     return(row)
   }
@@ -88,6 +89,9 @@ add_metadata <- function(meta, x){
 
     return(obj)
   })
+
+  #reorder to metadata
+  x <- x[order(meta_order)]
 
   # ensure object returned is same type as input
   if(class_type == "abslist"){

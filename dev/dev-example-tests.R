@@ -47,3 +47,31 @@
     abs <- add_metadata(meta, abs)
     eems <- add_metadata(meta, eems)
     eems <- add_blanks(eems)
+
+  #example 5: Bladon-Lab-2024-08-19
+    input_dir <- here("dev/dev-examples/Bladon-Lab-2024-08-19")
+    abs <- abs_dir_read(input_dir)
+    eems <- eem_dir_read(input_dir)
+    meta <- meta_read(input_dir)
+    abs <- add_metadata(meta, abs)
+    eems <- add_metadata(meta, eems)
+    eems <- add_blanks(eems)
+
+  #example 6: Bladon-Lab-2024-08-22
+    input_dir <- here("dev/dev-examples/Bladon-Lab-2024-08-22")
+    abs <- abs_dir_read(input_dir)
+    eems <- eem_dir_read(input_dir)
+    meta <- meta_read(input_dir)
+    abs <- add_metadata(meta, abs)
+    eems <- add_metadata(meta, eems)
+    eems <- add_blanks(eems)
+
+  #example 7: Bladon-Lab-2024-11-01
+    input_dir <- here("dev/dev-examples/Bladon-Lab-2024-11-01")
+    abs <- abs_dir_read(input_dir)
+    eems <- eem_dir_read(input_dir)
+    meta <- meta_read(input_dir)
+    abs <- add_metadata(meta, abs)
+    eems <- add_metadata(meta, eems)
+    eems <- add_blanks(eems)
+
