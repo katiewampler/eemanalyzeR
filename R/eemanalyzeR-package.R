@@ -15,5 +15,7 @@
 #' @importFrom stringr str_extract_all
 #' @importFrom tools file_ext
 #' @importFrom utils read.csv
+#' @importFrom rlang is_interactive
+#' @importFrom rlang local_interactive
 ## usethis namespace: end
 NULL

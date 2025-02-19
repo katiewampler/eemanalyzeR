@@ -3,33 +3,31 @@
   #the solution from snaut here worked: https://stackoverflow.com/questions/51294489/how-to-test-behavior-that-depends-on-a-package-being-installed-or-not
 
 #can't easily test for a "N" because of the way the function had to be written to pass a Y if interactive for examples
-with_mocked_bindings(
-  .yesorno = function(question,
-                      y_response,
-                      n_response) TRUE,
-  test_that("mocking works",{
-    expect_equal(.yesorno("testing", "yes", "no"), TRUE)
-
-  })
-)
+# Not needed if we use the function rlang::is_interactive() in code where we
+# specifically want to run certain things in an interactive setting (for checks).
+#
+# Using rlang::is_interactive() allows user to decide interactive or bactch processing
+# at the start of the processing run.
+#
+# with_mocked_bindings(
+#   .yesorno = function(question,
+#                       y_response,
+#                       n_response) TRUE,
+#   test_that("mocking works",{
+#     expect_equal(.yesorno("testing", "yes", "no"), TRUE)
+#
+#   })
+# )
 
 
 #test that gives error if metadata isn't added
-with_mocked_bindings(
-  .yesorno = function(question,
-                      y_response,
-                      n_response) TRUE,
     test_that("error is returned if samples don't have metadata added", {
      expect_error(add_blanks(example_eems), "metadata must be added to link the samples and blanks") #fails if more than one blank
      expect_no_error(add_blanks(example_eems, example_eems[[1]])) #runs if only one blank added
    })
-)
+
 
 #blanks are added when a list of eems is supplied
-  with_mocked_bindings(
-    .yesorno = function(question,
-                        y_response,
-                        n_response) TRUE,
     test_that("blanks are added when a list of blanks is supplied",{
       #gives error if names don't match
       eemlist <- add_metadata(metadata, example_eems)
@@ -46,13 +44,9 @@ with_mocked_bindings(
       expect_equal(as.vector(augment_eemlist[[1]]$blk_x),as.vector(example_eems[[1]]$x))
 
     })
-  )
+
 
 #blanks are added when a list of blanks is supplied
-  with_mocked_bindings(
-    .yesorno = function(question,
-                        y_response,
-                        n_response) TRUE,
     test_that("blanks are added when a list of blanks is supplied",{
       #gives error if names don't match
       eemlist <- add_metadata(metadata, example_eems)
@@ -78,13 +72,8 @@ with_mocked_bindings(
                    c("data-raw/B1S1ExampleBlankBEM.dat","data-raw/B1S2ExampleTeaStdBEM.dat",
                      "data-raw/B1S3ExampleSampleBEM.dat"))
     })
-)
 
 #blanks are added when a single blank is supplied
-  with_mocked_bindings(
-    .yesorno = function(question,
-                        y_response,
-                        n_response) TRUE,
     test_that("blanks are added when a single blank is supplied",{
       #gives error if names don't match
       samples <- eem_rm_blank(example_eems)
@@ -99,45 +88,29 @@ with_mocked_bindings(
       expect_equal(as.vector(augment_eemlist[[1]]$blk_x),as.vector(example_eems[[1]]$x))
 
     })
-  )
 
 
 ##a TRUE returns an eemlist
-  with_mocked_bindings(
-    .yesorno = function(question,
-                        y_response,
-                        n_response) TRUE,
     test_that("a TRUE returns an eemlist",{
       eemlist <- add_metadata(metadata, example_eems)
       eemlist <- add_blanks(eemlist)
       expect_s3_class(eemlist, "eemlist")
     })
-  )
 
 #mismatched wavelengths gives an error
-  with_mocked_bindings(
-    .yesorno = function(question,
-                        y_response,
-                        n_response) TRUE,
     test_that("mismatched wavelengths gives an error",{
       eemlist <- add_metadata(metadata, example_eems)
       eemlist[[1]]$ex <- eemlist[[1]]$ex[-1]
       eemlist[[1]]$x <- eemlist[[1]]$x[,-1]
       expect_error(add_blanks(eemlist), "excitation and/or emission wavelengths as mismatched between sample and blank")
     })
-  )
 
 
 #names of blanks don't match samples returns an error
-  with_mocked_bindings(
-    .yesorno = function(question,
-                        y_response,
-                        n_response) TRUE,
     test_that("mismatched names gives an error",{
       eemlist <- add_metadata(metadata, example_eems)
       eemlist[[1]]$meta_name <- "wrong name"
       expect_error(add_blanks(eemlist), "more than one blank was provided, but blank names do not match samples")
     })
-  )
 
 
