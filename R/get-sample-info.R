@@ -31,6 +31,7 @@
 #' eemlist <- add_metadata(metadata, example_eems)
 #' get_sample_info(eemlist[[5]], "doc_mgL")
 
+# TODO - this doesn't work for vector or matrix data (the format of eems or absorbance)
 get_sample_info <- function(x, info) {
   stopifnot(.is_eemlist(x) | .is_eem(x) | .is_abslist(x) | .is_abs(x))
 
@@ -42,4 +43,6 @@ get_sample_info <- function(x, info) {
   }
   return(res)
 }
+
+# TODO Maybe we can a separate function for get_sample_data?
 
