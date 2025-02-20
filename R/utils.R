@@ -160,11 +160,15 @@
 
 
 #' Answer validation questions yes or no
+#'
+#' @importFrom rlang is_interactive
 #' @noRd
 .yesorno <- function(question,
                      y_response,
                      n_response) {
-  stopifnot(is.character(question) |
+  # Return TRUE (ie "yes") if run non-interactively (tests, batch processing)
+  if (!rlang::is_interactive()) return(TRUE)
+  stopifnot(  is.character(question) |
               is.character(y_response) |
               is.character(n_response))
   cont <- readline(paste0(question, " [y/n]: "))

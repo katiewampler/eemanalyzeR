@@ -20,7 +20,16 @@ see \link[eemR]{eem} for base \code{eem} component names and \link[eemanalyzeR]{
 see \link[eemanalyzeR]{add_metadata} for extended \code{eem} component names.}
 }
 \value{
-returns a vector containing the info from the EEM's or absorbance.
+if \code{x} is an \code{eemlist} or \code{abslist}:
+
+if requested component (\code{info}) is a:
+ \itemize{
+ \item vector of length one: a vector of values where each value corresponds to the info for each sample
+ \item vector of length greater than one: a matrix of values where each row corresponds to the info for each sample
+ \item matrix: returns a list of matrices where each list item corresponds to the info for each sample
+ }
+
+if \code{x} is an \code{eem} or \code{abs} it will return the component, maintaining class and structure.
 }
 \description{
 Helper function that build upon the \link[eemR]{eem_names}
