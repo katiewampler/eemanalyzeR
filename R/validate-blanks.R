@@ -18,7 +18,7 @@
 #' @importFrom rlang is_interactive
 #'
 #' @examples
-#' continue <- validate_blanks(example_eems)
+#' continue <- validate_blanks(eem_get_blank(example_eems))
 validate_blanks <- function(
     blanklist,
     plotting_info = NULL, # Placeholder for arguments to ggeem
@@ -41,7 +41,7 @@ validate_blanks <- function(
 
   # Prompt user for input to accept or decline the warning
   continue <- .yesorno("After reviewing blank(s), do you want to continue processing samples",
-                       "Instrument blank accepted and used for subtraction",
+                       "Instrument blank accepted and added to samples",
                        "Instrument blank not accepted - Exiting")
 
   return(continue)

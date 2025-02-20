@@ -1,24 +1,5 @@
-#note: due to the user input, tests are quite challenging to write as it requires the relatively new
-  #with_mocked_bindings function from withr. It took a while to figure out how to use the function, but finally
-  #the solution from snaut here worked: https://stackoverflow.com/questions/51294489/how-to-test-behavior-that-depends-on-a-package-being-installed-or-not
-
-#can't easily test for a "N" because of the way the function had to be written to pass a Y if interactive for examples
-# Not needed if we use the function rlang::is_interactive() in code where we
-# specifically want to run certain things in an interactive setting (for checks).
-#
-# Using rlang::is_interactive() allows user to decide interactive or bactch processing
+# Using rlang::is_interactive() allows user to decide interactive or batch processing
 # at the start of the processing run.
-#
-# with_mocked_bindings(
-#   .yesorno = function(question,
-#                       y_response,
-#                       n_response) TRUE,
-#   test_that("mocking works",{
-#     expect_equal(.yesorno("testing", "yes", "no"), TRUE)
-#
-#   })
-# )
-
 
 #test that gives error if metadata isn't added
     test_that("error is returned if samples don't have metadata added", {

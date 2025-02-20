@@ -32,9 +32,6 @@
 #' augment_eemlist <- add_blanks(eemlist)
 #'
 
-
-
-#to do: add blank file location to eem
 add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$"){
   stopifnot(class(eemlist) %in% c("eemlist"),
             class(blanklist) %in% c("NULL", "eem", "eemlist"),
@@ -64,21 +61,6 @@ add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$"){
 
   # Validate the instrument blank
   continue <- validate_blanks(unique(blanklist))
-
-  # #only plot unique blanks (replace with my plotting function once written)
-  # plot_check <- staRdom::ggeem(unique(blanklist))
-  #
-  # #only ask if in an interactive session
-  # if(rlang::is_interactive()){
-  #   #return to user
-  #   print(plot_check)
-  #
-  #   #ask user if processing should continue
-  #   continue <- .yesorno("After reviewing blank(s), do you want to continue processing samples", "","")
-  #
-  # }else{
-  #   continue <- TRUE
-  # }
 
   #makes sure blank has same wavelengths as sample then adds into eem as x_blK
 
