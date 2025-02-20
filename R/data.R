@@ -55,3 +55,13 @@
 #' }
 #' @source Oregon State University Forest Watershed Hydrology Lab (2022-11-14)
 "metadata"
+
+
+#' Long Term Average Blank
+#'
+#' An \code{eem} object containing the average of 81 blank samples, used to check for blank consistency.
+#'
+#' @format an \code{eem} object, for more details on the format of an eem, see the \link[eemR]{eemR} package.
+#' @note for details on creating your own long-term blank see ##to do: make function or vignette here
+#' @source Oregon State University Forest Watershed Hydrology Lab (2022 to 2024)
+"longterm_blank"

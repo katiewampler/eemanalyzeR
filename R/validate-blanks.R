@@ -22,13 +22,17 @@
 validate_blanks <- function(
     blanklist,
     plotting_info = NULL, # Placeholder for arguments to ggeem
-    blank_model = NULL) {
+    blank_model = longterm_blank) {
 
   #cat("Plotting blanks for user validation \n")
 
   # Plot the instrument blank
   if (rlang::is_interactive()) {
-  blank_plot <- staRdom::ggeem(blanklist)
+  plot_data <- lapply(eem_normalize(blanklist), eem_subtract, eem_normalize(blank_model))
+  class(plot_data) <- "eemlist"
+
+  blank_plot <- staRdom::ggeem(plot_data) + ggplot2::labs(title="Deviation of Blank Sample(s) from Long-Term Average")
+  print(blank_plot)
   print("is_interactive didn't work")
   }
 

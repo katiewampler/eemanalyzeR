@@ -10,12 +10,14 @@
 #' @importFrom magrittr %>%
 #' @importFrom purrr discard
 #' @importFrom readxl read_excel
+#' @importFrom rlang is_interactive
+#' @importFrom rlang local_interactive
+#' @importFrom staRdom eem_extend2largest
+#' @importFrom staRdom eem_red2smallest
 #' @importFrom staRdom ggeem
 #' @importFrom stats na.omit
 #' @importFrom stringr str_extract_all
 #' @importFrom tools file_ext
 #' @importFrom utils read.csv
-#' @importFrom rlang is_interactive
-#' @importFrom rlang local_interactive
 ## usethis namespace: end
 NULL

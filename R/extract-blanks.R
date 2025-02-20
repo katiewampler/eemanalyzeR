@@ -52,7 +52,7 @@ eem_rm_blank <- function(eemlist, pattern= "BEM", info="sample"){
 #' Extract tea from abslist
 #'
 #' Using a regular expression, the \code{abslist} will be cut to include either
-#' only the tea samples (\code{abs_get_tea).
+#' only the tea samples (\code{abs_get_tea}).
 #'
 #' @param abslist an object of class \code{abslist}
 #' @param pattern a character string containing a \code{\link[base]{regular expression}}

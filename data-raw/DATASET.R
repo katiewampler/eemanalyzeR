@@ -58,6 +58,7 @@ for(x in files){
   usethis::use_data(metadata, overwrite = T)
 
 
+  #average is too narrow??/ normalize to max??
 #code to create averaged blank
   input_dir <- "data-raw/long term standards"
   avg_blank <- function(input_dir){
@@ -100,5 +101,9 @@ for(x in files){
     class(avg_blank) <- "eem"
 
     staRdom::ggeem(avg_blank)
+    return(avg_blank)
 
   }
+
+  longterm_blank <- avg_blank(input_dir)
+  usethis::use_data(longterm_blank, overwrite = T)
