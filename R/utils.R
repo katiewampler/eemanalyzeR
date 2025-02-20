@@ -228,9 +228,11 @@
 #' @importFrom staRdom eem_extend2largest
 #' @importFrom staRdom eem_red2smallest
 #' @return an \code{eem}
-#' @examples
 #'
-#' eem_subtract <- eem_subtract(example_eems[[1]], longterm_blank)
+#' @export
+#' @examples
+#' eem_sub <- eem_subtract(example_eems[[1]], longterm_blank)
+
 eem_subtract <- function(eem1, eem2){
   #scale subtraction eem to returned eem
     if(any(dim(eem2$x) > dim(eem1$x))){

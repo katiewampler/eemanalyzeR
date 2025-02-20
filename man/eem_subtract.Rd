@@ -18,6 +18,5 @@ an \code{eem}
 Useful for performing blank subtraction
 }
 \examples{
-
-eem_subtract <- eem_subtract(example_eems[[1]], longterm_blank)
+eem_sub <- eem_subtract(example_eems[[1]], longterm_blank)
 }
