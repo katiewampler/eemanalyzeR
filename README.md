@@ -45,6 +45,30 @@ review process.
 
 <img src="man/figures/eemanalyzeR_workflow.png" alt="" width="650" />
 
+### Workflow draft
+
+Placeholder of function hierarchy
+
+- `run_eems` - rename this
+  - some package processing environment setup
+  - `meta_read` reads in the sample run metadata
+    - `meta_check`
+  - `dir_read` reads in all the raw data
+    - `eem_dir_read` -> returns an eems_list
+      - `eemR::eem_read`
+    - `abs_dir_read` -> returns an abs_list
+      - `abs_read`
+  The rest of these are still in progress and may need to be reorganized
+  - Add info from metadata too eems_ and abs_ lists
+  - Blank checks - confirm which blank we want to use
+  - tea absorbance checks - confirm the tea standards have acceptable absorbance values
+  - Data processing?
+  - EEMs plotting
+  - Calculating EEMs and ABS indices
+  - saving cleaned EEMS (where?)
+  
+    
+
 ## Example
 
 This is a basic example which shows you how to solve a common problem:
