@@ -1,9 +1,20 @@
-# Create a long term absorbance or EEM model (for tea stds and blanks)
 
 # TODO Function to calculate generic absorbance curve from a bunch of given "good" data
 # Max good absorbance at 239 nm is 0.2166726 (USGS TEA STANDARD)
 # Min good absorbance at 239 nm is 0.1430418 (USGS TEA STANDARD)
 # Calculate the mean and standard deviation for each wavelength
+
+#' Create a long term absorbance or EEM model (for tea stds and blanks)
+#'
+#' @param path_to_abs location of absorbance data
+#' @param save_path location to save absorbance model
+#' @param sd_multiplier accetable standard deviation in data
+#' @param overwrite overwrite exisiting model?
+#'
+#' @returns a absorbance model of averaged absorbance
+#' @export
+#' @importFrom tidyr pivot_longer
+#' @importFrom usethis use_data
 save_absorbance_model <- function(path_to_abs,
                                   save_path = "data",
                                   sd_multiplier = 3, # TODO better name for this arg

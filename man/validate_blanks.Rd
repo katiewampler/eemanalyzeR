@@ -4,7 +4,7 @@
 \alias{validate_blanks}
 \title{Validate the blanks}
 \usage{
-validate_blanks(blanklist, plotting_info = NULL, blank_model = longterm_blank)
+validate_blanks(blanklist, plotting_info = NULL, blank_model = NULL)
 }
 \arguments{
 \item{blanklist}{an \code{eemlist} containing blank samples}

@@ -4,7 +4,7 @@
 \alias{extract_blanks}
 \alias{eem_get_blank}
 \alias{eem_rm_blank}
-\title{Extract blanks from eemlist}
+\title{Extract blank samples from eemlist}
 \usage{
 eem_get_blank(eemlist, pattern = "BEM", info = "sample")
 

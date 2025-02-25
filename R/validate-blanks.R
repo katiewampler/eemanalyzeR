@@ -11,27 +11,30 @@
 #' @param plotting_info TODO - plotting arguments for ggeem (not implemented yet)
 #' @param blank_model TODO - model of blank noise calculated from multiple runs averaged
 #'                    together for automated validation.
-#'
+
 #' @return TRUE if blanks meet validation standards, FALSE if not
 #' @export
-#' @importFrom staRdom ggeem
+#' @importFrom staRdom ggeem eem_rem_scat
 #' @importFrom rlang is_interactive
+#' @importFrom ggplot2 labs theme
+#' @importFrom cowplot plot_grid
 #'
 #' @examples
 #' continue <- validate_blanks(eem_get_blank(example_eems))
 validate_blanks <- function(
     blanklist,
     plotting_info = NULL, # Placeholder for arguments to ggeem
-    blank_model = longterm_blank) {
+    blank_model = NULL) {
 
   #cat("Plotting blanks for user validation \n")
 
   # Plot the instrument blank
   if (rlang::is_interactive()) {
-  plot_data <- lapply(eem_normalize(blanklist), eem_subtract, eem_normalize(blank_model))
-  class(plot_data) <- "eemlist"
+  blank_plot1 <- staRdom::ggeem(blanklist) + ggplot2::labs(title="Blank Samples(s)") + ggplot2::theme(legend.position="bottom")
+  blank_plot2 <- staRdom::ggeem(staRdom::eem_rem_scat(blanklist, c(T,T,T,T))) +
+    ggplot2::labs(title="Blank Samples(s) without Scattering Lines") + ggplot2::theme(legend.position="bottom")
 
-  blank_plot <- staRdom::ggeem(plot_data) + ggplot2::labs(title="Deviation of Blank Sample(s) from Long-Term Average")
+  blank_plot <- cowplot::plot_grid(blank_plot1, blank_plot2, nrow=1)
   print(blank_plot)
   print("is_interactive didn't work")
   }
