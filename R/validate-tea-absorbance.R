@@ -26,7 +26,9 @@
 #'
 #' @return returns a data.frame with pass/fail results of tea standard checks
 #' @export
-#'
+
+
+# TODO write tests for this function
 validate_tea_absorbance <- function(abslist,
                                     pattern = "tea",
                                     model = "default",
