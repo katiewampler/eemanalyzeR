@@ -25,14 +25,14 @@ downscale_eems <- function(file, factor=6){
     }
 
     data <- c(line1, line2)
-    write_lines(data, file.path("data-raw",file))
+    readr::write_lines(data, file.path("data-raw",file))
   }
 
   #downscale absorbance
   if(grepl("ABS", file)){
     data <- readLines(file.path("data-raw/fullsize data",file)) #read in file
     data <- data[seq(1, length(data), 6)]
-    write_lines(data, file.path("data-raw",file))
+    readr::write_lines(data, file.path("data-raw",file))
 
   }}
 
@@ -45,39 +45,65 @@ for(x in files){
 }
 
 #read into R environment
-  #read in blanks
-    files <- list.files("data-raw", pattern="BEM[.]dat")
-    for(x in files){
-      eemlist <- eemR::eem_read(file.path("data-raw", x), import_function = "aqualog")
-      eemlist[[1]]$sample <- gsub("BEM", "", gsub("B1S[1-9]", "",  eemlist[[1]]$sample)) #tidy name
-      if(x == files[1]){
-        example_blanks <- eemlist
-      }else{example_blanks <- eemR::eem_bind(example_blanks, eemlist)}
-    }
-
-  #read in samples
-    files <- list.files("data-raw", pattern="SEM[.]dat")
-    for(x in files){
-      eemlist <- eemR::eem_read(file.path("data-raw", x), import_function = "aqualog")
-      eemlist[[1]]$sample <- gsub("SEM", "", gsub("B1S[1-9]", "",  eemlist[[1]]$sample)) #tidy name
-      if(x == files[1]){
-        example_samples <- eemlist
-      }else{example_samples <- eemR::eem_bind(example_samples, eemlist)}
-    }
+  #read in samples and blanks
+  example_eems <- eem_dir_read("data-raw", pattern="SEM|BEM")
 
   #read in absorbance
-    files <- list.files("data-raw", pattern="ABS[.]dat")
-    for(x in files){
-      abs <- read.table(file.path("data-raw", x))
-      colnames(abs) <- c("wavelength", gsub(".dat", "", gsub("ABS", "", gsub("B1S[1-9]", "", x))))
-      if(x == files[1]){
-        example_absorbance <- abs
-      }else{example_absorbance <- cbind(example_absorbance, abs[2])}
-    }
+  example_absorbance <- abs_dir_read("data-raw", pattern="ABS[.]dat")
 
-    usethis::use_data(example_blanks)
-    usethis::use_data(example_samples)
-    usethis::use_data(example_absorbance)
+    usethis::use_data(example_eems, overwrite = T)
+    usethis::use_data(example_absorbance, overwrite = T)
 
-  metadata <- read.csv("data-raw/metadata_example.csv")
-  usethis::use_data(metadata)
+  metadata <- meta_read("data-raw")
+  usethis::use_data(metadata, overwrite = T)
+
+
+  #average is too narrow??/ normalize to max??
+#code to create averaged blank
+  input_dir <- "data-raw/long term standards"
+  avg_blank <- function(input_dir){
+    blank_eems <- eem_dir_read(file.path(input_dir, "EEM/blanks"), pattern="blank")  #this takes a little while because there's a lot of samples
+
+    #make all the save wavelengths
+    blank_eems_rd <- staRdom::eem_red2smallest(blank_eems)
+
+    #convert to raster to plot
+    flat_X <- lapply(lapply(blank_eems_rd, `[[`, 3), as.vector)
+
+    #get unique values, there's likely some duplicates
+    flat_X_unique <- flat_X[!duplicated(lapply(flat_X, sort))]
+
+    X_df <- do.call(cbind.data.frame, flat_X_unique)
+    colnames(X_df) <- paste0("blk_", 1:ncol(X_df))
+    X_df$val <- 1:nrow(X_df)
+
+    X_df_long <- X_df %>% tidyr::pivot_longer(!val, values_to = "fluor", names_to="sample") #!!need to make flexible
+
+
+    ggplot2::ggplot(X_df_long, ggplot2::aes(x=val, y=log(fluor), group=sample), color="black") + ggplot2::geom_line() #visualize to check for outliers
+
+    #average across all eem's to get a average blank eem
+    eem_list <- lapply(blank_eems_rd, `[[`, 3)
+    eem_list <- lapply(eem_list, function(x) ifelse(x < 0, NA, x)) #remove negatives
+    avg_blank <- purrr::reduce(eem_list,`+`) / length(eem_list)
+
+    avg_blank_flat <- data.frame(val= 1:nrow(X_df), fluor=as.vector(avg_blank))
+    ggplot2::ggplot() + ggplot2::geom_line(data=X_df_long, ggplot2::aes(x=val, y=fluor, group=sample), color="black") +
+      ggplot2::geom_line(data=avg_blank_flat, ggplot2::aes(x=val, y=fluor), color="red") #visualize to check for outliers
+
+    avg_blank <- list(file="/data-raw/long term standards/EEM/blanks/avg_blank.dat",
+                      sample = "average_blank",
+                      x = avg_blank,
+                      em = blank_eems_rd[[1]]$em,
+                      ex = blank_eems_rd[[1]]$ex,
+                      location = "data-raw")
+
+    class(avg_blank) <- "eem"
+
+    staRdom::ggeem(avg_blank)
+    return(avg_blank)
+
+  }
+
+  longterm_blank <- avg_blank(input_dir)
+  usethis::use_data(longterm_blank, overwrite = T)
