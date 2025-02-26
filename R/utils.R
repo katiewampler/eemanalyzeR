@@ -123,7 +123,7 @@
 }
 
 #' Write a line of text to the process file that tracks processing tracking
-#'
+#' TODO: Make this write to an R file in the global environment first?
 #' @param text Line of text to write to the process file
 #' @param overwrite if FALSE (the default) it appends the line of text to the process file. If TRUE, creates a new process file (for fresh processing of data).
 #'

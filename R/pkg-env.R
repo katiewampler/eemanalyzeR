@@ -3,6 +3,20 @@
 # function arguments much more clear.
 
 # TODO PUT EVERY TOP LEVEL ARGUMENT IN HERE
+# if we get all the EEMs processing arguments in here, it leaves us able to handle
+# all ggplot arguments using (...)
+
+# -[x] input_dir
+# -[x] output_dir
+# -[x] metadata filename
+# -[] processing tracking file - THIS MIGHT NEED CHANGING
+# -[] noise value
+# -[] interactive environment? Maybe rlang takes care of this already
+# -[] processing information
+# -[]
+# -[]
+# -[]
+# -[]
 
 
 # Create an empty environment to store EEMS processing arguments and parameters
