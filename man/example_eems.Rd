@@ -16,7 +16,7 @@ An \code{eemlist} with six samples:
 }
 }
 \source{
-Oregon State University Forest Watershed Hydrology Lab (2022-11-14)
+Oregon State University Forest Ecohydrology and Watershed Sciences Lab (2022-11-14)
 }
 \usage{
 example_eems

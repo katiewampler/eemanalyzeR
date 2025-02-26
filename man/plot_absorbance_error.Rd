@@ -11,9 +11,9 @@ plot_absorbance_error(model_data, sample_abs_vector, sample_id, condition)
 
 \item{sample_abs_vector}{tea sample absorbance vector}
 
-\item{condition}{was the failure a warning or an error?}
+\item{sample_id}{name of the tea sample to use as title of plot}
 
-\item{sample_name}{name of the tea sample to use as title of plot}
+\item{condition}{was the failure a warning or an error?}
 }
 \value{
 plot of tea sample absorbance and model of "good" absorbance

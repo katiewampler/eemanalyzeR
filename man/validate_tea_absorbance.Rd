@@ -15,6 +15,9 @@ validate_tea_absorbance(
 \arguments{
 \item{abslist}{abslist of sample absorbances}
 
+\item{pattern}{string which is used to extract tea samples from all abosrbance.
+User can modify this based on each lab's sample ID scheme. Defaults to "tea".}
+
 \item{model}{the comparison model of tea absorbance}
 
 \item{fail_threshold}{user adjustable threshold to determine failure of the
@@ -23,6 +26,9 @@ is the minimum percent of the absorbance curve that is outside the error bar
 for validation failure. For example if the value is 0.15, then the check fails
 if > 15% of the sample absorbance curve is outside the modeled error bars.
 Defaults to 0.10.}
+
+\item{...}{further arguments to pass to ggplot for to control plotting the tea
+absorbance model}
 }
 \value{
 returns a data.frame with pass/fail results of tea standard checks

@@ -8,7 +8,7 @@
 an \code{eem} object, for more details on the format of an eem, see the \link[eemR]{eemR} package.
 }
 \source{
-Oregon State University Forest Watershed Hydrology Lab (2022 to 2024)
+Oregon State University Forest Ecohydrology and Watershed Sciences Lab (2022 to 2024)
 }
 \usage{
 longterm_blank
