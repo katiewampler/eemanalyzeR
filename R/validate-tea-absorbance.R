@@ -23,6 +23,8 @@
 #' for validation failure. For example if the value is 0.15, then the check fails
 #' if > 15% of the sample absorbance curve is outside the modeled error bars.
 #' Defaults to 0.10.
+#' @param ... further arguments to pass to ggplot for to control plotting the tea
+#' absorbance model
 #'
 #' @return returns a data.frame with pass/fail results of tea standard checks
 #' @export
@@ -160,7 +162,7 @@ validate_tea_absorbance <- function(abslist,
 #'
 #' @param model_data tea absorbance model data
 #' @param sample_abs_vector tea sample absorbance vector
-#' @param sample_name name of the tea sample to use as title of plot
+#' @param sample_id name of the tea sample to use as title of plot
 #' @param condition was the failure a warning or an error?
 #'
 #' @return plot of tea sample absorbance and model of "good" absorbance

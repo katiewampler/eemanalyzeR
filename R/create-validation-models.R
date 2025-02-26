@@ -15,6 +15,7 @@
 #' @export
 #' @importFrom tidyr pivot_longer
 #' @importFrom usethis use_data
+#' @noRd
 save_absorbance_model <- function(path_to_abs,
                                   save_path = "data",
                                   sd_multiplier = 3, # TODO better name for this arg
