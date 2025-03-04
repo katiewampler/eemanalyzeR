@@ -5,18 +5,19 @@
 \title{Create a long term absorbance or EEM model (for tea stds and blanks)}
 \usage{
 save_absorbance_model(
-  path_to_abs,
+  abs_dir,
   save_path = "data",
   sd_multiplier = 3,
   overwrite = FALSE
 )
 }
 \arguments{
-\item{path_to_abs}{location of absorbance data}
+\item{abs_dir}{location of absorbance data. This should be a directory with multiple
+absorbance data files (something like )}
 
-\item{save_path}{location to save absorbance model}
+\item{save_path}{location to save absorbance model as a CSV}
 
-\item{sd_multiplier}{accetable standard deviation in data}
+\item{sd_multiplier}{acceptable standard deviation in data}
 
 \item{overwrite}{overwrite exisiting model?}
 }
