@@ -20,13 +20,16 @@ test_that("correct info is grabbed", {
   abslist <- add_metadata(metadata, example_absorbance)
   expect_equal(get_sample_info(abslist[[2]], "meta_name"), "ExampleTeaStd")
 
-  #test getting a list
-  expect_true(is.list(get_sample_info(example_absorbance, "data")))
-  expect_true(is.matrix(get_sample_info(example_absorbance, "data")[[1]]))
+  #test getting a dataframe for absorbance
+  expect_true(is.data.frame(get_sample_info(example_absorbance, "data")))
+  expect_equal(dim(get_sample_info(example_absorbance, "data")), c(32,4))
 
 
   #test getting a matrix
   expect_true(is.matrix(get_sample_info(example_eems, "ex")))
+  expect_true(is.list(get_sample_info(example_eems, "x")))
+  expect_true(is.matrix(get_sample_info(example_eems, "x")[[1]]))
+
 
   #test trying to get info that doesn't exist
   expect_error(get_sample_info(example_eems, "fake_info"), "not found in dataset")
