@@ -16,7 +16,7 @@
 #' ...
 #'
 #' @param abslist abslist of sample absorbances
-#' @param pattern string which is used to extract tea samples from all abosrbance.
+#' @param pattern string which is used to extract tea samples from all absorbance.
 #' User can modify this based on each lab's sample ID scheme. Defaults to "tea".
 #' @param model the comparison model of tea absorbance
 #' @param fail_threshold user adjustable threshold to determine failure of the

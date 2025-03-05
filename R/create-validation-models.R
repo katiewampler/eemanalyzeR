@@ -10,7 +10,7 @@
 #' absorbance data files (something like )
 #' @param save_path location to save absorbance model as a CSV
 #' @param sd_multiplier acceptable standard deviation in data
-#' @param overwrite overwrite exisiting model?
+#' @param overwrite overwrite existing model?
 #'
 #' @returns a absorbance model of averaged absorbance
 #' @export
