@@ -217,6 +217,29 @@
   return(augmented)
 
 }
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+
+#' Removes extra list items from eemlist, replaces sample with meta_name for matching
+#' @noRd
+.make_base_eem <- function(x){
+  if(.meta_added(x)){
+    x$sample <- x$meta_name
+    x$meta_name <- NULL
+    x$dilution <- NULL
+    x$analysis_date <- NULL
+    x$description <- NULL
+    x$doc_mgL <-NULL
+    x$notes <- NULL
+    x$blk_x <- NULL
+    x$blk_file <- NULL
+  }
+  return(x)
+
+}
+>>>>>>> Stashed changes
 
 
 #' Check if two eem matrices are equal
@@ -312,3 +335,7 @@ eem_normalize <- function(eem, factor=NULL){
   eem1$x <- eem1$x - eem2$x
   return(eem1)
 }
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
