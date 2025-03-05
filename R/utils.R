@@ -250,6 +250,7 @@
   x2_long <- as.vector(x2)
 
   equal <- all.equal(x1_long, x2_long)
+  equal <- ifelse(equal == TRUE, TRUE, FALSE)
   return(equal)
 }
 
@@ -331,7 +332,4 @@ eem_normalize <- function(eem, factor=NULL){
   eem1$x <- eem1$x - eem2$x
   return(eem1)
 }
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
+

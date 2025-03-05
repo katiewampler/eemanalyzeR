@@ -51,7 +51,8 @@ ife_correct <- function(eemlist, abslist, pathlength=1){
     #TODO:add note in readme here this was done
 
     if(length(ex_rm) >0|length(em_rm) >0){
-      eemlist <- eemR::eem_cut(eemlist, ex_rm, em_rm, exact=T)}
+      eemlist <- eemR::eem_cut(eemlist, ex_rm, em_rm, exact=T)
+      warning("trimmed EEM's to match absorbance data wavelengths, see readme.txt for more info")}
 
 
     #not an ideal solution, but for now in function only,
