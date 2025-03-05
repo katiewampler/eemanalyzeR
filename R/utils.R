@@ -217,10 +217,7 @@
   return(augmented)
 
 }
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-=======
+
 
 #' Removes extra list items from eemlist, replaces sample with meta_name for matching
 #' @noRd
@@ -239,7 +236,6 @@
   return(x)
 
 }
->>>>>>> Stashed changes
 
 
 #' Check if two eem matrices are equal
