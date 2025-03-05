@@ -24,7 +24,7 @@
 #' @source
 #' Massicotte P (2019). eemR: Tools for Pre-Processing
 #' Emission-Excitation-Matrix (EEM) Fluorescence Data. R package
-#' version 1.0.1, \link[https://CRAN.R-project.org/package=eemR]{https://CRAN.R-project.org/package=eemR}
+#' version 1.0.1, \href{https://CRAN.R-project.org/package=eemR}{https://CRAN.R-project.org/package=eemR}
 #'
 #' @examples
 #' eemlist <- add_metadata(metadata,example_eems)
@@ -60,7 +60,7 @@ ife_correct <- function(eemlist, abslist, pathlength=1){
     res <- lapply(eemlist, .make_base_eem)
     class(res) <- "eemlist"
 
-    res <- eemR:::eem_inner_filter_effect(res, abs_table, pathlength = pathlength)
+    res <- eemR::eem_inner_filter_effect(res, abs_table, pathlength = pathlength)
 
     #put inner filter effect corrected eems back into augmented eemlist
     res <- lapply(1:length(eemlist), function(i){

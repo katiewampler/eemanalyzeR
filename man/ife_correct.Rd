@@ -6,7 +6,7 @@
 \source{
 Massicotte P (2019). eemR: Tools for Pre-Processing
 Emission-Excitation-Matrix (EEM) Fluorescence Data. R package
-version 1.0.1, \link[https://CRAN.R-project.org/package=eemR]{https://CRAN.R-project.org/package=eemR}
+version 1.0.1, \href{https://CRAN.R-project.org/package=eemR}{https://CRAN.R-project.org/package=eemR}
 }
 \usage{
 ife_correct(eemlist, abslist, pathlength = 1)
