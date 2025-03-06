@@ -15,7 +15,11 @@
 #'  \item doc_mgL: the concentration of dissolved organic carbon in the sample given in mg \ifelse{html}{\out{L<sup>-1</sup>}}{\eqn{L^{-1}}}
 #'  \item notes: optional notes related to the sample or sample collection.
 #' }
-#'
+#' if \code{x} is a \code{eemlist} an additional two items are added to each sample:
+#' \itemize{
+#'  \item integration_time_s: the integration time for the sample.
+#'  \item raman_area_1s: the area under the raman water peak with a 1 second integration time.
+#' }
 #' @export
 #'
 #' @examples
@@ -67,6 +71,8 @@ add_metadata <- function(meta, x){
   meta_data <- list(
     meta_name = meta$data_identifier[meta_order],
     dilution = meta$dilution[meta_order],
+    integration_time_s = meta$integration_time_s,
+    raman_area_1s = meta$RSU_area_1s,
     analysis_date = if("analysis_date" %in% colnames(meta)) meta$analysis_date[meta_order] else NA,
     description = if("description" %in% colnames(meta)) meta$description[meta_order] else NA,
     doc_mgL = if("DOC_mg_L" %in% colnames(meta)) meta$DOC_mg_L[meta_order] else NA,
@@ -80,6 +86,12 @@ add_metadata <- function(meta, x){
     # assign sample name and dilution
     obj$meta_name <- meta_data$meta_name[y]
     obj$dilution <- meta_data$dilution[y]
+
+    if(.is_eemlist(x)){
+      obj$integration_time_s = meta_data$integration_time_s[y]
+      obj$raman_area_1s = meta_data$raman_area_1s[y]
+    }
+
 
     # assign values if they are in metadata
     obj$analysis_date <- meta_data$analysis_date[y]
