@@ -71,8 +71,8 @@ add_metadata <- function(meta, x){
   meta_data <- list(
     meta_name = meta$data_identifier[meta_order],
     dilution = meta$dilution[meta_order],
-    integration_time_s = meta$integration_time_s,
-    raman_area_1s = meta$RSU_area_1s,
+    integration_time_s = meta$integration_time_s[meta_order],
+    raman_area_1s = meta$RSU_area_1s[meta_order],
     analysis_date = if("analysis_date" %in% colnames(meta)) meta$analysis_date[meta_order] else NA,
     description = if("description" %in% colnames(meta)) meta$description[meta_order] else NA,
     doc_mgL = if("DOC_mg_L" %in% colnames(meta)) meta$DOC_mg_L[meta_order] else NA,
