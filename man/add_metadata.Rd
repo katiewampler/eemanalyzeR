@@ -22,6 +22,11 @@ The following items are added for each sample, if available in the metadata:
  \item doc_mgL: the concentration of dissolved organic carbon in the sample given in mg \ifelse{html}{\out{L<sup>-1</sup>}}{\eqn{L^{-1}}}
  \item notes: optional notes related to the sample or sample collection.
 }
+if \code{x} is a \code{eemlist} an additional two items are added to each sample:
+\itemize{
+ \item integration_time_s: the integration time for the sample.
+ \item raman_area_1s: the area under the raman water peak with a 1 second integration time.
+}
 }
 \description{
 Add metadata to absorbance and EEM's data
