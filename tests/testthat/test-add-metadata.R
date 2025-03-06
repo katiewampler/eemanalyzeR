@@ -44,4 +44,7 @@
     expect_equal(get_sample_info(eem_aug, "meta_name"), rep(c("ExampleBlank", "ExampleTeaStd", "ExampleSample"), each=2))
     expect_equal(get_sample_info(eem_aug, "meta_name"), rep(c("ExampleBlank", "ExampleTeaStd", "ExampleSample"), each=2))
 
+    expect_false(any(is.na(get_sample_info(eem_aug, "raman_area_1s")))) #make sure these aren't NA
+    expect_false(any(is.na(get_sample_info(eem_aug, "integration_time_s")))) #make sure these aren't NA
+
   })
