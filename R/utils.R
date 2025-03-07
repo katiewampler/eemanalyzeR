@@ -213,3 +213,120 @@
   return(augmented)
 
 }
+
+
+#' Removes extra list items from eemlist, replaces sample with meta_name for matching
+#' @noRd
+.make_base_eem <- function(x){
+  if(.meta_added(x)){
+    x$sample <- x$meta_name
+    x$meta_name <- NULL
+    x$dilution <- NULL
+    x$integration_time_s <- NULL
+    x$raman_area_1s <- NULL
+    x$analysis_date <- NULL
+    x$description <- NULL
+    x$doc_mgL <-NULL
+    x$notes <- NULL
+    x$blk_x <- NULL
+    x$blk_file <- NULL
+  }
+  return(x)
+
+}
+
+
+#' Check if two eem matrices are equal
+#'
+#' @param x1 a matrix "x" from an eem
+#' @param x2 a matrix "x" from an eem
+#'
+#' @noRd
+#'
+.eem_equal <- function(x1, x2){
+  x1_long <- as.vector(x1)
+  x2_long <- as.vector(x2)
+
+  equal <- all.equal(x1_long, x2_long)
+  equal <- ifelse(equal == TRUE, TRUE, FALSE)
+  return(equal)
+}
+
+#' Normalize an eem or eemlist based on a normalization factor
+#'
+#' Useful for raman normalization or normalizing to a max of one for blank comparisons.
+#'
+#' @param eem the \code{eem} or \code{eemlist} to normalize
+#' @param factor the normalization factor, if NULL it will normalize to the maximum value for each eem
+#'
+#' @return an \code{eem} or \code{eemlist} where \code{x} has been normalized
+#' @export
+#'
+#' @examples
+#' eem_normal <- eem_normalize(example_eems[1])
+#' eems_normal <- eem_normalize(example_eems)
+#'
+eem_normalize <- function(eem, factor=NULL){
+
+  if(.is_eemlist(eem)){
+    eem <- lapply(eem, eem_normalize, factor)
+    class(eem) <- "eemlist"
+  }else{
+    if(is.null(factor)){
+      factor <- max(eem$x, na.rm = T)
+    }
+
+    eem$x <- eem$x / factor
+    class(eem) <- "eem"
+  }
+
+  return(eem)
+}
+
+#' Subtract one eem from another
+#'
+#' Useful for performing blank subtraction
+#'
+#' @param eem1 the eem that will be returned
+#' @param eem2 the eem that will be used for subtraction
+#'
+#' @importFrom staRdom eem_extend2largest
+#' @importFrom staRdom eem_red2smallest
+#' @return an \code{eem}
+#' @noRd
+#' @examples
+#' eem_sub <- .eem_subtract(example_eems[[1]], longterm_blank)
+
+.eem_subtract <- function(eem1, eem2){
+  #scale subtraction eem to returned eem
+  if(any(dim(eem2$x) > dim(eem1$x))){
+    eem2 <- staRdom::eem_red2smallest(list(eem1, eem2))[[2]]
+  }
+
+  if(any(dim(eem2$x) < dim(eem1$x)) | length(setdiff(eem2$em, eem1$em)) > 0 | length(setdiff(eem2$ex, eem1$ex)) > 0){
+    eem2 <- staRdom::eem_extend2largest(list(eem1, eem2), interpolation = T)[[2]]
+  }
+
+  #ensure wavelengths match eem1
+  if(length(setdiff(eem2$em, eem1$em)) > 0 | length(setdiff(eem2$ex, eem1$ex)) > 0){
+    em_rm <- setdiff(eem2$em, eem1$em)
+    ex_rm <- setdiff(eem2$ex, eem1$ex)
+
+    if(length(em_rm) > 0){
+      eem2 <- staRdom::eem_exclude(list(eem2), exclude=list("em"=em_rm))[[1]]
+    }
+
+    if(length(ex_rm) > 0){
+      eem2 <- staRdom::eem_exclude(list(eem2), exclude=list("ex"=ex_rm))[[1]]
+    }
+  }
+
+  #check dimensions are equal
+  if(any(dim(eem2$x) != dim(eem1$x))){
+    stop("unable to make eem2 dimensions match eem1")
+  }
+
+  #subtract
+  eem1$x <- eem1$x - eem2$x
+  return(eem1)
+}

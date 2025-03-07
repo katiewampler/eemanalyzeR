@@ -38,6 +38,7 @@ with_mocked_bindings(
       expect_s3_class(augment_eemlist, "eemlist")
       expect_equal(names(augment_eemlist[[1]]), c("file", "sample", "x", "ex", "em",
                                                   "location", "meta_name", "dilution",
+                                                  "integration_time_s", "raman_area_1s",
                                                   "analysis_date", "description", "doc_mgL",
                                                   "notes", "blk_file", "blk_x"))
       expect_equal(get_sample_info(augment_eemlist, "blk_file"),
@@ -63,6 +64,7 @@ with_mocked_bindings(
       expect_s3_class(augment_eemlist, "eemlist")
       expect_equal(names(augment_eemlist[[1]]), c("file", "sample", "x", "ex", "em",
                                                   "location", "meta_name", "dilution",
+                                                  "integration_time_s", "raman_area_1s",
                                                   "analysis_date", "description", "doc_mgL",
                                                   "notes", "blk_file", "blk_x"))
       expect_equal(get_sample_info(augment_eemlist, "blk_file"),
