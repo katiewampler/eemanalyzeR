@@ -14,4 +14,9 @@ test_that("dilution corrections are performed", {
   #ensure eem is raman normalized
   expect_false(.eem_equal(eemlist[[3]]$x, correct_eem[[3]]$x))
   expect_equal(as.vector(eemlist[[3]]$x)*2, as.vector(correct_eem[[3]]$x))
+
+  #ensure correction isn't applied twice
+  correct_eem_double <- correct_dilution(correct_dilution(eemlist))
+  expect_true(.eem_equal(correct_eem[[3]]$x, correct_eem_double[[3]]$x))
+
 })

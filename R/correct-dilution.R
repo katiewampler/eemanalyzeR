@@ -30,6 +30,9 @@ correct_dilution <- function(eemlist){
   if(any(dilution_factor > 1)){
     dilution_factor <- 1 / dilution_factor}
 
+  #don't correct any that have already been corrected
+  dilution_factor[sapply(eemlist, attr, "is_dil_corrected")] <- 1
+
   res <- eem_normalize(eemlist, dilution_factor)
 
   res <- lapply(1:length(res), function(i){
@@ -39,5 +42,6 @@ correct_dilution <- function(eemlist){
 
   #TODO:add note in readme this was done
 
+  class(res) <- "eemlist"
   return(res)
 }

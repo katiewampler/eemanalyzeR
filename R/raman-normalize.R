@@ -32,6 +32,10 @@ raman_normalize <- function(eemlist){
   raman_1s <- get_sample_info(eemlist, "raman_area_1s")
   int_time_s <- get_sample_info(eemlist, "integration_time_s")
   raman_factor <- raman_1s * int_time_s
+
+  #don't correct any that have already been corrected
+  raman_factor[sapply(eemlist, attr, "is_raman_normalized")] <- 1
+
   res <- eem_normalize(eemlist, raman_factor)
 
   res <- lapply(1:length(res), function(i){
@@ -41,5 +45,6 @@ raman_normalize <- function(eemlist){
 
   #TODO:add note in readme this was done
 
+  class(res) <- "eemlist"
   return(res)
 }
