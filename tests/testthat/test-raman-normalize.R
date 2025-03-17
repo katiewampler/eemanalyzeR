@@ -17,4 +17,7 @@ test_that("raman normalizations are performed", {
   #ensure correction isn't applied twice
   correct_eem_double <- raman_normalize(raman_normalize(eemlist))
   expect_true(.eem_equal(correct_eem[[3]]$x, correct_eem_double[[3]]$x))
+
+  expect_s3_class(correct_eem, "eemlist")
+
 })

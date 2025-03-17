@@ -8,6 +8,8 @@ test_that("dilution corrections are performed", {
   #ensure corrections are marked as true
   expect_true(all(sapply(correct_eem, attr, "is_dil_corrected")))
 
+  expect_s3_class(correct_eem, "eemlist")
+
   #ensure eem is returned with all it's things
   expect_equal(length(eemlist)[[1]], length(correct_eem)[[1]])
 

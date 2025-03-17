@@ -18,4 +18,7 @@ test_that("ife corrections are performed", {
   #ensure correction isn't applied twice
   correct_eem_double <- ife_correct(ife_correct(eemlist, abslist), abslist)
   expect_true(.eem_equal(correct_eem[[3]]$x, correct_eem_double[[3]]$x))
+
+  expect_s3_class(correct_eem, "eemlist")
+
   })
