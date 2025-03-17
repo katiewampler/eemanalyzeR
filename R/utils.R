@@ -232,6 +232,8 @@
     x$notes <- NULL
     x$blk_x <- NULL
     x$blk_file <- NULL
+    x$integration_time_s <- NULL
+    x$raman_area_1s <- NULL
   }
   return(x)
 

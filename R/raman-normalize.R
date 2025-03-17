@@ -1,4 +1,4 @@
-#TODO: add writing to readme file for raman noramlization
+#TODO: add writing to readme file for raman normalization
 
 #' Perform Raman Normalization
 #'
@@ -34,4 +34,12 @@ raman_normalize <- function(eemlist){
   raman_factor <- raman_1s * int_time_s
   res <- eem_normalize(eemlist, raman_factor)
 
+  res <- lapply(1:length(res), function(i){
+    attr(res[[i]], "is_raman_normalized") <- TRUE
+    return(res[[i]])
+  })
+
+  #TODO:add note in readme this was done
+
+  return(res)
 }
