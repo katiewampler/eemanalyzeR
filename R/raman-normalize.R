@@ -26,7 +26,7 @@
 
 raman_normalize <- function(eemlist){
   if(!any(.meta_added(eemlist))){
-    stop("metadata must be added to eemlist and abslist to link samples. \nPlease add metadata using 'add_metadata' function")
+    stop("metadata must be added to eemlist to correct samples. \nPlease add metadata using 'add_metadata' function")
   }
 
   raman_1s <- get_sample_info(eemlist, "raman_area_1s")

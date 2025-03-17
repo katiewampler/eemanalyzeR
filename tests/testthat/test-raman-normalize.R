@@ -1,5 +1,5 @@
 test_that("raman normalizations are performed", {
-  expect_error(raman_normalize(example_eems), "metadata must be added to eemlist and abslist to link samples")
+  expect_error(raman_normalize(example_eems), "metadata must be added to eemlist to correct samples")
 
   eemlist <- add_metadata(metadata,example_eems)
   correct_eem <- raman_normalize(eemlist)
