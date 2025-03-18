@@ -55,6 +55,10 @@ eem_dir_read <- function(input_dir, pattern = NULL, skip="(?i)abs", file_ext="da
     #add additional attributes
     attr(eem[[1]], "is_doc_normalized") <- FALSE
     attr(eem[[1]], "is_dil_corrected") <- FALSE
+    # Default these to false and add them later
+    attr(eem[[1]], "is_blank") <- FALSE
+    attr(eem[[1]], "is_check") <- FALSE
+
     return(eem)},
     error = function(e) {
       # Check if it's a specific error
