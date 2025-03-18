@@ -1,0 +1,86 @@
+######################################################################
+Log File: C:\Aqualog_Data\7_Storm_DOM\2024_11_01\AqualogSampleQLog.txt
+JYAqualogSampleQ.dll Version: 4.3.0.27
+Date: Friday, November 1, 2024
+Time: 8:02:09
+######################################################################
+[2024-11-01 08-02-09] 
+Aqualog Sample Q Experimental Parameters:
+[Aqualog Sample Q File] C:\Aqualog_Data\7_Storm_DOM\2024_11_01\MCSN Method_2024_11_01.aqu
+[Aqualog Experiment File] C:\Aqualog_Data\7_Storm_DOM\2024_11_01\MCSN Method_2024_11_01_Exper_2024-11-01-08-02-09.xml
+[Output Destination Folder] C:\Aqualog_Data\7_Storm_DOM\2024_11_01\
+
+Aqualog Sample Q Notes:
+
+Dilution Factor: 0
+
+Blank & Sample Setup:
+[Injector Enabled] True
+[Tray 1:1A][Blank Group 1] B1-B1
+[Tray 1:1B][Blank Group 1: Sample 1] S1-BLK2410311 (Repeats=0)
+[Tray 1:1C][Blank Group 1: Sample 2] S2-preTea241031 (Repeats=0)
+[Tray 1:2A][Blank Group 1: Sample 3] S3-STRM_L1_SH_PT1_0010 (Repeats=0)
+[Tray 1:2B][Blank Group 1: Sample 4] S4-STRM_L1_SH_PT1_0012 (Repeats=0)
+[Tray 1:2C][Blank Group 1: Sample 5] S5-STRM_L1_WA_PT1_0089 (Repeats=0)
+[Tray 1:3A][Blank Group 1: Sample 6] S6-STRM_L1_SH_PT2_0100 (Repeats=0)
+[Tray 1:3B][Blank Group 1: Sample 7] S7-STRM_L1_SH_PT2_0101 (Repeats=0)
+[Tray 1:3C][Blank Group 1: Sample 8] S8-STRM_L1_SH_PT2_0102 (Repeats=0)
+[Tray 1:4A][Blank Group 1: Sample 9] S9-STRM_L1_SH_PT2_0103 (Repeats=0)
+[Tray 1:4B][Blank Group 1: Sample 10] S10-STRM_L1_SH_PT2_0105 (Repeats=0)
+[Tray 1:4C][Blank Group 1: Sample 11] S11-STRM_L1_SH_PT2_0106 (Repeats=0)
+[Tray 2:1A][Blank Group 1: Sample 12] S12-BLK2410312 (Repeats=0)
+[Tray 2:1B][Blank Group 1: Sample 13] S13-STRM_L1_SH_PT2_0107 (Repeats=0)
+[Tray 2:1C][Blank Group 1: Sample 14] S14-STRM_L1_SH_PT2_0108 (Repeats=0)
+[Tray 2:2A][Blank Group 1: Sample 15] S15-STRM_L1_SH_PT2_0109 (Repeats=0)
+[Tray 2:2B][Blank Group 1: Sample 16] S16-STRM_L1_SH_PT2_0110 (Repeats=0)
+[Tray 2:2C][Blank Group 1: Sample 17] S17-STRM_L1_SH_PT2_0111 (Repeats=0)
+[Tray 2:3A][Blank Group 1: Sample 18] S18-STRM_L1_SH_PT2_0114(real) (Repeats=0)
+[Tray 2:3B][Blank Group 1: Sample 19] S19-STRM_L1_SH_PT2_0115 (Repeats=0)
+[Tray 2:3C][Blank Group 1: Sample 20] S20-STRM_L1_SH_PT2_0116 (Repeats=0)
+[Tray 2:4A][Blank Group 1: Sample 21] S21-STRM_L1_SH_PT2_0117 (Repeats=0)
+[Tray 2:4B][Blank Group 1: Sample 22] S22-postTea241031 (Repeats=0)
+[Tray 2:4C][Blank Group 1: Sample 23] S23-BLK2410313 (Repeats=0)
+[Total Number of Samples] 23
+
+Post Processing Options:
+
+Export Options:
+ABS = True
+OGW = True
+ASCII = True
+BEM = True
+SEM = True
+
+Delay Options:
+Single Cell Kinetics = False
+Delay Before First Blank = 0 Seconds
+Delay Between Each Experiment = 0 Seconds
+################################################################################
+[2024-11-01 08-02-09] STARTING Aqualog SampleQ Execution
+[2024-11-01 08-02-09] Experiment 01 of 24 [Blank 1 - Tray 1:1A] Start Done B1
+[2024-11-01 08-24-06] Experiment 02 of 24 [Blank 1, Sample 1, Repeat 0 - Tray 1:1B] Start Done B1S1BLK2410311
+[2024-11-01 08-47-00] Experiment 03 of 24 [Blank 1, Sample 2, Repeat 0 - Tray 1:1C] Start Done B1S2preTea241031
+[2024-11-01 09-09-38] Experiment 04 of 24 [Blank 1, Sample 3, Repeat 0 - Tray 1:2A] Start Done B1S3STRM_L1_SH_PT1_0010
+[2024-11-01 09-32-17] Experiment 05 of 24 [Blank 1, Sample 4, Repeat 0 - Tray 1:2B] Start Done B1S4STRM_L1_SH_PT1_0012
+[2024-11-01 09-55-10] Experiment 06 of 24 [Blank 1, Sample 5, Repeat 0 - Tray 1:2C] Start Done B1S5STRM_L1_WA_PT1_0089
+[2024-11-01 10-18-05] Experiment 07 of 24 [Blank 1, Sample 6, Repeat 0 - Tray 1:3A] Start Done B1S6STRM_L1_SH_PT2_0100
+[2024-11-01 10-40-44] Experiment 08 of 24 [Blank 1, Sample 7, Repeat 0 - Tray 1:3B] Start Done B1S7STRM_L1_SH_PT2_0101
+[2024-11-01 11-03-38] Experiment 09 of 24 [Blank 1, Sample 8, Repeat 0 - Tray 1:3C] Start Done B1S8STRM_L1_SH_PT2_0102
+[2024-11-01 11-26-17] Experiment 10 of 24 [Blank 1, Sample 9, Repeat 0 - Tray 1:4A] Start Done B1S9STRM_L1_SH_PT2_0103
+[2024-11-01 11-49-11] Experiment 11 of 24 [Blank 1, Sample 10, Repeat 0 - Tray 1:4B] Start Done B1S10STRM_L1_SH_PT2_0105
+[2024-11-01 12-12-04] Experiment 12 of 24 [Blank 1, Sample 11, Repeat 0 - Tray 1:4C] Start Done B1S11STRM_L1_SH_PT2_0106
+[2024-11-01 12-34-43] Experiment 13 of 24 [Blank 1, Sample 12, Repeat 0 - Tray 2:1A] Start Done B1S12BLK2410312
+[2024-11-01 12-57-37] Experiment 14 of 24 [Blank 1, Sample 13, Repeat 0 - Tray 2:1B] Start Done B1S13STRM_L1_SH_PT2_0107
+[2024-11-01 13-20-31] Experiment 15 of 24 [Blank 1, Sample 14, Repeat 0 - Tray 2:1C] Start Done B1S14STRM_L1_SH_PT2_0108
+[2024-11-01 13-43-25] Experiment 16 of 24 [Blank 1, Sample 15, Repeat 0 - Tray 2:2A] Start Done B1S15STRM_L1_SH_PT2_0109
+[2024-11-01 14-06-03] Experiment 17 of 24 [Blank 1, Sample 16, Repeat 0 - Tray 2:2B] Start Done B1S16STRM_L1_SH_PT2_0110
+[2024-11-01 14-28-58] Experiment 18 of 24 [Blank 1, Sample 17, Repeat 0 - Tray 2:2C] Start Done B1S17STRM_L1_SH_PT2_0111
+[2024-11-01 14-51-52] Experiment 19 of 24 [Blank 1, Sample 18, Repeat 0 - Tray 2:3A] Start Done B1S18STRM_L1_SH_PT2_0114(real)
+[2024-11-01 15-14-31] Experiment 20 of 24 [Blank 1, Sample 19, Repeat 0 - Tray 2:3B] Start Done B1S19STRM_L1_SH_PT2_0115
+[2024-11-01 15-37-26] Experiment 21 of 24 [Blank 1, Sample 20, Repeat 0 - Tray 2:3C] Start Done B1S20STRM_L1_SH_PT2_0116
+[2024-11-01 16-00-21] Experiment 22 of 24 [Blank 1, Sample 21, Repeat 0 - Tray 2:4A] Start Done B1S21STRM_L1_SH_PT2_0117
+[2024-11-01 16-23-16] Experiment 23 of 24 [Blank 1, Sample 22, Repeat 0 - Tray 2:4B] Start Done B1S22postTea241031
+[2024-11-01 16-45-54] Experiment 24 of 24 [Blank 1, Sample 23, Repeat 0 - Tray 2:4C] Start Done B1S23BLK2410313
+[2024-11-01 17-08-50] COMPLETED Aqualog SampleQ Execution
+--------------------------------------------------------------------------------
+[2024-11-01 17-08-51] Aqualog Xenon Lamp Turned Off

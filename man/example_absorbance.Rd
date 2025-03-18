@@ -5,12 +5,11 @@
 \alias{example_absorbance}
 \title{Down-scaled absorbance data}
 \format{
-A data.frame with 32 rows and 4 columns:
-\describe{
-  \item{wavelength}{Wavelength absorbance was measured at in nanometers}
-  \item{ExampleBlank}{Absorbance measured for a sample of Type 1 water}
-  \item{ExampleTeaStd}{Absorbance measured for a sample of dilute unsweetened tea}
-  \item{ExampleSample}{Absorbance measures for a sample of stream water from Oregon, USA}
+An \code{abslist} with three samples
+\itemize{
+  \item{\strong{B1S1ExampleBlankABS}: Absorbance measured for a sample of Type 1 water}
+  \item{\strong{B1S2ExampleTeaStdABS}: Absorbance measured for a sample of dilute unsweetened tea}
+  \item{\strong{B1S3ExampleSampleABS}: Absorbance measured for a sample of stream water from Oregon, USA}
 }
 }
 \source{
@@ -21,6 +20,7 @@ example_absorbance
 }
 \description{
 A subset of water samples run on a Horiba Aqualog for absorbance. This data only includes
-the absorbance data associated with the samples in \link{example_samples}.
+the absorbance data associated with the samples in \link{example_eems}. Data was loaded using the
+\link[eemanalyzeR]{abs_dir_read} function. For more details on the format of an eemlist, see \link[eemanalyzeR]{abs_read}.
 }
 \keyword{datasets}

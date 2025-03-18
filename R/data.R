@@ -1,58 +1,47 @@
-#' Down-scaled excitation emission matrices of sample blanks
+#' Down-scaled excitation emission matrices
 #'
-#' A subset of water samples run on a Horiba Aqualog for excitation emission matrices (EEMs). This data only includes
-#' the blanks associated with the samples in \link{example_samples}. Data was loaded using \link[eemR]{eem_read}.
+#' A subset of water samples run on a Horiba Aqualog for excitation emission matrices (EEMs). This data includes
+#' both the samples and blanks. Data was loaded using \link[eemanalyzeR]{eem_dir_read}.
 #' For more details on the format of an eemlist, see the \link[eemR]{eemR} package.
 #'
-#' @format  An eemlist with three samples:
-#' \describe{
-#'   \item{ExampleBlank}{Fluorescence measured for a blank of Type 1 water}
-#'   \item{ExampleTeaStd}{Fluorescence measured for a blank of Type 1 water}
-#'   \item{ExampleSample}{Fluorescence measured for a blank of Type 1 water}
+#' @format An \code{eemlist} with six samples:
+#' \itemize{
+#'   \item{\strong{B1S1ExampleBlankBEM}: Fluorescence measured for a blank of Type 1 water}
+#'   \item{\strong{B1S1ExampleBlankSEM}: Fluorescence measured for a sample of Type 1 water}
+#'   \item{\strong{B1S2ExampleTeaStdBEM}: Fluorescence measured for a blank of Type 1 water}
+#'   \item{\strong{B1S2ExampleTeaStdSEM}: Fluorescence measured for a sample of dilute unsweetened tea}
+#'   \item{\strong{B1S3ExampleSampleBEM}: Fluorescence measured for a blank of Type 1 water}
+#'   \item{\strong{B1S3ExampleSampleSEM}: Fluorescence measured for a sample of stream water from Oregon, USA}
 #' }
 #' @source Oregon State University Forest Watershed Hydrology Lab (2022-11-14)
-"example_blanks"
-
-#' Down-scaled excitation emission matrices of samples
-#'
-#' A subset of water samples run on a Horiba Aqualog for excitation emission matrices (EEMs). This data only includes
-#' the samples associated with the blanks in \link{example_blanks}. Data was loaded using \link[eemR]{eem_read}.
-#' For more details on the format of an eemlist, see the \link[eemR]{eemR} package.
-#'
-#' @format An eemlist with three samples:
-#' \describe{
-#'   \item{ExampleBlank}{Fluorescence measured for a sample of Type 1 water}
-#'   \item{ExampleTeaStd}{Fluorescence measured for a sample of dilute unsweetened tea}
-#'   \item{ExampleSample}{Fluorescence measures for a sample of stream water from Oregon, USA}
-#' }
-#' @source Oregon State University Forest Watershed Hydrology Lab (2022-11-14)
-"example_samples"
+"example_eems"
 
 #' Down-scaled absorbance data
 #'
 #' A subset of water samples run on a Horiba Aqualog for absorbance. This data only includes
-#' the absorbance data associated with the samples in \link{example_samples}.
+#' the absorbance data associated with the samples in \link{example_eems}. Data was loaded using the
+#' \link[eemanalyzeR]{abs_dir_read} function. For more details on the format of an eemlist, see \link[eemanalyzeR]{abs_read}.
+
 #'
-#' @format A data.frame with 32 rows and 4 columns:
-#' \describe{
-#'   \item{wavelength}{Wavelength absorbance was measured at in nanometers}
-#'   \item{ExampleBlank}{Absorbance measured for a sample of Type 1 water}
-#'   \item{ExampleTeaStd}{Absorbance measured for a sample of dilute unsweetened tea}
-#'   \item{ExampleSample}{Absorbance measures for a sample of stream water from Oregon, USA}
+#' @format An \code{abslist} with three samples
+#' \itemize{
+#'   \item{\strong{B1S1ExampleBlankABS}: Absorbance measured for a sample of Type 1 water}
+#'   \item{\strong{B1S2ExampleTeaStdABS}: Absorbance measured for a sample of dilute unsweetened tea}
+#'   \item{\strong{B1S3ExampleSampleABS}: Absorbance measured for a sample of stream water from Oregon, USA}
 #' }
 #' @source Oregon State University Forest Watershed Hydrology Lab (2022-11-14)
 "example_absorbance"
 
 #' Example metadata
 #'
-#' Metadata associated with the samples in \link{example_samples}. Provides an example of the structure
+#' Metadata associated with the samples in \link{example_eems}. Provides an example of the structure
 #' and requirements for metadata needed to run samples.
 #'
 #' @format A data.frame with 3 rows and 11 columns:
 #' \describe{
 #'   \item{index}{Simply the numeric order of entry (e.g. 1, 2, 3, 4, etc…)}
-#'   \item{analysis_date}{Date samples were ran on instrument (not collected in the field)}
-#'   \item{description}{A brief description of the sample collected}
+#'   \item{analysis_date}{optional: Date samples were ran on instrument (not collected in the field)}
+#'   \item{description}{optional: A brief description of the sample collected}
 #'   \item{data_identifier}{The file name from the aqualog, needs to match exactly}
 #'   \item{replicate_no}{A number indicating if the sample was replicated, an unreplicated sample should get a 1. Analytical replicates must have identical sample names.}
 #'   \item{data_identifier}{The file name from the aqualog, needs to match exactly}
