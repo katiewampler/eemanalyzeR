@@ -19,5 +19,27 @@
     ifelse(class(eem) == "eemlist", TRUE, FALSE)
   }
 
+  #' Checks if sample is a blank
+  #'
+  #' @param obj an object
+  #' @noRd
+  .is_blank <- function(obj) {
+    # Get the attribute
+    val <- attr(obj, "is_blank")
+    stopifnot(is.logical(val))
+    return(val)
+  }
+
+  #' Checks if sample is a check (e.g. tea standard)
+  #'
+  #' @param obj an object
+  #' @noRd
+  .is_check <- function(obj) {
+    # Get the attribute
+    val <- attr(obj, "is_check")
+    stopifnot(is.logical(val))
+    return(val)
+  }
+
 
   #abs_list <- function()
