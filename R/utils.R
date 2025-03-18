@@ -18,6 +18,28 @@
     ifelse(class(eem) == "eemlist", TRUE, FALSE)
   }
 
+  #' Checks if sample is a blank
+  #'
+  #' @param obj an object
+  #' @noRd
+  .is_blank <- function(obj) {
+    # Get the attribute
+    val <- attr(obj, "is_blank")
+    stopifnot(is.logical(val))
+    return(val)
+  }
+
+  #' Checks if sample is a check (e.g. tea standard)
+  #'
+  #' @param obj an object
+  #' @noRd
+  .is_check <- function(obj) {
+    # Get the attribute
+    val <- attr(obj, "is_check")
+    stopifnot(is.logical(val))
+    return(val)
+  }
+
 
   #' Checks if object is an abs
   #'
@@ -215,6 +237,27 @@
     augmented <- unlist(lapply(x, .blk_added))
   }
   return(augmented)
+
+}
+
+
+#' Removes extra list items from eemlist, replaces sample with meta_name for matching
+#' @noRd
+.make_base_eem <- function(x){
+  if(.meta_added(x)){
+    x$sample <- x$meta_name
+    x$meta_name <- NULL
+    x$dilution <- NULL
+    x$integration_time_s <- NULL
+    x$raman_area_1s <- NULL
+    x$analysis_date <- NULL
+    x$description <- NULL
+    x$doc_mgL <-NULL
+    x$notes <- NULL
+    x$blk_x <- NULL
+    x$blk_file <- NULL
+  }
+  return(x)
 
 }
 

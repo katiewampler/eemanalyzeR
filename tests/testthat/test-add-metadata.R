@@ -33,14 +33,18 @@
 
 
     eem_names <- lapply(add_metadata(metadata, example_eems), names)
-    expect_length(eem_names[[1]], 12)
+    expect_length(eem_names[[1]], 14)
     expect_equal(eem_names[[1]], eem_names[[6]])
-    expect_equal(eem_names[[1]], c("file","sample", "x", "ex", "em", "location","meta_name","dilution","analysis_date", "description","doc_mgL","notes"))
+    expect_equal(eem_names[[1]], c("file","sample", "x", "ex", "em", "location","meta_name","dilution",
+                                   "integration_time_s", "raman_area_1s", "analysis_date", "description","doc_mgL","notes"))
 
     abs_aug <- add_metadata(metadata, example_absorbance)
     eem_aug <- add_metadata(metadata, example_eems)
 
     expect_equal(get_sample_info(eem_aug, "meta_name"), rep(c("ExampleBlank", "ExampleTeaStd", "ExampleSample"), each=2))
     expect_equal(get_sample_info(eem_aug, "meta_name"), rep(c("ExampleBlank", "ExampleTeaStd", "ExampleSample"), each=2))
+
+    expect_false(any(is.na(get_sample_info(eem_aug, "raman_area_1s")))) #make sure these aren't NA
+    expect_false(any(is.na(get_sample_info(eem_aug, "integration_time_s")))) #make sure these aren't NA
 
   })

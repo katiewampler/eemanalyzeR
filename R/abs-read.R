@@ -13,7 +13,7 @@
 #'  \item file The filename of the absorbance data.
 #'  \item sample The sample name of the absorbance data.
 #'  \item n The number of wavelengths absorbance was measured at.
-#'  \item data A \code{data.frame} with absorbance data.
+#'  \item data A matrix where the first column is the wavlengths in nm and the second column is the absorbance.
 #'  \item location Directory of the absorbance data.
 #' }
 #' @export
@@ -59,11 +59,8 @@ abs_read <- function(file){
 
     #give column names and make into df if not skipped
     if(is.null(abs) == F){
-      colnames(abs) <- c("wavelength", "absorbance")
-      abs <- as.data.frame(abs)
-
       #thrown an error if the wavelength isn't continuous, suggesting transmittance data was added
-      if(sum(diff(abs$wavelength) > 0) > 0){
+      if(sum(diff(abs[1,]) > 0) > 0){
         stop("wavelengths aren't continuous, please ensure transmitance data wasn't included in absorbance file:\n", file)
       }
 
@@ -79,6 +76,10 @@ abs_read <- function(file){
 
       attr(obj, "is_dilution_corrected") <- FALSE
       attr(obj, "is_DOC_normalized") <- FALSE
+      # Default these to false and add them later
+      attr(obj, "is_blank") <- FALSE
+      attr(obj, "is_check") <- FALSE
+
     }else{
       obj <- NULL
     }
