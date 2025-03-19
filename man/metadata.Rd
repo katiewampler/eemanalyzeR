@@ -23,7 +23,7 @@ A data.frame with 3 rows and 11 columns:
 }
 }
 \source{
-Oregon State University Forest Watershed Hydrology Lab (2022-11-14)
+Oregon State University Forest Ecohydrology and Watershed Sciences Lab (2022-11-14)
 }
 \usage{
 metadata

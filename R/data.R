@@ -13,7 +13,7 @@
 #'   \item{\strong{B1S3ExampleSampleBEM}: Fluorescence measured for a blank of Type 1 water}
 #'   \item{\strong{B1S3ExampleSampleSEM}: Fluorescence measured for a sample of stream water from Oregon, USA}
 #' }
-#' @source Oregon State University Forest Watershed Hydrology Lab (2022-11-14)
+#' @source Oregon State University Forest Ecohydrology and Watershed Sciences Lab (2022-11-14)
 "example_eems"
 
 #' Down-scaled absorbance data
@@ -29,7 +29,7 @@
 #'   \item{\strong{B1S2ExampleTeaStdABS}: Absorbance measured for a sample of dilute unsweetened tea}
 #'   \item{\strong{B1S3ExampleSampleABS}: Absorbance measured for a sample of stream water from Oregon, USA}
 #' }
-#' @source Oregon State University Forest Watershed Hydrology Lab (2022-11-14)
+#' @source Oregon State University Forest Ecohydrology and Watershed Sciences Lab (2022-11-14)
 "example_absorbance"
 
 #' Example metadata
@@ -53,5 +53,26 @@
 #'   \item{DOC_mg_L}{optional: DOC concentration in mg/L of the original sample (not the diluted sample)}
 #'   \item{Notes}{optional: Any notes from sample collection or sample running, will not be used in analysis}
 #' }
-#' @source Oregon State University Forest Watershed Hydrology Lab (2022-11-14)
+#' @source Oregon State University Forest Ecohydrology and Watershed Sciences Lab (2022-11-14)
 "metadata"
+
+
+#' Long Term Average Blank
+#'
+#' An \code{eem} object containing the average of 81 blank samples, used to check for blank consistency.
+#'
+#' @format an \code{eem} object, for more details on the format of an eem, see the \link[eemR]{eemR} package.
+#' @note for details on creating your own long-term blank see ##to do: make function or vignette here
+#' @source Oregon State University Forest Ecohydrology and Watershed Sciences Lab (2022 to 2024)
+"longterm_blank"
+
+
+#' Tea Absorbance Model
+#'
+#' An tibble containing the average absorbance of multiple 1% Pure Leaf Unsweetened Black Tea (SRMtea) standards.
+#'
+#' @format tibble with columns: wavelength, mean_abs_by_wavelength, sd_abs_by_wavelength, sdmin_3x, sdmax_3x
+#' @note for details on creating your own long-term SRMtea see ##to do: make function or vignette here
+#' @source Oregon State University Forest Ecohydrology and Watershed Sciences Lab (2022 to 2024)
+"tea_absorbance_model"
+

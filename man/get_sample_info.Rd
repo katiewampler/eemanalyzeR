@@ -47,4 +47,10 @@ get_sample_info(eemlist, "analysis_date")
 #get doc for fifth eem
 eemlist <- add_metadata(metadata, example_eems)
 get_sample_info(eemlist[[5]], "doc_mgL")
+
+#get emission wavelengths
+get_sample_info(example_eems, "em")
+
+#get absorbance data
+get_sample_info(example_absorbance, "data")
 }

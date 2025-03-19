@@ -60,6 +60,21 @@ get_sample_info <- function(x, info) {
       res_form <- res #currently just return a list of extract matrices
     }
 
+    # if data.frame (used for absorbance data) return a data.frame of absorbance values
+    if(all(sapply(res, is.matrix)) & .is_abslist(x)) {
+      sample_names <- get_sample_info(x, "sample")
+
+      #convert to df
+      res <- lapply(res, as.data.frame)
+      res <- lapply(res, function(df) {
+        colnames(df) <- c("wavelength", "absorbance")
+        return(df)
+      })
+      res_form <- Reduce(\(df1, df2) merge(df1, df2, by = "wavelength", all.x = TRUE),
+      res)
+      names(res_form) <- c("wavelength", sample_names)
+    }
+
     #if vector with multiple items
     if(all(sapply(res, is.vector)) & all(sapply(res, length)>1)){
       res_form <- do.call(rbind, res)

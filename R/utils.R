@@ -160,11 +160,15 @@
 
 
 #' Answer validation questions yes or no
+#'
+#' @importFrom rlang is_interactive
 #' @noRd
 .yesorno <- function(question,
                      y_response,
                      n_response) {
-  stopifnot(is.character(question) |
+  # Return TRUE (ie "yes") if run non-interactively (tests, batch processing)
+  if (!rlang::is_interactive()) return(TRUE)
+  stopifnot(  is.character(question) |
               is.character(y_response) |
               is.character(n_response))
   cont <- readline(paste0(question, " [y/n]: "))
@@ -257,7 +261,7 @@
 #' Useful for raman normalization or normalizing to a max of one for blank comparisons.
 #'
 #' @param eem the \code{eem} or \code{eemlist} to normalize
-#' @param factor the normalization factor, if NULL it will normalize to the maximum value for each eem
+#' @param factor the normalization factor, either a single value or vector of factors, if NULL it will normalize to the maximum value for each eem
 #'
 #' @return an \code{eem} or \code{eemlist} where \code{x} has been normalized
 #' @export
@@ -269,7 +273,7 @@
 eem_normalize <- function(eem, factor=NULL){
 
   if(.is_eemlist(eem)){
-    eem <- lapply(eem, eem_normalize, factor)
+    eem <- mapply(eem_normalize, eem, factor, SIMPLIFY = F)
     class(eem) <- "eemlist"
   }else{
     if(is.null(factor)){

@@ -56,3 +56,54 @@ for(x in files){
 
   metadata <- meta_read("data-raw")
   usethis::use_data(metadata, overwrite = T)
+
+
+  #average is too narrow??/ normalize to max??
+#code to create averaged blank
+  input_dir <- "data-raw/long term standards"
+  avg_blank <- function(input_dir){
+    blank_eems <- eem_dir_read(file.path(input_dir, "EEM/blanks"), pattern="blank")  #this takes a little while because there's a lot of samples
+
+    #make all the save wavelengths
+    blank_eems_rd <- staRdom::eem_red2smallest(blank_eems)
+
+    #convert to raster to plot
+    flat_X <- lapply(lapply(blank_eems_rd, `[[`, 3), as.vector)
+
+    #get unique values, there's likely some duplicates
+    flat_X_unique <- flat_X[!duplicated(lapply(flat_X, sort))]
+
+    X_df <- do.call(cbind.data.frame, flat_X_unique)
+    colnames(X_df) <- paste0("blk_", 1:ncol(X_df))
+    X_df$val <- 1:nrow(X_df)
+
+    X_df_long <- X_df %>% tidyr::pivot_longer(!val, values_to = "fluor", names_to="sample") #!!need to make flexible
+
+
+    ggplot2::ggplot(X_df_long, ggplot2::aes(x=val, y=log(fluor), group=sample), color="black") + ggplot2::geom_line() #visualize to check for outliers
+
+    #average across all eem's to get a average blank eem
+    eem_list <- lapply(blank_eems_rd, `[[`, 3)
+    eem_list <- lapply(eem_list, function(x) ifelse(x < 0, NA, x)) #remove negatives
+    avg_blank <- purrr::reduce(eem_list,`+`) / length(eem_list)
+
+    avg_blank_flat <- data.frame(val= 1:nrow(X_df), fluor=as.vector(avg_blank))
+    ggplot2::ggplot() + ggplot2::geom_line(data=X_df_long, ggplot2::aes(x=val, y=fluor, group=sample), color="black") +
+      ggplot2::geom_line(data=avg_blank_flat, ggplot2::aes(x=val, y=fluor), color="red") #visualize to check for outliers
+
+    avg_blank <- list(file="/data-raw/long term standards/EEM/blanks/avg_blank.dat",
+                      sample = "average_blank",
+                      x = avg_blank,
+                      em = blank_eems_rd[[1]]$em,
+                      ex = blank_eems_rd[[1]]$ex,
+                      location = "data-raw")
+
+    class(avg_blank) <- "eem"
+
+    staRdom::ggeem(avg_blank)
+    return(avg_blank)
+
+  }
+
+  longterm_blank <- avg_blank(input_dir)
+  usethis::use_data(longterm_blank, overwrite = T)

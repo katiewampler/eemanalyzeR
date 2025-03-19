@@ -1,4 +1,4 @@
-#' Extract blanks from eemlist
+#' Extract blank samples from eemlist
 #'
 #' Using a regular expression, the \code{eemlist} will be cut to include either
 #' only the blank samples (\code{eem_get_blank}) or remove all blank samples (\code{eem_rm_blank}).
@@ -25,7 +25,7 @@
 #' samples <- eem_rm_blank(example_eems, pattern = "BEM")
 eem_get_blank <- function(eemlist, pattern = "BEM", info="sample"){
 
-  blank_names <- grep(pattern, get_sample_info(eemlist, info), value = T)
+  blank_names <- grep(pattern, get_sample_info(eemlist, info), value = T, ignore.case = TRUE)
   if(length(blank_names) > 0){
     eemlist <- subset_samples(eemlist, info, blank_names, keep = TRUE, ignore_case = TRUE,verbose = FALSE)
   }else{
@@ -48,3 +48,5 @@ eem_rm_blank <- function(eemlist, pattern= "BEM", info="sample"){
   class(eemlist) <- "eemlist"
   return(eemlist)
 }
+
+

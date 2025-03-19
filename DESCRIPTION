@@ -26,15 +26,21 @@ Suggests:
 VignetteBuilder: knitr
 Language: en-US
 Imports: 
+    cowplot,
     dplyr,
     eemR,
+    ggplot2,
     lubridate,
     magrittr,
+    parallel,
     purrr,
     readxl,
+    rlang,
     staRdom,
     stats,
     stringr,
+    tidyr,
     tools,
+    usethis,
     utils
 Config/testthat/edition: 3
