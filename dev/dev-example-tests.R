@@ -103,7 +103,7 @@
       #processing steps
       eems <- blk_subtract(eems)
       eems <- remove_scattering(eems)
-      eems <- ife_correct(eems, abs) #issue here
+      eems <- ife_correct(eems, abs)
       eems <- raman_normalize(eems)
       eems <- correct_dilution(eems)
       staRdom::ggeem(eems[[2]])
