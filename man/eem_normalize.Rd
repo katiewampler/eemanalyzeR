@@ -9,7 +9,7 @@ eem_normalize(eem, factor = NULL)
 \arguments{
 \item{eem}{the \code{eem} or \code{eemlist} to normalize}
 
-\item{factor}{the normalization factor, if NULL it will normalize to the maximum value for each eem}
+\item{factor}{the normalization factor, either a single value or vector of factors, if NULL it will normalize to the maximum value for each eem}
 }
 \value{
 an \code{eem} or \code{eemlist} where \code{x} has been normalized
