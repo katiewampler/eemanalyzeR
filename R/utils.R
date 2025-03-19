@@ -224,7 +224,7 @@
   return(augmented)
 }
 
-#' Checks if the eems or absorbance has had blank added
+#' Checks if the eems or absorbance has blank added
 #' @noRd
 .blk_added <- function(x){
   stopifnot(class(x) %in% c("eemlist", "eem", "abs", "abslist"))

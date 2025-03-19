@@ -168,7 +168,6 @@ validate_tea_absorbance <- function(abslist,
 #' @param condition was the failure a warning or an error?
 #'
 #' @return plot of tea sample absorbance and model of "good" absorbance
-#' @export
 #'
 plot_absorbance_error <- function(model_data,
                                   sample_abs_vector,
