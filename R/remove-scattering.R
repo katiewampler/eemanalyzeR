@@ -1,6 +1,6 @@
-#' Remove scattering lines
+#' Remove raman and rayleigh scattering lines
 #'
-#' TODO add info about scattering lines here, add in readme notes
+#' TODO add info about scattering lines here,
 #'
 #' A modified version of the staRdom function \link[staRdom]{eem_rem_scat}, modified to allow
 #' selective interpolation instead of all or nothing.
@@ -93,6 +93,9 @@ remove_scattering <- function(eemlist, type = c(TRUE,TRUE,TRUE,TRUE), width=c(16
 
  #return eemlist
    class(data) <- "eemlist"
+
+ #write readme
+   .write_readme_line("scattering lines removed via 'remove_scattering' function")
 
    return(data)
 

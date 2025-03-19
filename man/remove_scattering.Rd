@@ -2,7 +2,7 @@
 % Please edit documentation in R/remove-scattering.R
 \name{remove_scattering}
 \alias{remove_scattering}
-\title{Remove scattering lines}
+\title{Remove raman and rayleigh scattering lines}
 \usage{
 remove_scattering(
   eemlist,
@@ -34,7 +34,7 @@ The order is "raman1", "raman2", "rayleigh1" and "rayleigh2" scattering.}
 an object of class \code{eemlist}
 }
 \description{
-TODO add info about scattering lines here, add in readme notes
+TODO add info about scattering lines here,
 }
 \details{
 A modified version of the staRdom function \link[staRdom]{eem_rem_scat}, modified to allow

@@ -1,6 +1,3 @@
-#TODO: add writing to readme file if data clipping occurs and ife corrrection
- #deal with warnings for combining df
-
 #' Perform Inner-Filter Corrections
 #'
 #' A wrapper for eemR function \link[eemR]{eem_inner_filter_effect},
@@ -49,11 +46,10 @@ ife_correct <- function(eemlist, abslist, pathlength=1){
     ex_rm <- ex[!(ex  >= min(abs) & ex <= max(abs))]
     em_rm <- em[!(em >= min(abs) & em <= max(abs))]
 
-    #TODO:add note in readme here this was done
-
     if(length(ex_rm) >0|length(em_rm) >0){
       eemlist <- eemR::eem_cut(eemlist, ex_rm, em_rm, exact=T)
-      warning("trimmed EEM's to match absorbance data wavelengths, see readme.txt for more info")}
+      warning("trimmed EEM's to match absorbance data wavelengths, see readme.txt for more info")
+      trim <- TRUE}else{trim <- FALSE}
 
 
     #not an ideal solution, but for now in function only,
@@ -70,6 +66,14 @@ ife_correct <- function(eemlist, abslist, pathlength=1){
       return(eemlist[[i]])
     })
 
+    #write processing to readme
+    .write_readme_line("data was corrected for inner filter effects via 'ife_correct' function")
+    if(trim){
+      ex_range <- ifelse(length(ex_rm)>0, paste0(range(ex_rm), collapse=" - "),"")
+      em_range <- ifelse(length(em_rm)>0, paste0(range(em_rm), collapse=" - "),"")
+      assign("readme", c(readme,
+                         paste0("   warning: trimmed EEM's to match absorbance data wavelengths\n\texcitation: ",
+                         ex_range, "\n\temission: ", em_range, "\n")), envir = .GlobalEnv)}
     class(res) <- "eemlist"
 
     return(res)

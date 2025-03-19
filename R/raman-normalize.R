@@ -1,5 +1,3 @@
-#TODO: add writing to readme file for raman normalization
-
 #' Perform Raman Normalization
 #'
 #' Normalizes the EEM intensity to a standard scale of Raman Units (R.U.) based
@@ -43,7 +41,8 @@ raman_normalize <- function(eemlist){
     return(res[[i]])
   })
 
-  #TODO:add note in readme this was done
+  #write readme
+  .write_readme_line("data was normalized for raman area via 'raman_normalize' function")
 
   class(res) <- "eemlist"
   return(res)

@@ -122,6 +122,34 @@
   return(documentation)
 }
 
+#' Write a line of text to the readme object that tracks processing tracking
+#'
+#' @param text line of text to write to the process file
+#' # write.table(readme, "C:/Users/noaha/Downloads/test.txt", quote=F, row.names=F, col.names=F)
+#' @noRd
+.write_readme_line <- function(text){
+  #write processing to readme
+  time <- Sys.time()
+  time <- strftime(time, format="%Y-%m-%d %H:%M:%S")
+  step <- paste0(time, ": ", text)
+
+  #get parameters used
+  default_par <- formals(sys.function(1))
+  user_par <- as.list(match.call()[-1])
+  pars <- modifyList(default_par, user_par)
+  pars$text <- NULL #we don't need the text input
+  pars <- pars[lapply(pars,length)>0 & sapply(pars,function(x) x != "")] #remove empty list items
+  if(length(pars)>0){
+    pars <- paste("\t",paste0(names(pars), ": ", pars), collapse="\n")
+    pars <- paste0(paste("   function parameters:", pars, sep="\n"), "\n")
+  }else{pars <- ""}
+
+  if(exists("readme")){
+    assign("readme", c(readme, paste(step, pars, sep="\n")), envir = .GlobalEnv)
+  }else{
+    assign("readme", paste(step, pars, sep="\n"), envir = .GlobalEnv)
+  }
+}
 #' Write a line of text to the process file that tracks processing tracking
 #'
 #' @param text Line of text to write to the process file

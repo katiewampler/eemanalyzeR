@@ -1,5 +1,3 @@
-#TODO: add writing to readme file for dilution corretion
-
 #' Perform Dilution Corrections
 #'
 #' Adjusts the EEM's and absorbance data fluorescence to account for dilutions performed prior to measurement.
@@ -51,7 +49,9 @@ correct_dilution <- function(x){
     return(res[[i]])
   })
 
-  #TODO:add note in readme this was done
+  #write processing to readme
+  if(.is_eemlist(x)){.write_readme_line("EEMs data was corrected for inner filter effects via 'correct_dilution' function")}
+  if(.is_abslist(x)){.write_readme_line("absorbance data was corrected for inner filter effects via 'correct_dilution' function")}
 
   class(res) <- class(x)
   return(res)
