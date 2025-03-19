@@ -2,15 +2,15 @@
 
 #' Perform Dilution Corrections
 #'
-#' Adjusts the EEM's data fluorescence to account for dilutions performed prior to measurement.
+#' Adjusts the EEM's and absorbance data fluorescence to account for dilutions performed prior to measurement.
 #'
 #' @details
-#' The function uses the dilution factor provided by the metadata to dilution correct the EEMs, because of this,
+#' The function uses the dilution factor provided by the metadata to dilution correct the EEMs and absorbance, because of this,
 #' samples must have metadata already added to the samples using \link[eemanalyzeR]{add_metadata}.
 #'
-#' @param eemlist an \code{eemlist} object containing EEM's data. See details for more info.
+#' @param x an \code{eemlist} or \code{abslist} object. See details for more info.
 #'
-#' @returns an object of class \code{eemlist}
+#' @returns an object of class \code{eemlist} or \code{abslist}
 #' @export
 #'
 #'
@@ -18,22 +18,32 @@
 #' eemlist <- add_metadata(metadata,example_eems)
 #' eemlist <- eem_rm_blank(eemlist)
 #' correct_eem <- correct_dilution(eemlist)
+#'
+#' #abslist <- add_metadata(metadata,example_absorbance)
+#' #abslist <- eem_rm_blank(abslist)
+#' #correct_abs <- correct_dilution(abslist)
 
-correct_dilution <- function(eemlist){
-  if(!any(.meta_added(eemlist))){
-    stop("metadata must be added to eemlist to correct samples. \nPlease add metadata using 'add_metadata' function")
+correct_dilution <- function(x){
+  if(!any(.meta_added(x))){
+    stop("metadata must be added to data to correct samples. \nPlease add metadata using 'add_metadata' function")
   }
 
-  dilution_factor <- get_sample_info(eemlist, "dilution")
+  dilution_factor <- get_sample_info(x, "dilution")
 
   #make into fraction to use normalization function
   if(any(dilution_factor > 1)){
     dilution_factor <- 1 / dilution_factor}
 
   #don't correct any that have already been corrected
-  dilution_factor[sapply(eemlist, attr, "is_dil_corrected")] <- 1
+  dilution_factor[sapply(x, attr, "is_dil_corrected")] <- 1
 
-  res <- eem_normalize(eemlist, dilution_factor)
+  if(.is_eemlist(x)){
+    res <- eem_normalize(x, dilution_factor)
+  }
+
+  if(.is_abslist(x)){
+   #TODO normalized abs here
+  }
 
   res <- lapply(1:length(res), function(i){
     attr(res[[i]], "is_dil_corrected") <- TRUE
@@ -42,6 +52,6 @@ correct_dilution <- function(eemlist){
 
   #TODO:add note in readme this was done
 
-  class(res) <- "eemlist"
+  class(res) <- class(x)
   return(res)
 }

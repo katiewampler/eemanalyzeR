@@ -1,4 +1,5 @@
 #TODO: add writing to readme file if data clipping occurs and ife corrrection
+ #deal with warnings for combining df
 
 #' Perform Inner-Filter Corrections
 #'

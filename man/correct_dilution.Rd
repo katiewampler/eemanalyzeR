@@ -4,23 +4,27 @@
 \alias{correct_dilution}
 \title{Perform Dilution Corrections}
 \usage{
-correct_dilution(eemlist)
+correct_dilution(x)
 }
 \arguments{
-\item{eemlist}{an \code{eemlist} object containing EEM's data. See details for more info.}
+\item{x}{an \code{eemlist} or \code{abslist} object. See details for more info.}
 }
 \value{
-an object of class \code{eemlist}
+an object of class \code{eemlist} or \code{abslist}
 }
 \description{
-Adjusts the EEM's data fluorescence to account for dilutions performed prior to measurement.
+Adjusts the EEM's and absorbance data fluorescence to account for dilutions performed prior to measurement.
 }
 \details{
-The function uses the dilution factor provided by the metadata to dilution correct the EEMs, because of this,
+The function uses the dilution factor provided by the metadata to dilution correct the EEMs and absorbance, because of this,
 samples must have metadata already added to the samples using \link[eemanalyzeR]{add_metadata}.
 }
 \examples{
 eemlist <- add_metadata(metadata,example_eems)
 eemlist <- eem_rm_blank(eemlist)
 correct_eem <- correct_dilution(eemlist)
+
+#abslist <- add_metadata(metadata,example_absorbance)
+#abslist <- eem_rm_blank(abslist)
+#correct_abs <- correct_dilution(abslist)
 }

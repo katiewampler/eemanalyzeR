@@ -1,5 +1,5 @@
 test_that("dilution corrections are performed", {
-  expect_error(correct_dilution(example_eems), "metadata must be added to eemlist to correct samples")
+  expect_error(correct_dilution(example_eems), "metadata must be added to data to correct samples")
 
   eemlist <- add_metadata(metadata,example_eems)
   eemlist[[3]]$dilution <- 2
