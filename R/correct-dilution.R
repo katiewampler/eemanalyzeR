@@ -19,9 +19,9 @@
 #' eemlist <- eem_rm_blank(eemlist)
 #' correct_eem <- correct_dilution(eemlist)
 #'
-#' #abslist <- add_metadata(metadata,example_absorbance)
-#' #abslist <- eem_rm_blank(abslist)
-#' #correct_abs <- correct_dilution(abslist)
+#' abslist <- add_metadata(metadata,example_absorbance)
+#' abslist <- eem_rm_blank(abslist)
+#' correct_abs <- correct_dilution(abslist)
 
 correct_dilution <- function(x){
   if(!any(.meta_added(x))){
@@ -42,7 +42,8 @@ correct_dilution <- function(x){
   }
 
   if(.is_abslist(x)){
-   #TODO normalized abs here
+    res <- mapply(function(abs, factor){abs$data[,2] <- abs$data[,2]/factor
+      return(abs)}, x, dilution_factor, SIMPLIFY = F)
   }
 
   res <- lapply(1:length(res), function(i){

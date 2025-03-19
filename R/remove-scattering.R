@@ -43,9 +43,9 @@ remove_scattering <- function(eemlist, type = c(TRUE,TRUE,TRUE,TRUE), width=c(16
                               interpolate=c(TRUE,TRUE,FALSE,FALSE), method=1,
                               cores=1){
 
-  stopifnot(.is_eemlist(eemlist) | all(is.logical(type)) | all(is.logical(interpolate)) |
-              length(width) == 4 | length(type)==4 | length(interpolate) == 4 |
-              method %in% c(0:4) | all(is.numeric(width)))
+  stopifnot(.is_eemlist(eemlist), all(is.logical(type)), all(is.logical(interpolate)) ,
+              length(width) == 4 , length(type)==4 , length(interpolate) == 4 ,
+              method %in% c(0:4) , all(is.numeric(width)))
 
   #remove raman lines, track which are NA, either add in final or add these interpolated
   if(type[1]){raman1 <- eemR::eem_remove_scattering(eemlist, type="raman", order=1, width=width[1])}else{raman1 <- eemlist}
