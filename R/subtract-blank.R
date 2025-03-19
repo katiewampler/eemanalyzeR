@@ -23,9 +23,9 @@
 #' @examples
 #' eem <- add_metadata(metadata,example_eems)
 #' eem <- add_blanks(eem)
-#' eem_sub <- blk_subtract(eem[[1]])
-#' eemlist_sub <- blk_subtract(eem)
-blk_subtract <- function(eem) {
+#' eem_sub <- subtract_blank(eem[[1]])
+#' eemlist_sub <- subtract_blank(eem)
+subtract_blank <- function(eem) {
   stopifnot(.is_eem(eem) | .is_eemlist(eem))
 
   .subtract <- function(eem) {

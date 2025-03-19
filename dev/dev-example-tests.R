@@ -18,11 +18,12 @@
     eems <- add_metadata(meta, eems)
     eems <- add_blanks(eems)
       #processing steps
-      eems <- blk_subtract(eems)
+      eems <- subtract_blank(eems)
       eems <- remove_scattering(eems)
       eems <- ife_correct(eems, abs)
       eems <- raman_normalize(eems)
       eems <- correct_dilution(eems)
+      abs <- correct_dilutions(abs)
       staRdom::ggeem(eems[[7]])
 
   #example 2: Hohner-Lab-2025-01-08
@@ -35,11 +36,12 @@
     eems <- add_metadata(meta, eems)
     eems <- add_blanks(eems)
       #processing steps
-      eems <- blk_subtract(eems)
+      eems <- subtract_blank(eems)
       eems <- remove_scattering(eems)
       eems <- ife_correct(eems, abs)
       eems <- raman_normalize(eems)
       eems <- correct_dilution(eems)
+      abs <- correct_dilutions(abs)
       staRdom::ggeem(eems[[7]])
 
   #example 3: PNNL-2022-11-10
@@ -53,11 +55,12 @@
     #eems <- add_blanks(eems) #throws an error because pattern is different
     eems <- add_blanks(eems, pattern="blank$")
       #processing steps
-      eems <- blk_subtract(eems)
+      eems <- subtract_blank(eems)
       eems <- remove_scattering(eems)
       eems <- ife_correct(eems, abs)
       eems <- raman_normalize(eems)
       eems <- correct_dilution(eems)
+      abs <- correct_dilutions(abs)
       staRdom::ggeem(eems[[1]])
 
   #example 4: Vick-Majors-Lab-2024-11-04
@@ -69,11 +72,12 @@
     eems <- add_metadata(meta, eems)
     eems <- add_blanks(eems)
       #processing steps
-      eems <- blk_subtract(eems)
+      eems <- subtract_blank(eems)
       eems <- remove_scattering(eems)
       eems <- ife_correct(eems, abs)
       eems <- raman_normalize(eems)
       eems <- correct_dilution(eems)
+      abs <- correct_dilutions(abs)
       staRdom::ggeem(eems[[1]])
 
   #example 5: Bladon-Lab-2024-08-19
@@ -85,11 +89,12 @@
     eems <- add_metadata(meta, eems)
     eems <- add_blanks(eems)
       #processing steps
-      eems <- blk_subtract(eems)
+      eems <- subtract_blank(eems)
       eems <- remove_scattering(eems)
       eems <- ife_correct(eems, abs)
       eems <- raman_normalize(eems)
       eems <- correct_dilution(eems)
+      abs <- correct_dilutions(abs)
       staRdom::ggeem(eems[[2]])
 
   #example 6: Bladon-Lab-2024-08-22
@@ -101,11 +106,12 @@
     eems <- add_metadata(meta, eems)
     eems <- add_blanks(eems)
       #processing steps
-      eems <- blk_subtract(eems)
+      eems <- subtract_blank(eems)
       eems <- remove_scattering(eems)
       eems <- ife_correct(eems, abs)
       eems <- raman_normalize(eems)
       eems <- correct_dilution(eems)
+      abs <- correct_dilutions(abs)
       staRdom::ggeem(eems[[2]])
 
   #example 7: Bladon-Lab-2024-11-01
@@ -117,11 +123,12 @@
     eems <- add_metadata(meta, eems)
     eems <- add_blanks(eems)
       #processing steps
-      eems <- blk_subtract(eems)
+      eems <- subtract_blank(eems)
       eems <- remove_scattering(eems)
       eems <- ife_correct(eems, abs)
       eems <- raman_normalize(eems)
       eems <- correct_dilution(eems)
+      abs <- correct_dilutions(abs)
       staRdom::ggeem(eems[[2]])
 
 
