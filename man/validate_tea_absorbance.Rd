@@ -15,7 +15,7 @@ validate_tea_absorbance(
 \arguments{
 \item{abslist}{abslist of sample absorbances}
 
-\item{pattern}{string which is used to extract tea samples from all abosrbance.
+\item{pattern}{string which is used to extract tea samples from all absorbance.
 User can modify this based on each lab's sample ID scheme. Defaults to "tea".}
 
 \item{model}{the comparison model of tea absorbance}

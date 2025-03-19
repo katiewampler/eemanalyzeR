@@ -99,6 +99,16 @@ add_metadata <- function(meta, x){
     obj$doc_mgL <- meta_data$doc_mgL[y]
     obj$notes <- meta_data$notes[y]
 
+    # Assign the samples as blanks or checks
+    # TODO check this is flexible with other filenaming schemes
+    blank_pattern <- "BEM"
+    blank_flag <- grepl(blank_pattern, get_sample_info(obj, "sample"), ignore.case = TRUE)
+    attr(obj, "is_blank") <- blank_flag
+
+    check_pattern <- "tea"
+    check_flag <- grepl(check_pattern, get_sample_info(obj, "sample"),  ignore.case = TRUE)
+    attr(obj, "is_check") <- check_flag
+
     return(obj)
   })
 

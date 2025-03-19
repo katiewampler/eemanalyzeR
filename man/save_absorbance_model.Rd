@@ -19,7 +19,7 @@ absorbance data files (something like )}
 
 \item{sd_multiplier}{acceptable standard deviation in data}
 
-\item{overwrite}{overwrite exisiting model?}
+\item{overwrite}{overwrite existing model?}
 }
 \value{
 a absorbance model of averaged absorbance
