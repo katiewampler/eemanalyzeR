@@ -355,3 +355,11 @@ eem_normalize <- function(eem, factor=NULL){
   eem1$x <- eem1$x - eem2$x
   return(eem1)
 }
+
+# Turn an EEM into a matrix with labeled rows and columns
+.eem_to_matrix <- function(eem) {
+
+  #
+
+
+}
