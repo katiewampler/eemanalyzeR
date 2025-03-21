@@ -98,8 +98,6 @@ add_metadata <- function(meta, x){
     obj$doc_mgL <- meta_data$doc_mgL[y]
     obj$notes <- meta_data$notes[y]
 
-    browser()
-
     # Assign the samples as blanks or checks
     if(TRUE) {
 

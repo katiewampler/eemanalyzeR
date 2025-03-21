@@ -1,6 +1,6 @@
 ## code to prepare `DATASET` dataset goes here
 
-usethis::use_data(DATASET, overwrite = TRUE)
+# usethis::use_data(DATASET, overwrite = TRUE)
 
 downscale_eems <- function(file, factor=6){
   #downscale EEMs
@@ -111,4 +111,4 @@ usethis::use_data(longterm_blank, overwrite = T)
 
 # Tea Absorbance Model ----
 tea_absorbance_model <- create_absorbance_model("data-raw/long-term-standards/absorbance/tea-standards/")
-usethis::use_data(tea_absorbance_model)
+usethis::use_data(tea_absorbance_model, overwrite = TRUE)

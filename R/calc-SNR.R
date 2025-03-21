@@ -27,8 +27,6 @@ calc_raman_SNR_sqrt <- function(eem) {
   # Create matrix from EEM
     mat <- get_sample_info(eem, "x")
 
-  browser()
-
   # Calculate the signal at specific points
   S_397nm <- mat[350, 397]
   S_450nm <- mat[350, 450]
