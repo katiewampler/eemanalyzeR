@@ -1,5 +1,3 @@
-# TODO: add process tracking into function, (blank subtraction peformed via blk_subtract function)
-
 #' Perform blank subtraction on EEM samples
 #'
 #' @param eem an \code{eem} or \code{eemlist} that has been augmented with metadata and blanks. See details for more info.
@@ -23,9 +21,9 @@
 #' @examples
 #' eem <- add_metadata(metadata,example_eems)
 #' eem <- add_blanks(eem)
-#' eem_sub <- blk_subtract(eem[[1]])
-#' eemlist_sub <- blk_subtract(eem)
-blk_subtract <- function(eem) {
+#' eem_sub <- subtract_blank(eem[[1]])
+#' eemlist_sub <- subtract_blank(eem)
+subtract_blank <- function(eem) {
   stopifnot(.is_eem(eem) | .is_eemlist(eem))
 
   .subtract <- function(eem) {
@@ -41,15 +39,28 @@ blk_subtract <- function(eem) {
     if (!any(.blk_added(eem))) {
       warning("Missing blank data from eem or eemlist, attempting to add using 'add_blanks' function")
       eem <- add_blanks(eem)
-    }
+      warn <- TRUE
+    }else{warn <-FALSE}
     eem <- lapply(eem, .subtract)
     class(eem) <- "eemlist"
+
+    #write processing to readme
+    .write_readme_line("blanks were subtracted from data via 'subtract_blank' function")
+
+    if(warn){
+      assign("readme", c(readme,
+                         "warning: added blanks via 'add_blanks' function\n"), envir = .GlobalEnv)}
+
     return(eem)
   }
 
   if (!.blk_added(eem)) {
     stop("Missing blank data from eem or eemlist, please add using 'add_blanks' function")
   }
+
+  #write processing to readme
+  .write_readme_line("blanks were subtracted from data via 'subtract_blank' function")
+
 
   return(.subtract(eem))
 }

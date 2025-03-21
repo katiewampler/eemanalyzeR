@@ -74,7 +74,7 @@ abs_read <- function(file){
 
       class(obj) <- "abs"
 
-      attr(obj, "is_dilution_corrected") <- FALSE
+      attr(obj, "is_dil_corrected") <- FALSE
       attr(obj, "is_DOC_normalized") <- FALSE
       # Default these to false and add them later
       attr(obj, "is_blank") <- FALSE

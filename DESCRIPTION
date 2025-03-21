@@ -32,6 +32,7 @@ Imports:
     ggplot2,
     lubridate,
     magrittr,
+    parallel,
     purrr,
     readxl,
     rlang,

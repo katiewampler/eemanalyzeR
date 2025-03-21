@@ -68,13 +68,12 @@ get_sample_info <- function(x, info) {
 
       #convert to df
       res <- lapply(res, as.data.frame)
-      res <- lapply(res, function(df) {
-        colnames(df) <- c("wavelength", "absorbance")
+      res <- mapply(function(df, name) {
+        colnames(df) <- c("wavelength", name)
         return(df)
-      })
+      }, res, sample_names, SIMPLIFY = FALSE)
       res_form <- Reduce(\(df1, df2) merge(df1, df2, by = "wavelength", all.x = TRUE),
       res)
-      names(res_form) <- c("wavelength", sample_names)
     }
 
     #if vector with multiple items
