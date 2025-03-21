@@ -48,6 +48,8 @@
 #'   \item{integration_time_s}{Integration time of sample (e.g. 1, 2, etc…)}
 #'   \item{dilution}{Include dilution factor here as decimal format (e.g. a 2-fold dilution with 1 part sample and 1 part water will have a dilution factor of 0.5). If no dilution, put 1}
 #'   \item{RSU_area_1s}{The RSU Adjust Area from the Raman Test, used to normalize the data from day to day}
+#'   \item{is_blank}{Flag for whether the sample is a blank sample (e.g. MilliQ water). Possible value of TRUE or FALSE}
+#'   \item{is_check}{Flag for whether the sample is a check standard (usually SRM Tea). Possible value of TRUE or FALSE}
 #'   \item{run_type}{How the samples were run (manual or sampleQ)}
 #'   \item{collect_date}{optional: The date the water samples were collected}
 #'   \item{DOC_mg_L}{optional: DOC concentration in mg/L of the original sample (not the diluted sample)}
