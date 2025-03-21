@@ -23,27 +23,33 @@ meta_read <- function(input,
 
   # Figure out whether the user input a directory (automatic metadata file choice)
   # or specified a file (manual file choice)
+
+  # Do this if the input is a directory (default behavior for backwards compatibility)
   if (file_test("-d", input)) {
     # Find metadata file then assign
     meta_file <- list.files(input, pattern="xlsx|csv", full.names = T)
-  } else if (file_test("-f", input)) {
+    #if name isn't specified, it pulls all xlsx/csv files, assuming there will only be one
+
+    # check we have one and only one file to read in
+    if(length(meta_file) > 1){
+      stop("Multiple possible metadata files in directory. Please specify only one file")
+    } else if(length(meta_file) == 0){
+      stop("Unable to locate metadata in: ", input, "\nplease ensure metadata is .csv or .xlsx file")
+    }
+    message("No Meta file specified, using: ", meta_file)
+  }
+
+  # Do this if the User specifies a file
+  else if (file_test("-f", input)) {
     # Assign metadata file
     meta_file <- input
-  } else {
-    stop("Metadata file not found")
-    }
-
-  #get name of metadata file
-  #if name isn't specified, it pulls all xlsx/csv files, assuming there will only be one
-  #if name is specified, it pulls that from list of xlsx/csv files
-
-  #check we have one and only one file to read in
-  if(length(meta_file) > 1){
-    stop("attempted to load more than one file, please use 'name' argument to specify metadata file")
   }
-  if(length(meta_file) == 0){
-    stop("unable to locate metadata in: ", input, "\nplease ensure metadata properly specified .csv or .xlsx file")
+
+  # Fail if neither of these options work
+  else {
+    stop("unable to locate metadata")
   }
+
 
   #read in metadata
   if(tools::file_ext(meta_file) == "xlsx"){
