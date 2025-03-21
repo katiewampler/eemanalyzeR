@@ -39,6 +39,7 @@ Imports:
     stats,
     stringr,
     tidyr,
+    tidyselect,
     tools,
     usethis,
     utils

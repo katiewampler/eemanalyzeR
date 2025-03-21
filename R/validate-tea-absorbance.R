@@ -28,6 +28,8 @@
 #' @param ... further arguments to pass to ggplot for to control plotting the tea
 #' absorbance model
 #'
+#' @importFrom rlang .data
+#'
 #' @return returns a data.frame with pass/fail results of tea standard checks
 #' @export
 
@@ -178,13 +180,13 @@ plot_absorbance_error <- function(model_data,
 
   # Plotting Code
   abs_plot <- ggplot2::ggplot(all_data) +
-    ggplot2::geom_line(aes(x = .data$wavelength,
+    ggplot2::geom_line(ggplot2::aes(x = .data$wavelength,
                            y = .data$sample_abs_vector),
                        color = "red") +
-    ggplot2::geom_line(aes(x = .data$wavelength,
+    ggplot2::geom_line(ggplot2::aes(x = .data$wavelength,
                            y = .data$mean_abs_by_wavelength),
                        color = "black") +
-    ggplot2::geom_ribbon(aes(x = .data$wavelength,
+    ggplot2::geom_ribbon(ggplot2::aes(x = .data$wavelength,
                              ymin = .data$sdmin_3x,
                              ymax = .data$sdmax_3x),
                          alpha = 0.15) +

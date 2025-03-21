@@ -23,6 +23,7 @@
 #' @importFrom stats sd
 #' @importFrom stringr str_extract_all
 #' @importFrom tidyr pivot_longer
+#' @importFrom tidyselect matches
 #' @importFrom tools file_ext
 #' @importFrom usethis use_data
 #' @importFrom utils file_test

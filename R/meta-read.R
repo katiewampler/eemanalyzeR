@@ -19,8 +19,8 @@
 #' @examples
 #' metadata <- meta_read(system.file("extdata", package = "eemanalyzeR"))
 meta_read <- function(input,
-                      sheet=NULL,
-                      validate=T){
+                      sheet = NULL,
+                      validate = TRUE){
 
   # Figure out whether the user input a directory (automatic metadata file choice)
   # or specified a file (manual file choice)

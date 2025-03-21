@@ -4,7 +4,7 @@
 \alias{meta_read}
 \title{Read metadata file from directory}
 \usage{
-meta_read(input, sheet = NULL, validate = T)
+meta_read(input, sheet = NULL, validate = TRUE)
 }
 \arguments{
 \item{input}{path to folder containing metadata file, or name of metadata file}

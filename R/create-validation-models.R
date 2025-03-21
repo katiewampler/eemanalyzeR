@@ -13,6 +13,8 @@
 #' @returns a absorbance model of averaged absorbance
 #' @export
 #' @importFrom tidyr pivot_longer
+#' @importFrom tidyselect matches
+#' @importFrom rlang .data
 
 
 
@@ -33,17 +35,17 @@ create_absorbance_model <- function(abs_dir,
 
   # Convert data to long for easy summarizing (ONLY WORKS FOR DATA.FRAME)
   good_data_long <- tidyr::pivot_longer(good_abs_df,
-                                        cols = !matches("wavelength"),
+                                        cols = !tidyselect::matches("wavelength"),
                                         names_to = "sample",
                                         values_to = "absorbance") %>%
-    dplyr::filter(wavelength <= 791) # removes data since there is a very high absorbance artifact at 794nm
+    dplyr::filter(.data$wavelength <= 791) # removes data since there is a very high absorbance artifact at 794nm
 
   good_abs_model <- dplyr::group_by(good_data_long,
-                                          wavelength) %>%
-    dplyr::summarize(mean_abs_by_wavelength = mean(absorbance),
-                     sd_abs_by_wavelength = sd(absorbance)) %>%
-    dplyr::mutate(sdmin_mult = mean_abs_by_wavelength - sd_multiplier * sd_abs_by_wavelength,
-                  sdmax_mult = mean_abs_by_wavelength + sd_multiplier * sd_abs_by_wavelength)
+                                    "wavelength") %>%
+    dplyr::summarize(mean_abs_by_wavelength = mean(.data$absorbance),
+                     sd_abs_by_wavelength = sd(.data$absorbance)) %>%
+    dplyr::mutate(sdmin_mult = .data$mean_abs_by_wavelength - sd_multiplier * .data$sd_abs_by_wavelength,
+                  sdmax_mult = .data$mean_abs_by_wavelength + sd_multiplier * .data$sd_abs_by_wavelength)
 #
 #   # TODO Make this part interactive?
 #   # Plot good absorbance data with mean and SD ribbon
