@@ -5,7 +5,7 @@ usethis::use_data(DATASET, overwrite = TRUE)
 downscale_eems <- function(file, factor=6){
   #downscale EEMs
   if(grepl("SEM|BEM", file)){
-    data <- readLines(file.path("data-raw/fullsize data",file)) #read in file
+    data <- readLines(file.path("data-raw/fullsize-data",file)) #read in file
 
     line1 <- unlist(stringr::str_extract_all(data[1], "-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?")) #removes tabs and wavelength
     line1 <- line1[seq(1, length(line1), 6)]
@@ -30,38 +30,39 @@ downscale_eems <- function(file, factor=6){
 
   #downscale absorbance
   if(grepl("ABS", file)){
-    data <- readLines(file.path("data-raw/fullsize data",file)) #read in file
+    data <- readLines(file.path("data-raw/fullsize-data",file)) #read in file
     data <- data[seq(1, length(data), 6)]
     readr::write_lines(data, file.path("data-raw",file))
 
   }}
 
 #get full size example files
-files <- list.files("data-raw/fullsize data", pattern=".dat")
+files <- list.files("data-raw/fullsize-data", pattern=".dat")
 
 #downscale and save
 for(x in files){
   downscale_eems(x)
 }
 
-#read into R environment
-  #read in samples and blanks
-  example_eems <- eem_dir_read("data-raw", pattern="SEM|BEM")
+# Example EEMs data ----
+example_eems <- eem_dir_read("data-raw", pattern="SEM|BEM")
+usethis::use_data(example_eems, overwrite = T)
 
-  #read in absorbance
-  example_absorbance <- abs_dir_read("data-raw", pattern="ABS[.]dat")
+# Example Absorbance data ----
+example_absorbance <- abs_dir_read("data-raw", pattern="ABS[.]dat")
+usethis::use_data(example_absorbance, overwrite = T)
 
-    usethis::use_data(example_eems, overwrite = T)
-    usethis::use_data(example_absorbance, overwrite = T)
-
-  metadata <- meta_read("data-raw")
-  usethis::use_data(metadata, overwrite = T)
+# Example Metadata ----
+metadata <- meta_read("data-raw")
+usethis::use_data(metadata, overwrite = T)
 
 
-  #average is too narrow??/ normalize to max??
+
+# Averaged Long term blank ----
+#average is too narrow??/ normalize to max??
 #code to create averaged blank
-  input_dir <- "data-raw/long term standards"
-  avg_blank <- function(input_dir){
+input_dir <- "data-raw/long-term-standards"
+avg_blank <- function(input_dir){
     blank_eems <- eem_dir_read(file.path(input_dir, "EEM/blanks"), pattern="blank")  #this takes a little while because there's a lot of samples
 
     #make all the save wavelengths
@@ -91,7 +92,7 @@ for(x in files){
     ggplot2::ggplot() + ggplot2::geom_line(data=X_df_long, ggplot2::aes(x=val, y=fluor, group=sample), color="black") +
       ggplot2::geom_line(data=avg_blank_flat, ggplot2::aes(x=val, y=fluor), color="red") #visualize to check for outliers
 
-    avg_blank <- list(file="/data-raw/long term standards/EEM/blanks/avg_blank.dat",
+    avg_blank <- list(file="/data-raw/long-term-standards/EEM/blanks/avg_blank.dat",
                       sample = "average_blank",
                       x = avg_blank,
                       em = blank_eems_rd[[1]]$em,
@@ -103,7 +104,11 @@ for(x in files){
     staRdom::ggeem(avg_blank)
     return(avg_blank)
 
-  }
+}
 
-  longterm_blank <- avg_blank(input_dir)
-  usethis::use_data(longterm_blank, overwrite = T)
+longterm_blank <- avg_blank(input_dir)
+usethis::use_data(longterm_blank, overwrite = T)
+
+# Tea Absorbance Model ----
+tea_absorbance_model <- create_absorbance_model("data-raw/long-term-standards/absorbance/tea-standards/")
+usethis::use_data(tea_absorbance_model)

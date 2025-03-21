@@ -2,8 +2,6 @@
 # TODO Function to calculate generic absorbance curve from a bunch of given "good" data
 # Calculate the mean and standard deviation for each wavelength
 
-# TODO - filter out some of the bad tea standard data from package
-
 #' Create a long term absorbance or EEM model (for tea stds and blanks)
 #'
 #' @param abs_dir location of absorbance data. This should be a directory with multiple
@@ -15,12 +13,13 @@
 #' @returns a absorbance model of averaged absorbance
 #' @export
 #' @importFrom tidyr pivot_longer
-#' @importFrom usethis use_data
 
-save_absorbance_model <- function(abs_dir,
-                                  save_path = "data",
-                                  sd_multiplier = 3, # TODO better name for this arg
-                                  overwrite = FALSE) {
+
+
+create_absorbance_model <- function(abs_dir,
+                                    save_path = "data",
+                                    sd_multiplier = 3, # TODO better name for this arg
+                                    overwrite = FALSE) {
 
   stopifnot(dir.exists(abs_dir),
             dir.exists(save_path))
@@ -45,33 +44,32 @@ save_absorbance_model <- function(abs_dir,
                      sd_abs_by_wavelength = sd(absorbance)) %>%
     dplyr::mutate(sdmin_mult = mean_abs_by_wavelength - sd_multiplier * sd_abs_by_wavelength,
                   sdmax_mult = mean_abs_by_wavelength + sd_multiplier * sd_abs_by_wavelength)
-
-  # TODO Make this part interactive?
-  # Plot good absorbance data with mean and SD ribbon
-  good_abs_plot <- ggplot2::ggplot(data = good_data_long) +
-    ggplot2::geom_line(ggplot2::aes(x = wavelength,
-                           y = absorbance,
-                           color = sample),
-                       alpha = 0.1) +
-    ggplot2::geom_line(data = good_abs_model,
-                       ggplot2::aes(x = wavelength,
-                           y = mean_abs_by_wavelength),
-                       linewidth = 1,
-                       linetype = 2,
-                       color = "black") +
-    ggplot2::geom_ribbon(data = good_abs_model,
-                         ggplot2::aes(x = wavelength,
-                             ymin = sdmin_mult,
-                             ymax = sdmax_mult),
-                         alpha = 0.2) +
-    ggplot2::theme(legend.position = "none")
-
-  plot(good_abs_plot)
+#
+#   # TODO Make this part interactive?
+#   # Plot good absorbance data with mean and SD ribbon
+#   good_abs_plot <- ggplot2::ggplot(data = good_data_long) +
+#     ggplot2::geom_line(ggplot2::aes(x = wavelength,
+#                            y = absorbance,
+#                            color = sample),
+#                        alpha = 0.1) +
+#     ggplot2::geom_line(data = good_abs_model,
+#                        ggplot2::aes(x = wavelength,
+#                            y = mean_abs_by_wavelength),
+#                        linewidth = 1,
+#                        linetype = 2,
+#                        color = "black") +
+#     ggplot2::geom_ribbon(data = good_abs_model,
+#                          ggplot2::aes(x = wavelength,
+#                              ymin = sdmin_mult,
+#                              ymax = sdmax_mult),
+#                          alpha = 0.2) +
+#     ggplot2::theme(legend.position = "none")
+#
+#   plot(good_abs_plot)
 
   # Save the good model of tea absorbance as an rda file in data folder or a csv
   # in some generic folder
-  write.csv(good_abs_model, file = save_path, append = !overwrite)
-
+  return(good_abs_model)
 }
 
 

@@ -92,14 +92,20 @@ add_metadata <- function(meta, x){
       obj$raman_area_1s = meta_data$raman_area_1s[y]
     }
 
-
     # assign values if they are in metadata
     obj$analysis_date <- meta_data$analysis_date[y]
     obj$description <- meta_data$description[y]
     obj$doc_mgL <- meta_data$doc_mgL[y]
     obj$notes <- meta_data$notes[y]
 
+    browser()
+
     # Assign the samples as blanks or checks
+    if(TRUE) {
+
+    }
+
+
     # TODO check this is flexible with other filenaming schemes
     blank_pattern <- "BEM"
     blank_flag <- grepl(blank_pattern, get_sample_info(obj, "sample"), ignore.case = TRUE)
