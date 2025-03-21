@@ -10,6 +10,9 @@
 #' metadata <- meta_read(system.file("extdata", package = "eemanalyzeR"))
 #' metadata <- eemanalyzeR:::meta_check(metadata)
 
+
+# TODO These might need to be more robust to weird inputs from the user. Worth checking
+# a few more edge cases?
 meta_check <- function(meta){
   #check required columns are there
   req_cols <- c("data_identifier", "replicate_no", "integration_time_s","run_type", "RSU_area_1s",
@@ -22,7 +25,7 @@ meta_check <- function(meta){
   #ensure integration time and RSU adjust area (and DOC/dilution are numeric)
   meta <- meta %>% dplyr::mutate(dplyr::across(dplyr::any_of(c("integration_time_s","RSU_area_1s", "dilution", "DOC_mg_L")), as.numeric))
 
-  #ensure datas are dates
+  #ensure dates are dates
   conv_dates <- unlist(lapply(meta, class))
   meta <- meta %>% dplyr::mutate(dplyr::across(dplyr::any_of(c("analysis_date", "collect_date")), \(x) lubridate::parse_date_time(x, tz=Sys.timezone(), orders=c("ymd", "mdy"))))
 
@@ -58,6 +61,15 @@ meta_check <- function(meta){
   if(any(grepl("sampleQ|manual", meta$run_type, ignore.case = T)==F)){
     stop("'run_type' must be either 'sampleQ' or 'manual'")
   }
+
+  # Check samples are flagged as blanks or check standards
+  if(!is.logical(meta$is_blank) || any(is.na(meta$is_blank))) {
+    warning("is_blank column not properly specified. It should contain values TRUE or FALSE\neemanalyzeR will attempt to assign blanks from filenames")
+  }
+  if(!is.logical(meta$is_check) || any(is.na(meta$is_check))) {
+    warning("is_check column not properly specified. It should contain values TRUE or FALSE\neemanalyzeR will attempt to assign check standards from filenames")
+  }
+
 
   return(meta)
 }

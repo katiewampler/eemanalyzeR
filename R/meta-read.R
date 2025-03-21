@@ -3,10 +3,8 @@
 #' Reads a .csv or .xlsx file containing metadata related to absorbance and EEM's data.
 #' Please see \link[eemanalyzeR]{metadata} for the required columns and structure.
 #'
-#' @param input_dir path to folder containing metadata file
-#' @param name name of metadata file. optional if metadata is only xlsx or csv file in input_dir
-#' if not specified function will attempt to load any xlsx or csv file in directory and return an error if there is more than one
-#' @param sheet name of sheet containing metadata. only required if metadata isn't the first sheet
+#' @param input path to folder containing metadata file, or name of metadata file
+#' @param sheet name of sheet containing metadata. only required if metadata isn't the first sheet of xlsx file
 #' @param validate logical. should metadata structure be checked for potential issues that will cause issues during
 #' further processing? highly recommended to keep as TRUE.
 #'
@@ -19,24 +17,32 @@
 #'
 #' @examples
 #' metadata <- meta_read(system.file("extdata", package = "eemanalyzeR"))
-meta_read <- function(input_dir, name=NULL, sheet=NULL, validate=T){
-  stopifnot(dir.exists(input_dir)) #make sure directory exists
+meta_read <- function(input,
+                      sheet=NULL,
+                      validate=T){
+
+  # Figure out whether the user input a directory (automatic metadata file choice)
+  # or specified a file (manual file choice)
+  if (file_test("-d", input)) {
+    # Find metadata file then assign
+    meta_file <- list.files(input, pattern="xlsx|csv", full.names = T)
+  } else if (file_test("-f", input)) {
+    # Assign metadata file
+    meta_file <- input
+  } else {
+    stop("Metadata file not found")
+    }
 
   #get name of metadata file
   #if name isn't specified, it pulls all xlsx/csv files, assuming there will only be one
   #if name is specified, it pulls that from list of xlsx/csv files
-  if(is.null(name)){
-    meta_file <- list.files(input_dir, pattern="xlsx|csv", full.names = T)
-  }else{
-    meta_file <- grep(name, list.files(input_dir, pattern="xlsx|csv", full.names = T), value=T)
-  }
 
   #check we have one and only one file to read in
   if(length(meta_file) > 1){
     stop("attempted to load more than one file, please use 'name' argument to specify metadata file")
   }
   if(length(meta_file) == 0){
-    stop("unable to locate metadata in: ", input_dir, "\nplease ensure metadata is in folder and is a .csv or .xlsx file")
+    stop("unable to locate metadata in: ", input, "\nplease ensure metadata properly specified .csv or .xlsx file")
   }
 
   #read in metadata
