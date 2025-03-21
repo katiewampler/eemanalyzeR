@@ -25,6 +25,7 @@
 #' @importFrom tidyr pivot_longer
 #' @importFrom tools file_ext
 #' @importFrom usethis use_data
+#' @importFrom utils file_test
 #' @importFrom utils read.csv
 #' @importFrom utils write.csv
 ## usethis namespace: end

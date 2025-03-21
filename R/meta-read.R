@@ -11,6 +11,7 @@
 #' @importFrom readxl read_excel
 #' @importFrom dplyr mutate across any_of
 #' @importFrom utils read.csv
+#' @importFrom utils file_test
 #'
 #' @returns a data.frame containing metadata of samples
 #' @export
