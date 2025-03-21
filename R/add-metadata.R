@@ -12,6 +12,8 @@
 #'  \item dilution: the dilution factor for the sample.
 #'  \item analysis_date: the date the sample was run.
 #'  \item description: optional description of sample.
+#'  \item is_blank: logical whether the sample is a blank (e.g. MilliQ water)
+#'  \item is_check: logical whether the sample is a check std (e.g SRM Tea)
 #'  \item doc_mgL: the concentration of dissolved organic carbon in the sample given in mg \ifelse{html}{\out{L<sup>-1</sup>}}{\eqn{L^{-1}}}
 #'  \item notes: optional notes related to the sample or sample collection.
 #' }
@@ -36,6 +38,7 @@ add_metadata <- function(meta, x){
   class_type <- class(x)
   names <- get_sample_info(x, "sample")
 
+  # Reorganize EEMlist or ABSlist to match metadata ----
   meta_order <- data.frame(eem_pos = 1:length(names), meta_row=NA)
 
   .get_row_meta <- function(name, meta){
@@ -49,7 +52,7 @@ add_metadata <- function(meta, x){
   names(meta_order) <- names
   #meta_order is the order of the eems where the number is the corresponding row of the metadata
 
-  #check for missing samples either in metadata or in abs
+  # Check for missing samples ----
   if(any(is.na(meta_order))){
     #give warning about samples not in metadata
     missing_meta <- names[is.na(meta_order)]
@@ -59,6 +62,7 @@ add_metadata <- function(meta, x){
     meta_order <- na.omit(meta_order)
   }
 
+  # Check that metadata and Aqualog files have the same number ----
   if(length(unique(meta_order)) < nrow(meta)){
     warning("the following sample is in metadata but was missing in data:\n",
             paste(meta$data_identifier[setdiff(1:nrow(meta), meta_order)], collapse="\n"),
@@ -66,8 +70,10 @@ add_metadata <- function(meta, x){
     meta <- meta[-setdiff(1:nrow(meta), meta_order),]
   }
 
-  #add metadata info to object
-  #get data from metadata, keeping as numeric/character
+  # Add metadata info to object ----
+  # Get data from metadata, keeping as numeric/character
+  # TODO add blank and check columns to this
+  # TODO SEPARATE ADDING OF REQUIRED AND OPTIONAL METADATA
   meta_data <- list(
     meta_name = meta$data_identifier[meta_order],
     dilution = meta$dilution[meta_order],
@@ -79,7 +85,7 @@ add_metadata <- function(meta, x){
     notes = if("Notes" %in% colnames(meta)) meta$Notes[meta_order] else NA
   )
 
-  # loop across the metadata
+  # Loop across the metadata ----
   x <- lapply(1:length(meta_order), function(y) {
     obj <- x[[y]]
 
@@ -97,6 +103,8 @@ add_metadata <- function(meta, x){
     obj$description <- meta_data$description[y]
     obj$doc_mgL <- meta_data$doc_mgL[y]
     obj$notes <- meta_data$notes[y]
+
+    browser()
 
     # Assign the samples as blanks or checks
     if(TRUE) {
@@ -131,5 +139,6 @@ add_metadata <- function(meta, x){
   }
 
 
-  return(x)}
+  return(x)
+}
 

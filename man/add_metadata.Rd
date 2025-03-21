@@ -19,6 +19,8 @@ The following items are added for each sample, if available in the metadata:
  \item dilution: the dilution factor for the sample.
  \item analysis_date: the date the sample was run.
  \item description: optional description of sample.
+ \item is_blank: logical whether the sample is a blank (e.g. MilliQ water)
+ \item is_check: logical whether the sample is a check std (e.g SRM Tea)
  \item doc_mgL: the concentration of dissolved organic carbon in the sample given in mg \ifelse{html}{\out{L<sup>-1</sup>}}{\eqn{L^{-1}}}
  \item notes: optional notes related to the sample or sample collection.
 }
