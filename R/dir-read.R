@@ -43,23 +43,28 @@
 #' #load samples by using skip to exclude EEM's and other samples -------------
 #' abs <- abs_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "SEM|BEM|waterfall")
 #'
-eem_dir_read <- function(input_dir, pattern = NULL, skip="(?i)abs", file_ext="dat",
-                         recursive = FALSE, import_function="aqualog"){
+eem_dir_read <- function(input_dir,
+                         pattern = NULL,
+                         skip="(?i)abs",
+                         file_ext="dat",
+                         recursive = FALSE,
+                         import_function="aqualog"){
   stopifnot(dir.exists(input_dir))
 
   warnings_list <- list()  # Initialize an empty list to store warnings
 
   #wrapper on eemR::read_eem to try and catch errors from absorbance data being included
   .try_eem_read <- function(file, recursive=F, import_function){
-    tryCatch({eem <- eemR::eem_read(file=file, recursive=recursive, import_function = import_function)
-    #add additional attributes
-    attr(eem[[1]], "is_doc_normalized") <- FALSE
-    attr(eem[[1]], "is_dil_corrected") <- FALSE
-    # Default these to false and add them later
-    attr(eem[[1]], "is_blank") <- FALSE
-    attr(eem[[1]], "is_check") <- FALSE
+    tryCatch(
+      {eem <- eemR::eem_read(file=file, recursive=recursive, import_function = import_function)
+      #add additional attributes
+      attr(eem[[1]], "is_doc_normalized") <- FALSE
+      attr(eem[[1]], "is_dil_corrected") <- FALSE
+      # Default these to false and add them later
+      attr(eem[[1]], "is_blank") <- FALSE
+      attr(eem[[1]], "is_check") <- FALSE
 
-    return(eem)},
+      return(eem)},
     error = function(e) {
       # Check if it's a specific error
       if (grepl("argument of length 0", conditionMessage(e))) {
@@ -89,13 +94,14 @@ eem_dir_read <- function(input_dir, pattern = NULL, skip="(?i)abs", file_ext="da
   load_files <- files[which(pattern_choices & skip_choices & ext_choices)]
 
   #read files
-  eem_list <- withCallingHandlers(lapply(load_files, .try_eem_read, import_function=import_function),
-                                  warning = function(w) {
-                                    warnings_list <<- c(warnings_list, conditionMessage(w))  # Add the warning message
-                                    # TODO add warning list to base package environment if used by more functions.
-                                    # <<- can result in weird behavior
-                                    invokeRestart("muffleWarning")  # Prevent the warning from printing immediately
-                                  })
+  eem_list <- withCallingHandlers(
+    lapply(load_files, .try_eem_read, import_function=import_function),
+    warning = function(w) {
+      warnings_list <<- c(warnings_list, conditionMessage(w))  # Add the warning message
+      # TODO add warning list to base package environment if used by more functions.
+      # <<- can result in weird behavior
+      invokeRestart("muffleWarning")  # Prevent the warning from printing immediately
+      })
 
   # Combine all collected warnings into one [probably unnecessary, I don't think anything else should generate a warning]
   if (length(warnings_list) > 0) {
@@ -118,7 +124,9 @@ eem_dir_read <- function(input_dir, pattern = NULL, skip="(?i)abs", file_ext="da
 
 #' @rdname dir_read
 #' @export
-abs_dir_read <- function(input_dir, pattern = NULL, skip="SEM|BEM|Waterfall", file_ext="dat",
+abs_dir_read <- function(input_dir, pattern = NULL,
+                         skip="SEM|BEM|Waterfall",
+                         file_ext="dat",
                          recursive = FALSE){
   stopifnot(dir.exists(input_dir))
   warnings_list <- list()  # Initialize an empty list to store warnings

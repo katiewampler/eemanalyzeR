@@ -70,15 +70,38 @@ add_metadata <- function(meta, x){
     meta <- meta[-setdiff(1:nrow(meta), meta_order),]
   }
 
+  # Guess is_blank and is_check if they aren't specified
+  # Also make sure all sample names with BEM are considered "blanks"
+  # TODO - check with Katie that this is what we want to do
+  blank_pattern <- "BEM"
+  blank_flags <- sapply(get_sample_info(x, "sample"),
+                        \(s) grepl(
+                          pattern = blank_pattern,
+                          x = s,
+                          ignore.case = TRUE
+                        ))
+
+  check_pattern <- "tea"
+  check_flags <- sapply(get_sample_info(x, "sample"),
+                        \(s) grepl(
+                          pattern = check_pattern,
+                          x = s,
+                          ignore.case = TRUE
+                        ))
+
+
   # Add metadata info to object ----
   # Get data from metadata, keeping as numeric/character
-  # TODO add blank and check columns to this
-  # TODO SEPARATE ADDING OF REQUIRED AND OPTIONAL METADATA
   meta_data <- list(
+    # Required
     meta_name = meta$data_identifier[meta_order],
     dilution = meta$dilution[meta_order],
     integration_time_s = meta$integration_time_s[meta_order],
     raman_area_1s = meta$RSU_area_1s[meta_order],
+    is_blank = meta$is_blank[meta_order],
+    is_check = meta$is_check[meta_order],
+
+    #Optional
     analysis_date = if("analysis_date" %in% colnames(meta)) meta$analysis_date[meta_order] else NA,
     description = if("description" %in% colnames(meta)) meta$description[meta_order] else NA,
     doc_mgL = if("DOC_mg_L" %in% colnames(meta)) meta$DOC_mg_L[meta_order] else NA,
@@ -104,22 +127,10 @@ add_metadata <- function(meta, x){
     obj$doc_mgL <- meta_data$doc_mgL[y]
     obj$notes <- meta_data$notes[y]
 
-    browser()
+    # Assign attributes in metadata
+    attr(obj, "is_blank") <- meta_data$is_blank[y] || blank_flags[y]
+    attr(obj, "is_check") <- meta_data$is_check[y]
 
-    # Assign the samples as blanks or checks
-    if(TRUE) {
-
-    }
-
-
-    # TODO check this is flexible with other filenaming schemes
-    blank_pattern <- "BEM"
-    blank_flag <- grepl(blank_pattern, get_sample_info(obj, "sample"), ignore.case = TRUE)
-    attr(obj, "is_blank") <- blank_flag
-
-    check_pattern <- "tea"
-    check_flag <- grepl(check_pattern, get_sample_info(obj, "sample"),  ignore.case = TRUE)
-    attr(obj, "is_check") <- check_flag
 
     return(obj)
   })
