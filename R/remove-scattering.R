@@ -25,19 +25,19 @@
 #' @examples
 #' #default settings (remove all, interpolate only raman lines)
 #' eemlist <- remove_scattering(example_eems)
-#' staRdom::ggeem(eemlist[[6]])
+#' plot_eem(eemlist[[6]])
 #'
 #' #interpolate all
 #' eemlist <- remove_scattering(example_eems, interpolate=c(TRUE,TRUE,TRUE,TRUE))
-#' staRdom::ggeem(eemlist[[6]])
+#' plot_eem(eemlist[[6]])
 #'
 #' #only remove only rayleigh lines
 #' eemlist <- remove_scattering(example_eems, type=c(FALSE,FALSE,TRUE,TRUE))
-#' staRdom::ggeem(eemlist[[6]])
+#' plot_eem(eemlist[[6]])
 #'
 #' #change the width of the lines
 #' eemlist <- remove_scattering(example_eems, width=c(16,3,100,40))
-#' staRdom::ggeem(eemlist[[6]])
+#' plot_eem(eemlist[[6]])
 
 remove_scattering <- function(eemlist, type = c(TRUE,TRUE,TRUE,TRUE), width=c(16,3,30,10),
                               interpolate=c(TRUE,TRUE,FALSE,FALSE), method=1,
@@ -95,7 +95,7 @@ remove_scattering <- function(eemlist, type = c(TRUE,TRUE,TRUE,TRUE), width=c(16
    class(data) <- "eemlist"
 
  #write readme
-   .write_readme_line("scattering lines removed via 'remove_scattering' function")
+  # .write_readme_line("scattering lines removed via 'remove_scattering' function")
 
    return(data)
 

@@ -14,10 +14,8 @@
 
 #' @return TRUE if blanks meet validation standards, FALSE if not
 #' @export
-#' @importFrom staRdom ggeem eem_rem_scat
 #' @importFrom rlang is_interactive
 #' @importFrom ggplot2 labs theme
-#' @importFrom cowplot plot_grid
 #'
 #' @examples
 #' continue <- validate_blanks(eem_get_blank(example_eems))
@@ -30,11 +28,11 @@ validate_blanks <- function(
 
   # Plot the instrument blank
   if (rlang::is_interactive()) {
-  blank_plot1 <- staRdom::ggeem(blanklist) + ggplot2::labs(title="Blank Samples(s)") + ggplot2::theme(legend.position="bottom")
-  blank_plot2 <- staRdom::ggeem(staRdom::eem_rem_scat(blanklist, c(T,T,T,T))) +
+  blank_plot1 <- plot_eem(unique(blanklist)) + ggplot2::labs(title="Blank Samples(s)") + ggplot2::theme(legend.position="bottom")
+  blank_plot2 <- plot_eem(remove_scattering(unique(blanklist), type=c(T,T,T,T), interpolate=c(F,F,F,F))) +
     ggplot2::labs(title="Blank Samples(s) without Scattering Lines") + ggplot2::theme(legend.position="bottom")
 
-  blank_plot <- cowplot::plot_grid(blank_plot1, blank_plot2, nrow=1)
+  blank_plot <- ggpubr::ggarrange(blank_plot1, blank_plot2, nrow=1)
   print(blank_plot)
   print("is_interactive didn't work")
   }

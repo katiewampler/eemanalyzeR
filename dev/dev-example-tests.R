@@ -25,7 +25,7 @@
       eems <- raman_normalize(eems)
       eems <- correct_dilution(eems)
       abs <- correct_dilution(abs)
-      staRdom::ggeem(eems[[7]])
+      plot_eem(eems[[7]])
 
   #example 2: Hohner-Lab-2025-01-08
     input_dir <- here("dev/dev-examples/Hohner-Lab-2025-01-08")
@@ -44,7 +44,7 @@
       eems <- raman_normalize(eems)
       eems <- correct_dilution(eems)
       abs <- correct_dilution(abs)
-      staRdom::ggeem(eems[[7]])
+      plot_eem(eems[[7]])
 
   #example 3: PNNL-2022-11-10
     input_dir <- here("dev/dev-examples/PNNL-2022-11-10")
@@ -64,7 +64,7 @@
       eems <- raman_normalize(eems)
       eems <- correct_dilution(eems)
       abs <- correct_dilution(abs)
-      staRdom::ggeem(eems[[1]])
+      plot_eem(eems[[1]])
 
   #example 4: Vick-Majors-Lab-2024-11-04
     input_dir <- here("dev/dev-examples/Vick-Majors-Lab-2024-11-04")
@@ -82,7 +82,7 @@
       eems <- raman_normalize(eems)
       eems <- correct_dilution(eems)
       abs <- correct_dilution(abs)
-      staRdom::ggeem(eems[[1]])
+      plot_eem(eems[[1]])
 
   #example 5: Bladon-Lab-2024-08-19
     input_dir <- here("dev/dev-examples/Bladon-Lab-2024-08-19")
@@ -100,7 +100,7 @@
       eems <- raman_normalize(eems)
       eems <- correct_dilution(eems)
       abs <- correct_dilution(abs)
-      staRdom::ggeem(eems[[2]])
+      plot_eem(eems[[2]])
 
   #example 6: Bladon-Lab-2024-08-22
     input_dir <- here("dev/dev-examples/Bladon-Lab-2024-08-22")
@@ -118,7 +118,7 @@
       eems <- raman_normalize(eems)
       eems <- correct_dilution(eems)
       abs <- correct_dilution(abs)
-      staRdom::ggeem(eems[[2]])
+      plot_eem(eems[[2]])
 
   #example 7: Bladon-Lab-2024-11-01
     input_dir <- here("dev/dev-examples/Bladon-Lab-2024-11-01")
@@ -136,6 +136,6 @@
       eems <- raman_normalize(eems)
       eems <- correct_dilution(eems)
       abs <- correct_dilution(abs)
-      staRdom::ggeem(eems[[2]])
+      plot_eem(eems[[2]])
 
 
