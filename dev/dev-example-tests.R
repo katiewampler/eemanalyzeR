@@ -16,7 +16,7 @@
     meta <- meta_read(input_dir)
     abs <- add_metadata(meta, abs)
     eems <- add_metadata(meta, eems)
-    eems <- add_blanks(eems)
+    eems <- add_blanks(eems, validate = F)
       #processing steps
       if(exists("readme")){rm('readme')}
       eems <- subtract_blank(eems)
@@ -35,7 +35,7 @@
     meta <- meta_read(input_dir, name="good_meta.csv", validate = F) #this has RSU so it should be fine
     abs <- add_metadata(meta, abs)
     eems <- add_metadata(meta, eems)
-    eems <- add_blanks(eems)
+    eems <- add_blanks(eems, validate = F)
       #processing steps
       if(exists("readme")){rm('readme')}
       eems <- subtract_blank(eems)
@@ -55,7 +55,7 @@
     abs <- add_metadata(meta, abs)
     eems <- add_metadata(meta, eems)
     #eems <- add_blanks(eems) #throws an error because pattern is different
-    eems <- add_blanks(eems, pattern="blank$")
+    eems <- add_blanks(eems, pattern="blank$", validate = F)
       #processing steps
       if(exists("readme")){rm('readme')}
       eems <- subtract_blank(eems)
@@ -73,7 +73,7 @@
     meta <- meta_read(input_dir)
     abs <- add_metadata(meta, abs)
     eems <- add_metadata(meta, eems)
-    eems <- add_blanks(eems)
+    eems <- add_blanks(eems, validate = F)
       #processing steps
       if(exists("readme")){rm('readme')}
       eems <- subtract_blank(eems)
@@ -91,7 +91,7 @@
     meta <- meta_read(input_dir)
     abs <- add_metadata(meta, abs)
     eems <- add_metadata(meta, eems)
-    eems <- add_blanks(eems)
+    eems <- add_blanks(eems, validate = F)
       #processing steps
       if(exists("readme")){rm('readme')}
       eems <- subtract_blank(eems)
@@ -109,7 +109,7 @@
     meta <- meta_read(input_dir)
     abs <- add_metadata(meta, abs)
     eems <- add_metadata(meta, eems)
-    eems <- add_blanks(eems)
+    eems <- add_blanks(eems, validate = F)
       #processing steps
       if(exists("readme")){rm('readme')}
       eems <- subtract_blank(eems)
@@ -127,7 +127,7 @@
     meta <- meta_read(input_dir)
     abs <- add_metadata(meta, abs)
     eems <- add_metadata(meta, eems)
-    eems <- add_blanks(eems)
+    eems <- add_blanks(eems, validate = F)
       #processing steps
       if(exists("readme")){rm('readme')}
       eems <- subtract_blank(eems)

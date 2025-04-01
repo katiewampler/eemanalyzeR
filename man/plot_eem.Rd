@@ -17,14 +17,15 @@ plot_eem(eem, nbin = 8, equal_scale = FALSE, pal = NULL)
 If less colors are provided than required, it will use \link[grDevices]{colorRampPalette} to fill in colors.}
 }
 \value{
-a ggplot2 object
+if eem is an \code{eem} it will return a single ggplot2 object. If eem is an \code{eemlist}, it will return a list of ggplot2 objects.
 }
 \description{
 Used to make a nice plot of one or multiple excitation emission matrices (EEMs) using ggplot2
 }
 \details{
-The object returned is a \code{ggplot2} object, so it is compatible with other ggplot2 functions to
-further modify a plot as desired.
+If you're plotting a single EEM, the object returned is a \code{ggplot2} object, so it is compatible with other ggplot2 functions to
+further modify a plot as desired. If you're plotting multiple EEMs, the object returned is a list of \code{ggplot2} objects, which can also be
+modified by specifying which plot you want to modify. See examples for more details.
 }
 \examples{
 
@@ -37,7 +38,7 @@ eems <- remove_scattering(eems)
 plot_eem(eems[[3]])
 
 #plot all EEMs in an eemlist
-plot_eem(eems)
+plots <- plot_eem(eems)
 
 #change color scale
 plot_eem(eems, pal=c("darkblue", "lightblue"))
@@ -47,6 +48,12 @@ plot_eem(eems, equal_scale=TRUE)
 
 #customize using ggplot2 commands
 plot_eem(eems[[2]]) + ggplot2::labs(title="Test EEM")
+plot_eem(eems)[[3]] + ggplot2::labs(title="Test EEM")
+
+#modify then arrange together
+plots <- plot_eem(eems)
+plots[[3]] <- plots[[3]] + ggplot2::labs(title="Test EEM")
+print(ggpubr::ggarrange(plotlist = plots))
 
 }
 \seealso{

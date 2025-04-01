@@ -11,15 +11,17 @@
 #' @param pal the colors used for the fill scale, if not specified it will use the \link[pals]{parula} palette.
 #' If less colors are provided than required, it will use \link[grDevices]{colorRampPalette} to fill in colors.
 #'
-#' @return a ggplot2 object
+#' @return if eem is an \code{eem} it will return a single ggplot2 object. If eem is an \code{eemlist}, it will return a list of ggplot2 objects.
+#'
 #' @importFrom ggplot2 labs ggplot aes geom_contour_filled coord_cartesian geom_contour guides element_text scale_fill_manual theme
 #' @importFrom ggpubr ggarrange
 #' @importFrom pals parula
 #' @export
 #' @seealso \href{https://ggplot2.tidyverse.org}{ggplot2}
 #' @details
-#' The object returned is a \code{ggplot2} object, so it is compatible with other ggplot2 functions to
-#' further modify a plot as desired.
+#' If you're plotting a single EEM, the object returned is a \code{ggplot2} object, so it is compatible with other ggplot2 functions to
+#' further modify a plot as desired. If you're plotting multiple EEMs, the object returned is a list of \code{ggplot2} objects, which can also be
+#' modified by specifying which plot you want to modify. See examples for more details.
 #'
 #' @examples
 #'
@@ -32,7 +34,7 @@
 #' plot_eem(eems[[3]])
 #'
 #' #plot all EEMs in an eemlist
-#' plot_eem(eems)
+#' plots <- plot_eem(eems)
 #'
 #' #change color scale
 #' plot_eem(eems, pal=c("darkblue", "lightblue"))
@@ -42,6 +44,12 @@
 #'
 #' #customize using ggplot2 commands
 #' plot_eem(eems[[2]]) + ggplot2::labs(title="Test EEM")
+#' plot_eem(eems)[[3]] + ggplot2::labs(title="Test EEM")
+#'
+#' #modify then arrange together
+#' plots <- plot_eem(eems)
+#' plots[[3]] <- plots[[3]] + ggplot2::labs(title="Test EEM")
+#' print(ggpubr::ggarrange(plotlist = plots))
 #'
 
 plot_eem <- function(eem, nbin=8, equal_scale=FALSE, pal=NULL){
@@ -59,8 +67,8 @@ plot_eem <- function(eem, nbin=8, equal_scale=FALSE, pal=NULL){
 
 
     plot <- lapply(eem, .plot_eem, nbin, z_min, z_max, pal)
-    plot <- ggpubr::ggarrange(plotlist = plot)
-    return(plot)
+    print(ggpubr::ggarrange(plotlist = plot))
+    return(invisible(plot))
   }
 
   plot <- .plot_eem(eem, nbin=nbin, z_min=NULL, z_max=NULL, pal=pal)

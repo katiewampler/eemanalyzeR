@@ -18,6 +18,8 @@
 #' @param blanklist optional. an \code{eem} or \code{eemlist} containing the EEM's data for the blank(s)
 #' @param pattern optional. a character string containing a \code{\link[base]{regular expression}}
 #' used to specify the names of the samples to be used for blanks.
+#' @param validate logical. If TRUE, will print out the blanks and ask user for validation.
+#' If FALSE, it will skip validation and just add the blanks
 #'
 #' @returns an \code{eemlist} where each \code{eem} object has two additional items:
 #' \itemize{
@@ -32,7 +34,7 @@
 #' augment_eemlist <- add_blanks(eemlist)
 #'
 
-add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$"){
+add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$", validate=TRUE){
   stopifnot(class(eemlist) %in% c("eemlist"),
             class(blanklist) %in% c("NULL", "eem", "eemlist"),
             is.character(pattern))
@@ -60,7 +62,11 @@ add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$"){
     }
 
   # Validate the instrument blank
-  continue <- validate_blanks(unique(blanklist))
+  if(validate){
+    continue <- validate_blanks(unique(blanklist))
+  }else{
+    continue <- TRUE
+  }
 
   #makes sure blank has same wavelengths as sample then adds into eem as x_blK
 

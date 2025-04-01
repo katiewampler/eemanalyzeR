@@ -4,7 +4,7 @@
 \alias{add_blanks}
 \title{Check blanks and add to sample data}
 \usage{
-add_blanks(eemlist, blanklist = NULL, pattern = "BEM|Blank$")
+add_blanks(eemlist, blanklist = NULL, pattern = "BEM|Blank$", validate = TRUE)
 }
 \arguments{
 \item{eemlist}{an \code{eemlist} object containing EEM's data. See details for more info.}
@@ -13,6 +13,9 @@ add_blanks(eemlist, blanklist = NULL, pattern = "BEM|Blank$")
 
 \item{pattern}{optional. a character string containing a \code{\link[base]{regular expression}}
 used to specify the names of the samples to be used for blanks.}
+
+\item{validate}{logical. If TRUE, will print out the blanks and ask user for validation.
+If FALSE, it will skip validation and just add the blanks}
 }
 \value{
 an \code{eemlist} where each \code{eem} object has two additional items:
