@@ -4,7 +4,7 @@
 \alias{plot_eem}
 \title{Plot excitation emission matrices with ggplot2}
 \usage{
-plot_eem(eem, nbin = 8, equal_scale = FALSE, pal = NULL)
+plot_eem(eem, nbin = 8, equal_scale = FALSE, pal = NULL, remove_lower = FALSE)
 }
 \arguments{
 \item{eem}{an \code{eem} or \code{eemlist} object containing EEM's data}
@@ -15,6 +15,9 @@ plot_eem(eem, nbin = 8, equal_scale = FALSE, pal = NULL)
 
 \item{pal}{the colors used for the fill scale, if not specified it will use the \link[pals]{parula} palette.
 If less colors are provided than required, it will use \link[grDevices]{colorRampPalette} to fill in colors.}
+
+\item{remove_lower}{logical, should the area below the first order rayleigh line be set to NA values? This is helpful if there are artifacts in
+this region that are affecting the color scale.}
 }
 \value{
 if eem is an \code{eem} it will return a single ggplot2 object. If eem is an \code{eemlist}, it will return a list of ggplot2 objects.
@@ -26,11 +29,12 @@ Used to make a nice plot of one or multiple excitation emission matrices (EEMs) 
 If you're plotting a single EEM, the object returned is a \code{ggplot2} object, so it is compatible with other ggplot2 functions to
 further modify a plot as desired. If you're plotting multiple EEMs, the object returned is a list of \code{ggplot2} objects, which can also be
 modified by specifying which plot you want to modify. See examples for more details.
+
+If you find that plotting is taking more than a few seconds, it could be due to your default graphics device. See \href{https://forum.posit.co/t/graphics-not-working-in-rstudio/149111}{this} link for information on how to change this.
 }
 \examples{
-
 eems <- add_metadata(metadata, example_eems)
-eems <- add_blanks(eems, validate=F)
+eems <- add_blanks(eems, validate=FALSE)
 eems <- subtract_blank(eems)
 eems <- remove_scattering(eems)
 
@@ -55,6 +59,8 @@ plots <- plot_eem(eems)
 plots[[3]] <- plots[[3]] + ggplot2::labs(title="Test EEM")
 print(ggpubr::ggarrange(plotlist = plots))
 
+#remove lower area below rayleigh line
+plots <- plot_eem(eems, remove_lower=TRUE)
 }
 \seealso{
 \href{https://ggplot2.tidyverse.org}{ggplot2}

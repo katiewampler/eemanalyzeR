@@ -1,6 +1,3 @@
-#TODO: remove lower area?, clip in tighter? make as an option?
-
-
 #' Plot excitation emission matrices with ggplot2
 #'
 #' Used to make a nice plot of one or multiple excitation emission matrices (EEMs) using ggplot2
@@ -10,12 +7,15 @@
 #' @param equal_scale logical, should the scale be the same for all the plots in the eemlist?
 #' @param pal the colors used for the fill scale, if not specified it will use the \link[pals]{parula} palette.
 #' If less colors are provided than required, it will use \link[grDevices]{colorRampPalette} to fill in colors.
+#' @param remove_lower logical, should the area below the first order rayleigh line be set to NA values? This is helpful if there are artifacts in
+#' this region that are affecting the color scale.
 #'
 #' @return if eem is an \code{eem} it will return a single ggplot2 object. If eem is an \code{eemlist}, it will return a list of ggplot2 objects.
 #'
 #' @importFrom ggplot2 labs ggplot aes geom_contour_filled coord_cartesian geom_contour guides element_text scale_fill_manual theme
 #' @importFrom ggpubr ggarrange
 #' @importFrom pals parula
+#' @importFrom staRdom eem_matmult
 #' @export
 #' @seealso \href{https://ggplot2.tidyverse.org}{ggplot2}
 #' @details
@@ -23,10 +23,10 @@
 #' further modify a plot as desired. If you're plotting multiple EEMs, the object returned is a list of \code{ggplot2} objects, which can also be
 #' modified by specifying which plot you want to modify. See examples for more details.
 #'
+#' If you find that plotting is taking more than a few seconds, it could be due to your default graphics device. See \href{https://forum.posit.co/t/graphics-not-working-in-rstudio/149111}{this} link for information on how to change this.
 #' @examples
-#'
 #' eems <- add_metadata(metadata, example_eems)
-#' eems <- add_blanks(eems, validate=F)
+#' eems <- add_blanks(eems, validate=FALSE)
 #' eems <- subtract_blank(eems)
 #' eems <- remove_scattering(eems)
 #'
@@ -51,8 +51,11 @@
 #' plots[[3]] <- plots[[3]] + ggplot2::labs(title="Test EEM")
 #' print(ggpubr::ggarrange(plotlist = plots))
 #'
+#'#remove lower area below rayleigh line
+#' plots <- plot_eem(eems, remove_lower=TRUE)
 
-plot_eem <- function(eem, nbin=8, equal_scale=FALSE, pal=NULL){
+
+plot_eem <- function(eem, nbin=8, equal_scale=FALSE, pal=NULL, remove_lower = FALSE){
   stopifnot(.is_eem(eem) | .is_eemlist(eem))
   #if eemlist, apply plotting function to list
   if(.is_eemlist(eem)){
@@ -68,7 +71,7 @@ plot_eem <- function(eem, nbin=8, equal_scale=FALSE, pal=NULL){
     }
 
 
-    plot <- lapply(eem, .plot_eem, nbin, z_min, z_max, pal)
+    plot <- lapply(eem, .plot_eem, nbin, z_min, z_max, pal, remove_lower)
 
     #print(patchwork::wrap_plots(plot) + patchwork::plot_layout(guides="collect"))
 
@@ -76,7 +79,7 @@ plot_eem <- function(eem, nbin=8, equal_scale=FALSE, pal=NULL){
     return(invisible(plot))
   }
 
-  plot <- .plot_eem(eem, nbin=nbin, z_min=NULL, z_max=NULL, pal=pal)
+  plot <- .plot_eem(eem, nbin=nbin, z_min=NULL, z_max=NULL, pal=pal, lower=remove_lower)
   return(plot)
 
 }
@@ -93,7 +96,20 @@ plot_eem <- function(eem, nbin=8, equal_scale=FALSE, pal=NULL){
 #' @noRd
 #' @seealso \link[ggplot2]
 #'
-.plot_eem <- function(eem, nbin, z_min, z_max, pal){
+.plot_eem <- function(eem, nbin, z_min, z_max, pal, lower){
+
+  #remove lower region
+  if(lower){
+      mat <- matrix(data = 1, nrow = nrow(eem$x),
+                  ncol = ncol(eem$x))
+      ex_mat <- matrix(eem$ex, nrow = nrow(eem$x),
+                       ncol = ncol(eem$x), byrow = TRUE)
+      em_mat <- matrix(eem$em, nrow = nrow(eem$x),
+                       ncol = ncol(eem$x), byrow = FALSE)
+      mat <- mat * (ex_mat < em_mat)
+      mat[mat == 0] <- NA
+      eem$x <- eem$x * mat
+  }
 
   #functions to make nice breaks
   dec_place <- function(x) {floor(log10(abs(x)))}
@@ -129,11 +145,11 @@ plot_eem <- function(eem, nbin=8, equal_scale=FALSE, pal=NULL){
 
     #get label for fill
     if(attr(eem, "is_raman_normalized") & attr(eem, "is_doc_normalized")){
-      fill_lab <- expression(Intensity~(R.U.~L~mgC^{-1}))
+      fill_lab <- "Intensity (R.U. L mgC \U207B\U00B9)"
     } else if(attr(eem, "is_doc_normalized")){
-      fill_lab <- expression(Intensity~(L~mgC^{-1}))
+      fill_lab <- "Intensity (L mgC \U207B\U00B9)"
     } else if(attr(eem, "is_raman_normalized")){
-      fill_lab <- expression(Intensity~(R.U.))
+      fill_lab <- "Intensity (R.U.)"
     } else{
       fill_lab <- "Raw Intensity"
     }

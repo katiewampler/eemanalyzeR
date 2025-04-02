@@ -25,6 +25,7 @@
 #' @importFrom rlang local_interactive
 #' @importFrom staRdom eem_extend2largest
 #' @importFrom staRdom eem_interp
+#' @importFrom staRdom eem_matmult
 #' @importFrom staRdom eem_red2smallest
 #' @importFrom staRdom eem_rem_scat
 #' @importFrom staRdom ggeem
