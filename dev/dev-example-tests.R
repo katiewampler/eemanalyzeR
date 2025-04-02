@@ -16,7 +16,7 @@
     meta <- meta_read(input_dir)
     abs <- add_metadata(meta, abs)
     eems <- add_metadata(meta, eems)
-    eems <- add_blanks(eems, validate = F)
+    eems <- add_blanks(eems, validate = T)
       #processing steps
       if(exists("readme")){rm('readme')}
       eems <- subtract_blank(eems)
@@ -73,7 +73,7 @@
     meta <- meta_read(input_dir)
     abs <- add_metadata(meta, abs)
     eems <- add_metadata(meta, eems)
-    eems <- add_blanks(eems, validate = F)
+    eems <- add_blanks(eems, validate = T)
       #processing steps
       if(exists("readme")){rm('readme')}
       eems <- subtract_blank(eems)

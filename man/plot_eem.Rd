@@ -30,7 +30,7 @@ modified by specifying which plot you want to modify. See examples for more deta
 \examples{
 
 eems <- add_metadata(metadata, example_eems)
-eems <- add_blanks(eems)
+eems <- add_blanks(eems, validate=F)
 eems <- subtract_blank(eems)
 eems <- remove_scattering(eems)
 

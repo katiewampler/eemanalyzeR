@@ -26,7 +26,7 @@
 #' @examples
 #'
 #' eems <- add_metadata(metadata, example_eems)
-#' eems <- add_blanks(eems)
+#' eems <- add_blanks(eems, validate=F)
 #' eems <- subtract_blank(eems)
 #' eems <- remove_scattering(eems)
 #'
@@ -60,14 +60,19 @@ plot_eem <- function(eem, nbin=8, equal_scale=FALSE, pal=NULL){
     if(equal_scale){
       z_max <- max(sapply(eem, function(x){max(x$x, na.rm=T)}))
       z_min <- min(sapply(eem, function(x){min(x$x, na.rm=T)}))
+      scale <- TRUE
     }else{
       z_max <- NULL
       z_min <- NULL
+      scale <- FALSE
     }
 
 
     plot <- lapply(eem, .plot_eem, nbin, z_min, z_max, pal)
-    print(ggpubr::ggarrange(plotlist = plot))
+
+    #print(patchwork::wrap_plots(plot) + patchwork::plot_layout(guides="collect"))
+
+    print(ggpubr::ggarrange(plotlist = plot, common.legend=scale, legend = "right"))
     return(invisible(plot))
   }
 
@@ -139,7 +144,7 @@ plot_eem <- function(eem, nbin=8, equal_scale=FALSE, pal=NULL){
 
     #create plot
     plot <- ggplot2::ggplot(df_plot, ggplot2::aes(x=.data$x,y=.data$y,z=.data$z)) +
-      ggplot2::geom_contour_filled(breaks=breaks) +
+      ggplot2::geom_contour_filled(breaks=breaks, show.legend = TRUE) +
       ggplot2::coord_cartesian(expand = FALSE) + ggplot2::geom_contour(color="black", breaks=breaks) +
       ggplot2::labs(x="Excitation (nm)", y="Emission (nm)", fill=fill_lab)  +
       ggplot2::guides(fill = ggplot2::guide_legend(title.position = "right",direction = "vertical",
@@ -147,7 +152,7 @@ plot_eem <- function(eem, nbin=8, equal_scale=FALSE, pal=NULL){
                                                    barheight = .95, barwidth = .95,
                                                    title.hjust = 0.5, raster = FALSE,
                                                    reverse=TRUE)) +
-      ggplot2::scale_fill_manual(labels=labs$label, values=pal) +
+      ggplot2::scale_fill_manual(labels=labs$label, values=pal, drop=FALSE) +
       ggplot2::theme(axis.text = ggplot2::element_text(colour = 1, size = 10),
                      axis.title = ggplot2::element_text(colour = 1, size = 12))
 
