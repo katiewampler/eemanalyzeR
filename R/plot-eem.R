@@ -23,6 +23,7 @@
 #' further modify a plot as desired. If you're plotting multiple EEMs, the object returned is a list of \code{ggplot2} objects, which can also be
 #' modified by specifying which plot you want to modify. See examples for more details.
 #'
+#' @note
 #' If you find that plotting is taking more than a few seconds, it could be due to your default graphics device. See \href{https://forum.posit.co/t/graphics-not-working-in-rstudio/149111}{this} link for information on how to change this.
 #' @examples
 #' eems <- add_metadata(metadata, example_eems)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/remove-scattering.R
 \name{remove_scattering}
 \alias{remove_scattering}
-\title{Remove raman and rayleigh scattering lines}
+\title{Remove Raman and Rayleigh scattering lines}
 \usage{
 remove_scattering(
   eemlist,
@@ -34,10 +34,16 @@ The order is "raman1", "raman2", "rayleigh1" and "rayleigh2" scattering.}
 an object of class \code{eemlist}
 }
 \description{
-TODO add info about scattering lines here,
+Raman and Rayleigh scattering can cause signal interference with the sample fluoresence signal,
+thus it is often advisable to remove them. Raman scatting is a form of inelastic scattering,
+that is due light interacting with the solvent, shifting to longer wavelengths. Rayleigh scattering is elastic scattering, where light
+bounces off molecules in the sample without losing energy, thus this line will always appear on the 1:1 line
+and tends to be quite intense. Second order Raman and Rayleigh scattering may also be observed,
+which is due to the interaction between two photons of the same energy which doubles to excitation
+wavelength.
 }
-\details{
-A modified version of the staRdom function \link[staRdom]{eem_rem_scat}, modified to allow
+\note{
+This function is a modified version of the staRdom function \link[staRdom]{eem_rem_scat}, modified to allow
 selective interpolation instead of all or nothing.
 }
 \examples{
@@ -56,4 +62,7 @@ plot_eem(eemlist[[6]])
 #change the width of the lines
 eemlist <- remove_scattering(example_eems, width=c(16,3,100,40))
 plot_eem(eemlist[[6]])
+}
+\references{
+Coble, P. G. (2014). Aquatic organic matter fluorescence. New York: Cambridge University Press.
 }

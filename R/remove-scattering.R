@@ -1,14 +1,14 @@
 #' Remove Raman and Rayleigh scattering lines
 #'
 #' Raman and Rayleigh scattering can cause signal interference with the sample fluoresence signal,
-#' thus it is often advisable to remove them. Raman scatting is a form of inelastic scattering, 
-#' that is due light interacting with the solvent, shifting to longer wavelengths. Rayleigh scattering is elastic scattering, where light 
-#' bounces off molecules in the sample without losing energy, thus this line will always appear on the 1:1 line 
-#' and tends to be quite intense. Second order Raman and Rayleigh scattering may also be observed, 
-#' which is due to the interaction between two photons of the same energy which doubles to excitation 
+#' thus it is often advisable to remove them. Raman scatting is a form of inelastic scattering,
+#' that is due light interacting with the solvent, shifting to longer wavelengths. Rayleigh scattering is elastic scattering, where light
+#' bounces off molecules in the sample without losing energy, thus this line will always appear on the 1:1 line
+#' and tends to be quite intense. Second order Raman and Rayleigh scattering may also be observed,
+#' which is due to the interaction between two photons of the same energy which doubles to excitation
 #' wavelength.
 #'
-#' @note A modified version of the staRdom function \link[staRdom]{eem_rem_scat}, modified to allow
+#' @note This function is a modified version of the staRdom function \link[staRdom]{eem_rem_scat}, modified to allow
 #' selective interpolation instead of all or nothing.
 #'
 #' @param eemlist an \code{eemlist} object containing EEM's data.
@@ -27,7 +27,7 @@
 #'
 #' @returns an object of class \code{eemlist}
 #' @export
-#' @reference Coble, P. G. (2014). Aquatic organic matter fluorescence. New York: Cambridge University Press.
+#' @references Coble, P. G. (2014). Aquatic organic matter fluorescence. New York: Cambridge University Press.
 #' @examples
 #' #default settings (remove all, interpolate only raman lines)
 #' eemlist <- remove_scattering(example_eems)
