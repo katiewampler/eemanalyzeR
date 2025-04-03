@@ -20,7 +20,7 @@
 #'
 #' @examples
 #' eem <- add_metadata(metadata,example_eems)
-#' eem <- add_blanks(eem)
+#' eem <- add_blanks(eem, validate=FALSE)
 #' eem_sub <- subtract_blank(eem[[1]])
 #' eemlist_sub <- subtract_blank(eem)
 subtract_blank <- function(eem) {

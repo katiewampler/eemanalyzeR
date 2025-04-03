@@ -16,16 +16,12 @@
     meta <- meta_read(input_dir)
     abs <- add_metadata(meta, abs)
     eems <- add_metadata(meta, eems)
-    eems <- add_blanks(eems, validate = T)
+    eems <- add_blanks(eems, validate = F)
       #processing steps
-      if(exists("readme")){rm('readme')}
-      eems <- subtract_blank(eems)
-      eems <- remove_scattering(eems)
-      eems <- ife_correct(eems, abs)
-      eems <- raman_normalize(eems)
-      eems <- correct_dilution(eems)
       abs <- correct_dilution(abs)
-      plot_eem(eems[[7]])
+      eems <- process_eem(eems, abs, width=c(16,3,20,15))
+      plot_eem(eems, remove_lower = T)
+
 
   #example 2: Hohner-Lab-2025-01-08
     input_dir <- here("dev/dev-examples/Hohner-Lab-2025-01-08")
@@ -37,14 +33,9 @@
     eems <- add_metadata(meta, eems)
     eems <- add_blanks(eems, validate = F)
       #processing steps
-      if(exists("readme")){rm('readme')}
-      eems <- subtract_blank(eems)
-      eems <- remove_scattering(eems)
-      eems <- ife_correct(eems, abs)
-      eems <- raman_normalize(eems)
-      eems <- correct_dilution(eems)
       abs <- correct_dilution(abs)
-      plot_eem(eems[[7]])
+      eems <- process_eem(eems, abs, width=c(16,3,20,15))
+      plot_eem(eems, remove_lower = T)
 
   #example 3: PNNL-2022-11-10
     input_dir <- here("dev/dev-examples/PNNL-2022-11-10")
@@ -57,14 +48,9 @@
     #eems <- add_blanks(eems) #throws an error because pattern is different
     eems <- add_blanks(eems, pattern="blank$", validate = F)
       #processing steps
-      if(exists("readme")){rm('readme')}
-      eems <- subtract_blank(eems)
-      eems <- remove_scattering(eems)
-      eems <- ife_correct(eems, abs)
-      eems <- raman_normalize(eems)
-      eems <- correct_dilution(eems)
       abs <- correct_dilution(abs)
-      plot_eem(eems[[1]])
+      eems <- process_eem(eems, abs, width=c(16,3,20,15))
+      plot_eem(eems, remove_lower = T)
 
   #example 4: Vick-Majors-Lab-2024-11-04
     input_dir <- here("dev/dev-examples/Vick-Majors-Lab-2024-11-04")
@@ -73,16 +59,11 @@
     meta <- meta_read(input_dir)
     abs <- add_metadata(meta, abs)
     eems <- add_metadata(meta, eems)
-    eems <- add_blanks(eems, validate = T)
+    eems <- add_blanks(eems, validate = F)
       #processing steps
-      if(exists("readme")){rm('readme')}
-      eems <- subtract_blank(eems)
-      eems <- remove_scattering(eems)
-      eems <- ife_correct(eems, abs)
-      eems <- raman_normalize(eems)
-      eems <- correct_dilution(eems)
       abs <- correct_dilution(abs)
-      plot_eem(eems[[1]])
+      eems <- process_eem(eems, abs, width=c(16,3,20,15))
+      plot_eem(eems, remove_lower = T)
 
   #example 5: Bladon-Lab-2024-08-19
     input_dir <- here("dev/dev-examples/Bladon-Lab-2024-08-19")
@@ -93,14 +74,9 @@
     eems <- add_metadata(meta, eems)
     eems <- add_blanks(eems, validate = F)
       #processing steps
-      if(exists("readme")){rm('readme')}
-      eems <- subtract_blank(eems)
-      eems <- remove_scattering(eems)
-      eems <- ife_correct(eems, abs)
-      eems <- raman_normalize(eems)
-      eems <- correct_dilution(eems)
       abs <- correct_dilution(abs)
-      plot_eem(eems[[2]])
+      eems <- process_eem(eems, abs, width=c(16,3,20,15))
+      plot_eem(eems, remove_lower = T)
 
   #example 6: Bladon-Lab-2024-08-22
     input_dir <- here("dev/dev-examples/Bladon-Lab-2024-08-22")
@@ -111,14 +87,9 @@
     eems <- add_metadata(meta, eems)
     eems <- add_blanks(eems, validate = F)
       #processing steps
-      if(exists("readme")){rm('readme')}
-      eems <- subtract_blank(eems)
-      eems <- remove_scattering(eems)
-      eems <- ife_correct(eems, abs)
-      eems <- raman_normalize(eems)
-      eems <- correct_dilution(eems)
       abs <- correct_dilution(abs)
-      plot_eem(eems[[2]])
+      eems <- process_eem(eems, abs, width=c(16,3,20,15))
+      plot_eem(eems, remove_lower = T)
 
   #example 7: Bladon-Lab-2024-11-01
     input_dir <- here("dev/dev-examples/Bladon-Lab-2024-11-01")
@@ -129,13 +100,7 @@
     eems <- add_metadata(meta, eems)
     eems <- add_blanks(eems, validate = F)
       #processing steps
-      if(exists("readme")){rm('readme')}
-      eems <- subtract_blank(eems)
-      eems <- remove_scattering(eems)
-      eems <- ife_correct(eems, abs)
-      eems <- raman_normalize(eems)
-      eems <- correct_dilution(eems)
       abs <- correct_dilution(abs)
-      plot_eem(eems[[2]])
-
+      eems <- process_eem(eems, abs, width=c(16,3,20,15))
+      plot_eem(eems, remove_lower = T)
 

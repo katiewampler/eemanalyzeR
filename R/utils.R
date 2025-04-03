@@ -134,7 +134,7 @@
   step <- paste0(time, ": ", text)
 
   #get parameters used
-  default_par <- formals(sys.function(1))
+  default_par <- formals(sys.function(sys.parent()))
   user_par <- as.list(match.call()[-1])
   pars <- utils::modifyList(default_par, user_par)
   pars$text <- NULL #we don't need the text input
