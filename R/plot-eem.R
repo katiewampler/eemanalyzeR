@@ -72,7 +72,7 @@ plot_eem <- function(eem, nbin=8, equal_scale=FALSE, pal=NULL, remove_lower = FA
     }
 
 
-    plot <- lapply(eem, .plot_eem, nbin, z_min, z_max, pal, remove_lower)
+    plot <- lapply(eem, .plot_eem, nbin, z_min, z_max, pal, remove_lower, title=TRUE)
 
     #print(patchwork::wrap_plots(plot) + patchwork::plot_layout(guides="collect"))
 
@@ -92,12 +92,13 @@ plot_eem <- function(eem, nbin=8, equal_scale=FALSE, pal=NULL, remove_lower = FA
 #' @param z_min the minimum intensity value to plot, if NULL uses the maximum value from the EEM
 #' @param z_max the maximum intensity value to plot, if NULL uses the minimum value from the EEM
 #' @param pal the colors used for the fill scale, if not specified it will use the \link[pals]{parula} palette
-#'
+#' @param title logical, if TRUE will inlude the sample name on the plot, if FALSE it will not. Tries to use meta_name, but will use sample if
+#' meta_name doesn't exist.
 #' @return a ggplot2 object
 #' @noRd
 #' @seealso \link[ggplot2]
 #'
-.plot_eem <- function(eem, nbin, z_min, z_max, pal, lower){
+.plot_eem <- function(eem, nbin, z_min, z_max, pal, lower, title=FALSE){
 
   #remove lower region
   if(lower){
@@ -165,13 +166,18 @@ plot_eem <- function(eem, nbin=8, equal_scale=FALSE, pal=NULL, remove_lower = FA
       ggplot2::coord_cartesian(expand = FALSE) + ggplot2::geom_contour(color="black", breaks=breaks) +
       ggplot2::labs(x="Excitation (nm)", y="Emission (nm)", fill=fill_lab)  +
       ggplot2::guides(fill = ggplot2::guide_legend(title.position = "right",direction = "vertical",
-                                                   title.theme = ggplot2::element_text(angle = 90, size = 12, colour = "black"),
-                                                   barheight = .95, barwidth = .95,
+                                                   title.theme = ggplot2::element_text(angle = 90, colour = "black"),
+                                                   barheight = .5, barwidth = .95,
                                                    title.hjust = 0.5, raster = FALSE,
                                                    reverse=TRUE)) +
-      ggplot2::scale_fill_manual(labels=labs$label, values=pal, drop=FALSE) +
-      ggplot2::theme(axis.text = ggplot2::element_text(colour = 1, size = 10),
-                     axis.title = ggplot2::element_text(colour = 1, size = 12))
+      ggplot2::scale_fill_manual(labels=labs$label, values=pal, drop=FALSE)
+
+    if(.meta_added(eem)){plot_name <- eem$meta_name}else{plot_name <- eem$sample}
+
+    if(title){
+      plot <- plot + ggplot2::labs(subtitle=plot_name) +
+        ggplot2::theme(plot.subtitle = ggplot2::element_text(size=9))
+    }
 
   return(plot)
 }
