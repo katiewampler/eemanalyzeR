@@ -19,7 +19,7 @@ an object of class \code{eemlist}
 }
 \description{
 Normalizes the EEM intensity to a standard scale of Raman Units (R.U.) based
-on the area of the water Raman peak (Lawaetz and Steadmon 2009).
+on the area of the water Raman peak (Lawaetz and Stedmon 2009).
 }
 \details{
 The function uses the raman area provided by the metadata to normalize the EEMs, because of this,

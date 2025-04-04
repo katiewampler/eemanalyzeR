@@ -1,6 +1,6 @@
 #' Remove Raman and Rayleigh scattering lines
 #'
-#' Raman and Rayleigh scattering can cause signal interference with the sample fluoresence signal,
+#' Raman and Rayleigh scattering can cause signal interference with the sample fluorescence signal,
 #' thus it is often advisable to remove them. Raman scatting is a form of inelastic scattering,
 #' that is due light interacting with the solvent, shifting to longer wavelengths. Rayleigh scattering is elastic scattering, where light
 #' bounces off molecules in the sample without losing energy, thus this line will always appear on the 1:1 line

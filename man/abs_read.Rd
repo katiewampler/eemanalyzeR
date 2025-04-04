@@ -15,7 +15,7 @@ An object of class \code{abs} containing:
  \item file The filename of the absorbance data.
  \item sample The sample name of the absorbance data.
  \item n The number of wavelengths absorbance was measured at.
- \item data A matrix where the first column is the wavlengths in nm and the second column is the absorbance.
+ \item data A matrix where the first column is the wavelengths in nm and the second column is the absorbance.
  \item location Directory of the absorbance data.
 }
 }

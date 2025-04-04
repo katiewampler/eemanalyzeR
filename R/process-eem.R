@@ -5,9 +5,9 @@
 #' \itemize{
 #' \item{\link[eemanalyzeR]{subtract_blank}: which subtracts the blanks from the samples}
 #' \item{\link[eemanalyzeR]{remove_scattering}: which removes scattering lines with optional interpolation}
-#' \item{\link[eemanalyzeR]{ife_correct}: which corrects the fluoresence intensity for inner filter effects}
-#' \item{\link[eemanalyzeR]{raman_normalize}: which normalizes the fluoresence intensity to the raman unit area}
-#' \item{\link[eemanalyzeR]{correct_dilution}: which corrects the fluoresence intensity for any dilutions}
+#' \item{\link[eemanalyzeR]{ife_correct}: which corrects the fluorescence intensity for inner filter effects}
+#' \item{\link[eemanalyzeR]{raman_normalize}: which normalizes the fluorescence intensity to the raman unit area}
+#' \item{\link[eemanalyzeR]{correct_dilution}: which corrects the fluorescence intensity for any dilutions}
 #' \item{\link[eemR]{eem_cut}: which clips the area of the excitation emission matrices to the area of interest}
 #' }
 #'
