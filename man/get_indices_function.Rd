@@ -4,10 +4,10 @@
 \alias{get_indices_function}
 \title{Get preset or use custom functions to generate fluorescence and absorbance indices}
 \usage{
-get_indices_function(method = "eemanalyzeR")
+get_indices_function(index_method = "eemanalyzeR")
 }
 \arguments{
-\item{method}{currently supports "eemanalyzeR", "eemR", and "usgs". See details for more information.}
+\item{index_method}{currently supports "eemanalyzeR", "eemR", and "usgs". See details for more information.}
 }
 \value{
 a function used to generate indices

@@ -37,6 +37,7 @@ Imports:
     pals,
     parallel,
     plyr,
+    pracma,
     purrr,
     readxl,
     rlang,
@@ -46,5 +47,6 @@ Imports:
     tidyr,
     tools,
     usethis,
-    utils
+    utils,
+    zoo
 Config/testthat/edition: 3

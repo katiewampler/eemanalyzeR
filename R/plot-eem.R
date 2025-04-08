@@ -1,3 +1,4 @@
+#TODO:add option to add peak annoations on
 #' Plot excitation emission matrices with ggplot2
 #'
 #' Used to make a nice plot of one or multiple excitation emission matrices (EEMs) using ggplot2
