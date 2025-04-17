@@ -4,12 +4,14 @@
 \alias{eemanalyzeR_indices}
 \title{Default package methods for fluorescence and absorbance indices}
 \usage{
-eemanalyzeR_indices(eemlist, abslist, return = "long")
+eemanalyzeR_indices(eemlist, abslist, cuvle = 1, return = "long")
 }
 \arguments{
 \item{eemlist}{an \code{eemlist} object containing EEM's data. See details for more info.}
 
 \item{abslist}{an \code{abslist} object containing absorbance data.}
+
+\item{cuvle}{cuvette (path) length in cm}
 
 \item{return}{either "long" or "wide" to specify the format of the indices data.frames}
 }
@@ -23,9 +25,9 @@ If \code{return} is "long" each data.frame will have four columns:
 \itemize{
  \item sample_name: the name of the sample
  \item meta_name: the name of the sample in the metadata if metadata has been added, otherwise the sample name again
- \item metric: the name of the index being reported
+ \item metric: the name of the index being reported, see details for more information.
  \item value: the value of the index
- \item QAQC_flag: any flags associated with the data. See details for more infomation.
+ \item QAQC_flag: any flags associated with the data. See details for more information.
 }
 }
 \description{

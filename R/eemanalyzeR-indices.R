@@ -1,9 +1,14 @@
+# TODO: Need a LOT more documentation of these different indices, write to readme
 #' Default package methods for fluorescence and absorbance indices
 #'
+#'
+#'
 #' @importFrom zoo na.spline
+#' @importFrom tidyr pivot_wider
 #' @param eemlist an \code{eemlist} object containing EEM's data. See details for more info.
 #' @param abslist an \code{abslist} object containing absorbance data.
 #' @param return either "long" or "wide" to specify the format of the indices data.frames
+#' @param cuvle cuvette (path) length in cm
 #' @note If absorbance is not at a 1 nanometer interval, absorbance will be interpolated using \link[zoo]{na.spline} which fills in missing values
 #' using spline interpolation.
 #'
@@ -16,9 +21,9 @@
 #' \itemize{
 #'  \item sample_name: the name of the sample
 #'  \item meta_name: the name of the sample in the metadata if metadata has been added, otherwise the sample name again
-#'  \item metric: the name of the index being reported
+#'  \item metric: the name of the index being reported, see details for more information.
 #'  \item value: the value of the index
-#'  \item QAQC_flag: any flags associated with the data. See details for more infomation.
+#'  \item QAQC_flag: any flags associated with the data. See details for more information.
 #' }
 #'
 #' @export
@@ -27,7 +32,7 @@
 #' abslist <- add_metadata(metadata, example_absorbance)
 #' eemlist <- add_metadata(metadata, example_eems)
 #' indices <- eemanalyzeR_indices(eemlist, abslist)
-eemanalyzeR_indices <- function(eemlist, abslist, return="long"){
+eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1, return="long"){
   #get fluoresence peaks
   #define wavelengths for coble peaks
   peaks <- list(pB = list(ex=270:280, em=300:320),
@@ -127,7 +132,7 @@ eemanalyzeR_indices <- function(eemlist, abslist, return="long"){
   #add flags and change NA to -9999
   #TODO: flag potential high or low values, values where reporting just noise
   eem_index <- missing_doc_flag(eem_index)
-  eem_index[is.na(eem_index)] <- "-9999"
+  eem_index[is.na(eem_index)] <- -9999
 
   #absorbance peaks
   #interpolate absorbance data to 1 nm intervals
@@ -154,10 +159,29 @@ eemanalyzeR_indices <- function(eemlist, abslist, return="long"){
         abs_val <- NA
       }})
     return(suva_metrics)}
+  calc_ratios <- function(abs){
+    #get absorption in m^-1 (convert from absorbance to absorption based on Beer's Law)
+    absorption <- abs$data[,2] * log(10) / (cuvle/100) #convert cm cuvette to m
 
+    S275_295 <- staRdom::abs_fit_slope(abs$data[,1], absorption,
+                                   lim=c(275,295), l_ref=275)$coefficient
+    S350_400 <- staRdom::abs_fit_slope(abs$data[,1], absorption,
+                                   lim=c(350,400), l_ref=350)$coefficient
+
+    SR <- S275_295 / S350_400
+
+    E2_E3 <- abs$data[abs$data[,1]==250,2] / abs$data[abs$data[,1]==365,2]
+
+    E4_E6 <- abs$data[abs$data[,1]==465,2] / abs$data[abs$data[,1]==665,2]
+
+    vals <- unname(c(S275_295, S350_400, SR, E2_E3, E4_E6)) #remove previous names
+    names(vals) <- c("S275_295", "S350_400", "SR", "E2_E3", "E4_E6")
+
+    return(vals)
+  }
 
   abs_index <- do.call("rbind", lapply(abs_interp, function(abs){
-    vals <- c(calc_suva(abs))
+    vals <- c(calc_suva(abs), calc_ratios(abs))
     name_type <- ifelse(.meta_added(abs), "meta_name", "sample")
     index <- data.frame(sample_name= get_sample_info(abs, "sample"),
                         meta_name=get_sample_info(abs, name_type),
@@ -166,30 +190,22 @@ eemanalyzeR_indices <- function(eemlist, abslist, return="long"){
 
   abs_index <- missing_doc_flag(abs_index)
 
-  #get spectral ratios
-  #TODO modify this code still
-  #S275_295 <- sapply(lapply(data[,-ncol(data)]*log(10)*100/cuvle, staRdom:::abs_fit_slope,
-   #                         wl=data$wavelength, lim=c(275, 295),
-    #                        l_ref=275), function(res) res$coefficients)
 
- # S350_400 <- sapply(lapply(data[,-ncol(data)]*log(10)*100/cuvle, staRdom:::abs_fit_slope,
-  #                          wl=data$wavelength, lim=c(350, 400),
-   #                         l_ref=350), function(res) res$coefficients)
+  abs_index$value[is.na(abs_index$value)] <- -9999
 
-
- # abs_out$S275_295 <- as.numeric(S275_295)
-  #abs_out$S350_400 <- as.numeric(S350_400)
-
-#  abs_out$SR <- abs_out$S275_295 / abs_out$S350_400
-
-
-  #TODO: run functions across all absorbance list items
-
-  #flag as needed for ratios with low noise
-  #TODO: add flags
+  #flag as needed for ratios with low noise,negative numbers
+  #TODO: add flags, negative numbers
 
 
   #return list of index values
+  if(return == "wide"){
+    #TODO: will need to figure out combining strings later
+    abs_index <- tidyr::pivot_wider(abs_index, names_from="metric", values_from="value")
+    eem_index <- tidyr::pivot_wider(abs_index, names_from="metric", values_from="value")
+
+  }
+
   index <- list(eem_index = eem_index, abs_index=abs_index)
+
 
 }
