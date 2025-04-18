@@ -46,7 +46,7 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1, return="long"){
 
   #helper functions to flag data [maybe move to broader function to flag no matter what function used]
   missing_doc_flag <- function(index){
-    doc_flag <- grepl("SUVA|SVA|DOC", index$metric) & is.na(index$value)
+    doc_flag <- grepl("SUVA|SVA|DOC", index$index) & is.na(index$value)
     index$QAQC_flag[doc_flag] <- "DOC_01"
     return(index)
   }
@@ -126,7 +126,7 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1, return="long"){
     name_type <- ifelse(.meta_added(eem), "meta_name", "sample")
     index <- data.frame(sample_name= get_sample_info(eem, "sample"),
                         meta_name=get_sample_info(eem, name_type),
-                        metric = names(vals),
+                        index = names(vals),
                         value = unname(vals))}))
 
   #add flags and change NA to -9999
@@ -185,7 +185,7 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1, return="long"){
     name_type <- ifelse(.meta_added(abs), "meta_name", "sample")
     index <- data.frame(sample_name= get_sample_info(abs, "sample"),
                         meta_name=get_sample_info(abs, name_type),
-                        metric = names(vals),
+                        index = names(vals),
                         value = unname(vals))}))
 
   abs_index <- missing_doc_flag(abs_index)
