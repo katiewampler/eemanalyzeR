@@ -25,16 +25,19 @@ If \code{return} is "long" each data.frame will have four columns:
 \itemize{
  \item sample_name: the name of the sample
  \item meta_name: the name of the sample in the metadata if metadata has been added, otherwise the sample name again
- \item metric: the name of the index being reported, see details for more information.
+ \item index: the name of the index being reported, see details for more information.
  \item value: the value of the index
  \item QAQC_flag: any flags associated with the data. See details for more information.
 }
 }
 \description{
-Default package methods for fluorescence and absorbance indices
+Calculates commonly used absorbance and fluorescence optical indices from eemlist and abslist.
+For detailed descriptions and references for indices, see the vignette
+\href{../doc/eemanalyzeR-indices.html}{\code{eemanalyzeR-indices}}
 }
 \note{
-If absorbance is not at a 1 nanometer interval, absorbance will be interpolated using \link[zoo]{na.spline} which fills in missing values
+If absorbance is not at a 1 nanometer interval, absorbance will be interpolated using
+\link[zoo]{na.spline} which fills in missing values
 using spline interpolation.
 }
 \examples{

@@ -1,15 +1,18 @@
-# TODO: Need a LOT more documentation of these different indices, write to readme
+# TODO: write to readme that indices were generated and which method
 #' Default package methods for fluorescence and absorbance indices
 #'
-#'
-#'
+#' Calculates commonly used absorbance and fluorescence optical indices from eemlist and abslist.
+#' For detailed descriptions and references for indices, see the vignette
+#' \href{../doc/eemanalyzeR-indices.html}{\code{eemanalyzeR-indices}}
 #' @importFrom zoo na.spline
 #' @importFrom tidyr pivot_wider
+#'
 #' @param eemlist an \code{eemlist} object containing EEM's data. See details for more info.
 #' @param abslist an \code{abslist} object containing absorbance data.
 #' @param return either "long" or "wide" to specify the format of the indices data.frames
 #' @param cuvle cuvette (path) length in cm
-#' @note If absorbance is not at a 1 nanometer interval, absorbance will be interpolated using \link[zoo]{na.spline} which fills in missing values
+#' @note If absorbance is not at a 1 nanometer interval, absorbance will be interpolated using
+#' \link[zoo]{na.spline} which fills in missing values
 #' using spline interpolation.
 #'
 #' @return a list with two objects:
@@ -21,7 +24,7 @@
 #' \itemize{
 #'  \item sample_name: the name of the sample
 #'  \item meta_name: the name of the sample in the metadata if metadata has been added, otherwise the sample name again
-#'  \item metric: the name of the index being reported, see details for more information.
+#'  \item index: the name of the index being reported, see details for more information.
 #'  \item value: the value of the index
 #'  \item QAQC_flag: any flags associated with the data. See details for more information.
 #' }
@@ -146,15 +149,14 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1, return="long"){
   })
 
   #specify SUVA peaks
-  suva_wl <- list(SUVA254 = 254, SUVA280=280, SUVA350=350,
-                  SUVA370 = 370, SVA412 = 412, SVA440 = 440,
-                  SVA510 = 510, SVA532=532, SVA555=555)
+  suva_wl <- list(SUVA254 = 254, SUVA280=280, SVA412 = 412)
 
   #get SVA and SUVA values, if no DOC, return NA
   calc_suva <- function(abs){
     suva_metrics <- sapply(suva_wl, function(wl){
       if(.meta_added(abs)){
-        abs_val <- unname(abs$data[abs$data[,1] == wl,2]) /abs$doc_mgL
+        #calc suva values, absorbance/ DOC * 100 (to correct for cuvette length and get in m)
+        abs_val <- unname(abs$data[abs$data[,1] == wl,2]) /abs$doc_mgL *  (100/cuvle)
       }else{
         abs_val <- NA
       }})
@@ -205,7 +207,7 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1, return="long"){
 
   }
 
-  index <- list(eem_index = eem_index, abs_index=abs_index)
+  index <- list(abs_index=abs_index, eem_index = eem_index)
 
 
 }
