@@ -150,42 +150,6 @@
     assign("readme", paste(step, pars, sep="\n"), envir = .GlobalEnv)
   }
 }
-#' Write a line of text to the process file that tracks processing tracking
-#'
-#' @param text Line of text to write to the process file
-#' @param overwrite if FALSE (the default) it appends the line of text to the process file. If TRUE, creates a new process file (for fresh processing of data).
-#'
-#' @return invisible copy of text written to process file
-#'@noRd
-.write_processing_tracking <- function(text,
-                                       overwrite = FALSE) {
-
-  process_file <- get_process_file()
-  # Check that we want to do this otherwise exit the function
-  stopifnot(is.character(text) | !is.null(process_file))
-
-  #create text file to track processing changes
-  if (overwrite) {
-    # If the file should be overwritten (new processing run), create a new file
-    file.create(process_file)
-    line_write <- paste0("PROCESSING STEPS ON ", round(Sys.time(), "secs"), " using ", .eemanalyzeR_ver())
-    write(line_write,
-          file = process_file)
-  } else {
-    # This case we just append a new line to the end of the file with the text
-    line_write <- paste(round(Sys.time(),
-                              "secs"),
-                        text,
-                        sep = " - ")
-    write(line_write,
-          file = process_file,
-          append = TRUE)
-  }
-
-  invisible(line_write)
-
-}
-
 
 #' Answer validation questions yes or no
 #'

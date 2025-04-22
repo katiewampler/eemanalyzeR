@@ -38,6 +38,7 @@ usgs_indices <- function(){
 #' @param return either "long" or "wide" to specify the format of the indices data.frames
 #' @param cuvle cuvette (path) length in cm
 #'
+#' @export
 #' @return a data.frame with index values for each sample with a row for each sample
 #'
 #' @examples
@@ -109,7 +110,8 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
           }
 
           return(index)
-        }
+      }
+
 
     #missing data (no wavelengths)
       indices <- lapply(indices, move_flags)

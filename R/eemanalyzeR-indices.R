@@ -33,7 +33,7 @@
 #' abslist <- add_metadata(metadata, example_absorbance)
 #' eemlist <- add_metadata(metadata, example_eems)
 #' indices <- eemanalyzeR_indices(eemlist, abslist)
-eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1, return="long"){
+eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
  #get fluoresence peaks
   #define wavelengths for peaks and metrics to check if there are missing wavelengths
     #format: index = list(excitation wavelengths, emission wavelengths, do all wavelengths need to exist to return value?)
@@ -149,17 +149,15 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1, return="long"){
         #get ranges of wavelengths in data
         ex_range <- min(eem$ex):max(eem$ex)
         em_range <- ceiling(min(eem$em)):floor(max(eem$em)) #round because they're usually not integers
-
         flags <- sapply(peaks, function(x){
           #is the range completely contained in ranges?
           if(all(x$ex %in% ex_range) & all(x$em %in% em_range)){
-            flag <- NA
+             return(NA)
           }else if(any(x$ex %in% ex_range) & any(x$em %in% em_range) & x$all == FALSE){
-            flag <- "DATA_02" #entire index range not contained in data
+            return("DATA_02") #entire index range not contained in data
           }else{
-            flag <- "DATA_01" #index range not in data, unable to report value
+            return("DATA_01") #index range not in data, unable to report value
           }
-          return(flag)
         })
 
         return(flags)
@@ -181,7 +179,7 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1, return="long"){
       eem_index$value[partial & is.na(eem_index$value)==F] <-
         paste0(eem_index$value[partial & is.na(eem_index$value)==F], "_DATA_02")
 
-      eem_index <- eem_index %>% dplyr::select(-flag) #remove flag column
+      eem_index <- eem_index %>% dplyr::select(-any_of("flag")) #remove flag column
 
   #absorbance peaks
     #interpolate absorbance data to 1 nm intervals

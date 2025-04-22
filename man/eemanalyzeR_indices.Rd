@@ -4,7 +4,7 @@
 \alias{eemanalyzeR_indices}
 \title{Default package methods for fluorescence and absorbance indices}
 \usage{
-eemanalyzeR_indices(eemlist, abslist, cuvle = 1, return = "long")
+eemanalyzeR_indices(eemlist, abslist, cuvle = 1)
 }
 \arguments{
 \item{eemlist}{an \code{eemlist} object containing EEM's data. See details for more info.}
