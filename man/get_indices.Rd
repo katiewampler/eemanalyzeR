@@ -4,7 +4,13 @@
 \alias{get_indices}
 \title{Get fluoresence and absorbance indices}
 \usage{
-get_indices(eemlist, abslist, index_method)
+get_indices(
+  eemlist,
+  abslist,
+  index_method = "eemanalyzeR",
+  return = "long",
+  cuvle = 1
+)
 }
 \arguments{
 \item{eemlist}{an \code{eemlist} object containing EEM's data. See details for more info.}
@@ -12,10 +18,21 @@ get_indices(eemlist, abslist, index_method)
 \item{abslist}{an \code{abslist} object containing absorbance data.}
 
 \item{index_method}{currently supports "eemanalyzeR", "eemR", and "usgs". See \link[eemanalyzeR]{get_indices_function} for more information.}
+
+\item{return}{either "long" or "wide" to specify the format of the indices data.frames}
+
+\item{cuvle}{cuvette (path) length in cm}
 }
 \value{
 a data.frame with index values for each sample with a row for each sample
 }
 \description{
 Get fluoresence and absorbance indices
+}
+\examples{
+abslist <- add_metadata(metadata, example_absorbance)
+eemlist <- add_metadata(metadata, example_eems)
+indices <- get_indices(eemlist, abslist)
+
+
 }

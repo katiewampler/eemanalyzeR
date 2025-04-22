@@ -22,9 +22,6 @@ get_indices_function <- function(index_method="eemanalyzeR"){
 }
 
 
-
-
-
 eemR_indices <- function(){
   print("eemR indices")
 }
@@ -38,22 +35,119 @@ usgs_indices <- function(){
 #' @param eemlist an \code{eemlist} object containing EEM's data. See details for more info.
 #' @param abslist an \code{abslist} object containing absorbance data.
 #' @param index_method currently supports "eemanalyzeR", "eemR", and "usgs". See \link[eemanalyzeR]{get_indices_function} for more information.
-
+#' @param return either "long" or "wide" to specify the format of the indices data.frames
+#' @param cuvle cuvette (path) length in cm
+#'
 #' @return a data.frame with index values for each sample with a row for each sample
 #'
-get_indices <- function(eemlist, abslist, index_method){
-  #TODO: warn if processing steps haven't been done
+#' @examples
+#' abslist <- add_metadata(metadata, example_absorbance)
+#' eemlist <- add_metadata(metadata, example_eems)
+#' indices <- get_indices(eemlist, abslist)
+#'
+#'
+get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="long", cuvle=1){
+  stopifnot(.is_eemlist(eemlist), .is_abslist(abslist))
 
+  #check if processing has been done, not warn that indices may be unreliable
+    steps <- check_processing(eemlist)
+    steps <- steps[-nrow(steps),] #remove check for DOC
+
+    if(!(all(steps$done))){
+      warning("Data has not been processed, and indices may not be accurate. \nPlease use eemanalyzeR::process_eem to process EEMs before generating indices.")
+    }else if(!any(steps$done)){
+      missing <- steps[steps$done == FALSE,]
+      warning("Data has not been fully processed, and indices may not be accurate. The following processing steps are missing:\n",
+              paste(missing$warning, collapse="\n"), "\n\nPlease use eemanalyzeR::process_eem to process EEMs before generating indices.")}
+
+  #if DOC normalized, make not normalized to not normalize twice for indices
+    eemlist <- lapply(eemlist, function(x){
+      if(attr(x, "is_doc_normalized")){
+        x$x <- x$x * x$doc_mgL #multiply by doc to get un-normalized EEM's values
+        attr(x, "is_doc_normalized") <- FALSE
+      }else{x}
+      return(x)
+    })
+    class(eemlist) <- "eemlist"
 
   #get function to get indices
   index_function <- get_indices_function(index_method)
 
   #get indices
+  indices <- index_function(eemlist, abslist, cuvle = cuvle)
 
-  #flag if needed, put flags in place of value, mark NA values with why, if want a value do val_flag
-    #check for ratios below noise, missing values due to no DOC or outside measurement range
+  #flag if needed
+    #helper functions to make flags
+      missing_doc_flag <- function(index){
+        doc_flag <- grepl("SUVA|SVA|DOC", index$index) & is.na(index$value) & is.na(index$QAQC_flag)
+        index$QAQC_flag[doc_flag] <- "DOC_01"
+        return(index)
+      }
+      negative_flag <- function(index){
+        negative <- index$value < 0
+        negative[is.na(negative)] <- FALSE
+        index$QAQC_flag[negative] <- "NEG_01"
+        index$value[negative] <- NA
+        return(index)
+      }
+      move_flags <- function(index){
+        #move flags from value column to QA/QC column and replace with NA or value
+          #check if there's a flag (not numeric)
+            flagged <- !grepl("^[-+]?\\d*(\\.\\d+)?([eE][-+]?\\d+)?$", index$value) & !is.na(index$value)
+
+          if(any(flagged)){
+            #move flag values and replace with NA
+            index$QAQC_flag[flagged] <- index$value[flagged]
+            index$value[flagged] <- NA
+
+            #move provisional values back to value
+            prov <- grepl("^\\d*\\.?\\d+_[^_]+_\\d+$", index$QAQC_flag)
+            index$value[prov] <- stringr::str_split_i(index$QAQC_flag[prov], "_", i=1)
+            index$QAQC_flag[prov] <- paste(stringr::str_split_i(index$QAQC_flag[prov], "_", i=2),
+                                        stringr::str_split_i(index$QAQC_flag[prov], "_", i=3), sep="_")
+
+          }
+
+          return(index)
+        }
+
+    #missing data (no wavelengths)
+      indices <- lapply(indices, move_flags)
+
+    #if ratios or values are below noise
+
+
+    #negative values
+      indices <- lapply(indices, negative_flag)
+
+    #missing data (no DOC): DOC_01
+      indices <- lapply(indices, missing_doc_flag)
+
+    #questionable, outside normal range
+
+
+
+    noise_flag <- function(index){
+
+    }
+
+  #make indices numeric
+   indices <- lapply(indices, function(x){
+     x$value <- as.numeric(x$value)
+     return(x)})
+
+  #change missing NA values to -9999 to indicate they're missing on purpose
+    indices <- lapply(indices, function(x){
+      x$value[is.na(x$value)] <- -9999
+    return(x)})
 
   #return
+    if(return == "wide"){
+      #TODO: will need to figure out combining flag strings later
+      abs_index <- tidyr::pivot_wider(abs_index, names_from="metric", values_from="value")
+      eem_index <- tidyr::pivot_wider(abs_index, names_from="metric", values_from="value")
 
+    }
 
+    return(indices)
 }

@@ -12,8 +12,6 @@ eemanalyzeR_indices(eemlist, abslist, cuvle = 1, return = "long")
 \item{abslist}{an \code{abslist} object containing absorbance data.}
 
 \item{cuvle}{cuvette (path) length in cm}
-
-\item{return}{either "long" or "wide" to specify the format of the indices data.frames}
 }
 \value{
 a list with two objects:
@@ -21,13 +19,12 @@ a list with two objects:
   \item eem_index: a data.frame of all the fluorescence indices
   \item abs_index: a data.frame of all the absorbance indices
 }
-If \code{return} is "long" each data.frame will have four columns:
+Each data.frame will have four columns:
 \itemize{
  \item sample_name: the name of the sample
  \item meta_name: the name of the sample in the metadata if metadata has been added, otherwise the sample name again
  \item index: the name of the index being reported, see details for more information.
  \item value: the value of the index
- \item QAQC_flag: any flags associated with the data. See details for more information.
 }
 }
 \description{

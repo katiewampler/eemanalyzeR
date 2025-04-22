@@ -17,6 +17,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom pals parula
 #' @importFrom parallel detectCores
+#' @importFrom plyr join
 #' @importFrom plyr round_any
 #' @importFrom pracma interp2
 #' @importFrom purrr discard
