@@ -1,12 +1,13 @@
 # TODO add description of what this does, add details linking to the sources of the different
 # index functions
+# TODO: write to readme that indices were generated and which method
+
 
 #' Get preset or use custom functions to generate fluorescence and absorbance indices
 #'
 #' @param index_method currently supports "eemanalyzeR", "eemR", and "usgs". See details for more information.
 #'
 #' @returns a function used to generate indices
-#' @export
 #'
 get_indices_function <- function(index_method="eemanalyzeR"){
 
@@ -32,21 +33,55 @@ usgs_indices <- function(){
 
 #' Get fluorescence and absorbance indices
 #'
-#' @param eemlist an \code{eemlist} object containing EEM's data. See details for more info.
+#' @param eemlist an \code{eemlist} object containing EEM's data.
 #' @param abslist an \code{abslist} object containing absorbance data.
-#' @param index_method currently supports "eemanalyzeR", "eemR", and "usgs". See \link[eemanalyzeR]{get_indices_function} for more information.
+#' @param index_method currently supports "eemanalyzeR", "eemR", and "usgs". See details for more information.
 #' @param return either "long" or "wide" to specify the format of the indices data.frames
 #' @param cuvle cuvette (path) length in cm
 #'
 #' @export
-#' @return a data.frame with index values for each sample with a row for each sample
+#' @return a list with two objects:
+#' \itemize{
+#'   \item eem_index: a data.frame of all the fluorescence indices
+#'   \item abs_index: a data.frame of all the absorbance indices
+#' }
+#' Each data.frame will have four columns:
+#' \itemize{
+#'  \item sample_name: the name of the sample
+#'  \item meta_name: the name of the sample in the metadata if metadata has been added, otherwise the sample name again
+#'  \item index: the name of the index being reported, see details for more information.
+#'  \item value: the value of the index
+#'  \item QAQC_flag: any flags associated with the sample, see details for more information.
+#' }
+#'
+#' @details
+#' \strong{Index Methods}
+#'
+#' This function allows for three different sets of indices:
+#' \href{../doc/eemanalyzeR-indices.html}{\code{eemanalyzeR}} (default),
+#' eemR and usgs. See the links for more information on the indices in each method and how they're calculated.
+#' Custom functions can also be used to calculate indices, see vignette for more information on how to do this.
+#TODO: link vignette here
+#'
+#'\strong{QA/QC Flags}
+#'
+#' The index values will be checked for potential errors prior to reporting and flagged if necessary:
+#' \itemize{
+#'  \item DATA_01: Missing data required to calculate the index
+#'  \item DATA_02: Missing some wavelengths required to calculate the index, value may be inaccurate
+#'  \item DOC_01: Missing dissolved organic carbon data, so index was not able to be calculated
+#'  \item NEG_01: Value was negative
+#'  \item NOISE_01: Value was below signal to noise ratio and therefore was not calculated
+#'  \item NOISE_02: Value was below signal to noise ratio and may be inaccurate
+#'  \item VAL_01: Value was below expected values for this index, please check for accuracy
+#'  \item VAL_02: Value was above expected values for this index, please check for accuracy
+#' }
 #'
 #' @examples
 #' abslist <- add_metadata(metadata, example_absorbance)
 #' eemlist <- add_metadata(metadata, example_eems)
 #' indices <- get_indices(eemlist, abslist)
-#'
-#'
+
 get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="long", cuvle=1){
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist))
 
@@ -112,7 +147,7 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
           return(index)
       }
       outside_range <- function(index){
-        index <- plyr::join(index, indice_ranges, by="index")
+        index <- plyr::join(index, eemanalyzeR::indice_ranges, by="index")
         index$QAQC_flag[index$value < index$low_val & !is.na(index$low_val) & !is.na(index$value)] <- "VAL_01"
         index$QAQC_flag[index$value > index$high_val & !is.na(index$low_val) & !is.na(index$value)] <- "VAL_02"
 

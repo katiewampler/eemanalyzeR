@@ -1,4 +1,3 @@
-# TODO: write to readme that indices were generated and which method
 #' Default package methods for fluorescence and absorbance indices
 #'
 #' Calculates commonly used absorbance and fluorescence optical indices from eemlist and abslist.
