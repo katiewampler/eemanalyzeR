@@ -74,9 +74,10 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1, return="long"){
         max_res <- NA
       }else{
         max_res <- max(int_res, na.rm=T)
+      }
+      return(max_res)
+    }
 
-  calc_peaks <- function(eem, doc=FALSE){
-                 rCA = unname(pvals["pC"] / pvals["pA"]),
     calc_peaks <- function(eem, doc=FALSE){
       if(doc){
         pvals <- sapply(peaks[13:20], function(p) peak_max(eem, p$ex, p$em))
@@ -86,6 +87,9 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1, return="long"){
         pvals <- sapply(peaks[1:8], function(p) peak_max(eem, p$ex, p$em))
         pvals <- c(pvals,
                    rAT = unname(pvals["pA"] / pvals["pT"]),
+                   rCA = unname(pvals["pC"] / pvals["pA"]),
+                   rCM = unname(pvals["pC"] / pvals["pM"]),
+                   rCT = unname(pvals["pC"] / pvals["pT"]))
       }
 
       return(pvals)
