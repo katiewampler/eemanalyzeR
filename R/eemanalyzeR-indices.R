@@ -4,15 +4,15 @@
 #' Calculates commonly used absorbance and fluorescence optical indices from eemlist and abslist.
 #' For detailed descriptions and references for indices, see the vignette
 #' \href{../doc/eemanalyzeR-indices.html}{\code{eemanalyzeR-indices}}
-#' @importFrom zoo na.spline
+#' @importFrom zoo na.approx
 #' @importFrom tidyr pivot_wider
 #'
 #' @param eemlist an \code{eemlist} object containing EEM's data. See details for more info.
 #' @param abslist an \code{abslist} object containing absorbance data.
 #' @param cuvle cuvette (path) length in cm
 #' @note If absorbance is not at a 1 nanometer interval, absorbance will be interpolated using
-#' \link[zoo]{na.spline} which fills in missing values
-#' using spline interpolation.
+#' \link[zoo]{na.approx} which fills in missing values
+#' using linear interpolation.
 #'
 #' @return a list with two objects:
 #' \itemize{
@@ -186,7 +186,7 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
     abs_interp <- lapply(abslist, function(x){
       abs <- data.frame(x$data)
       abs_filled <- merge(abs, data.frame(X1=min(abs$X1):max(abs$X1)), all=T)
-      abs_filled <- zoo::na.spline(abs_filled)
+      abs_filled <- zoo::na.approx(abs_filled)
       x$data <- as.matrix(abs_filled)
       x$n <- nrow(abs_filled)
       return(x)
@@ -247,11 +247,10 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
       flags <- sapply(peaks, function(x){
         #is the range completely contained in ranges?
         if(all(x %in% range)){
-          flag <- NA
+          return(NA)
         }else{
-          flag <- "DATA_01" #index range not in data, unable to report value
+          return("DATA_01") #index range not in data, unable to report value
         }
-        return(flag)
       })
 
       return(flags)
@@ -268,7 +267,7 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
     #DATA_01: missing data, unable to calculate index
     abs_index$value[abs_index$flag == "DATA_01"] <- "DATA_01"
 
-    abs_index <- abs_index %>% dplyr::select(-flag) #remove flag column
+    abs_index <- abs_index %>% dplyr::select(-any_of("flag")) #remove flag column
 
   #return indices
   index <- list(abs_index=abs_index, eem_index = eem_index)

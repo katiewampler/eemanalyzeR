@@ -2,7 +2,7 @@
 % Please edit documentation in R/get-indices.R
 \name{get_indices}
 \alias{get_indices}
-\title{Get fluoresence and absorbance indices}
+\title{Get fluorescence and absorbance indices}
 \usage{
 get_indices(
   eemlist,
@@ -27,7 +27,7 @@ get_indices(
 a data.frame with index values for each sample with a row for each sample
 }
 \description{
-Get fluoresence and absorbance indices
+Get fluorescence and absorbance indices
 }
 \examples{
 abslist <- add_metadata(metadata, example_absorbance)

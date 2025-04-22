@@ -30,7 +30,7 @@ usgs_indices <- function(){
   print("usgs indices")
 }
 
-#' Get fluoresence and absorbance indices
+#' Get fluorescence and absorbance indices
 #'
 #' @param eemlist an \code{eemlist} object containing EEM's data. See details for more info.
 #' @param abslist an \code{abslist} object containing absorbance data.
@@ -111,13 +111,21 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
 
           return(index)
       }
+      outside_range <- function(index){
+        index <- plyr::join(index, indice_ranges, by="index")
+        index$QAQC_flag[index$value < index$low_val & !is.na(index$low_val) & !is.na(index$value)] <- "VAL_01"
+        index$QAQC_flag[index$value > index$high_val & !is.na(index$low_val) & !is.na(index$value)] <- "VAL_02"
+
+        index <- index %>% dplyr::select(-any_of(c("low_val", "high_val", "sources")))
+
+        return(index)
+      }
 
 
     #missing data (no wavelengths)
       indices <- lapply(indices, move_flags)
 
     #if ratios or values are below noise
-
 
     #negative values
       indices <- lapply(indices, negative_flag)
@@ -126,12 +134,7 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
       indices <- lapply(indices, missing_doc_flag)
 
     #questionable, outside normal range
-
-
-
-    noise_flag <- function(index){
-
-    }
+      indices <- lapply(indices, outside_range)
 
   #make indices numeric
    indices <- lapply(indices, function(x){

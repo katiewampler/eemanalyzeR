@@ -107,3 +107,11 @@ for(x in files){
 
   longterm_blank <- avg_blank(input_dir)
   usethis::use_data(longterm_blank, overwrite = T)
+
+  #save index ranges as data.frame
+  indice_ranges <- read.csv("data-raw/indice-ranges.csv")
+  indice_ranges$low_val[indice_ranges$low_val == -9999] <- NA
+  indice_ranges$high_val[indice_ranges$high_val == -9999] <- NA
+  indice_ranges$sources[indice_ranges$sources == "N/A"] <- NA
+
+  usethis::use_data(indice_ranges, overwrite = T)

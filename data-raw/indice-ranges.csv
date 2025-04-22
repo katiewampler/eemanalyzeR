@@ -1,0 +1,26 @@
+index,low_val,high_val,sources
+SUVA254,0,10,Weishaar et al. 2003; Hansen et al. 2016; Hansen et al. 2018
+SUVA280,10,4.5,Hansen et al. 2018
+SVA412,0,0.65,Hansen et al. 2018
+S275_295,0.01,0.06,Helms et al. 2008; Hansen et al. 2016
+S350_400,0.01,0.04,Helms et al. 2008; Hansen et al. 2016
+SR,0,3,Helms et al. 2008; Hansen et al. 2016
+E2_E3,3,10,Helms et al. 2008; Peuravuori and Pihlaja 1997
+E4_E6,2,30,Helms et al. 2008; Zalba et al. 2016
+pB,-9999,-9999,N/A
+pT,-9999,-9999,N/A
+pA,-9999,-9999,N/A
+pM,-9999,-9999,N/A
+pC,-9999,-9999,N/A
+pD,-9999,-9999,N/A
+pE,-9999,-9999,N/A
+pN,-9999,-9999,N/A
+rAT,0,14,Hansen et al. 2016
+rCA,0.4,2,Hansen et al. 2016; Meingast et al. 2023
+rCM,0.4,2.4,Hansen et al. 2016
+rCT,0,9,Hansen et al. 2016
+FI,1,3.5,Hansen et al. 2016
+HIX,0,6,Zsolnay et al. 1999
+HIX_ohno,0,1,Hansen et al. 2016
+fresh,0.4,1,Hansen et al. 2016
+BIX,0.2,3.5,Meingast et al. 2023; Li et al. 2022

@@ -34,8 +34,8 @@ For detailed descriptions and references for indices, see the vignette
 }
 \note{
 If absorbance is not at a 1 nanometer interval, absorbance will be interpolated using
-\link[zoo]{na.spline} which fills in missing values
-using spline interpolation.
+\link[zoo]{na.approx} which fills in missing values
+using linear interpolation.
 }
 \examples{
 abslist <- add_metadata(metadata, example_absorbance)
