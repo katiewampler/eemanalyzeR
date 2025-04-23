@@ -2,7 +2,7 @@
 % Please edit documentation in R/eemR-indices.R
 \name{eemR_indices}
 \alias{eemR_indices}
-\title{eemR and staRdom method for fluorescence and absorbance indices}
+\title{eemR and staRdom methods for fluorescence and absorbance indices}
 \usage{
 eemR_indices(eemlist, abslist, cuvle = 1)
 }
@@ -30,6 +30,18 @@ Each data.frame will have four columns:
 \description{
 Calculates commonly used absorbance and fluorescence optical indices from eemlist and abslist using
 \href{https://CRAN.R-project.org/package=eemR}{eemR} and \href{https://CRAN.R-project.org/package=staRdom}{staRdom} functions.
+}
+\details{
+\strong{Absorbance Indices}: Absorbance indices (a254, a300, E2_E3, E4_E6, S275_295, S350_400, S300_700, SR)
+are generated using the staRdom function \link[staRdom]{abs_parms}.
+
+\strong{Fluorescence Indices}: Fluorescence indices are generated using the eemR functions:
+\itemize{
+\item Coble peaks (b, t, a, m, c): \link[eemR]{eem_coble_peaks}
+\item fi: \link[eemR]{eem_fluorescence_index}
+\item hix: \link[eemR]{eem_humification_index}, where hix_scaled uses scale=TRUE
+\item bix: \link[eemR]{eem_biological_index}
+}
 }
 \examples{
 abslist <- add_metadata(metadata, example_absorbance)

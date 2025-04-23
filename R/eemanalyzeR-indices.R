@@ -216,7 +216,7 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
     #specify absorbance wavelengths to check if there's missing data
       #format: index = wavelengths in metric
     abs_wl <- list(SUVA254 = 254, SUVA280=280, SVA412 = 412,
-                    S_275_295 = 275:295, S_350_400=350:400,
+                    S275_295 = 275:295, S350_400=350:400,
                     SR = c(275:295, 350:400), E2_E3=c(250,365),
                     E4_E6=c(465,665))
 
