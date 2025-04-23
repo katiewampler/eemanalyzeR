@@ -65,6 +65,8 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
   #helper functions to get fluorescence index functions
     #only coble peaks are different if DOC normalized or not
     #interpolates to 1 nm and gives max value in that range
+
+    #DATA_03: Unable to calculate ratio because denominator was zero
     peak_max <- function(eem, ex, em){
       ex_p <- rep(ex, length(em)) #gives values to interpolate between
       em_p <- rep(em, length(ex)) #gives values to interpolate between
@@ -76,7 +78,13 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
       }
       return(max_res)
     }
-
+    get_ratios <- function(pvals,p1, p2){
+      if(pvals[p2] == 0){
+        return("DATA_03")
+      }else{
+        return(unname(pvals[p1] / pvals[p2]))
+      }
+    }
     calc_peaks <- function(eem, doc=FALSE){
       if(doc){
         pvals <- sapply(peaks[13:20], function(p) peak_max(eem, p$ex, p$em))
@@ -85,22 +93,22 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
       }else{
         pvals <- sapply(peaks[1:8], function(p) peak_max(eem, p$ex, p$em))
         pvals <- c(pvals,
-                   rAT = unname(pvals["pA"] / pvals["pT"]),
-                   rCA = unname(pvals["pC"] / pvals["pA"]),
-                   rCM = unname(pvals["pC"] / pvals["pM"]),
-                   rCT = unname(pvals["pC"] / pvals["pT"]))
+                   rAT = get_ratios(pvals, "pA", "pT"),
+                   rCA = get_ratios(pvals,"pC", "pA"),
+                   rCM = get_ratios(pvals,"pC", "pM"),
+                   rCT = get_ratios(pvals,"pC", "pT"))
       }
 
       return(pvals)
     }
-
     calc_FI <- function(eem){
       f_470 <- pracma::interp2(eem$ex, eem$em, eem$x, 370, 470)
       f_520 <- pracma::interp2(eem$ex, eem$em, eem$x, 370, 520)
       FI <- f_470/f_520
+      if(f_520 == 0){FI <- "DATA_03"} #prevent inf values
+
       return(FI)
     }
-
     calc_HIX <- function(eem, type="zsolnay"){
       em_high <- 435:480
       em_low <- 300:345
@@ -110,21 +118,24 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
       sum_low <- sum(pracma::interp2(eem$ex, eem$em, eem$x,
                                      ex_254, em_low))
 
+      if(sum_low == 0){HIX <- "DATA_03"} #prevent inf values
+
+
       if(type == "ohno"){HIX <- sum_high/(sum_low + sum_high)}else{HIX <- sum_high/(sum_low)}
       return(HIX)
     }
-
     calc_fresh <- function(eem){
       f_380 <- pracma::interp2(eem$ex, eem$em, eem$x, 310, 380)
       f_420_435 <- peak_max(eem, 310, 420:435)
+      if(f_420_435 == 0){fresh <- "DATA_03"} #prevent inf values
       fresh <- f_380/f_420_435
       return(fresh)
     }
-
     calc_BIX <- function(eem){
       f_380 <- pracma::interp2(eem$ex, eem$em, eem$x, 310, 380)
       f_430 <- pracma::interp2(eem$ex, eem$em, eem$x, 310, 430)
       BIX <- f_380/f_430
+      if(f_430 == 0){BIX <- "DATA_03"} #prevent inf values
       return(BIX)
     }
 
@@ -208,6 +219,8 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
           abs_val <- NA
         }})
       return(suva_metrics)}
+
+    #DATA_04: Spectral slope was unable to be calculated
     calc_ratios <- function(abs){
       #get absorption in m^-1 (convert from absorbance to absorption based on Beer's Law)
       absorption <- abs$data[,2] * log(10) / (cuvle/100) #convert cm cuvette to m
@@ -217,11 +230,25 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
       S350_400 <- staRdom::abs_fit_slope(abs$data[,1], absorption,
                                      lim=c(350,400), l_ref=350)$coefficient
 
-      SR <- S275_295 / S350_400
+      #prevent non numeric values
+      if(!is.numeric(S275_295)){S275_295 <- "DATA_04"}
+      if(!is.numeric(S350_400)){S350_400 <- "DATA_04"}
 
-      E2_E3 <- abs$data[abs$data[,1]==250,2] / abs$data[abs$data[,1]==365,2]
+      if(S350_400 == 0){
+        SR <- "DATA_03"
+      }else if(is.character(S350_400) | is.character(S275_295)){
+        SR <- "DATA_04"
+      }else{
+        SR <- S275_295 / S350_400
+      }
 
-      E4_E6 <- abs$data[abs$data[,1]==465,2] / abs$data[abs$data[,1]==665,2]
+      E2 <-  abs$data[abs$data[,1]==250,2]
+      E3 <- abs$data[abs$data[,1]==365,2]
+      E2_E3 <- ifelse(E3 == 0, "DATA_03", E2/E3)
+
+      E4 <-  abs$data[abs$data[,1]==465,2]
+      E6 <- abs$data[abs$data[,1]==665,2]
+      E4_E6 <- ifelse(E6 == 0, "DATA_03", E4/E6)
 
       vals <- unname(c(S275_295, S350_400, SR, E2_E3, E4_E6)) #remove previous names
       names(vals) <- c("S275_295", "S350_400", "SR", "E2_E3", "E4_E6")

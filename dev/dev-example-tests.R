@@ -20,7 +20,9 @@
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
       plot_eem(eems, remove_lower = T)
-
+      indices <- get_indices(eems, abs)
+      abs_index <- indices$abs_index
+      eem_index <- indices$eem_index
 
   #example 2: Hohner-Lab-2025-01-08
     input_dir <- here("dev/dev-examples/Hohner-Lab-2025-01-08")
@@ -35,6 +37,9 @@
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
       plot_eem(eems, remove_lower = T)
+      indices <- get_indices(eems, abs)
+      abs_index <- indices$abs_index
+      eem_index <- indices$eem_index
 
   #example 3: PNNL-2022-11-10
     input_dir <- here("dev/dev-examples/PNNL-2022-11-10")
@@ -50,6 +55,9 @@
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
       plot_eem(eems, remove_lower = T)
+      indices <- get_indices(eems, abs)
+      abs_index <- indices$abs_index
+      eem_index <- indices$eem_index
 
   #example 4: Vick-Majors-Lab-2024-11-04
     input_dir <- here("dev/dev-examples/Vick-Majors-Lab-2024-11-04")
@@ -63,6 +71,9 @@
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
       plot_eem(eems, remove_lower = T)
+      indices <- get_indices(eems, abs)
+      abs_index <- indices$abs_index
+      eem_index <- indices$eem_index
 
   #example 5: Bladon-Lab-2024-08-19
     input_dir <- here("dev/dev-examples/Bladon-Lab-2024-08-19")
@@ -76,6 +87,9 @@
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
       plot_eem(eems, remove_lower = T)
+      indices <- get_indices(eems, abs)
+      abs_index <- indices$abs_index
+      eem_index <- indices$eem_index
 
   #example 6: Bladon-Lab-2024-08-22
     input_dir <- here("dev/dev-examples/Bladon-Lab-2024-08-22")
@@ -89,6 +103,9 @@
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
       plot_eem(eems, remove_lower = T)
+      indices <- get_indices(eems, abs)
+      abs_index <- indices$abs_index
+      eem_index <- indices$eem_index
 
   #example 7: Bladon-Lab-2024-11-01
     input_dir <- here("dev/dev-examples/Bladon-Lab-2024-11-01")
@@ -102,4 +119,7 @@
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
       plot_eem(eems, remove_lower = T)
+      indices <- get_indices(eems, abs)
+      abs_index <- indices$abs_index
+      eem_index <- indices$eem_index
 

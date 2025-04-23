@@ -1,7 +1,5 @@
-# TODO add description of what this does, add details linking to the sources of the different
+# TODO add details linking to the sources of the different
 # index functions
-# TODO: write to readme that indices were generated and which method
-
 
 #' Get preset or use custom functions to generate fluorescence and absorbance indices
 #'
@@ -22,7 +20,6 @@ get_indices_function <- function(index_method="eemanalyzeR"){
          stop(index_method, " is not a known function to generate indices\n  to create your own see vingette browseVingettes('eemanalyzeR')"))
 }
 
-
 eemR_indices <- function(){
   print("eemR indices")
 }
@@ -32,6 +29,9 @@ usgs_indices <- function(){
 }
 
 #' Get fluorescence and absorbance indices
+#'
+#' Calculates commonly use indices from absorbance and excitation emission matrix (EEM) data. Also
+#' checks and flags the indices for potential errors or issues.
 #'
 #' @param eemlist an \code{eemlist} object containing EEM's data.
 #' @param abslist an \code{abslist} object containing absorbance data.
@@ -69,6 +69,8 @@ usgs_indices <- function(){
 #' \itemize{
 #'  \item DATA_01: Missing data required to calculate the index
 #'  \item DATA_02: Missing some wavelengths required to calculate the index, value may be inaccurate
+#'  \item DATA_03: Unable to calculate ratio because denominator was zero
+#'  \item DATA_04: Spectral slope was unable to be calculated
 #'  \item DOC_01: Missing dissolved organic carbon data, so index was not able to be calculated
 #'  \item NEG_01: Value was negative
 #'  \item NOISE_01: Value was below signal to noise ratio and therefore was not calculated
@@ -148,8 +150,13 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
       }
       outside_range <- function(index){
         index <- plyr::join(index, eemanalyzeR::indice_ranges, by="index")
-        index$QAQC_flag[index$value < index$low_val & !is.na(index$low_val) & !is.na(index$value)] <- "VAL_01"
-        index$QAQC_flag[index$value > index$high_val & !is.na(index$low_val) & !is.na(index$value)] <- "VAL_02"
+        low <- as.numeric(index$value) < index$low_val
+        low[is.na(low)] <- FALSE
+        index$QAQC_flag[low] <- "VAL_01"
+
+        high <- as.numeric(index$value) > index$high_val
+        high[is.na(high)] <- FALSE
+        index$QAQC_flag[high] <- "VAL_02"
 
         index <- index %>% dplyr::select(-any_of(c("low_val", "high_val", "sources")))
 
@@ -189,5 +196,12 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
 
     }
 
+  #write step to readme
+  if(is.character(index_method)){
+   .write_readme_line("Absorbance and fluorescence indices were calculated using the 'get_indices' function")
+  }else{
+    .write_readme_line("Absorbance and fluorescence indices were calculated using the 'get_indices' function with a custom index method")
+
+  }
     return(indices)
 }
