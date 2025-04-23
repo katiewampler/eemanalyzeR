@@ -78,11 +78,13 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
       }
       return(max_res)
     }
-    get_ratios <- function(pvals,p1, p2){
-      if(pvals[p2] == 0){
+    get_ratios <- function(p1, p2){
+      if(is.na(p1) | is.na(p2)){
+        return("DATA_01")
+      }else if(p2 == 0){
         return("DATA_03")
       }else{
-        return(unname(pvals[p1] / pvals[p2]))
+        return(unname(p1 / p2))
       }
     }
     calc_peaks <- function(eem, doc=FALSE){
@@ -93,19 +95,21 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
       }else{
         pvals <- sapply(peaks[1:8], function(p) peak_max(eem, p$ex, p$em))
         pvals <- c(pvals,
-                   rAT = get_ratios(pvals, "pA", "pT"),
-                   rCA = get_ratios(pvals,"pC", "pA"),
-                   rCM = get_ratios(pvals,"pC", "pM"),
-                   rCT = get_ratios(pvals,"pC", "pT"))
+                   rAT = get_ratios(pvals["pA"], pvals["pT"]),
+                   rCA = get_ratios(pvals["pC"], pvals["pA"]),
+                   rCM = get_ratios(pvals["pC"], pvals["pM"]),
+                   rCT = get_ratios(pvals["pC"], pvals["pT"]))
       }
 
       return(pvals)
     }
+
+
     calc_FI <- function(eem){
       f_470 <- pracma::interp2(eem$ex, eem$em, eem$x, 370, 470)
       f_520 <- pracma::interp2(eem$ex, eem$em, eem$x, 370, 520)
-      FI <- f_470/f_520
-      if(f_520 == 0){FI <- "DATA_03"} #prevent inf values
+
+      FI <- get_ratios(f_470, f_520)
 
       return(FI)
     }
@@ -118,24 +122,24 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
       sum_low <- sum(pracma::interp2(eem$ex, eem$em, eem$x,
                                      ex_254, em_low))
 
-      if(sum_low == 0){HIX <- "DATA_03"} #prevent inf values
-
-
-      if(type == "ohno"){HIX <- sum_high/(sum_low + sum_high)}else{HIX <- sum_high/(sum_low)}
+      if(type == "ohno"){
+        HIX <- get_ratios(sum_high,(sum_low + sum_high))
+      }else{HIX <- get_ratios(sum_high,sum_low)}
       return(HIX)
     }
     calc_fresh <- function(eem){
       f_380 <- pracma::interp2(eem$ex, eem$em, eem$x, 310, 380)
       f_420_435 <- peak_max(eem, 310, 420:435)
-      if(f_420_435 == 0){fresh <- "DATA_03"} #prevent inf values
-      fresh <- f_380/f_420_435
+
+      fresh <- get_ratios(f_380, f_420_435)
+
       return(fresh)
     }
     calc_BIX <- function(eem){
       f_380 <- pracma::interp2(eem$ex, eem$em, eem$x, 310, 380)
       f_430 <- pracma::interp2(eem$ex, eem$em, eem$x, 310, 430)
-      BIX <- f_380/f_430
-      if(f_430 == 0){BIX <- "DATA_03"} #prevent inf values
+
+      BIX <- get_ratios(f_380, f_430)
       return(BIX)
     }
 
@@ -234,21 +238,18 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
       if(!is.numeric(S275_295)){S275_295 <- "DATA_04"}
       if(!is.numeric(S350_400)){S350_400 <- "DATA_04"}
 
-      if(S350_400 == 0){
-        SR <- "DATA_03"
-      }else if(is.character(S350_400) | is.character(S275_295)){
-        SR <- "DATA_04"
-      }else{
-        SR <- S275_295 / S350_400
-      }
+      if(S275_295 == "DATA_04" |S350_400 == "DATA_04" ){
+       SR <- "DATA_04"}else{
+         SR <- get_ratios(S275_295, S350_400)
+       }
 
       E2 <-  abs$data[abs$data[,1]==250,2]
       E3 <- abs$data[abs$data[,1]==365,2]
-      E2_E3 <- ifelse(E3 == 0, "DATA_03", E2/E3)
+      E2_E3 <- get_ratios(E2, E3)
 
       E4 <-  abs$data[abs$data[,1]==465,2]
       E6 <- abs$data[abs$data[,1]==665,2]
-      E4_E6 <- ifelse(E6 == 0, "DATA_03", E4/E6)
+      E4_E6 <- get_ratios(E4, E6)
 
       vals <- unname(c(S275_295, S350_400, SR, E2_E3, E4_E6)) #remove previous names
       names(vals) <- c("S275_295", "S350_400", "SR", "E2_E3", "E4_E6")
