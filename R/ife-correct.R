@@ -52,12 +52,58 @@ ife_correct <- function(eemlist, abslist, pathlength=1){
       trim <- TRUE}else{trim <- FALSE}
 
 
-    #not an ideal solution, but for now in function only,
-    #replace sample name with meta_name for matching and remove extra items
-    res <- lapply(eemlist, .make_base_eem)
-    class(res) <- "eemlist"
+    #modify eemR ife function to return warning and not print otherwise, also works now with modified eem format
+    ife_eemR <- function(eem, absorbance, pathlength = 1){
+      stopifnot(.is_eemlist(eem) | .is_eem(eem), is.data.frame(absorbance),
+                is.numeric(pathlength))
+      if (.is_eemlist(eem)) {
+        res <- lapply(eem, ife_eemR, absorbance = absorbance,
+                      pathlength = pathlength)
+        class(res) <- class(eem)
+        return(res)
+      }
+      if (!any(names(absorbance) == "wavelength")) {
+        stop("'wavelength' variable was not found in the data frame.",
+             call. = FALSE)
+      }
+      wl <- absorbance[["wavelength"]]
+      if (!all(is_between(range(eem$em), min(wl), max(wl)))) {
+        stop("absorbance wavelengths are not in the range of\n         emission wavelengths",
+             call. = FALSE)
+      }
+      if (!all(is_between(range(eem$ex), min(wl), max(wl)))) {
+        stop("absorbance wavelengths are not in the range of\n         excitation wavelengths",
+             call. = FALSE)
+      }
+      index <- which(names(absorbance) == eem$meta_name)
+      if (length(index) == 0) {
+        warning("Absorbance spectrum for ", eem$sample, " was not found. Returning uncorrected EEM.",
+                call. = FALSE)
+        return(eem)
+      }
+      spectra <- absorbance[[index]]
+      if (attributes(eem)$is_ife_corrected) {
+        return(eem)
+      }
+      sf <- stats::splinefun(wl, spectra)
+      ex <- sf(eem$ex)
+      em <- sf(eem$em)
+      total_absorbance <- sapply(ex, function(x) {
+        x + em
+      })/pathlength
+      max_abs <- max(total_absorbance)
+      if (max_abs > 1.5) {
+        warning("Total absorbance is > 1.5 (Atotal = ", max_abs,
+            ")\n", "A 2-fold dilution is recommended. See eemR::eem_inner_filter_effect.\n",
+            sep = "")
+      }
+      ife_correction_factor <- 10^(0.5 * total_absorbance)
 
-    res <- eemR::eem_inner_filter_effect(res, abs_table, pathlength = pathlength)
+      eem$x <- eem$x * ife_correction_factor
+      attr(eem, "is_ife_corrected") <- TRUE
+      return(eem)
+    }
+    res <- ife_eemR(eemlist, abs_table, pathlength = pathlength)
 
     #put inner filter effect corrected eems back into augmented eemlist
     res <- lapply(1:length(eemlist), function(i){
