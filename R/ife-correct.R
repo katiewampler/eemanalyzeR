@@ -93,7 +93,7 @@ ife_correct <- function(eemlist, abslist, pathlength=1){
       })/pathlength
       max_abs <- max(total_absorbance)
       if (max_abs > 1.5) {
-        warning("Total absorbance is > 1.5 (Atotal = ", max_abs,
+        warning(eem$sample, ": Total absorbance is > 1.5 (Atotal = ", max_abs,
             ")\n", "A 2-fold dilution is recommended. See eemR::eem_inner_filter_effect.\n",
             sep = "")
       }

@@ -91,11 +91,17 @@
 #' }
 #'
 #' @source
+#' Fischer, S. J., Fegel, T. S., Wilkerson, P. J., Rivera, L., Rhoades, C. C., & Rosario-Ortiz, F. L. (2023). Fluorescence and Absorbance Indices for Dissolved Organic Matter from Wildfire Ash and Burned Watersheds. ACS ES&T Water, 3(8), 2199–2209. https://doi.org/10.1021/acsestwater.3c00017
+#'
+#' Galgani, L., Engel, A., Rossi, C., Donati, A., & Loiselle, S. A. (2018). Polystyrene microplastics increase microbial release of marine Chromophoric Dissolved Organic Matter in microcosm experiments. Scientific Reports, 8(1), 14635. https://doi.org/10.1038/s41598-018-32805-4
+#'
 #' Hansen, A. M., Kraus, T. E. C., Pellerin, B. A., Fleck, J. A., Downing, B. D., & Bergamaschi, B. A. (2016). Optical properties of dissolved organic matter (DOM): Effects of biological and photolytic degradation. Limnology and Oceanography, 61(3), 1015–1032. https://doi.org/10.1002/lno.10270
 #'
 #' Hansen, A. M., Fleck, J., Kraus, T. E. C., Downing, B. D., von Dessonneck, T., & Bergamaschi, B. (2018). Procedures for using the Horiba Scientific Aqualog® fluorometer to measure absorbance and fluorescence from dissolved organic matter (USGS Numbered Series No. 2018–1096). Procedures for using the Horiba Scientific Aqualog® fluorometer to measure absorbance and fluorescence from dissolved organic matter (Vol. 2018–1096). Reston, VA: U.S. Geological Survey. https://doi.org/10.3133/ofr20181096
 #'
 #' Helms, J. R., Stubbins, A., Ritchie, J. D., Minor, E. C., Kieber, D. J., & Mopper, K. (2008). Absorption spectral slopes and slope ratios as indicators of molecular weight, source, and photobleaching of chromophoric dissolved organic matter. Limnology and Oceanography, 53(3), 955–969. https://doi.org/10.4319/lo.2008.53.3.0955
+#'
+#' Korak, J. A., & McKay, G. (2024). Meta-Analysis of Optical Surrogates for the Characterization of Dissolved Organic Matter. Environmental Science & Technology, 58(17), 7380–7392. https://doi.org/10.1021/acs.est.3c10627
 #'
 #' Li, Y., Zhang, Y., Li, Z., Wan, J., Dang, C., & Fu, J. (2022). Characterization of colored dissolved organic matter in the northeastern South China Sea using EEMs-PARAFAC and absorption spectroscopy. Journal of Sea Research, 180, 102159. https://doi.org/10.1016/j.seares.2021.102159
 #'

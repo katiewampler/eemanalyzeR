@@ -33,7 +33,9 @@
 #' eemlist <- add_metadata(metadata, example_eems)
 #' indices <- eemanalyzeR_indices(eemlist, abslist)
 eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
- #get fluoresence peaks
+  stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
+
+  #get fluoresence peaks
   #define wavelengths for peaks and metrics to check if there are missing wavelengths
     #format: index = list(excitation wavelengths, emission wavelengths, do all wavelengths need to exist to return value?)
   peaks <- list(pB = list(ex=270:280, em=300:320, all=FALSE),
@@ -88,17 +90,22 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
       }
     }
     calc_peaks <- function(eem, doc=FALSE){
-      if(doc){
-        pvals <- sapply(peaks[13:20], function(p) peak_max(eem, p$ex, p$em))
-        if(.meta_added(eem)){pvals_norm <- pvals / eem$doc_mgL}else{pvals_norm <- rep(NA, length(pvals))}
-        pvals <- pvals_norm
-      }else{
+
+      #return DOC code if need DOC to normalize and not added
+      if(doc & !.meta_added(eem)){pvals <- rep("DOC_01", 8)}
+
+      #otherwise transform pvals as needed
+      if(!doc){
         pvals <- sapply(peaks[1:8], function(p) peak_max(eem, p$ex, p$em))
         pvals <- c(pvals,
                    rAT = get_ratios(pvals["pA"], pvals["pT"]),
                    rCA = get_ratios(pvals["pC"], pvals["pA"]),
                    rCM = get_ratios(pvals["pC"], pvals["pM"]),
                    rCT = get_ratios(pvals["pC"], pvals["pT"]))
+      }else{
+        #get peaks
+        pvals <- sapply(peaks[13:20], function(p) peak_max(eem, p$ex, p$em))
+        pvals <- pvals / eem$doc_mgL
       }
 
       return(pvals)

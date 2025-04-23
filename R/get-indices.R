@@ -20,9 +20,6 @@ get_indices_function <- function(index_method="eemanalyzeR"){
          stop(index_method, " is not a known function to generate indices\n  to create your own see vingette browseVingettes('eemanalyzeR')"))
 }
 
-eemR_indices <- function(){
-  print("eemR indices")
-}
 
 usgs_indices <- function(){
   print("usgs indices")
@@ -45,7 +42,7 @@ usgs_indices <- function(){
 #'   \item eem_index: a data.frame of all the fluorescence indices
 #'   \item abs_index: a data.frame of all the absorbance indices
 #' }
-#' Each data.frame will have four columns:
+#' If \code{return} is 'long' each data.frame will have four columns:
 #' \itemize{
 #'  \item sample_name: the name of the sample
 #'  \item meta_name: the name of the sample in the metadata if metadata has been added, otherwise the sample name again
@@ -53,6 +50,10 @@ usgs_indices <- function(){
 #'  \item value: the value of the index
 #'  \item QAQC_flag: any flags associated with the sample, see details for more information.
 #' }
+#'
+#' If \code{return} is 'wide' each data.frame will have a row for each sample, where the columns are the different indices. In this format QAQC flags
+#' are indicated in the individuals cells, either by itself if no value was able to be reported, or combined with the value where applicable to have the form
+#' 'value_flag'.
 #'
 #' @details
 #' \strong{Index Methods}
@@ -75,10 +76,9 @@ usgs_indices <- function(){
 #'  \item NEG_01: Value was negative
 #'  \item NOISE_01: Value was below signal to noise ratio and therefore was not calculated
 #'  \item NOISE_02: Value was below signal to noise ratio and may be inaccurate
-#'  \item VAL_01: Value was below expected values for this index, please check for accuracy
-#'  \item VAL_02: Value was above expected values for this index, please check for accuracy
+#'  \item VAL_01: Value was below expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
+#'  \item VAL_02: Value was above expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
 #' }
-#'
 #' @examples
 #' abslist <- add_metadata(metadata, example_absorbance)
 #' eemlist <- add_metadata(metadata, example_eems)
@@ -188,12 +188,23 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
       x$value[is.na(x$value)] <- -9999
     return(x)})
 
+    indices <- lapply(indices, function(x){
+      x$QAQC_flag[is.na(x$QAQC_flag)] <- "N/A"
+      return(x)})
+
   #return
     if(return == "wide"){
-      #TODO: will need to figure out combining flag strings later
-      abs_index <- tidyr::pivot_wider(abs_index, names_from="metric", values_from="value")
-      eem_index <- tidyr::pivot_wider(abs_index, names_from="metric", values_from="value")
+      indices <- lapply(indices, function(x){
+        x$value_flag <- NA
+        x$value_flag[x$value == -9999] <- x$QAQC_flag[x$value == -9999]
+        x$value_flag[x$QAQC_flag == "N/A"] <- signif(x$value[x$QAQC_flag == "N/A"], 4)
+        x$value_flag[x$value != -9999 & x$QAQC_flag != "N/A"] <- paste(signif(x$value[x$value != -9999 & x$QAQC_flag != "N/A"], 4),
+                                                                               x$QAQC_flag[x$value != -9999 & x$QAQC_flag != "N/A"], sep="_")
 
+        x_wide <- tidyr::pivot_wider(x[,-c(4:5)], names_from="index", values_from="value_flag")
+        return(x_wide)
+
+      })
     }
 
   #write step to readme

@@ -29,7 +29,7 @@ a list with two objects:
   \item eem_index: a data.frame of all the fluorescence indices
   \item abs_index: a data.frame of all the absorbance indices
 }
-Each data.frame will have four columns:
+If \code{return} is 'long' each data.frame will have four columns:
 \itemize{
  \item sample_name: the name of the sample
  \item meta_name: the name of the sample in the metadata if metadata has been added, otherwise the sample name again
@@ -37,9 +37,14 @@ Each data.frame will have four columns:
  \item value: the value of the index
  \item QAQC_flag: any flags associated with the sample, see details for more information.
 }
+
+If \code{return} is 'wide' each data.frame will have a row for each sample, where the columns are the different indices. In this format QAQC flags
+are indicated in the individuals cells, either by itself if no value was able to be reported, or combined with the value where applicable to have the form
+'value_flag'.
 }
 \description{
-Get fluorescence and absorbance indices
+Calculates commonly use indices from absorbance and excitation emission matrix (EEM) data. Also
+checks and flags the indices for potential errors or issues.
 }
 \details{
 \strong{Index Methods}
@@ -55,12 +60,14 @@ The index values will be checked for potential errors prior to reporting and fla
 \itemize{
  \item DATA_01: Missing data required to calculate the index
  \item DATA_02: Missing some wavelengths required to calculate the index, value may be inaccurate
+ \item DATA_03: Unable to calculate ratio because denominator was zero
+ \item DATA_04: Spectral slope was unable to be calculated
  \item DOC_01: Missing dissolved organic carbon data, so index was not able to be calculated
  \item NEG_01: Value was negative
  \item NOISE_01: Value was below signal to noise ratio and therefore was not calculated
  \item NOISE_02: Value was below signal to noise ratio and may be inaccurate
- \item VAL_01: Value was below expected values for this index, please check for accuracy
- \item VAL_02: Value was above expected values for this index, please check for accuracy
+ \item VAL_01: Value was below expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
+ \item VAL_02: Value was above expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
 }
 }
 \examples{
