@@ -2,9 +2,10 @@
 #'
 #' Calculates commonly used absorbance and fluorescence optical indices from eemlist and abslist.
 #' For detailed descriptions and references for indices, see the vignette
-#' \href{../doc/eemanalyzeR-indices.html}{\code{eemanalyzeR-indices}}
+#' \href{../doc/eemanalyzeR-indices.html}{\code{eemanalyzeR-indices}}.
 #' @importFrom zoo na.approx
 #' @importFrom tidyr pivot_wider
+#' @importFrom pracma interp2
 #'
 #' @param eemlist an \code{eemlist} object containing EEM's data. See details for more info.
 #' @param abslist an \code{abslist} object containing absorbance data.
@@ -12,6 +13,9 @@
 #' @note If absorbance is not at a 1 nanometer interval, absorbance will be interpolated using
 #' \link[zoo]{na.approx} which fills in missing values
 #' using linear interpolation.
+#'
+#' If EEMs data is not a 1 nanometer interval, fluorescence will be interpolated
+#' using \link[pracma]{interp2}.
 #'
 #' @return a list with two objects:
 #' \itemize{
@@ -22,7 +26,7 @@
 #' \itemize{
 #'  \item sample_name: the name of the sample
 #'  \item meta_name: the name of the sample in the metadata if metadata has been added, otherwise the sample name again
-#'  \item index: the name of the index being reported, see details for more information.
+#'  \item index: the name of the index being reported, see \href{../doc/eemanalyzeR-indices.html}{vignette}for more information.
 #'  \item value: the value of the index
 #' }
 #'

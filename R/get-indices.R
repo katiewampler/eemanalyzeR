@@ -1,30 +1,3 @@
-# TODO add details linking to the sources of the different
-# index functions
-
-#' Get preset or use custom functions to generate fluorescence and absorbance indices
-#'
-#' @param index_method currently supports "eemanalyzeR", "eemR", and "usgs". See details for more information.
-#'
-#' @returns a function used to generate indices
-#'
-get_indices_function <- function(index_method="eemanalyzeR"){
-
-  if(is.function(index_method)){
-    return(index_method)
-  }
-
-  switch(index_method,
-         "eemanalyzeR" = eemanalyzeR_indices,
-         "eemR" = eemR_indices,
-         "usgs" = usgs_indices,
-         stop(index_method, " is not a known function to generate indices\n  to create your own see vingette browseVingettes('eemanalyzeR')"))
-}
-
-
-usgs_indices <- function(){
-  print("usgs indices")
-}
-
 #' Get fluorescence and absorbance indices
 #'
 #' Calculates commonly use indices from absorbance and excitation emission matrix (EEM) data. Also
