@@ -1,0 +1,21 @@
+---
+title: "Creating a Custom Function to Calculate Indices"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{custom-indices}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(include = FALSE)
+library(eemanalyzeR)
+```
+
