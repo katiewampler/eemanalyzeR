@@ -15,9 +15,102 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(include = FALSE)
 library(eemanalyzeR)
 ```
 
-## Introduction 
-To maximum flexibility in calculating indices, we've enabled the [eemanalyzeR::get_indices] function to accept custom written functions, allowing users to create their own function and calculate indices that may not be included in existing methods. 
+## Introduction
+
+To maximum flexibility in calculating indices, we've enabled the [get_indices()](../html/get-indices.html) function to accept custom written functions, allowing users to create their own function and calculate indices that may not be included in existing methods.
+
+## Function Requirements
+
+1.  The function needs to have the following arguments:
+    a.  eemlist: an eemlist object containing EEM's data.
+    b.  abslist: an abslist object containing absorbance data.
+    c.  cuvle: the cuvette (path) length in cm.
+2.  The function must return a list with the following items:
+    a.  abs_index: the indices calculated from the absorbance data
+    b.  eem_index: the indices calculated from the EEMs data
+
+abs_index and eem_index should both be a data.frame with the following columns:
+
+-   sample_name: a character, the name of the sample
+
+-   meta_name: a character, the name of the sample in the metadata if metadata has been added, otherwise the sample name again
+
+-   index: a character, the name of the index being reported
+
+-   value: the value of the index, also accepts flag values (see details below)
+
+## Helper Functions
+
+The eemanalyzeR package contains a number of functions helpful in creating custom indices.
+
+To get the absorbance values at a certain wavelength the [get_absorbance](../html/get-absorbance.html) function can be used. This function can additionally provide specific absorbance (like SUVA 254).
+
+```{r}
+#add metadata to get DOC values
+abslist <- add_metadata(metadata, example_absorbance)
+
+#absorbance at 254 nm
+a254 <- eemanalyzeR::get_absorbance(abslist, 254) 
+a254 
+
+#specific absorbance at 254 nm
+suva254 <- eemanalyzeR::get_absorbance(abslist, 254, suva=TRUE) 
+suva254
+```
+
+A similar function exists for getting fluorescence values from EEMs data: [get_fluorescence](../html/get-fluorescence.html). Here, you can specify a range of excitation and/or emission wavelengths. If stat is set to `sum` the sum of fluorescence will be returned, otherwise if `max` is used the maximum fluorescence across that range will be returned.
+
+```{r}
+#get maximum fluorescence across ranges for Peak A and D
+pA <- get_fluorescence(example_eems, ex=250:260, em=380:480, stat="max")
+pD <- get_fluorescence(example_eems, ex=390, em=509, stat="max")
+
+#get sum of fluorescence across range of Peak A
+pA_sum <- get_fluorescence(example_eems, ex=250:260, em=380:480, stat="sum")
+```
+
+## QA/QC Flags
+
+While the [get_indices()](../html/get-indices.html) function includes some QA/QC checks (negative numbers, missing values, below noise, outside expected range, etc.), there are some checks that are easier to do when calculating the indices, or you may wish to include custom flags or checks. To pass flags from your index function to the output, they need to get put in the `value` column of the index data.frames.
+
+There are a few rules to follow with flags:
+
+1.  Flags should have the form text\_## (DOC_01, DATA_04, etc.)
+
+2.  If an index value is NA and you want to flag with a reason why it is NA, replace the NA value with that flag value.
+
+3.  If you wish to report a value, but still include a flag, report the value in the form: value_flag (0.042_DATA_01, 43.1_DOC_01, etc.)
+
+### Helper Functions 
+There are few helper functions within the eemanalyzeR package that will provide some common flags.
+
+First is the [get_ratios](../html/get-ratios.html) function. This can be helpful when calculating things like peak ratios, where a missing value will result in an `NA` or a value of  0 in the denominator will result in an infinite value. 
+
+```{r}
+#calculate the ratio of Peak A to Peak T
+ pA <- get_fluorescence(example_eems, ex=250:260, em=380:480)
+ pT <- get_fluorescence(example_eems, ex=270:280, em=320:350)
+ rAT <- get_ratios(pA, pT)
+ rAT
+ 
+  #if Peak T is all 0, will return DATA_03 flag, indicating index couldn't calculated due to zero in denominator
+    rAT <- get_ratios(pA, 0)
+    rAT
+ 
+#calculate HIX 
+  sum_high <- get_fluorescence(example_eems, ex=254, em=435:480, stat = "sum")
+  sum_low <- get_fluorescence(example_eems, ex=254, em=300:345, stat="sum")
+  HIX <- get_ratios(sum_high,sum_low)
+  HIX
+  
+  #if sum_low is NA, will return DATA_01 flag indicating the index couldn't be calculated due to missing data
+  HIX <- get_ratios(sum_high, NA)
+  HIX
+
+```
+There's also a function that will flag indices that can't be calculated because data didn't exist for the requested wavelengths, 
+
+## Example
