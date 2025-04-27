@@ -19,3 +19,5 @@ knitr::opts_chunk$set(include = FALSE)
 library(eemanalyzeR)
 ```
 
+## Introduction 
+To maximum flexibility in calculating indices, we've enabled the [eemanalyzeR::get_indices] function to accept custom written functions, allowing users to create their own function and calculate indices that may not be included in existing methods. 
