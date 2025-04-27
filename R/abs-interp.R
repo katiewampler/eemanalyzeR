@@ -27,7 +27,7 @@ abs_interp <- function(abs, type = "linear"){
   res <- merge(abs_val, data.frame(X1=min(abs_val$X1):max(abs_val$X1)), all=T)
 
   #interpolate
-  if(type == "linear"){res <- zoo::na.approx(res)}else if(type=="spline"){res <- zoo:na.spline(res)}
+  if(type == "linear"){res <- zoo::na.approx(res)}else if(type=="spline"){res <- zoo::na.spline(res)}
 
   #reformat
   abs$data <- as.matrix(res)

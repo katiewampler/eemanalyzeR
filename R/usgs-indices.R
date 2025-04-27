@@ -170,7 +170,7 @@ usgs_indices <- function(eemlist, abslist, cuvle=1){
                    S412_600_32331 = 412:600)
 
   #helper functions to get absorbance indices
-   calc_abs <- function(abs, wl, doc=FALSE){
+    calc_abs <- function(abs, wl, doc=FALSE){
         abs_val <- unname(abs$data[abs$data[,1] == wl,2]) *  (1/cuvle)
         if(doc){
           if(.meta_added(abs)){
@@ -180,6 +180,32 @@ usgs_indices <- function(eemlist, abslist, cuvle=1){
             abs_val <- NA
           }}
         return(abs_val)}
+    #DATA_04: Spectral slope was unable to be calculated
+    calc_ratios <- function(abs){
+      #get absorption in m^-1 (convert from absorbance to absorption based on Beer's Law)
+      absorption <- abs$data[,2] * log(10) / (cuvle/100) #convert cm cuvette to m
+
+      S275_295 <- staRdom::abs_fit_slope(abs$data[,1], absorption,
+                                         lim=c(275,295), l_ref=275)$coefficient
+      S290_350 <- staRdom::abs_fit_slope(abs$data[,1], absorption,
+                                         lim=c(290,350), l_ref=412)$coefficient
+      S350_400 <- staRdom::abs_fit_slope(abs$data[,1], absorption,
+                                         lim=c(350,400), l_ref=350)$coefficient
+      S412_600 <- staRdom::abs_fit_slope(abs$data[,1], absorption,
+                                         lim=c(412,600), l_ref=412)$coefficient
+
+      #prevent non numeric values
+      if(!is.numeric(S275_295)){S275_295 <- "DATA_04"}
+      if(!is.numeric(S275_295)){S275_295 <- "DATA_04"}
+      if(!is.numeric(S350_400)){S350_400 <- "DATA_04"}
+      if(!is.numeric(S412_600)){S350_400 <- "DATA_04"}
+
+
+      vals <- unname(c(S275_295,S290_350, S350_400, S412_600)) #remove previous names
+      names(vals) <- c("S275_295", "S290_350", "S350_400", "S412_600")
+
+      return(vals)
+    }
 
   #get all indices
     abs_index <- do.call("rbind", lapply(abs_interp, function(abs){
