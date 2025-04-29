@@ -90,11 +90,15 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
   #flag if needed
     #helper functions to make flags
       missing_doc_flag <- function(index){
+        #if index is NA, return NA
+        if(!is.data.frame(index)){return(index)}
         doc_flag <- grepl("SUVA|SVA|DOC", index$index) & is.na(index$value) & is.na(index$QAQC_flag)
         index$QAQC_flag[doc_flag] <- "DOC_01"
         return(index)
       }
       negative_flag <- function(index){
+        #if index is NA, return NA
+        if(!is.data.frame(index)){return(index)}
         negative <- index$value < 0
         negative[is.na(negative)] <- FALSE
         index$QAQC_flag[negative] <- "NEG_01"
@@ -102,6 +106,9 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
         return(index)
       }
       move_flags <- function(index){
+        #if index is NA, return NA
+        if(!is.data.frame(index)){return(index)}
+
         #move flags from value column to QA/QC column and replace with NA or value
           #check if there's a flag (not numeric)
             flagged <- !grepl("^[-+]?\\d*(\\.\\d+)?([eE][-+]?\\d+)?$", index$value) & !is.na(index$value)
@@ -122,6 +129,8 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
           return(index)
       }
       outside_range <- function(index){
+        #if index is NA, return NA
+        if(!is.data.frame(index)){return(index)}
         index <- plyr::join(index, eemanalyzeR::indice_ranges, by="index")
         low <- as.numeric(index$value) < index$low_val
         low[is.na(low)] <- FALSE
@@ -135,7 +144,6 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
 
         return(index)
       }
-
 
     #missing data (no wavelengths)
       indices <- lapply(indices, move_flags)
@@ -153,21 +161,29 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
 
   #make indices numeric
    indices <- lapply(indices, function(x){
+     #if index is NA, return NA
+     if(!is.data.frame(x)){return(x)}
      x$value <- as.numeric(x$value)
      return(x)})
 
   #change missing NA values to -9999 to indicate they're missing on purpose
     indices <- lapply(indices, function(x){
+      #if index is NA, return NA
+      if(!is.data.frame(x)){return(x)}
       x$value[is.na(x$value)] <- -9999
     return(x)})
 
     indices <- lapply(indices, function(x){
+      #if index is NA, return NA
+      if(!is.data.frame(x)){return(x)}
       x$QAQC_flag[is.na(x$QAQC_flag)] <- "N/A"
       return(x)})
 
   #return
     if(return == "wide"){
       indices <- lapply(indices, function(x){
+        #if index is NA, return NA
+        if(!is.data.frame(x)){return(x)}
         x$value_flag <- NA
         x$value_flag[x$value == -9999] <- x$QAQC_flag[x$value == -9999]
         x$value_flag[x$QAQC_flag == "N/A"] <- signif(x$value[x$QAQC_flag == "N/A"], 4)

@@ -1,7 +1,7 @@
 #' Interpolate absorbance data
 #'
 #' Interpolates absorbance data to 1 nanometer resolution to enable index calculation at
-#' wavelengths that weren't specifially measured.
+#' wavelengths that weren't specifically measured.
 #'
 #' @param abs an object of class \code{abs} or \code{abslist}
 #' @param type the method used to interpolate, either "linear" for linear interpolation using \link[zoo]{na.approx} or "spline" for spline interpolation using \link[zoo]{na.spline}

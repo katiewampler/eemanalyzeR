@@ -20,7 +20,7 @@ library(eemanalyzeR)
 
 ## Introduction
 
-To maximum flexibility in calculating indices, we've enabled the [get_indices()](../html/get-indices.html) function to accept custom written functions, allowing users to create their own function and calculate indices that may not be included in existing methods.
+To maximum flexibility in calculating indices, we've enabled the [get_indices](../html/get-indices.html) function to accept custom written functions, allowing users to create their own function and calculate indices that may not be included in existing methods.
 
 ## Function Requirements
 
@@ -74,7 +74,7 @@ pA_sum <- get_fluorescence(example_eems, ex=250:260, em=380:480, stat="sum")
 
 ## QA/QC Flags
 
-While the [get_indices()](../html/get-indices.html) function includes some QA/QC checks (negative numbers, missing values, below noise, outside expected range, etc.), there are some checks that are easier to do when calculating the indices, or you may wish to include custom flags or checks. To pass flags from your index function to the output, they need to get put in the `value` column of the index data.frames.
+While the [get_indices](../html/get-indices.html) function includes some QA/QC checks (negative numbers, missing values, below noise, outside expected range, etc.), there are some checks that are easier to do when calculating the indices, or you may wish to include custom flags or checks. To pass flags from your index function to the output, they need to get put in the `value` column of the index data.frames.
 
 There are a few rules to follow with flags:
 
@@ -84,10 +84,11 @@ There are a few rules to follow with flags:
 
 3.  If you wish to report a value, but still include a flag, report the value in the form: value_flag (0.042_DATA_01, 43.1_DOC_01, etc.)
 
-### Helper Functions 
+### Helper Functions
+
 There are few helper functions within the eemanalyzeR package that will provide some common flags.
 
-First is the [get_ratios](../html/get-ratios.html) function. This can be helpful when calculating things like peak ratios, where a missing value will result in an `NA` or a value of  0 in the denominator will result in an infinite value. 
+First is the [get_ratios](../html/get-ratios.html) function. This can be helpful when calculating things like peak ratios, where a missing value will result in an `NA` or a value of 0 in the denominator will result in an infinite value.
 
 ```{r}
 #calculate the ratio of Peak A to Peak T
@@ -96,7 +97,8 @@ First is the [get_ratios](../html/get-ratios.html) function. This can be helpful
  rAT <- get_ratios(pA, pT)
  rAT
  
-  #if Peak T is all 0, will return DATA_03 flag, indicating index couldn't calculated due to zero in denominator
+  #if Peak T is all 0, will return DATA_03 flag, indicating index couldn't 
+    #calculated due to zero in denominator
     rAT <- get_ratios(pA, 0)
     rAT
  
@@ -106,11 +108,157 @@ First is the [get_ratios](../html/get-ratios.html) function. This can be helpful
   HIX <- get_ratios(sum_high,sum_low)
   HIX
   
-  #if sum_low is NA, will return DATA_01 flag indicating the index couldn't be calculated due to missing data
-  HIX <- get_ratios(sum_high, NA)
-  HIX
+  #if sum_low is NA, will return DATA_01 flag indicating the index couldn't be 
+    #calculated due to missing data
+    HIX <- get_ratios(sum_high, NA)
+    HIX
 
 ```
-There's also a function that will flag indices that can't be calculated because data didn't exist for the requested wavelengths, 
 
-## Example
+There's also a function that will flag indices that can't be calculated because data didn't exist for the requested wavelengths: [flag_missing](../html/flag-missing.html). This is useful to check when calculating indices to flag why certain indices might be returning `NA` values.
+
+```{r}
+#checking absorbance data
+  #data exists
+  flag_missing(example_absorbance, wl=400) 
+
+ #data doesn't exist
+  flag_missing(example_absorbance, wl=100)
+  
+ #some data exists, still calculate
+  flag_missing(example_absorbance, wl=100:254, all=FALSE)
+
+#checking fluorescence data
+  #data exists
+  flag_missing(example_eems, ex=270:280, em=300:320) 
+  
+  #data doesn't exist
+  flag_missing(example_eems, ex=100:150, em=300:320) 
+  
+  #some data exists, still calculate
+  flag_missing(example_eems, ex=100:350, em=300:320, all=FALSE) 
+```
+
+Once we've gotten the values and the flags, the data needs to be formatted in a specific way to input into the [get_indices](../html/get-indices.html) function. To do this we can use the [format_index](../html/format-index.html) function.
+
+```{r}
+  ex <- 240:260
+  em <- 300:320
+  vals <- get_fluorescence(example_eems, ex, em, stat = "max")
+  flags <- flag_missing(example_eems, ex=ex, em=em, all=FALSE)
+  index_formatted <- format_index(example_eems, "test_index", vals, flags)
+```
+
+## Examples
+
+Alright, now that we've reviewed all the helper functions and the requirements for the custom function let's do an example. Let's create a custom function to calculate the maximum fluorescence for the five regions defined in Chen et al. 2003:
+
+```{r echo=FALSE, include=TRUE}
+indices <- data.frame(region=c("I", "II", "III", "IV", "V"), 
+                      excitation=c("<250", "<250", "<250", ">250", ">250"),
+                      emission=c("<300","330-380", ">380", "<380",">380"))
+
+colnames(indices) <- c("Region", "Excitation (nm)", "Emission (nm)")
+knitr::kable(indices)
+```
+
+First let's turn the different regions into a list of excitation and emission wavelengths.
+
+```{r}
+chen_regions <- list(r1 = list(ex=240:250, em=245:300),
+                     r2 = list(ex=240:250, em=330:380),
+                     r3 = list(ex=240:250, em=380:550),
+                     r4 = list(ex=250:800, em=245:380),
+                     r5 = list(ex=250:800, em=380:550))
+```
+
+We can use the [get_fluorescence](../html/get-fluorescence.html) helper function to calculate the maximum fluorescence in these regions. For a single region that would look like:
+
+```{r}
+get_fluorescence(example_eems, chen_regions[[1]]$ex, chen_regions[[1]]$em, stat="max")
+
+```
+To get all the indices let's use the lapply function. 
+
+```{r}
+results <- lapply(names(chen_regions), function(region_name) {
+  region <- chen_regions[[region_name]]
+  get_fluorescence(example_eems, region$ex, region$em, stat = "max")
+  })
+
+```
+
+While we're calculating each index, let's also use the [flag_missing](../html/flag-missing.html) function to see if there's any data missing. Since we're finding the maximum value, we'll set `all` to `FALSE` so it will report a value if there's some data. Lastly, we'll use the [format_index](../html/format-index.html) function to make sure everything is correctly formatted.
+
+```{r}
+results <- lapply(names(chen_regions), function(region_name){
+  #get values
+  region <- chen_regions[[region_name]]
+  vals <- get_fluorescence(example_eems, region$ex, region$em, stat = "max")
+
+  #get flags
+  flags <- flag_missing(example_eems, ex=region$ex, em=region$em, all=FALSE)
+
+  #add sample names and make into data.frame (get index name)
+  res <- format_index(example_eems, region_name, vals, flags)
+    
+  #return res
+  return(res)
+  })
+
+results <- do.call(rbind, results)
+```
+
+
+Lastly, we just need to return the results as a list. Since we don't have any absorbance data we'll just make it NA.
+```{r}
+  list(abs_index = NA,
+       eem_index=results)
+```
+
+Great, that all looks good, now we just need to combine all that code to a custom function. 
+```{r}
+chen2003 <- function(eemlist, abslist, cuvle=1){
+  #making sure eemlist and abslist are correct objects
+    stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
+  #specify regions
+    chen_regions <- list(r1 = list(ex=240:250, em=245:300),
+                     r2 = list(ex=240:250, em=330:380),
+                     r3 = list(ex=240:250, em=380:550),
+                     r4 = list(ex=250:800, em=245:380),
+                     r5 = list(ex=250:800, em=380:550))
+  
+  #get results as a data.frame
+    results <- lapply(names(chen_regions), function(region_name){
+    #get values
+    region <- chen_regions[[region_name]]
+    vals <- get_fluorescence(example_eems, region$ex, region$em, stat = "max")
+  
+    #get flags
+    flags <- flag_missing(example_eems, ex=region$ex, em=region$em, all=FALSE)
+  
+    #add sample names and make into data.frame (get index name)
+    res <- format_index(example_eems, region_name, vals, flags)
+      
+    #return res
+    return(res)
+    })
+  
+  #combine lists together
+    results <- do.call(rbind, results)
+
+  return(list(abs_index = NA,
+         eem_index=results))
+}
+```
+
+Now let's test our custom function with the [get_indices](../html/get-indices.html) function. 
+```{r}
+indices <- get_indices(example_eems, example_absorbance, index_method = chen2003, return="wide")
+
+indices$eem_index
+```
+
+## References
+
+Chen, W., Westerhoff, P., Leenheer, J. A., & Booksh, K. (2003). Fluorescence excitation-emission matrix regional integration to quantify spectra for dissolved organic matter. Environmental Science & Technology, 37(24), 5701–5710. <https://doi.org/10.1021/es034354c>
