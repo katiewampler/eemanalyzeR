@@ -57,3 +57,20 @@
     expect_true(all(apply(indices$eem_index, 1, class) == "character"))
 
   })
+
+  test_that("NA index doesn't break anything",{
+    return_NA <- function(eemlist, abslist, cuvle=1){
+      return(list(abs_index=NA, eem_index=NA))}
+
+    expect_no_error(expect_warning(get_indices(example_eems, example_absorbance, index_method=return_NA)))
+  })
+
+
+
+  test_that("warning is returned if some steps are done",{
+    eemlist <- add_metadata(metadata, example_eems)
+    eemlist <- raman_normalize(eemlist)
+
+    expect_warning(get_indices(eemlist, example_absorbance), "Data has not been fully processed")
+  })
+

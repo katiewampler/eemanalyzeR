@@ -64,9 +64,9 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
     steps <- check_processing(eemlist)
     steps <- steps[-nrow(steps),] #remove check for DOC
 
-    if(!(all(steps$done))){
+    if(all(!steps$done)){
       warning("Data has not been processed, and indices may not be accurate. \nPlease use eemanalyzeR::process_eem to process EEMs before generating indices.")
-    }else if(!any(steps$done)){
+    }else if(any(!steps$done)){
       missing <- steps[steps$done == FALSE,]
       warning("Data has not been fully processed, and indices may not be accurate. The following processing steps are missing:\n",
               paste(missing$warning, collapse="\n"), "\n\nPlease use eemanalyzeR::process_eem to process EEMs before generating indices.")}
