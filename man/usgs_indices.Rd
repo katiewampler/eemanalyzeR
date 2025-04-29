@@ -6,8 +6,8 @@
 \source{
 Hansen, A. M., Fleck, J., Kraus, T. E. C., Downing, B. D., von Dessonneck, T., & Bergamaschi, B. (2018).
 Procedures for using the Horiba Scientific Aqualog® fluorometer to measure absorbance and fluorescence from dissolved organic matter
-(USGS Numbered Series No. 2018–1096). Procedures for using the Horiba Scientific Aqualog® fluorometer to measure absorbance and fluorescence
-from dissolved organic matter (Vol. 2018–1096). Reston, VA: U.S. Geological Survey. \url{https://doi.org/10.3133/ofr20181096}
+(USGS Numbered Series No. 2018-1096). Procedures for using the Horiba Scientific Aqualog® fluorometer to measure absorbance and fluorescence
+from dissolved organic matter (Vol. 2018-1096). Reston, VA: U.S. Geological Survey. \url{https://doi.org/10.3133/ofr20181096}
 }
 \usage{
 usgs_indices(eemlist, abslist, cuvle = 1)

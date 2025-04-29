@@ -64,6 +64,6 @@ eemlist <- remove_scattering(example_eems, width=c(16,3,100,40))
 plot_eem(eemlist[[6]])
 }
 \references{
-Gilchrist, J. R., & Reynolds, D. M. (2014). Optical Spectroscopy Instrumentation Design, Quality Assurance, and Control: Bench-Top Fluorimetry. In A. Baker, D. M. Reynolds, J. Lead, P. G. Coble, & R. G. M. Spencer (Eds.), Aquatic Organic Matter Fluorescence (pp. 147–189).
+Gilchrist, J. R., & Reynolds, D. M. (2014). Optical Spectroscopy Instrumentation Design, Quality Assurance, and Control: Bench-Top Fluorimetry. In A. Baker, D. M. Reynolds, J. Lead, P. G. Coble, & R. G. M. Spencer (Eds.), Aquatic Organic Matter Fluorescence (pp. 147-189).
 Cambridge: Cambridge University Press. \url{https://doi.org/10.1017/CBO9781139045452.009}
 }

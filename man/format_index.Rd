@@ -11,9 +11,9 @@ format_index(x, index, value, flag)
 
 \item{index}{a character, the name of the index}
 
-\item{value}{the index values, use [eemanalyzeR]{get_fluorescence} or [eemanalyzeR]{get_absorbance} to get index values}
+\item{value}{the index values, use \link[eemanalyzeR]{get_fluorescence} or \link[eemanalyzeR]{get_absorbance} to get index values}
 
-\item{flag}{the flag values, must be the same length as value, use [eemanalyzeR]{flag-missing} to generate flags}
+\item{flag}{the flag values, must be the same length as value, use \link[eemanalyzeR]{flag_missing} to generate flags}
 }
 \value{
 a data.frame with four columns:

@@ -16,7 +16,7 @@ an object of class \code{abs} or \code{abslist}
 }
 \description{
 Interpolates absorbance data to 1 nanometer resolution to enable index calculation at
-wavelengths that weren't specifially measured.
+wavelengths that weren't specifically measured.
 }
 \examples{
 abslist_filled <- abs_interp(example_absorbance)
