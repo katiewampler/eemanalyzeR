@@ -8,6 +8,7 @@
 #' @param ex a vector of excitation wavelengths
 #' @param em a vector of emission wavelengths
 #' @param stat either "max" to get the maximum value within the specified range or "sum" to get the sum across the specified range
+#' @param norm logical, if TRUE will divide index value by the DOC concentration. Note that metadata must be added if TRUE using \link[eemanalyzeR]{add_metadata} or NA will be returned.
 #'
 #' @return A vector of fluorescence values. If a value cannot be extracted, NA will be returned.
 #' @export
@@ -16,12 +17,16 @@
 #' pA <- get_fluorescence(example_eems, ex=250:260, em=380:480)
 #' pD <- get_fluorescence(example_eems, ex=390, em=509)
 #' pA_sum <- get_fluorescence(example_eems, ex=250:260, em=380:480, stat="sum")
-get_fluorescence <- function(eem, ex, em, stat="max"){
-  stopifnot(.is_eem(eem) | .is_eemlist(eem), is.numeric(ex), is.numeric(em), stat %in% c("max","sum"))
+#'
+#' eemlist <- add_metadata(metadata, example_eems)
+#' pA_docnorm <- get_fluorescence(eemlist, ex=250:260, em=380:480, norm=TRUE)
+#'
+get_fluorescence <- function(eem, ex, em, stat="max", norm=FALSE){
+  stopifnot(.is_eem(eem) | .is_eemlist(eem), is.numeric(ex), is.numeric(em), stat %in% c("max","sum"), is.logical(norm))
 
   #apply over eemlist
   if(.is_eemlist(eem)){
-    res <- sapply(eem, get_fluorescence, ex, em, stat)
+    res <- sapply(eem, get_fluorescence, ex, em, stat, norm)
     return(res)
   }
 
@@ -32,12 +37,25 @@ get_fluorescence <- function(eem, ex, em, stat="max"){
 
   #see if it can be calculated
   if(all(is.na(int_res))){
-    res <- NA
+    res <- "DATA_01"
   }else if(stat == "max"){
     res <- max(int_res, na.rm=TRUE)
   }else if(stat == "sum"){
     res <- sum(int_res, na.rm = TRUE)
   }
+
+  #normalize by DOC if requested
+  if(norm){
+    if(res == "DATA_01"){
+      res <- "DATA_01"
+    }else if(.meta_added(eem)){
+      res <- res / eem$doc_mgL
+    }else{
+      res <- "DOC_01"
+    }}
+
+  #if missing DOC, return code
+  res[is.na(res)] <- "DOC_01"
 
   return(res)
 }

@@ -232,13 +232,13 @@ chen2003 <- function(eemlist, abslist, cuvle=1){
     results <- lapply(names(chen_regions), function(region_name){
     #get values
     region <- chen_regions[[region_name]]
-    vals <- get_fluorescence(example_eems, region$ex, region$em, stat = "max")
+    vals <- get_fluorescence(eemlist, region$ex, region$em, stat = "max")
   
     #get flags
-    flags <- flag_missing(example_eems, ex=region$ex, em=region$em, all=FALSE)
+    flags <- flag_missing(eemlist, ex=region$ex, em=region$em, all=FALSE)
   
     #add sample names and make into data.frame (get index name)
-    res <- format_index(example_eems, region_name, vals, flags)
+    res <- format_index(eemlist, region_name, vals, flags)
       
     #return res
     return(res)

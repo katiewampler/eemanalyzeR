@@ -3,12 +3,14 @@ Acta
 Amiotti
 Analytica
 Aqualog
+AqualogB
 BIX
 Babic
 Baigar
 Batiot
 Beltrone
 Bergamaschi
+Booksh
 Chemosphere
 Chimica
 Chromophoric
@@ -58,6 +60,7 @@ Korak
 Kraus
 Kulbe
 Lawaetz
+Leenheer
 Limnology
 Loiselle
 Marcarelli
@@ -101,7 +104,6 @@ Stedmon
 Steinweg
 Stubbins
 USGS
-Upsample
 Vacher
 WR
 Wagenbrenner
@@ -112,8 +114,6 @@ Zalba
 Zhang
 Zsolnay
 abslist
-acs
-acsestwater
 al
 aqualog
 aromaticity
@@ -123,6 +123,7 @@ bix
 chromophoric
 csv
 cuvette
+cuvle
 diagenetically
 dir
 doi
@@ -140,14 +141,13 @@ hix
 https
 humic
 humification
-lno
+lapply
 mgL
 microbially
 microplastics
 nanometer
 nanometers
 nm
-ofr
 ohno
 pA
 pB
@@ -177,13 +177,11 @@ sampleQ
 sd
 sdmax
 sdmin
-seares
 snowmelt
 staRdom
 tibble
 tyrosine
 unreplicated
-upscaled
 usgs
 von
 xlsx

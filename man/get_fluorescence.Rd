@@ -4,7 +4,7 @@
 \alias{get_fluorescence}
 \title{Get fluorescence within a specified range}
 \usage{
-get_fluorescence(eem, ex, em, stat = "max")
+get_fluorescence(eem, ex, em, stat = "max", norm = FALSE)
 }
 \arguments{
 \item{eem}{an \code{eem} or \code{eemlist} object containing EEM's data}
@@ -14,6 +14,8 @@ get_fluorescence(eem, ex, em, stat = "max")
 \item{em}{a vector of emission wavelengths}
 
 \item{stat}{either "max" to get the maximum value within the specified range or "sum" to get the sum across the specified range}
+
+\item{norm}{logical, if TRUE will divide index value by the DOC concentration. Note that metadata must be added if TRUE using \link[eemanalyzeR]{add_metadata} or NA will be returned.}
 }
 \value{
 A vector of fluorescence values. If a value cannot be extracted, NA will be returned.
@@ -26,4 +28,8 @@ Missing values are interpolated using \link[pracma]{interp2}.
 pA <- get_fluorescence(example_eems, ex=250:260, em=380:480)
 pD <- get_fluorescence(example_eems, ex=390, em=509)
 pA_sum <- get_fluorescence(example_eems, ex=250:260, em=380:480, stat="sum")
+
+eemlist <- add_metadata(metadata, example_eems)
+pA_docnorm <- get_fluorescence(eemlist, ex=250:260, em=380:480, norm=TRUE)
+
 }

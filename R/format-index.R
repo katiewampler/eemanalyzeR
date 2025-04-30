@@ -29,13 +29,15 @@ format_index <- function(x, index, value, flag){
   #get sample names
     sample_name <- get_sample_info(x, "sample")
     #get meta name if metadata has been added, else get sample again
-    meta_name <- ifelse(all(.meta_added(x)),
-                        get_sample_info(x, "meta_name"),
-                        get_sample_info(x, "sample"))
+    if(all(.meta_added(x))){
+      meta_name <- get_sample_info(x, "meta_name")
+    }else{
+      meta_name <-  get_sample_info(x, "sample")}
+
 
   #combine vals and flags
+    merge <- !is.na(value) & !is.na(flag) & value != flag
     value[is.na(value)] <- flag[is.na(value)]
-    merge <- !is.na(value) & !is.na(flag)
     value[merge] <- paste0(value[merge], "_", flag[merge])
 
   #format as data.frame

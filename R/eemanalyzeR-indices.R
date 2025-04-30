@@ -39,172 +39,138 @@
 eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
 
-  #get fluoresence peaks
   #define wavelengths for peaks and metrics to check if there are missing wavelengths
-    #format: index = list(excitation wavelengths, emission wavelengths, do all wavelengths need to exist to return value?)
-  peaks <- list(pB = list(ex=270:280, em=300:320, all=FALSE),
-                pT = list(ex=270:280, em=320:350, all=FALSE),
-                pA = list(ex=250:260, em=380:480, all=FALSE),
-                pM = list(ex=310:320, em=380:420, all=FALSE),
-                pC = list(ex=330:350, em=420:480, all=FALSE),
-                pD = list(ex=390, em=509, all=TRUE),
-                pE = list(ex=455, em=521, all=TRUE),
-                pN = list(ex=280, em=370, all=TRUE),
-                rAT = list(ex=c(250:260,270:280), em=c(380:480,320:350), all=TRUE),
-                rCA = list(ex=c(250:260,330:350), em=c(380:480,420:480), all=TRUE),
-                rCM = list(ex=c(330:350,310:320), em=c(420:480,380:420), all=TRUE),
-                rCT = list(ex=c(330:350,270:280), em=c(420:480,320:350), all=TRUE),
-                pB_DOCnorm = list(ex=270:280, em=300:320, all=FALSE),
-                pT_DOCnorm = list(ex=270:280, em=320:350, all=FALSE),
-                pA_DOCnorm = list(ex=250:260, em=380:480, all=FALSE),
-                pM_DOCnorm = list(ex=310:320, em=380:420, all=FALSE),
-                pC_DOCnorm = list(ex=330:350, em=420:480, all=FALSE),
-                pD_DOCnorm = list(ex=390, em=509, all=TRUE),
-                pE_DOCnorm = list(ex=455, em=521, all=TRUE),
-                pN_DOCnorm = list(ex=280, em=370, all=TRUE),
-                FI = list(ex=370, em=c(470, 520), all=TRUE),
-                HIX = list(ex=254, em=c(300:345,435:480), all=TRUE),
-                HIX_ohno = list(ex=254, em=c(300:345,435:480), all=TRUE),
-                fresh = list(ex=310, em=c(380, 420:435), all=TRUE),
-                BIX = list(ex=310, em=c(380, 430), all=TRUE))
+    #format: index = list(excitation wavelengths, emission wavelengths)
+  peaks <- list(pB = list(ex=270:280, em=300:320),
+                pT = list(ex=270:280, em=320:350),
+                pA = list(ex=250:260, em=380:480),
+                pM = list(ex=310:320, em=380:420),
+                pC = list(ex=330:350, em=420:480),
+                pD = list(ex=390, em=509),
+                pE = list(ex=455, em=521),
+                pN = list(ex=280, em=370),
+                rAT = list(ex=c(250:260,270:280), em=c(380:480,320:350)),
+                rCA = list(ex=c(250:260,330:350), em=c(380:480,420:480)),
+                rCM = list(ex=c(330:350,310:320), em=c(420:480,380:420)),
+                rCT = list(ex=c(330:350,270:280), em=c(420:480,320:350)),
+                pB_DOCnorm = list(ex=270:280, em=300:320),
+                pT_DOCnorm = list(ex=270:280, em=320:350),
+                pA_DOCnorm = list(ex=250:260, em=380:480),
+                pM_DOCnorm = list(ex=310:320, em=380:420),
+                pC_DOCnorm = list(ex=330:350, em=420:480),
+                pD_DOCnorm = list(ex=390, em=509),
+                pE_DOCnorm = list(ex=455, em=521),
+                pN_DOCnorm = list(ex=280, em=370),
+                FI = list(ex=370, em=c(470, 520)),
+                HIX = list(ex=254, em=c(300:345,435:480)),
+                HIX_ohno = list(ex=254, em=c(300:345,435:480)),
+                fresh = list(ex=310, em=c(380, 420:435)),
+                BIX = list(ex=310, em=c(380, 430)))
 
-  #helper functions to get fluorescence index functions
-    #only coble peaks are different if DOC normalized or not
-    #interpolates to 1 nm and gives max value in that range
+    #Get Coble Peaks and Ratios
+      coble <- lapply(names(peaks[1:8]), function(index_name){
+        index <- peaks[[index_name]]
 
-    #DATA_03: Unable to calculate ratio because denominator was zero
-    peak_max <- function(eem, ex, em){
-      ex_p <- rep(ex, length(em)) #gives values to interpolate between
-      em_p <- rep(em, length(ex)) #gives values to interpolate between
-      int_res <- pracma::interp2(eem$ex, eem$em, eem$x, ex_p, em_p)
-      if(all(is.na(int_res))){
-        max_res <- NA
-      }else{
-        max_res <- max(int_res, na.rm=T)
-      }
-      return(max_res)
-    }
-    get_ratios <- function(p1, p2){
-      if(is.na(p1) | is.na(p2)){
-        return("DATA_01")
-      }else if(p2 == 0){
-        return("DATA_03")
-      }else{
-        return(unname(p1 / p2))
-      }
-    }
-    calc_peaks <- function(eem, doc=FALSE){
+        #get values
+        vals <- get_fluorescence(eemlist, index$ex, index$em, stat = "max")
 
-      #return DOC code if need DOC to normalize and not added
-      if(doc & !.meta_added(eem)){pvals <- rep("DOC_01", 8)}
+        #get flags
+        flags <- flag_missing(eemlist, ex=index$ex, em=index$em, all=FALSE)
 
-      #otherwise transform pvals as needed
-      if(!doc){
-        pvals <- sapply(peaks[1:8], function(p) peak_max(eem, p$ex, p$em))
-        pvals <- c(pvals,
-                   rAT = get_ratios(pvals["pA"], pvals["pT"]),
-                   rCA = get_ratios(pvals["pC"], pvals["pA"]),
-                   rCM = get_ratios(pvals["pC"], pvals["pM"]),
-                   rCT = get_ratios(pvals["pC"], pvals["pT"]))
-      }else{
-        #get peaks
-        pvals <- sapply(peaks[13:20], function(p) peak_max(eem, p$ex, p$em))
-        pvals <- pvals / eem$doc_mgL
-      }
+        #add sample names and make into data.frame (get index name)
+        res <- format_index(eemlist, index_name, vals, flags)
 
-      return(pvals)
-    }
+        #return res
+        return(res)
+      })
+      coble <- do.call(rbind, coble)
 
+      ratio_map <- list(rAT = c("pA", "pT"),
+                        rCA = c("pC", "pA"),
+                        rCM = c("pC", "pM"),
+                        rCT = c("pC", "pT"))
+      coble_ratios <- lapply(names(peaks[9:12]), function(index_name){
+        index <- peaks[[index_name]]
 
-    calc_FI <- function(eem){
-      f_470 <- pracma::interp2(eem$ex, eem$em, eem$x, 370, 470)
-      f_520 <- pracma::interp2(eem$ex, eem$em, eem$x, 370, 520)
+        #get values
+        ratio_keys <- ratio_map[[index_name]]
+        numerator <- coble$value[coble$index == ratio_keys[1]]
+        denominator <- coble$value[coble$index == ratio_keys[2]]
 
-      FI <- get_ratios(f_470, f_520)
+        #remove flags if needed
+        numerator <- stringr::str_split_i(numerator, "_", i=1)
+        denominator <- stringr::str_split_i(denominator, "_", i=1)
 
-      return(FI)
-    }
-    calc_HIX <- function(eem, type="zsolnay"){
-      em_high <- 435:480
-      em_low <- 300:345
-      ex_254 <- rep(254, length(em_low))
-      sum_high <- sum(pracma::interp2(eem$ex, eem$em, eem$x,
-                                      ex_254, em_high))
-      sum_low <- sum(pracma::interp2(eem$ex, eem$em, eem$x,
-                                     ex_254, em_low))
+        #if flag is a DATA_01, will get "DATA" replace with NA
+        numerator[numerator == "DATA"] <- NA
+        denominator[denominator == "DATA"] <- NA
 
-      if(type == "ohno"){
-        HIX <- get_ratios(sum_high,(sum_low + sum_high))
-      }else{HIX <- get_ratios(sum_high,sum_low)}
-      return(HIX)
-    }
-    calc_fresh <- function(eem){
-      f_380 <- pracma::interp2(eem$ex, eem$em, eem$x, 310, 380)
-      f_420_435 <- peak_max(eem, 310, 420:435)
+        #get values
+        vals <- get_ratios(numerator, denominator)
 
-      fresh <- get_ratios(f_380, f_420_435)
+        #get flags
+        flags <- flag_missing(eemlist, ex=index$ex, em=index$em, all=FALSE)
 
-      return(fresh)
-    }
-    calc_BIX <- function(eem){
-      f_380 <- pracma::interp2(eem$ex, eem$em, eem$x, 310, 380)
-      f_430 <- pracma::interp2(eem$ex, eem$em, eem$x, 310, 430)
+        #add sample names and make into data.frame (get index name)
+        res <- format_index(eemlist, index_name, vals, flags)
 
-      BIX <- get_ratios(f_380, f_430)
-      return(BIX)
-    }
+        #return res
+        return(res)
+      })
+      coble_ratios <- do.call(rbind, coble_ratios)
 
-  #get fluorescence indices
-    eem_index <- do.call("rbind", lapply(eemlist, function(eem){
-      vals <- c(calc_peaks(eem),
-                calc_peaks(eem, doc=TRUE),
-                FI = calc_FI(eem),
-                HIX = calc_HIX(eem),
-                HIX_ohno = calc_HIX(eem, "ohno"),
-                fresh = calc_fresh(eem),
-                BIX = calc_BIX(eem))
-      name_type <- ifelse(.meta_added(eem), "meta_name", "sample")
-      index <- data.frame(sample_name= get_sample_info(eem, "sample"),
-                          meta_name=get_sample_info(eem, name_type),
-                          index = names(vals),
-                          value = unname(vals))}))
+      coble_norm <- lapply(names(peaks[13:20]), function(index_name){
+        index <- peaks[[index_name]]
 
-    #add flags for missing data
-      missing_data_eem <- function(peaks, eem){
-        #get ranges of wavelengths in data
-        ex_range <- min(eem$ex):max(eem$ex)
-        em_range <- ceiling(min(eem$em)):floor(max(eem$em)) #round because they're usually not integers
-        flags <- sapply(peaks, function(x){
-          #is the range completely contained in ranges?
-          if(all(x$ex %in% ex_range) & all(x$em %in% em_range)){
-             return(NA)
-          }else if(any(x$ex %in% ex_range) & any(x$em %in% em_range) & x$all == FALSE){
-            return("DATA_02") #entire index range not contained in data
-          }else{
-            return("DATA_01") #index range not in data, unable to report value
-          }
-        })
+        #get values
+        vals <- get_fluorescence(eemlist, index$ex, index$em, stat = "max", norm=TRUE)
 
-        return(flags)
+        #get flags
+        flags <- flag_missing(eemlist, ex=index$ex, em=index$em, all=FALSE)
+
+        #add sample names and make into data.frame (get index name)
+        res <- format_index(eemlist, index_name, vals, flags)
+
+        #return res
+        return(res)
+      })
+      coble_norm <- do.call(rbind, coble_norm)
+
+    #get FI
+      index <- "FI"
+      vals <- get_ratios(get_fluorescence(eemlist, 370, 470), get_fluorescence(eemlist, 370, 520))
+      flags <- flag_missing(eemlist, ex=peaks[[index]]$ex, em=peaks[[index]]$ex, all=FALSE)
+      FI <- format_index(eemlist, index, vals, flags)
+
+    #get HIX
+      index <- "HIX"
+      low <- get_fluorescence(eemlist, 254, 300:345, stat="sum")
+      high <- get_fluorescence(eemlist, 254, 435:480, stat="sum")
+      vals <- get_ratios(high, low)
+      flags <- flag_missing(eemlist, ex=peaks[[index]]$ex, em=peaks[[index]]$ex, all=FALSE)
+      HIX <- format_index(eemlist, index, vals, flags)
+
+      index <- "HIX_ohno"
+      low_high <- get_fluorescence(eemlist, 254, c(300:345, 435:480), stat="sum")
+      vals <- get_ratios(high, low_high)
+      flags <- flag_missing(eemlist, ex=peaks[[index]]$ex, em=peaks[[index]]$ex, all=FALSE)
+      HIX_ohno <- format_index(eemlist, index, vals, flags)
+
+    #get freshness index
+      index <- "fresh"
+      vals <- get_ratios(get_fluorescence(eemlist, 310, 380), get_fluorescence(eemlist, 310, 420:435, stat="max"))
+      flags <- flag_missing(eemlist, ex=peaks[[index]]$ex, em=peaks[[index]]$ex, all=FALSE)
+      fresh <- format_index(eemlist, index, vals, flags)
+
+    #get BIX
+      index <- "BIX"
+      vals <- get_ratios(get_fluorescence(eemlist, 310, 380), get_fluorescence(eemlist, 310, 430))
+      flags <- flag_missing(eemlist, ex=peaks[[index]]$ex, em=peaks[[index]]$ex, all=FALSE)
+      BIX <- format_index(eemlist, index, vals, flags)
 
 
-  }
-      eem_flags <- do.call("rbind", lapply(eemlist, function(x){
-        flags <- data.frame(sample_name= x$sample,
-                            index = names(missing_data_eem(peaks,x)),
-                            flag=missing_data_eem(peaks,x))}))
-      eem_index <- plyr::join(eem_index, eem_flags, by=c("sample_name", "index"))
-
-      #move flags to values (replace or add as needed)
-        #DATA_01: missing data, unable to calculate index
-        #DATA_02: missing some data, index may not be accurate
-      eem_index$value[eem_index$flag == "DATA_01"] <- "DATA_01"
-      partial <- eem_index$flag == "DATA_02"
-      partial[is.na(partial)] <- FALSE
-      eem_index$value[partial & is.na(eem_index$value)==F] <-
-        paste0(eem_index$value[partial & is.na(eem_index$value)==F], "_DATA_02")
-
-      eem_index <- eem_index %>% dplyr::select(-any_of("flag")) #remove flag column
+  #merge indices together
+     eem_index <- do.call(rbind, list(coble, coble_ratios, coble_norm, FI, HIX, HIX_ohno, fresh, BIX ))
 
   #absorbance peaks
     #interpolate absorbance data to 1 nm intervals

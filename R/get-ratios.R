@@ -26,6 +26,18 @@ get_ratios <- function(val1, val2){
   if(length(val1) == 1){val1 <- rep(val1, length(val2))}
   if(length(val2) == 1){val2 <- rep(val2, length(val1))}
 
+  #ensure numeric
+    #remove flags if needed
+    val1 <- stringr::str_split_i(val1, "_", i=1)
+    val2 <- stringr::str_split_i(val2, "_", i=1)
+
+    #if flag is a DATA_01, will get "DATA" replace with NA
+    val1[grepl("DATA", val1)] <- NA
+    val2[grepl("DATA", val2)] <- NA
+
+    val1 <- as.numeric(val1)
+    val2 <- as.numeric(val2)
+
   vals <- c()
   for(x in 1:length(val1)){
     if(is.na(val1[x]) | is.na(val2[x])){
