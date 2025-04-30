@@ -394,18 +394,17 @@ eem_normalize <- function(eem, factor=NULL){
 }
 
 # Overload the bracket operator for eemlist subsetting
-`[.eemlist` <- function(eemlist, selector) {
-  stopifnot(.is_eemlist(eemlist))
+`[.eemlist` <- function(eemlist, i) {
   sublist <- NextMethod("[")
-  class(sublist) <- "eemlist"
+  structure(sublist, class = "eemlist")
   return(sublist)
 }
 
 
 # Overload the bracket operator for abslist subsetting
-`[.abslist` <- function(abslist, selector) {
-  stopifnot(.is_abslist(abslist))
+# we want to always return an abslist
+`[.abslist` <- function(abslist, i) {
   sublist <- NextMethod("[")
-  class(sublist) <- "abslist"
+  sturcture(sublist, class = "abslist")
   return(sublist)
 }
