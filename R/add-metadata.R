@@ -58,7 +58,6 @@ add_metadata <- function(meta, x){
     missing_meta <- names[is.na(meta_order)]
     warning("the following data are missing from metadata:\n", paste(missing_meta, collapse="\n"),
             "\nthese sample will be removed from further processing")
-    # Make this a utility function that drops abs or eems from the list
     x <- x[!is.na(meta_order)]
     meta_order <- na.omit(meta_order)
   }

@@ -6,7 +6,7 @@
   #' @noRd
   #' @source This function was directly pulled from \link[staRdom]
   .is_eem <- function(eem) {
-    ifelse(class(eem) == "eem", TRUE, FALSE)
+    ifelse(inherits(eem, "eem"), TRUE, FALSE)
   }
 
   #' Checks if object is an eemlist
@@ -15,7 +15,7 @@
   #' @noRd
   #' @source This function was directly pulled from \link[staRdom]
   .is_eemlist <- function(eem) {
-    ifelse(class(eem) == "eemlist", TRUE, FALSE)
+    ifelse(inherits(eem, "eemlist"), TRUE, FALSE)
   }
 
   #' Checks if sample is a blank
@@ -47,7 +47,7 @@
   #' @noRd
   #' @source This function was modified from \link[staRdom]
   .is_abs <- function(abs) {
-    ifelse(class(abs) == "abs", TRUE, FALSE)
+    ifelse(inherits(abs, "abs"), TRUE, FALSE)
   }
 
   #' Checks if object is an abslist
@@ -56,7 +56,7 @@
   #' @noRd
   #' @source This function was modified from \link[staRdom]
   .is_abslist <- function(abs) {
-    ifelse(class(abs) == "abslist", TRUE, FALSE)
+    ifelse(inherits(abs, "abslist"), TRUE, FALSE)
   }
 
 
@@ -240,7 +240,7 @@
 #' Checks if the eems or absorbance has had metadata added
 #' @noRd
 .meta_added <- function(x){
-  stopifnot(class(x) %in% c("eemlist", "eem", "abs", "abslist"))
+  stopifnot(inherits(x, c("eemlist", "eem", "abs", "abslist")))
 
   if(inherits(x, c("eem","abs"))){
     items <- names(x)
@@ -255,7 +255,7 @@
 #' Checks if the eems or absorbance has blank added
 #' @noRd
 .blk_added <- function(x){
-  stopifnot(class(x) %in% c("eemlist", "eem", "abs", "abslist"))
+  stopifnot(inherits(x, c("eemlist", "eem", "abs", "abslist")))
 
   if(inherits(x, c("eem","abs"))){
     items <- names(x)
@@ -384,10 +384,28 @@ eem_normalize <- function(eem, factor=NULL){
   return(eem1)
 }
 
-# Turn an EEM into a matrix with labeled rows and columns
+
+# TODO? Turn an EEM into a matrix with labeled rows and columns
 .eem_to_matrix <- function(eem) {
 
   #
 
 
+}
+
+# Overload the bracket operator for eemlist subsetting
+`[.eemlist` <- function(eemlist, selector) {
+  stopifnot(.is_eemlist(eemlist))
+  sublist <- NextMethod("[")
+  class(sublist) <- "eemlist"
+  return(sublist)
+}
+
+
+# Overload the bracket operator for abslist subsetting
+`[.abslist` <- function(abslist, selector) {
+  stopifnot(.is_abslist(abslist))
+  sublist <- NextMethod("[")
+  class(sublist) <- "abslist"
+  return(sublist)
 }
