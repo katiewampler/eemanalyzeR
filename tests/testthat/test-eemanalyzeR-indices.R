@@ -6,6 +6,7 @@ test_that("absorbance indices are correct", {
     indices <- eemanalyzeR_indices(eemlist, abslist)
 
     index <- indices$abs_index #get abs indices
+    index$value[grep("DOC|DATA", index$value)] <- NA
     index$value <- as.numeric(index$value) #make numeric, can't do in function because flags
 
   #get stardom values

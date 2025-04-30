@@ -16,7 +16,7 @@ get_absorbance(abs, wl, cuvle = 1, suva = FALSE)
 \item{suva}{logical, if TRUE, returns the specific absorbance}
 }
 \value{
-A vector of absorbance values. If a value cannot be extracted, NA will be returned.
+A vector of absorbance values. If a value cannot be extracted, DOC01 will be returned.
 }
 \description{
 Get the absorbance value with units of \ifelse{html}{\out{cm<sup>-1</sup>}}{\eqn{cm^-1}} at a specified wavelength with the option to

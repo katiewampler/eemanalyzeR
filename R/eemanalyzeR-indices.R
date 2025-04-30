@@ -39,6 +39,7 @@
 eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
 
+ #fluorescence indices
   #define wavelengths for peaks and metrics to check if there are missing wavelengths
     #format: index = list(excitation wavelengths, emission wavelengths)
   peaks <- list(pB = list(ex=270:280, em=300:320),
@@ -67,7 +68,7 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
                 fresh = list(ex=310, em=c(380, 420:435)),
                 BIX = list(ex=310, em=c(380, 430)))
 
-    #Get Coble Peaks and Ratios
+    #get coble peaks and ratios
       coble <- lapply(names(peaks[1:8]), function(index_name){
         index <- peaks[[index_name]]
 
@@ -101,7 +102,7 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
         numerator <- stringr::str_split_i(numerator, "_", i=1)
         denominator <- stringr::str_split_i(denominator, "_", i=1)
 
-        #if flag is a DATA_01, will get "DATA" replace with NA
+        #if flag is a DATA01, will get "DATA" replace with NA
         numerator[numerator == "DATA"] <- NA
         denominator[denominator == "DATA"] <- NA
 
@@ -172,106 +173,74 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
   #merge indices together
      eem_index <- do.call(rbind, list(coble, coble_ratios, coble_norm, FI, HIX, HIX_ohno, fresh, BIX ))
 
-  #absorbance peaks
-    #interpolate absorbance data to 1 nm intervals
-    abs_interp <- lapply(abslist, function(x){
-      abs <- data.frame(x$data)
-      abs_filled <- merge(abs, data.frame(X1=min(abs$X1):max(abs$X1)), all=T)
-      abs_filled <- zoo::na.approx(abs_filled)
-      x$data <- as.matrix(abs_filled)
-      x$n <- nrow(abs_filled)
-      return(x)
-    })
-
-    #specify absorbance wavelengths to check if there's missing data
-      #format: index = wavelengths in metric
-    abs_wl <- list(SUVA254 = 254, SUVA280=280, SVA412 = 412,
-                    S275_295 = 275:295, S350_400=350:400,
-                    SR = c(275:295, 350:400), E2_E3=c(250,365),
+ #absorbance indices
+   #specify wavelengths for flagging missing data
+     abs_wl <- list(SUVA254 = 254,
+                    SUVA280=280,
+                    SVA412 = 412,
+                    S275_295 = 275:295,
+                    S350_400=350:400,
+                    SR = c(275:295, 350:400),
+                    E2_E3=c(250,365),
                     E4_E6=c(465,665))
 
-    #helper functions to get absorbance indices
-    calc_suva <- function(abs){
-      suva_metrics <- sapply(abs_wl[1:3], function(wl){
-        if(.meta_added(abs)){
-          #calc suva values, absorbance/ DOC * 100 (to correct for cuvette length and get in m)
-          abs_val <- unname(abs$data[abs$data[,1] == wl,2]) /abs$doc_mgL *  (100/cuvle)
-        }else{
-          abs_val <- NA
-        }})
-      return(suva_metrics)}
+   #get values at specific wavelengths
+     suva <- lapply(names(abs_wl[1:3]), function(index_name){
+       index <- abs_wl[[index_name]]
 
-    #DATA_04: Spectral slope was unable to be calculated
-    calc_ratios <- function(abs){
-      #get absorption in m^-1 (convert from absorbance to absorption based on Beer's Law)
-      absorption <- abs$data[,2] * log(10) / (cuvle/100) #convert cm cuvette to m
+       #get values
+       vals <- get_absorbance(abslist, wl=index, suva = TRUE)
 
-      S275_295 <- staRdom::abs_fit_slope(abs$data[,1], absorption,
-                                     lim=c(275,295), l_ref=275)$coefficient
-      S350_400 <- staRdom::abs_fit_slope(abs$data[,1], absorption,
-                                     lim=c(350,400), l_ref=350)$coefficient
+       #get flags
+       flags <- flag_missing(abslist, wl=index, all=FALSE)
 
-      #prevent non numeric values
-      if(!is.numeric(S275_295)){S275_295 <- "DATA04"}
-      if(!is.numeric(S350_400)){S350_400 <- "DATA04"}
+       #add sample names and make into data.frame (get index name)
+       res <- format_index(abslist, index_name, vals, flags)
 
-      if(S275_295 == "DATA_04" |S350_400 == "DATA04" ){
-       SR <- "DATA04"}else{
-         SR <- get_ratios(S275_295, S350_400)
-       }
-
-      E2 <-  abs$data[abs$data[,1]==250,2]
-      E3 <- abs$data[abs$data[,1]==365,2]
-      E2_E3 <- get_ratios(E2, E3)
-
-      E4 <-  abs$data[abs$data[,1]==465,2]
-      E6 <- abs$data[abs$data[,1]==665,2]
-      E4_E6 <- get_ratios(E4, E6)
-
-      vals <- unname(c(S275_295, S350_400, SR, E2_E3, E4_E6)) #remove previous names
-      names(vals) <- c("S275_295", "S350_400", "SR", "E2_E3", "E4_E6")
-
-      return(vals)
-  }
-
-    #get all indices
-    abs_index <- do.call("rbind", lapply(abs_interp, function(abs){
-      vals <- c(calc_suva(abs), calc_ratios(abs))
-      name_type <- ifelse(.meta_added(abs), "meta_name", "sample")
-      index <- data.frame(sample_name= get_sample_info(abs, "sample"),
-                          meta_name=get_sample_info(abs, name_type),
-                          index = names(vals),
-                          value = unname(vals))}))
-
-    #add flags for missing wavelengths
-    missing_data_abs <- function(peaks, abs){
-      #get ranges of wavelengths in data
-      range <- min(abs$data[,1]):max(abs$data[,1])
-
-      flags <- sapply(peaks, function(x){
-        #is the range completely contained in ranges?
-        if(all(x %in% range)){
-          return(NA)
-        }else{
-          return("DATA01") #index range not in data, unable to report value
-        }
-      })
-
-      return(flags)
+       #return res
+       return(res)
+     })
+     suva <- do.call(rbind, suva)
 
 
-    }
-    abs_flags <- do.call("rbind", lapply(abslist, function(x){
-      flags <- data.frame(sample_name= x$sample,
-                          index = names(missing_data_abs(abs_wl,x)),
-                          flag=missing_data_abs(abs_wl,x))}))
-    abs_index <- plyr::join(abs_index, abs_flags, by=c("sample_name", "index"))
+   #get spectral slopes
+     index <- "S275_295"
+     vals <- get_abs_slope(abslist, c(275,295))
+     flags <- flag_missing(abslist, wl=abs_wl[[index]])
+     S275_295 <- format_index(abslist, index, vals, flags)
 
-    #move flags to values (replace or add as needed)
-    #DATA_01: missing data, unable to calculate index
-    abs_index$value[abs_index$flag == "DATA_01"] <- "DATA_01"
+     index <- "S350_400"
+     vals <- get_abs_slope(abslist, c(350,400))
+     flags <- flag_missing(abslist, wl=abs_wl[[index]])
+     S350_400 <- format_index(abslist, index, vals, flags)
 
-    abs_index <- abs_index %>% dplyr::select(-any_of("flag")) #remove flag column
+    #get ratios
+       #remove flags if needed
+       numerator <- stringr::str_split_i(S275_295$value, "_", i=1)
+       denominator <- stringr::str_split_i(S350_400$value, "_", i=1)
+
+       #if flag is a DATA04, will get "DATA" replace with NA
+       numerator[numerator == "DATA"] <- NA
+       denominator[denominator == "DATA"] <- NA
+
+       index <- "SR"
+       vals <- get_ratios(numerator, denominator)
+       flags <- flag_missing(abslist, wl=abs_wl[[index]])
+       SR <- format_index(abslist, index, vals, flags)
+
+       index <- "E2_E3"
+       vals <- get_ratios(get_absorbance(abslist, 250), get_absorbance(abslist, 365))
+       flags <- flag_missing(abslist, wl=abs_wl[[index]])
+       E2_E3 <- format_index(abslist, index, vals, flags)
+
+       index <- "E4_E6"
+       vals <- get_ratios(get_absorbance(abslist, 465), get_absorbance(abslist, 665))
+       flags <- flag_missing(abslist, wl=abs_wl[[index]])
+       E4_E6 <- format_index(abslist, index, vals, flags)
+
+
+      abs_index <- do.call(rbind, list(suva, S275_295, S350_400, SR, E2_E3, E4_E6))
+
 
   #return indices
   index <- list(abs_index=abs_index, eem_index = eem_index)

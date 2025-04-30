@@ -85,5 +85,13 @@
 
     expect_warning(indices <- get_indices(eemlist, abslist), "Data has not been processed")
 
-    #indices$eem_index$QAQC_flag
+    #ensuring flags aren't duplicated
+    flags <- stringr::str_split(indices$eem_index$QAQC_flag, "_")
+    duplicated <- sapply(flags, function(x){
+        if(length(unique(x)) != length(x)){
+          return(FALSE)
+        }else{return(TRUE)}})
+
+    expect_true(all(duplicated))
+
   })

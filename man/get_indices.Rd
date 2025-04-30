@@ -58,16 +58,16 @@ Custom functions can also be used to calculate indices, see vignette for more in
 
 The index values will be checked for potential errors prior to reporting and flagged if necessary:
 \itemize{
- \item DATA_01: Missing data required to calculate the index
- \item DATA_02: Missing some wavelengths required to calculate the index, value may be inaccurate
- \item DATA_03: Unable to calculate ratio because denominator was zero
- \item DATA_04: Spectral slope was unable to be calculated
- \item DOC_01: Missing dissolved organic carbon data, so index was not able to be calculated
- \item NEG_01: Value was negative
- \item NOISE_01: Value was below signal to noise ratio and therefore was not calculated
- \item NOISE_02: Value was below signal to noise ratio and may be inaccurate
- \item VAL_01: Value was below expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
- \item VAL_02: Value was above expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
+ \item DATA01: Missing data required to calculate the index
+ \item DATA02: Missing some wavelengths required to calculate the index, value may be inaccurate
+ \item DATA03: Unable to calculate ratio because denominator was zero
+ \item DATA04: Spectral slope was unable to be calculated
+ \item DOC01: Missing dissolved organic carbon data, so index was not able to be calculated
+ \item NEG01: Value was negative
+ \item NOISE01: Value was below signal to noise ratio and therefore was not calculated
+ \item NOISE02: Value was below signal to noise ratio and may be inaccurate
+ \item VAL01: Value was below expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
+ \item VAL02: Value was above expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
 }
 }
 \examples{

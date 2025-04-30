@@ -7,6 +7,6 @@ test_that("errors are returned", {
 
 test_that("correct values are returned", {
   abslist <- add_metadata(metadata, example_absorbance)
-  expect_equal(get_absorbance(abslist, 254), c(0.0005485365, 0.1632153061, 0.0806502356))
-  expect_equal(get_absorbance(abslist, 254, suva=TRUE), c(NA,NA, 4.1572286))
+  expect_equal(get_absorbance(abslist, 254), c("0.00054853647738303", "0.163215306070913","0.0806502356009794"))
+  expect_equal(get_absorbance(abslist, 254, suva=TRUE), c( "DOC01","DOC01" , "4.15722863922574"))
 })

@@ -12,7 +12,7 @@
 #' @param cuvle cuvette (path) length in cm
 #' @param suva logical, if TRUE, returns the specific absorbance
 #'
-#' @return A vector of absorbance values. If a value cannot be extracted, NA will be returned.
+#' @return A vector of absorbance values. If a value cannot be extracted, DOC01 will be returned.
 #' @export
 #'
 #' @examples
@@ -45,6 +45,9 @@ get_absorbance <- function(abs, wl, cuvle=1, suva=FALSE){
     }else{
       abs_val <- "DOC01"
     }}
+
+  #if missing DOC, return code
+  abs_val[is.na(abs_val)] <- "DOC01"
 
   return(abs_val)}
 
