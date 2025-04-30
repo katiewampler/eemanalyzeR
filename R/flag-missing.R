@@ -45,9 +45,9 @@ flag_missing <- function(x, ex=NULL, em = NULL, wl=NULL, all=TRUE){
       if(all(wl %in% range)){
         flag <- NA
       }else if(any(wl %in% range) & all == FALSE){
-        flag <- "DATA_02" #some wavelengths in data, may not be accurate
+        flag <- "DATA02" #some wavelengths in data, may not be accurate
       }else{
-        flag <- "DATA_01" #index range not in data, unable to report value
+        flag <- "DATA01" #index range not in data, unable to report value
       }}
 
 
@@ -61,9 +61,9 @@ flag_missing <- function(x, ex=NULL, em = NULL, wl=NULL, all=TRUE){
       if(all(ex %in% ex_range) & all(em %in% em_range)){
         flag <- NA
       }else if(any(ex %in% ex_range) & any(em %in% em_range) & all == FALSE){
-        flag <- "DATA_02" #entire index range not contained in data
+        flag <- "DATA02" #entire index range not contained in data
       }else{
-        flag <- "DATA_01" #index range not in data, unable to report value
+        flag <- "DATA01" #index range not in data, unable to report value
       }}
 
   return(flag)

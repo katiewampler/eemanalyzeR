@@ -66,9 +66,9 @@ usgs_indices <- function(eemlist, abslist, cuvle=1){
       #DATA_03: Unable to calculate ratio because denominator was zero
       get_ratios <- function(p1, p2){
         if(is.na(p1) | is.na(p2)){
-          return("DATA_01")
+          return("DATA01")
         }else if(p2 == 0){
-          return("DATA_03")
+          return("DATA03")
         }else{
           return(unname(p1 / p2))
         }
@@ -118,9 +118,9 @@ usgs_indices <- function(eemlist, abslist, cuvle=1){
           if(all(x$ex %in% ex_range) & all(x$em %in% em_range)){
             return(NA)
           }else if(any(x$ex %in% ex_range) & any(x$em %in% em_range) & x$all == FALSE){
-            return("DATA_02") #entire index range not contained in data
+            return("DATA02") #entire index range not contained in data
           }else{
-            return("DATA_01") #index range not in data, unable to report value
+            return("DATA01") #index range not in data, unable to report value
           }
         })
 
@@ -137,11 +137,11 @@ usgs_indices <- function(eemlist, abslist, cuvle=1){
     #move flags to values (replace or add as needed)
       #DATA_01: missing data, unable to calculate index
       #DATA_02: missing some data, index may not be accurate
-      eem_index$value[eem_index$flag == "DATA_01"] <- "DATA_01"
-      partial <- eem_index$flag == "DATA_02"
+      eem_index$value[eem_index$flag == "DATA01"] <- "DATA01"
+      partial <- eem_index$flag == "DATA02"
       partial[is.na(partial)] <- FALSE
       eem_index$value[partial & is.na(eem_index$value)==F] <-
-        paste0(eem_index$value[partial & is.na(eem_index$value)==F], "_DATA_02")
+        paste0(eem_index$value[partial & is.na(eem_index$value)==F], "_DATA02")
 
       eem_index <- eem_index %>% dplyr::select(-any_of("flag")) #remove flag column
 
@@ -195,10 +195,10 @@ usgs_indices <- function(eemlist, abslist, cuvle=1){
                                          lim=c(412,600), l_ref=412)$coefficient
 
       #prevent non numeric values
-      if(!is.numeric(S275_295)){S275_295 <- "DATA_04"}
-      if(!is.numeric(S275_295)){S275_295 <- "DATA_04"}
-      if(!is.numeric(S350_400)){S350_400 <- "DATA_04"}
-      if(!is.numeric(S412_600)){S350_400 <- "DATA_04"}
+      if(!is.numeric(S275_295)){S275_295 <- "DATA04"}
+      if(!is.numeric(S275_295)){S275_295 <- "DATA04"}
+      if(!is.numeric(S350_400)){S350_400 <- "DATA04"}
+      if(!is.numeric(S412_600)){S350_400 <- "DATA04"}
 
 
       vals <- unname(c(S275_295,S290_350, S350_400, S412_600)) #remove previous names
@@ -233,7 +233,7 @@ usgs_indices <- function(eemlist, abslist, cuvle=1){
         if(all(x %in% range)){
           return(NA)
         }else{
-          return("DATA_01") #index range not in data, unable to report value
+          return("DATA01") #index range not in data, unable to report value
         }
       })
 
@@ -249,7 +249,7 @@ usgs_indices <- function(eemlist, abslist, cuvle=1){
 
   #move flags to values (replace or add as needed)
     #DATA_01: missing data, unable to calculate index
-    abs_index$value[abs_index$flag == "DATA_01"] <- "DATA_01"
+    abs_index$value[abs_index$flag == "DATA01"] <- "DATA01"
 
     abs_index <- abs_index %>% dplyr::select(-any_of("flag")) #remove flag column
 

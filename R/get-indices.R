@@ -41,16 +41,16 @@
 #'
 #' The index values will be checked for potential errors prior to reporting and flagged if necessary:
 #' \itemize{
-#'  \item DATA_01: Missing data required to calculate the index
-#'  \item DATA_02: Missing some wavelengths required to calculate the index, value may be inaccurate
-#'  \item DATA_03: Unable to calculate ratio because denominator was zero
-#'  \item DATA_04: Spectral slope was unable to be calculated
-#'  \item DOC_01: Missing dissolved organic carbon data, so index was not able to be calculated
-#'  \item NEG_01: Value was negative
-#'  \item NOISE_01: Value was below signal to noise ratio and therefore was not calculated
-#'  \item NOISE_02: Value was below signal to noise ratio and may be inaccurate
-#'  \item VAL_01: Value was below expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
-#'  \item VAL_02: Value was above expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
+#'  \item DATA01: Missing data required to calculate the index
+#'  \item DATA02: Missing some wavelengths required to calculate the index, value may be inaccurate
+#'  \item DATA03: Unable to calculate ratio because denominator was zero
+#'  \item DATA04: Spectral slope was unable to be calculated
+#'  \item DOC01: Missing dissolved organic carbon data, so index was not able to be calculated
+#'  \item NEG01: Value was negative
+#'  \item NOISE01: Value was below signal to noise ratio and therefore was not calculated
+#'  \item NOISE02: Value was below signal to noise ratio and may be inaccurate
+#'  \item VAL01: Value was below expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
+#'  \item VAL02: Value was above expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
 #' }
 #' @examples
 #' abslist <- add_metadata(metadata, example_absorbance)
@@ -93,7 +93,7 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
         #if index is NA, return NA
         if(!is.data.frame(index)){return(index)}
         doc_flag <- grepl("SUVA|SVA|DOC", index$index) & is.na(index$value) & is.na(index$QAQC_flag)
-        index$QAQC_flag[doc_flag] <- "DOC_01"
+        index$QAQC_flag[doc_flag] <- "DOC01"
         return(index)
       }
       negative_flag <- function(index){
@@ -101,7 +101,7 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
         if(!is.data.frame(index)){return(index)}
         negative <- index$value < 0
         negative[is.na(negative)] <- FALSE
-        index$QAQC_flag[negative] <- "NEG_01"
+        index$QAQC_flag[negative] <- "NEG01"
         index$value[negative] <- NA
         return(index)
       }
@@ -134,11 +134,11 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
         index <- plyr::join(index, eemanalyzeR::indice_ranges, by="index")
         low <- as.numeric(index$value) < index$low_val
         low[is.na(low)] <- FALSE
-        index$QAQC_flag[low] <- "VAL_01"
+        index$QAQC_flag[low] <- "VAL01"
 
         high <- as.numeric(index$value) > index$high_val
         high[is.na(high)] <- FALSE
-        index$QAQC_flag[high] <- "VAL_02"
+        index$QAQC_flag[high] <- "VAL02"
 
         index <- index %>% dplyr::select(-any_of(c("low_val", "high_val", "sources")))
 

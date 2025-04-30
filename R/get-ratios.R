@@ -31,7 +31,7 @@ get_ratios <- function(val1, val2){
     val1 <- stringr::str_split_i(val1, "_", i=1)
     val2 <- stringr::str_split_i(val2, "_", i=1)
 
-    #if flag is a DATA_01, will get "DATA" replace with NA
+    #if flag is a DATA01, will get "DATA" replace with NA
     val1[grepl("DATA", val1)] <- NA
     val2[grepl("DATA", val2)] <- NA
 
@@ -41,9 +41,9 @@ get_ratios <- function(val1, val2){
   vals <- c()
   for(x in 1:length(val1)){
     if(is.na(val1[x]) | is.na(val2[x])){
-      val <- "DATA_01"
+      val <- "DATA01"
     }else if(val2[x] == 0){
-      val <- "DATA_03"
+      val <- "DATA03"
     }else{
       val <- unname(val1[x] / val2[x])
     }

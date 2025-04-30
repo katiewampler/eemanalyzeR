@@ -43,7 +43,7 @@ get_absorbance <- function(abs, wl, cuvle=1, suva=FALSE){
     if(.meta_added(abs)){
       abs_val <- abs_val /abs$doc_mgL * 100
     }else{
-      abs_val <- "DOC_01"
+      abs_val <- "DOC01"
     }}
 
   return(abs_val)}

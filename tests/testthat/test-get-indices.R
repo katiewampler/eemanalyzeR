@@ -9,7 +9,6 @@
 
           })
 
-
   test_that("removing doc normalized data works", {
     abslist <- add_metadata(metadata, example_absorbance)
     eemlist <- add_metadata(metadata, example_eems)
@@ -56,6 +55,13 @@
     expect_true(all(apply(indices$abs_index, 1, class) == "character"))
     expect_true(all(apply(indices$eem_index, 1, class) == "character"))
 
+    expect_length(unique(indices$eem_index$meta_name), 3)
+    expect_length(unique(indices$abs_index$meta_name), 3)
+
+    expect_length(unique(indices$abs_index$sample_name), 3)
+    expect_length(unique(indices$eem_index$sample_name), 6)
+
+
   })
 
   test_that("NA index doesn't break anything",{
@@ -65,8 +71,6 @@
     expect_no_error(expect_warning(get_indices(example_eems, example_absorbance, index_method=return_NA)))
   })
 
-
-
   test_that("warning is returned if some steps are done",{
     eemlist <- add_metadata(metadata, example_eems)
     eemlist <- raman_normalize(eemlist)
@@ -74,3 +78,12 @@
     expect_warning(get_indices(eemlist, example_absorbance), "Data has not been fully processed")
   })
 
+  test_that("flags are correct", {
+    abslist <- add_metadata(metadata, example_absorbance)
+    eemlist <- add_metadata(metadata, example_eems)
+    eemlist <- eemR::eem_cut(eemlist, ex=500:900, em=500:900, exact=F) #cut down so there's missing wavelengths
+
+    expect_warning(indices <- get_indices(eemlist, abslist), "Data has not been processed")
+
+    #indices$eem_index$QAQC_flag
+  })

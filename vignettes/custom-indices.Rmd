@@ -78,11 +78,11 @@ While the [get_indices](../html/get-indices.html) function includes some QA/QC c
 
 There are a few rules to follow with flags:
 
-1.  Flags should have the form text\_## (DOC_01, DATA_04, etc.)
+1.  Flags should have the form text## (DOC01, DATA04, etc.)
 
 2.  If an index value is NA and you want to flag with a reason why it is NA, replace the NA value with that flag value.
 
-3.  If you wish to report a value, but still include a flag, report the value in the form: value_flag (0.042_DATA_01, 43.1_DOC_01, etc.)
+3.  If you wish to report a value, but still include a flag, report the value in the form: value_flag (0.042_DATA01, 43.1_DOC01, etc.)
 
 ### Helper Functions
 

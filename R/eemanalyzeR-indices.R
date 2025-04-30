@@ -212,11 +212,11 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
                                      lim=c(350,400), l_ref=350)$coefficient
 
       #prevent non numeric values
-      if(!is.numeric(S275_295)){S275_295 <- "DATA_04"}
-      if(!is.numeric(S350_400)){S350_400 <- "DATA_04"}
+      if(!is.numeric(S275_295)){S275_295 <- "DATA04"}
+      if(!is.numeric(S350_400)){S350_400 <- "DATA04"}
 
-      if(S275_295 == "DATA_04" |S350_400 == "DATA_04" ){
-       SR <- "DATA_04"}else{
+      if(S275_295 == "DATA_04" |S350_400 == "DATA04" ){
+       SR <- "DATA04"}else{
          SR <- get_ratios(S275_295, S350_400)
        }
 
@@ -253,7 +253,7 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
         if(all(x %in% range)){
           return(NA)
         }else{
-          return("DATA_01") #index range not in data, unable to report value
+          return("DATA01") #index range not in data, unable to report value
         }
       })
 

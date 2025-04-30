@@ -33,6 +33,6 @@ test_that("flags are carried over", {
   flags <- flag_missing(example_eems, ex=ex, em=em, all=FALSE)
   index <- format_index(example_eems, "test_index", vals, flags)
 
-  expect_true(all(grepl("DATA_02",index$value)))
+  expect_true(all(grepl("DATA02",index$value)))
 
 })

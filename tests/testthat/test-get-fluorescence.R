@@ -14,5 +14,5 @@ test_that("correct values are returned", {
   expect_equal(as.numeric(get_fluorescence(example_eems, ex=250:260, em=380:480, stat="sum")),
                c(148781.0,293416.9,148781.0,1786567.5,148781.0,2490878.2), tolerance=1e-2)
 
-  expect_equal(get_fluorescence(example_eems, ex=100, em=100), rep("DATA_01", 6))
+  expect_equal(get_fluorescence(example_eems, ex=100, em=100), rep("DATA01", 6))
 })

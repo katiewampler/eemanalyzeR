@@ -37,7 +37,7 @@ get_fluorescence <- function(eem, ex, em, stat="max", norm=FALSE){
 
   #see if it can be calculated
   if(all(is.na(int_res))){
-    res <- "DATA_01"
+    res <- "DATA01"
   }else if(stat == "max"){
     res <- max(int_res, na.rm=TRUE)
   }else if(stat == "sum"){
@@ -46,16 +46,16 @@ get_fluorescence <- function(eem, ex, em, stat="max", norm=FALSE){
 
   #normalize by DOC if requested
   if(norm){
-    if(res == "DATA_01"){
-      res <- "DATA_01"
+    if(res == "DATA01"){
+      res <- "DATA01"
     }else if(.meta_added(eem)){
       res <- res / eem$doc_mgL
     }else{
-      res <- "DOC_01"
+      res <- "DOC01"
     }}
 
   #if missing DOC, return code
-  res[is.na(res)] <- "DOC_01"
+  res[is.na(res)] <- "DOC01"
 
   return(res)
 }
