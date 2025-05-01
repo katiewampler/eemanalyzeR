@@ -33,9 +33,11 @@
 #' eem_augment <- add_metadata(metadata, example_eems)
 
 add_metadata <- function(meta, x){
-  stopifnot("data.frame" %in% class(meta), class(x) %in% c("abslist", "eemlist"))
 
   class_type <- class(x)
+
+  stopifnot("data.frame" %in% class(meta), class_type %in% c("abslist", "eemlist"))
+
   names <- get_sample_info(x, "sample")
 
   # Reorganize EEMlist or ABSlist to match metadata ----
@@ -71,24 +73,42 @@ add_metadata <- function(meta, x){
   }
 
   # Guess is_blank and is_check if they aren't specified
-  # Also make sure all sample names with BEM are considered "blanks"
-  # TODO - check with Katie that this is what we want to do
-  blank_pattern <- "BEM"
-  blank_flags <- sapply(get_sample_info(x, "sample"),
-                        \(s) grepl(
-                          pattern = blank_pattern,
-                          x = s,
-                          ignore.case = TRUE
-                        ))
 
-  check_pattern <- "tea"
-  check_flags <- sapply(get_sample_info(x, "sample"),
-                        \(s) grepl(
-                          pattern = check_pattern,
-                          x = s,
-                          ignore.case = TRUE
-                        ))
+  # Below works for absorbance data but not EEMs
+  # TODO Pattern match the sample names with both BLK and BEM
+  if (!("is_blank" %in% names(meta))) {
+    blank_pattern <- "BEM"
+    warning("Guessed Blank samples by pattern matching data_identifier using: ", blank_pattern)
+    blank_flags <- sapply(names,
+                          \(s) grepl(
+                            pattern = blank_pattern,
+                            x = s,
+                            ignore.case = TRUE
+                          ),
+                          USE.NAMES = FALSE)
+    #meta$is_blank <- blank_flags
+  } else {
 
+
+  }
+
+  if (!("is_check" %in% names(meta))) {
+    check_pattern <- "tea"
+    warning("Guessed Check samples by pattern matching data_identifier using: ", check_pattern)
+    check_flags <- sapply(names,
+                          \(s) grepl(
+                            pattern = check_pattern,
+                            x = s,
+                            ignore.case = TRUE
+                          ),
+                          USE.NAMES = FALSE)
+  } else {
+
+
+
+  }
+
+  browser()
 
   # Add metadata info to object ----
   # Get data from metadata, keeping as numeric/character
@@ -98,8 +118,8 @@ add_metadata <- function(meta, x){
     dilution = meta$dilution[meta_order],
     integration_time_s = meta$integration_time_s[meta_order],
     raman_area_1s = meta$RSU_area_1s[meta_order],
-    is_blank = meta$is_blank[meta_order],
-    is_check = meta$is_check[meta_order],
+    is_blank = blank_flags[meta_order],
+    is_check = check_flags[meta_order],
 
     #Optional
     analysis_date = if("analysis_date" %in% colnames(meta)) meta$analysis_date[meta_order] else NA,
@@ -108,6 +128,7 @@ add_metadata <- function(meta, x){
     notes = if("Notes" %in% colnames(meta)) meta$Notes[meta_order] else NA
   )
 
+  browser()
   # Loop across the metadata ----
   x <- lapply(1:length(meta_order), function(y) {
     obj <- x[[y]]
@@ -128,7 +149,7 @@ add_metadata <- function(meta, x){
     obj$notes <- meta_data$notes[y]
 
     # Assign attributes in metadata
-    attr(obj, "is_blank") <- meta_data$is_blank[y] || blank_flags[y]
+    attr(obj, "is_blank") <- meta_data$is_blank[y]
     attr(obj, "is_check") <- meta_data$is_check[y]
 
 
@@ -138,17 +159,16 @@ add_metadata <- function(meta, x){
   #reorder to metadata
   x <- x[order(meta_order)]
 
-  # ensure object returned is same type as input
-  if(class_type == "abslist"){
-    class(x) <- "abslist"
-    stopifnot(.is_abslist(x))
-  }
+# ensure object returned is same type as input
+if(class_type == "abslist"){
+  class(x) <- "abslist"
+  stopifnot(.is_abslist(x))
+}
 
-  if(class_type == "eemlist"){
-    class(x) <- "eemlist"
-    stopifnot(.is_eemlist(x))
-  }
-
+if(class_type == "eemlist"){
+  class(x) <- "eemlist"
+  stopifnot(.is_eemlist(x))
+}
 
   return(x)
 }
