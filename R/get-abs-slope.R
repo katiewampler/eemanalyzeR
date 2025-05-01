@@ -12,7 +12,7 @@
 #' @examples
 #' S275_295 <- get_abs_slope(example_absorbance, lim=c(275,295))
 get_abs_slope <- function(abs, lim, cuvle=1){
-  stopifnot(.is_abs(abs) | .is_abslist(abs), is.numeric(cuvle), all(is.numeric(lim)))
+  stopifnot(.is_abs(abs) | .is_abslist(abs), is.numeric(cuvle), all(is.numeric(lim)), length(lim) ==2)
 
   if(.is_abslist(abs)){
     res <- sapply(abs, get_abs_slope, lim, cuvle)

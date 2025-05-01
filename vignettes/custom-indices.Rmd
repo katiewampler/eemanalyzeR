@@ -72,6 +72,12 @@ pD <- get_fluorescence(example_eems, ex=390, em=509, stat="max")
 pA_sum <- get_fluorescence(example_eems, ex=250:260, em=380:480, stat="sum")
 ```
 
+Lastly, we have a function for getting spectral slopes: [get_abs_slope](../html/get-abs-slope.html) which will convert the absorbance to absorption, interpolate the data if needed, and return the spectral slope within a wavelength range. 
+```{r}
+S275_295 <- get_abs_slope(example_absorbance, lim=c(275,295))
+
+```
+
 ## QA/QC Flags
 
 While the [get_indices](../html/get-indices.html) function includes some QA/QC checks (negative numbers, missing values, below noise, outside expected range, etc.), there are some checks that are easier to do when calculating the indices, or you may wish to include custom flags or checks. To pass flags from your index function to the output, they need to get put in the `value` column of the index data.frames.
