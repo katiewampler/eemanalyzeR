@@ -192,7 +192,7 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
        vals <- get_absorbance(abslist, wl=index, suva = TRUE)
 
        #get flags
-       flags <- flag_missing(abslist, wl=index, all=FALSE)
+       flags <- flag_missing(abslist, wl=index)
 
        #add sample names and make into data.frame (get index name)
        res <- format_index(abslist, index_name, vals, flags)

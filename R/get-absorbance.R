@@ -38,13 +38,18 @@ get_absorbance <- function(abs, wl, cuvle=1, suva=FALSE){
   #extract absorbance
   abs_val <- unname(abs$data[abs$data[,1] == wl,2]) *  (1/cuvle)
 
-  #get specific absorbance if needed
-  if(suva){
-    if(.meta_added(abs)){
-      abs_val <- abs_val /abs$doc_mgL * 100
-    }else{
-      abs_val <- "DOC01"
-    }}
+  #flag is not found
+  if(length(abs_val) == 0){
+    abs_val <- "DATA01"
+  }else{
+    #get specific absorbance if needed
+    if(suva){
+      if(.meta_added(abs)){
+        abs_val <- abs_val /abs$doc_mgL * 100
+      }else{
+        abs_val <- "DOC01"
+      }}
+  }
 
   #if missing DOC, return code
   abs_val[is.na(abs_val)] <- "DOC01"
