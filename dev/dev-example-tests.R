@@ -24,7 +24,15 @@
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-  #example 2: Hohner-Lab-2025-01-08
+      indices <- get_indices(eems, abs, return="wide", index_method = "usgs")
+      abs_index <- indices$abs_index
+      eem_index <- indices$eem_index
+
+      indices <- get_indices(eems, abs, return="wide", index_method = "eemR")
+      abs_index <- indices$abs_index
+      eem_index <- indices$eem_index
+
+    #example 2: Hohner-Lab-2025-01-08
     input_dir <- here("dev/dev-examples/Hohner-Lab-2025-01-08")
     abs <- abs_dir_read(input_dir)
     eems <- eem_dir_read(input_dir)
@@ -38,6 +46,14 @@
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
       plot_eem(eems, remove_lower = T)
       indices <- get_indices(eems, abs, return="wide")
+      abs_index <- indices$abs_index
+      eem_index <- indices$eem_index
+
+      indices <- get_indices(eems, abs, return="wide", index_method = "usgs")
+      abs_index <- indices$abs_index
+      eem_index <- indices$eem_index
+
+      indices <- get_indices(eems, abs, return="wide", index_method = "eemR")
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
@@ -59,6 +75,14 @@
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
+      indices <- get_indices(eems, abs, return="wide", index_method = "usgs")
+      abs_index <- indices$abs_index
+      eem_index <- indices$eem_index
+
+      indices <- get_indices(eems, abs, return="wide", index_method = "eemR")
+      abs_index <- indices$abs_index
+      eem_index <- indices$eem_index
+
   #example 4: Vick-Majors-Lab-2024-11-04
     input_dir <- here("dev/dev-examples/Vick-Majors-Lab-2024-11-04")
     abs <- abs_dir_read(input_dir)
@@ -72,6 +96,14 @@
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
       plot_eem(eems, remove_lower = T)
       indices <- get_indices(eems, abs, return="wide")
+      abs_index <- indices$abs_index
+      eem_index <- indices$eem_index
+
+      indices <- get_indices(eems, abs, return="wide", index_method = "usgs")
+      abs_index <- indices$abs_index
+      eem_index <- indices$eem_index
+
+      indices <- get_indices(eems, abs, return="wide", index_method = "eemR")
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
@@ -91,6 +123,14 @@
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
+      indices <- get_indices(eems, abs, return="wide", index_method = "usgs")
+      abs_index <- indices$abs_index
+      eem_index <- indices$eem_index
+
+      indices <- get_indices(eems, abs, return="wide", index_method = "eemR")
+      abs_index <- indices$abs_index
+      eem_index <- indices$eem_index
+
   #example 6: Bladon-Lab-2024-08-22
     input_dir <- here("dev/dev-examples/Bladon-Lab-2024-08-22")
     abs <- abs_dir_read(input_dir)
@@ -107,6 +147,14 @@
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
+      indices <- get_indices(eems, abs, return="wide", index_method = "usgs")
+      abs_index <- indices$abs_index
+      eem_index <- indices$eem_index
+
+      indices <- get_indices(eems, abs, return="wide", index_method = "eemR")
+      abs_index <- indices$abs_index
+      eem_index <- indices$eem_index
+
   #example 7: Bladon-Lab-2024-11-01
     input_dir <- here("dev/dev-examples/Bladon-Lab-2024-11-01")
     abs <- abs_dir_read(input_dir)
@@ -120,6 +168,14 @@
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
       plot_eem(eems, remove_lower = T)
       indices <- get_indices(eems, abs, return = "wide")
+      abs_index <- indices$abs_index
+      eem_index <- indices$eem_index
+
+      indices <- get_indices(eems, abs, return="wide", index_method = "usgs")
+      abs_index <- indices$abs_index
+      eem_index <- indices$eem_index
+
+      indices <- get_indices(eems, abs, return="wide", index_method = "eemR")
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
