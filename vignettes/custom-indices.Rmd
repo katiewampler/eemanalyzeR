@@ -264,7 +264,7 @@ chen2003 <- function(eemlist, abslist, cuvle=1){
 
 Now let's test our custom function with the [get_indices](../html/get-indices.html) function. Note that we get a warning about the indices because the EEMs data hasn't gone through any processing steps. 
 ```{r}
-indices <- get_indices(example_eems, example_absorbance, index_method = chen2003, return="wide")
+indices <- get_indices(example_eems, example_absorbance, index_method = chen2003, return = "wide")
 
 indices$eem_index
 ```

@@ -5,6 +5,8 @@
 #'
 #' @importFrom eemR eem_coble_peaks eem_fluorescence_index eem_humification_index eem_biological_index
 #' @importFrom staRdom abs_parms
+#' @importFrom purrr list_transpose
+#'
 #' @param eemlist an \code{eemlist} object containing EEM's data. See details for more info.
 #' @param abslist an \code{abslist} object containing absorbance data.
 #' @param cuvle cuvette (path) length in cm
@@ -46,128 +48,80 @@ eemR_indices <- function(eemlist, abslist, cuvle=1){
 
   #get fluoresence peaks
     #define wavelengths for peaks and metrics to check if there are missing wavelengths
-    #format: index = list(excitation wavelengths, emission wavelengths, do all wavelengths need to exist to return value?)
-    peaks <- list(b = list(ex=275, em=310, all=TRUE),
-                  t = list(ex=275, em=340, all=TRUE),
-                  a = list(ex=260, em=380:460, all=TRUE),
-                  m = list(ex=312, em=380:420, all=TRUE),
-                  c = list(ex=350, em=420:480, all=TRUE),
-                  fi = list(ex=370, em=c(450, 500), all=TRUE),
-                  hix = list(ex=254, em=c(300:345,435:480), all=TRUE),
-                  hix_scaled = list(ex=254, em=c(300:345,435:480), all=TRUE),
-                  bix = list(ex=310, em=c(380, 430), all=TRUE))
+    #format: index = list(excitation wavelengths, emission wavelengths)
+    peaks <- list(b = list(ex=275, em=310),
+                  t = list(ex=275, em=340),
+                  a = list(ex=260, em=380:460),
+                  m = list(ex=312, em=380:420),
+                  c = list(ex=350, em=420:480),
+                  fi = list(ex=370, em=c(450, 500)),
+                  hix = list(ex=254, em=c(300:345,435:480)),
+                  hix_scaled = list(ex=254, em=c(300:345,435:480)),
+                  bix = list(ex=310, em=c(380, 430)))
 
     #get metrics using eemR functions
     #get fluorescence indices
-    eem_index <- do.call("rbind", lapply(eemlist, function(eem){
-      suppressWarnings(vals <- c(eemR::eem_coble_peaks(eem)[-1],
-                eemR::eem_fluorescence_index(eem)[2],
-                eemR::eem_humification_index(eem, scale=FALSE)[2],
-                hix_scaled = unname(eemR::eem_humification_index(eem, scale=TRUE)[2]),
-                eemR::eem_biological_index(eem)[2]))
-      name_type <- ifelse(.meta_added(eem), "meta_name", "sample")
-      index <- data.frame(sample_name= get_sample_info(eem, "sample"),
-                          meta_name=get_sample_info(eem, name_type),
-                          index = names(vals),
-                          value = unlist(unname(vals)))}))
+      eem_index <- lapply(eemlist, function(eem){
+        suppressWarnings(vals <- c(eemR::eem_coble_peaks(eem)[-1],
+                  eemR::eem_fluorescence_index(eem)[2],
+                  eemR::eem_humification_index(eem, scale=FALSE)[2],
+                  hix_scaled = unname(eemR::eem_humification_index(eem, scale=TRUE)[2]),
+                  eemR::eem_biological_index(eem)[2]))})
+      eem_index <- purrr::list_transpose(eem_index) #convert to better output
 
-    #add flags for missing data
-    missing_data_eem <- function(peaks, eem){
-      #get ranges of wavelengths in data
-      ex_range <- min(eem$ex):max(eem$ex)
-      em_range <- ceiling(min(eem$em)):floor(max(eem$em)) #round because they're usually not integers
-      flags <- sapply(peaks, function(x){
-        #is the range completely contained in ranges?
-        if(all(x$ex %in% ex_range) & all(x$em %in% em_range)){
-          return(NA)
-        }else if(any(x$ex %in% ex_range) & any(x$em %in% em_range) & x$all == FALSE){
-          return("DATA_02") #entire index range not contained in data
-        }else{
-          return("DATA_01") #index range not in data, unable to report value
-        }
+      #flag and format
+      eem_index <- lapply(names(peaks), function(index_name){
+        index <- peaks[[index_name]]
+
+        #get values
+        vals <- eem_index[[index_name]]
+
+        #get flags
+        flags <- flag_missing(eemlist, ex=index$ex, em=index$em, all=FALSE)
+
+        #add sample names and make into data.frame (get index name)
+        res <- format_index(eemlist, index_name, vals, flags)
+
+        #return res
+        return(res)
       })
-
-      return(flags)
-
-
-    }
-    eem_flags <- do.call("rbind", lapply(eemlist, function(x){
-      flags <- data.frame(sample_name= x$sample,
-                          index = names(missing_data_eem(peaks,x)),
-                          flag=missing_data_eem(peaks,x))}))
-    eem_index <- plyr::join(eem_index, eem_flags, by=c("sample_name", "index"))
-
-    #move flags to values (replace or add as needed)
-    #DATA_01: missing data, unable to calculate index
-    #DATA_02: missing some data, index may not be accurate
-    eem_index$value[eem_index$flag == "DATA_01"] <- "DATA_01"
-    partial <- eem_index$flag == "DATA_02"
-    partial[is.na(partial)] <- FALSE
-    eem_index$value[partial & is.na(eem_index$value)==F] <-
-      paste0(eem_index$value[partial & is.na(eem_index$value)==F], "_DATA_02")
-
-    eem_index <- eem_index %>% dplyr::select(-any_of("flag")) #remove flag column
+      eem_index <- do.call(rbind, eem_index)
 
   #absorbance peaks
+    abslist <- abs_interp(abslist)
     raw_abs <- get_sample_info(abslist, "data")
-    abs_index <- staRdom::abs_parms(raw_abs, cuvle=1, unit = "absorbance", cores=1)
-    abs_names <- do.call("rbind", lapply(abslist, function(abs){
-      name_type <- ifelse(.meta_added(abs), "meta_name", "sample")
-      index <- data.frame(sample_name= get_sample_info(abs, "sample"),
-                          meta_name=get_sample_info(abs, name_type))
-    }))
-    abs_index <- cbind(abs_names, abs_index[,-1])
-
-    #add flags for SR and slopes
-    abs_index$S275_295[is.na(abs_index$S275_295)] <- "DATA_04"
-    abs_index$S350_400[is.na(abs_index$S350_400)] <- "DATA_04"
-    abs_index$SR[is.na(abs_index$SR)] <- "DATA_04"
-
-    #make long
-    abs_index[] <- lapply(abs_index, as.character)
-
-    abs_index <- abs_index %>% tidyr::pivot_longer(cols = 3:10, names_to = "index", values_to = "value")
-
+    abs_vals <- staRdom::abs_parms(raw_abs, cuvle=1, unit = "absorbance", cores=1)
+    abs_vals$SR[is.infinite(abs_vals$SR) | is.na(abs_vals$SR)] <- "DATA04"
+    abs_vals <- as.list(abs_vals[,-1])
 
     #specify absorbance wavelengths to check if there's missing data
     #format: index = wavelengths in metric
-    abs_wl <- list(a254 = 254, a300=300, E2_E3=c(250,365),
+    abs_wl <- list(a254 = 254,
+                   a300=300,
+                   E2_E3=c(250,365),
                    E4_E6=c(465,665),
-                   S275_295 = 275:295, S350_400=350:400,
+                   S275_295 = 275:295,
+                   S350_400=350:400,
                    S300_700 = 300:700,
                    SR = c(275:295, 350:400))
 
-    #add flags for missing wavelengths
-    missing_data_abs <- function(peaks, abs){
-      #get ranges of wavelengths in data
-      range <- min(abs$data[,1]):max(abs$data[,1])
+    abs_index <- lapply(names(abs_wl), function(index_name){
+      index <- abs_wl[[index_name]]
 
-      flags <- sapply(peaks, function(x){
-        #is the range completely contained in ranges?
-        if(all(x %in% range)){
-          return(NA)
-        }else{
-          return("DATA_01") #index range not in data, unable to report value
-        }
-      })
+      #get values
+      vals <- abs_vals[[index_name]]
 
-      return(flags)
+      #get flags
+      flags <- flag_missing(abslist, wl=index)
 
+      #add sample names and make into data.frame (get index name)
+      res <- format_index(abslist, index_name, vals, flags)
 
-    }
-    abs_flags <- do.call("rbind", lapply(abslist, function(x){
-      flags <- data.frame(sample_name= x$sample,
-                          index = names(missing_data_abs(abs_wl,x)),
-                          flag=missing_data_abs(abs_wl,x))}))
-    abs_index <- plyr::join(abs_index, abs_flags, by=c("sample_name", "index"))
+      #return res
+      return(res)
+    })
+    abs_index <- do.call(rbind, abs_index)
 
-
-
-    #move flags to values (replace or add as needed)
-    #DATA_01: missing data, unable to calculate index
-    abs_index$value[abs_index$flag == "DATA_01"] <- "DATA_01"
-
-    abs_index <- abs_index %>% dplyr::select(-any_of("flag")) #remove flag column
 
   #return indices
     index <- list(abs_index=abs_index, eem_index = eem_index)

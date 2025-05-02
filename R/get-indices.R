@@ -157,7 +157,11 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
       indices <- lapply(indices, missing_doc_flag)
 
     #questionable, outside normal range
-      indices <- lapply(indices, outside_range)
+      if(is.character(index_method) && index_method == "eemanalyzeR"){
+        indices <- lapply(indices, outside_range)
+
+      }
+
 
   #make indices numeric
    indices <- lapply(indices, function(x){

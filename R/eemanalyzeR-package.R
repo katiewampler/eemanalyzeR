@@ -25,6 +25,7 @@
 #' @importFrom plyr round_any
 #' @importFrom pracma interp2
 #' @importFrom purrr discard
+#' @importFrom purrr list_transpose
 #' @importFrom readxl read_excel
 #' @importFrom rlang .data
 #' @importFrom rlang is_interactive
