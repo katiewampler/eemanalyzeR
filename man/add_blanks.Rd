@@ -41,6 +41,6 @@ Adding the blanks into the sample data can be done two ways:
 }
 \examples{
 eemlist <- add_metadata(metadata, example_eems)
-augment_eemlist <- add_blanks(eemlist)
+augment_eemlist <- add_blanks(eemlist, validate=FALSE)
 
 }

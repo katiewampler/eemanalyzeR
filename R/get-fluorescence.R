@@ -21,6 +21,7 @@
 #' eemlist <- add_metadata(metadata, example_eems)
 #' pA_docnorm <- get_fluorescence(eemlist, ex=250:260, em=380:480, norm=TRUE)
 #'
+#'
 get_fluorescence <- function(eem, ex, em, stat="max", norm=FALSE){
   stopifnot(.is_eem(eem) | .is_eemlist(eem), is.numeric(ex), is.numeric(em), stat %in% c("max","sum"), is.logical(norm))
 
@@ -46,8 +47,8 @@ get_fluorescence <- function(eem, ex, em, stat="max", norm=FALSE){
 
   #normalize by DOC if requested
   if(norm){
-    if(res == "DATA01"){
-      res <- "DATA01"
+    if(res == "DATA01"|res =="NOISE01"){
+      res <- res
     }else if(.meta_added(eem)){
       res <- res / eem$doc_mgL
     }else{

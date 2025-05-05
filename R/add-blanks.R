@@ -31,7 +31,7 @@
 #' @importFrom staRdom ggeem
 #' @examples
 #' eemlist <- add_metadata(metadata, example_eems)
-#' augment_eemlist <- add_blanks(eemlist)
+#' augment_eemlist <- add_blanks(eemlist, validate=FALSE)
 #'
 
 add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$", validate=TRUE){

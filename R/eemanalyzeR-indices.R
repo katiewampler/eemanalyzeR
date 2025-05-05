@@ -75,6 +75,9 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
         #get values
         vals <- get_fluorescence(eemlist, index$ex, index$em, stat = "max")
 
+        #check if below SNR
+
+
         #get flags
         flags <- flag_missing(eemlist, ex=index$ex, em=index$em, all=FALSE)
 
