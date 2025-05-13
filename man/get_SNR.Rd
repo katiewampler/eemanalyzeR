@@ -2,7 +2,7 @@
 % Please edit documentation in R/get-SNR.R
 \name{get_SNR}
 \alias{get_SNR}
-\title{Title}
+\title{Get Signal to Noise Ratio for EEMs}
 \usage{
 get_SNR(eem, method = "sqrt")
 }
@@ -16,7 +16,7 @@ get_SNR(eem, method = "sqrt")
 a vector of signal to noise ratios for each sample in the \code{eem} or \code{eemlist}
 }
 \description{
-Title
+Get Signal to Noise Ratio for EEMs
 }
 \examples{
 eemlist <- add_metadata(metadata, example_eems)

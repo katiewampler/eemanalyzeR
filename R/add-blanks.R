@@ -76,6 +76,8 @@ add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$", validate=T
     }
     eem$blk_file <- eem_blk$file
     eem$blk_x <- eem_blk$x
+    rownames(eem$blk_x) <- eem_blk$em
+    colnames(eem$blk_x) <- eem_blk$ex
     class(eem) <- "eem"
     return(eem)
   }

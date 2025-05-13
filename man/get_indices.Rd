@@ -65,7 +65,7 @@ The index values will be checked for potential errors prior to reporting and fla
  \item DOC01: Missing dissolved organic carbon data, so index was not able to be calculated
  \item NEG01: Value was negative
  \item NOISE01: Value was below signal to noise ratio and therefore was not calculated
- \item NOISE02: Value was below signal to noise ratio and may be inaccurate
+ \item NOISE02: Value was not able to be checked for signal to noise ratio
  \item VAL01: Value was below expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
  \item VAL02: Value was above expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
 }

@@ -33,20 +33,25 @@ calc_raman_SNR_sqrt <- function(eem) {
 
   # Calculate the signal at specific points
   if(.is_blank(eem)){
-    S397 <- as.numeric(get_fluorescence(eem, ex=350, em=397))
-    S450 <- as.numeric(get_fluorescence(eem, ex=350, em=450))
-  }else{
-    #to allow using get_fluorescence, make "blank" where x is replaced with blk_x
-    eem_blk <- eem
-    eem_blk$x <- get_sample_info(eem, "blk_x")
 
-    S397 <- as.numeric(get_fluorescence(eem_blk, ex=350, em=397))
-    S450 <- as.numeric(get_fluorescence(eem_blk, ex=350, em=450))
+    #interpolate to get value at that exact pair
+    S397 <- pracma::interp2(eem$ex, eem$em, eem$x, 350, 397)
+    S450 <- pracma::interp2(eem$ex, eem$em, eem$x, 350, 450)
+  }else{
+    ex <- as.numeric(colnames(eem$blk_x))
+    em <- as.numeric(rownames(eem$blk_x))
+    S397 <- pracma::interp2(ex, em, eem$blk_x, 350, 397)
+    S450 <- pracma::interp2(ex, em, eem$blk_x, 350, 450)
   }
 
 
   # Calc Signal-to-noise ratio
   SNR <- ( S397 - S450 ) / sqrt(S450)
+
+  #raman normalize if needed
+  if(attr(eem, "is_raman_normalized")){
+    SNR <- SNR / (eem$raman_area_1s * eem$integration_time_s)
+  }
 
   return(SNR)
 

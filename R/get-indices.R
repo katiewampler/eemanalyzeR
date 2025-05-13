@@ -48,7 +48,7 @@
 #'  \item DOC01: Missing dissolved organic carbon data, so index was not able to be calculated
 #'  \item NEG01: Value was negative
 #'  \item NOISE01: Value was below signal to noise ratio and therefore was not calculated
-#'  \item NOISE02: Value was below signal to noise ratio and may be inaccurate
+#'  \item NOISE02: Value was not able to be checked for signal to noise ratio
 #'  \item VAL01: Value was below expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
 #'  \item VAL02: Value was above expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
 #' }
@@ -145,10 +145,23 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
         return(index)
       }
 
+      #check for blanks
+      no_snr <- function(index){
+        if(!is.data.frame(index)){return(index)}
+        no_blank <- get_sample_info(eemlist, "sample")[!.blk_added(eemlist)]
+        flag <- !is.na(index$QAQC_flag)
+
+        index$QAQC_flag[index$sample_name %in% no_blank & flag == FALSE] <- "NOISE02"
+        index$QAQC_flag[index$sample_name %in% no_blank & flag == TRUE] <-
+          paste(index$QAQC_flag[index$sample_name %in% no_blank & flag == TRUE], "NOISE02", sep=";")
+
+        return(index)
+      }
     #missing data (no wavelengths)
       indices <- lapply(indices, move_flags)
 
     #if ratios or values are below noise
+      indices$eem_index <- no_snr(indices$eem_index)
 
     #negative values
       indices <- lapply(indices, negative_flag)

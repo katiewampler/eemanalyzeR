@@ -1,7 +1,15 @@
+#' Get Function for Calculating Signal to Noise
+#'
+#' @param method currently only accepts "sqrt" which uses
+#' Horiba's Square Root Method (\link[eemanalyzeR]{calc-SNR})
+#'
+#' @noRd
+#' @returns a function used to get signal to noise ratio
+#'
 get_SNR_function <- function(method="sqrt"){
 
   if(is.function(method)){
-    return(index_method)
+    return(method)
   }
 
   switch(method,
@@ -9,7 +17,7 @@ get_SNR_function <- function(method="sqrt"){
          stop(method, " is not a known function to get signal to noise\n  to create your own see vingette browseVingettes('eemanalyzeR')"))
 }
 
-#' Title
+#' Get Signal to Noise Ratio for EEMs
 #'
 #' @param eem an \code{eem} or \code{eemlist} object containing EEM's data
 #' @param method method used to get signal to noise, either a custom function or

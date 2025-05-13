@@ -32,8 +32,8 @@ get_ratios <- function(val1, val2){
     val2 <- stringr::str_split_i(val2, "_", i=1)
 
     #if flag is a DATA01, will get "DATA" replace with NA
-    val1[grepl("DATA", val1)] <- NA
-    val2[grepl("DATA", val2)] <- NA
+    val1[grepl("DATA|NOISE", val1)] <- NA
+    val2[grepl("DATA|NOISE", val2)] <- NA
 
     val1 <- as.numeric(val1)
     val2 <- as.numeric(val2)
@@ -49,6 +49,9 @@ get_ratios <- function(val1, val2){
     }
     vals <- c(vals, val)
   }
+
+  #add replace DATA flag with noise flag where needed
+  vals[val1 == "NOISE01" | val2 == "NOISE01"] <- "NOISE01"
 
   return(vals)
 }

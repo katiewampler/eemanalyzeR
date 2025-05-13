@@ -35,6 +35,7 @@
 #' @examples
 #' abslist <- add_metadata(metadata, example_absorbance)
 #' eemlist <- add_metadata(metadata, example_eems)
+#' eemlist <- add_blanks(eemlist, validate=FALSE)
 #' indices <- eemanalyzeR_indices(eemlist, abslist)
 eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
@@ -75,10 +76,7 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
         #get values
         vals <- get_fluorescence(eemlist, index$ex, index$em, stat = "max")
 
-        #check if below SNR
-
-
-        #get flags
+        #get flags, combine with SNR flags
         flags <- flag_missing(eemlist, ex=index$ex, em=index$em, all=FALSE)
 
         #add sample names and make into data.frame (get index name)
@@ -106,8 +104,8 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
         denominator <- stringr::str_split_i(denominator, "_", i=1)
 
         #if flag is a DATA01, will get "DATA" replace with NA
-        numerator[numerator == "DATA"] <- NA
-        denominator[denominator == "DATA"] <- NA
+        numerator[numerator %in% c("DATA01", "NOISE01", "DOC01", "DATA02", "DATA03")] <- NA
+        denominator[denominator %in% c("DATA01", "NOISE01", "DOC01", "DATA02", "DATA03")] <- NA
 
         #get values
         vals <- get_ratios(numerator, denominator)

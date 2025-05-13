@@ -4,8 +4,9 @@
 #' @noRd
 .is_blank <- function(obj) {
   # Get the attribute
-  val <- attr(obj, "is_blank")
-  stopifnot(is.logical(val))
+  val <- attr(obj, "is_blank$")
+  #stopifnot(is.logical(val))
+  if(is.null(val)){val <- FALSE}
   return(val)
 }
 

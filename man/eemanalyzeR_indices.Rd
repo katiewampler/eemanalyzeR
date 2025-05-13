@@ -43,5 +43,6 @@ using \link[pracma]{interp2}.
 \examples{
 abslist <- add_metadata(metadata, example_absorbance)
 eemlist <- add_metadata(metadata, example_eems)
+eemlist <- add_blanks(eemlist, validate=FALSE)
 indices <- eemanalyzeR_indices(eemlist, abslist)
 }
