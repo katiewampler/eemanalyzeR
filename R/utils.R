@@ -405,6 +405,6 @@ eem_normalize <- function(eem, factor=NULL){
 # we want to always return an abslist
 `[.abslist` <- function(abslist, i) {
   sublist <- NextMethod("[")
-  sturcture(sublist, class = "abslist")
+  structure(sublist, class = "abslist")
   return(sublist)
 }

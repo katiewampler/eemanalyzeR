@@ -72,13 +72,24 @@ add_metadata <- function(meta, x){
     meta <- meta[-setdiff(1:nrow(meta), meta_order),]
   }
 
-  # Guess is_blank and is_check if they aren't specified
+  # There's no good way to do this because the way aqualog outputs samples and their
+  # instrument blanks is stupid. Gotta come up with a hacky way
 
-  # Below works for absorbance data but not EEMs
-  # TODO Pattern match the sample names with both BLK and BEM
+  # Plan:
+  # Old metadata version: Guess is_blank and is_check if they aren't specified
+
+  # Blanks
+  # New metadata version eemlist: use the metadata flags to flag sample blanks and
+  #                               then pattern match the instrument blanks
+  # New metadata version abslist: Use metadata flags for blanks standards
+
+  # Checks
+
+
   if (!("is_blank" %in% names(meta))) {
-    blank_pattern <- "BEM"
-    warning("Guessed Blank samples by pattern matching data_identifier using: ", blank_pattern)
+    # TODO - make user customizable blank pattern
+    blank_pattern <- "BEM|BLK|blank"
+    cat("Guessed Blank samples by pattern matching data_identifier using: ", blank_pattern)
     blank_flags <- sapply(names,
                           \(s) grepl(
                             pattern = blank_pattern,
@@ -87,14 +98,30 @@ add_metadata <- function(meta, x){
                           ),
                           USE.NAMES = FALSE)
     #meta$is_blank <- blank_flags
-  } else {
+  } else if(class_type == "eemlist") {
+    # Apply metadata blank flags
+    meta_blank_flags <- meta$is_blank[meta_order]
+    # Then do the pattern matching
+    blank_pattern <- "BEM|BLK|blank"
+    cat("Guessed Blank samples by pattern matching data_identifier using: ", blank_pattern)
+    pattern_blank_flags <- sapply(names,
+                          \(s) grepl(
+                            pattern = blank_pattern,
+                            x = s,
+                            ignore.case = TRUE
+                          ),
+                          USE.NAMES = FALSE)
 
+    blank_flags <- meta_blank_flags | pattern_blank_flags
 
+  } else if(class_type == "abslist") {
+    blank_flags <- meta$is_blank[meta_order]
   }
 
   if (!("is_check" %in% names(meta))) {
+    # TODO - make user customizeable check pattern
     check_pattern <- "tea"
-    warning("Guessed Check samples by pattern matching data_identifier using: ", check_pattern)
+    cat("Guessed Check samples by pattern matching data_identifier using: ", check_pattern)
     check_flags <- sapply(names,
                           \(s) grepl(
                             pattern = check_pattern,
@@ -102,13 +129,29 @@ add_metadata <- function(meta, x){
                             ignore.case = TRUE
                           ),
                           USE.NAMES = FALSE)
-  } else {
+  } else if(class_type == "eemlist") {
+    # Apply metadata check flags
+    meta_check_flags <- meta$is_check[meta_order]
+    # Then do the pattern matching
+    # TODO make this user customizable
+    check_pattern <- "tea"
+    cat("Guessed Check samples by pattern matching data_identifier using: ", check_pattern)
+    pattern_check_flags <- sapply(names,
+                                  \(s) grepl(
+                                    pattern = check_pattern,
+                                    x = s,
+                                    ignore.case = TRUE
+                                  ),
+                                  USE.NAMES = FALSE)
 
-
-
+    check_flags <- meta_check_flags | pattern_check_flags
+  } else if (class_type == "abslist") {
+    check_flags <- meta$is_check[meta_order]
   }
 
-  browser()
+  # Make sure no blanks are check standards! TODO - we could change this
+  check_flags <- (check_flags & !blank_flags)
+
 
   # Add metadata info to object ----
   # Get data from metadata, keeping as numeric/character
@@ -128,7 +171,6 @@ add_metadata <- function(meta, x){
     notes = if("Notes" %in% colnames(meta)) meta$Notes[meta_order] else NA
   )
 
-  browser()
   # Loop across the metadata ----
   x <- lapply(1:length(meta_order), function(y) {
     obj <- x[[y]]

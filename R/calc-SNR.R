@@ -34,5 +34,4 @@ calc_raman_SNR_sqrt <- function(eem) {
   SNR <- ( S_397nm - S_450nm ) / sqrt(S_450nm)
 
   return(SNR)
-
 }
