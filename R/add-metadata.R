@@ -2,6 +2,8 @@
 #'
 #' @param meta a \code{data.frame} of metadata
 #' @param x an \code{abslist} or \code{eemlist} object
+#' @param blank_pattern a regex string to find blanks using pattern matching on filenames
+#' @param check_pattern a regex string to find check standards using pattern matching on filenames
 #'
 #' @note if \code{eemlist} contains blanks, the blanks will get the metadata of the corresponding sample.
 #'
@@ -32,7 +34,9 @@
 #' #add metadata to EEM's data
 #' eem_augment <- add_metadata(metadata, example_eems)
 
-add_metadata <- function(meta, x){
+add_metadata <- function(meta, x,
+                         blank_pattern = "BEM|BLK|blank",
+                         check_pattern = "tea"){
 
   class_type <- class(x)
 
@@ -87,8 +91,6 @@ add_metadata <- function(meta, x){
 
 
   if (!("is_blank" %in% names(meta))) {
-    # TODO - make user customizable blank pattern
-    blank_pattern <- "BEM|BLK|blank"
     cat("Guessed Blank samples by pattern matching data_identifier using: ", blank_pattern)
     blank_flags <- sapply(names,
                           \(s) grepl(
@@ -102,7 +104,6 @@ add_metadata <- function(meta, x){
     # Apply metadata blank flags
     meta_blank_flags <- meta$is_blank[meta_order]
     # Then do the pattern matching
-    blank_pattern <- "BEM|BLK|blank"
     cat("Guessed Blank samples by pattern matching data_identifier using: ", blank_pattern)
     pattern_blank_flags <- sapply(names,
                           \(s) grepl(
@@ -119,8 +120,6 @@ add_metadata <- function(meta, x){
   }
 
   if (!("is_check" %in% names(meta))) {
-    # TODO - make user customizeable check pattern
-    check_pattern <- "tea"
     cat("Guessed Check samples by pattern matching data_identifier using: ", check_pattern)
     check_flags <- sapply(names,
                           \(s) grepl(
@@ -133,8 +132,6 @@ add_metadata <- function(meta, x){
     # Apply metadata check flags
     meta_check_flags <- meta$is_check[meta_order]
     # Then do the pattern matching
-    # TODO make this user customizable
-    check_pattern <- "tea"
     cat("Guessed Check samples by pattern matching data_identifier using: ", check_pattern)
     pattern_check_flags <- sapply(names,
                                   \(s) grepl(
