@@ -13,6 +13,7 @@
 #' @importFrom eemR eem_humification_index
 #' @importFrom eemR eem_inner_filter_effect
 #' @importFrom eemR eem_read
+#' @importFrom ggplot2 ggsave
 #' @importFrom ggplot2 labs
 #' @importFrom ggplot2 theme
 #' @importFrom ggpubr ggarrange
@@ -49,6 +50,7 @@
 #' @importFrom utils modifyList
 #' @importFrom utils read.csv
 #' @importFrom utils write.csv
+#' @importFrom utils write.table
 #' @importFrom zoo na.spline
 ## usethis namespace: end
 NULL

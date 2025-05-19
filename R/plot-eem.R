@@ -74,7 +74,7 @@ plot_eem <- function(eem, nbin=8, equal_scale=FALSE, pal=NULL, remove_lower = FA
 
 
     plot <- lapply(eem, .plot_eem, nbin, z_min, z_max, pal, remove_lower, title=TRUE)
-
+    names(plot) <- get_sample_info(eem, "sample")
     #print(patchwork::wrap_plots(plot) + patchwork::plot_layout(guides="collect"))
 
     print(ggpubr::ggarrange(plotlist = plot, common.legend=scale, legend = "right"))
