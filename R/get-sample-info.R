@@ -57,6 +57,7 @@ get_sample_info <- function(x, info) {
     }
     #if matrix, treat differently than a vector
     if(all(sapply(res, is.matrix))){
+      # Add excitation and emission wavelengths to matrix
       res_form <- res #currently just return a list of extract matrices
     }
 
@@ -88,6 +89,17 @@ get_sample_info <- function(x, info) {
   }
   if(inherits(x, "eem") | inherits(x, "abs")){
     res_form <- x[[info]]
+
+      if(is.matrix(res_form)) {
+
+      # Add ex and em wavelengths to matrix
+      ex <- get_sample_info(x, "ex")
+      em <- get_sample_info(x, "em")
+      colnames(res_form) <- ex
+      rownames(res_form) <- round(em, 0)
+
+    }
+
     if(is.null(res_form)){stop(paste0("component '", info, "' not found in dataset"))}
   }
 

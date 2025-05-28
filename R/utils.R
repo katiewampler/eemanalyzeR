@@ -384,15 +384,7 @@ eem_normalize <- function(eem, factor=NULL){
   return(eem1)
 }
 
-
-# TODO? Turn an EEM into a matrix with labeled rows and columns
-# .eem_to_matrix <- function(eem) {
-#
-#   #
-#
-#
-# }
-
+# TODO test these overloads
 # Overload the bracket operator for eemlist subsetting
 `[.eemlist` <- function(eemlist, i) {
   sublist <- NextMethod("[")

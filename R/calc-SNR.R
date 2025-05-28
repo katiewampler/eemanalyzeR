@@ -25,11 +25,15 @@ calc_raman_SNR_sqrt <- function(eem) {
             )
 
   # Create matrix from EEM
-    mat <- get_sample_info(eem, "x")
+  mat <- get_sample_info(eem, "x")
+
+  # TODO dynamically choose closest available row and column in matrix if
+  # the exact wavelengths are not available
 
   # Calculate the signal at specific points
-  S_397nm <- mat[350, 397]
-  S_450nm <- mat[350, 450]
+                # EM    # EX
+  S_397nm <- mat["398", "350"]
+  S_450nm <- mat["453", "350"]
   # Calc Signal-to-noise ratio
   SNR <- ( S_397nm - S_450nm ) / sqrt(S_450nm)
 
