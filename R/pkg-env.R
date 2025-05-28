@@ -71,6 +71,17 @@ set_metadata_file <- function(filename) {
   invisible(old)
 }
 
+# Warnings list ----
+# A list of all warnings that have been thrown during data loading and processing
+.pkgenv$warnings_list <- list()
+# Append warnings to the warnings list
+append_warning <- function(condition_message) {
+  old <- .pkgenv$warnings_list
+  .pkgenv$warnings_list <- append(.pkgenv$warnings_list, condition_message)
+  invisible(old)
+}
+
+
 # DOC File info
 # Initialize to NULL
 .pkgenv$doc_file <- NULL
@@ -88,7 +99,7 @@ set_metadata_file <- function(filename) {
 
 # Processing Tracking File ----
 # Initialize the tracking file argument
-# TODO: IS THERE A SANE DEFAULT?
+# TODO update process file to R object (not external connection)
 .pkgenv$process_file <- ""
 
 # Getter for the tracking file info

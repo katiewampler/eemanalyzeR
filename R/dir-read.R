@@ -51,8 +51,6 @@ eem_dir_read <- function(input_dir,
                          import_function="aqualog"){
   stopifnot(dir.exists(input_dir))
 
-  warnings_list <- list()  # Initialize an empty list to store warnings
-
   #wrapper on eemR::read_eem to try and catch errors from absorbance data being included
   .try_eem_read <- function(file, recursive=F, import_function){
     tryCatch(
@@ -97,22 +95,20 @@ eem_dir_read <- function(input_dir,
   eem_list <- withCallingHandlers(
     lapply(load_files, .try_eem_read, import_function=import_function),
     warning = function(w) {
-      warnings_list <<- c(warnings_list, conditionMessage(w))  # Add the warning message
-      # TODO add warning list to base package environment if used by more functions.
-      # <<- can result in weird behavior
+      append_warning(conditionMessage(w))  # Add the warning message
       invokeRestart("muffleWarning")  # Prevent the warning from printing immediately
       })
 
   # Combine all collected warnings into one [probably unnecessary, I don't think anything else should generate a warning]
-  if (length(warnings_list) > 0) {
-    if(sum(grepl("Unable to import file: ", warnings_list))>0){
-      remove_warn <- grep("Unable to import file: |.\nPlease use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.", warnings_list)
-      error_files <- gsub("Unable to import file: |.\nPlease use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.", "", warnings_list)
-      abs_warning <- paste0("Unable to import file(s):\n", paste(error_files, collapse="\n"),"\nPlease use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.")
-    }
-    combined_warning <- paste(warnings_list[-remove_warn], abs_warning, collapse = "\n")
-    warning(combined_warning)
-  }
+  # if (length(warnings_list) > 0) {
+  #   if(sum(grepl("Unable to import file: ", warnings_list))>0){
+  #     remove_warn <- grep("Unable to import file: |.\nPlease use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.", warnings_list)
+  #     error_files <- gsub("Unable to import file: |.\nPlease use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.", "", warnings_list)
+  #     abs_warning <- paste0("Unable to import file(s):\n", paste(error_files, collapse="\n"),"\nPlease use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.")
+  #   }
+  #   combined_warning <- paste(warnings_list[-remove_warn], abs_warning, collapse = "\n")
+  #   warning(combined_warning)
+  # }
 
   #combine eems
   eem_list <- lapply(eem_list, `[[`, 1)
@@ -124,13 +120,12 @@ eem_dir_read <- function(input_dir,
 
 #' @rdname dir_read
 #' @export
-abs_dir_read <- function(input_dir, pattern = NULL,
+abs_dir_read <- function(input_dir,
+                         pattern = NULL,
                          skip="SEM|BEM|Waterfall",
                          file_ext="dat",
-                         recursive = FALSE){
+                         recursive = FALSE) {
   stopifnot(dir.exists(input_dir))
-  warnings_list <- list()  # Initialize an empty list to store warnings
-
 
   files <- list.files(input_dir, full.names = T, recursive = recursive)
 
@@ -153,7 +148,7 @@ abs_dir_read <- function(input_dir, pattern = NULL,
   #read files
   abs_list <- withCallingHandlers(lapply(load_files, abs_read),
                                   warning = function(w) {
-                                    warnings_list <<- c(warnings_list, conditionMessage(w))  # Add the warning message
+                                    append_warning(conditionMessage(w))  # Add the warning message
                                     invokeRestart("muffleWarning")  # Prevent the warning from printing immediately
                                   })
 
@@ -164,15 +159,15 @@ abs_dir_read <- function(input_dir, pattern = NULL,
   class(abs_list) <- "abslist"
 
   # Combine all collected warnings into one [probably unnecessary, I don't think anything else should generate a warning]
-  if (length(warnings_list) > 0) {
-    if(sum(grepl("Unable to import file: ", warnings_list))>0){
-      remove_warn <- grep("Unable to import file: |.\nPlease use the 'pattern' and 'skip' arguments to ensure only absorbance files are selected.", warnings_list)
-      error_files <- gsub("Unable to import file: |.\nPlease use the 'pattern' and 'skip' arguments to ensure only absorbance files are selected.", "", warnings_list)
-      abs_warning <- paste0("Unable to import file(s):\n", paste(error_files, collapse="\n"),"\nPlease use the 'pattern' and 'skip' arguments to ensure only absorbance files are selected.")
-    }
-    combined_warning <- paste(warnings_list[-remove_warn], abs_warning, collapse = "\n")
-    warning(combined_warning)
-  }
+  # if (length(warnings_list) > 0) {
+  #   if(sum(grepl("Unable to import file: ", warnings_list))>0){
+  #     remove_warn <- grep("Unable to import file: |.\nPlease use the 'pattern' and 'skip' arguments to ensure only absorbance files are selected.", warnings_list)
+  #     error_files <- gsub("Unable to import file: |.\nPlease use the 'pattern' and 'skip' arguments to ensure only absorbance files are selected.", "", warnings_list)
+  #     abs_warning <- paste0("Unable to import file(s):\n", paste(error_files, collapse="\n"),"\nPlease use the 'pattern' and 'skip' arguments to ensure only absorbance files are selected.")
+  #   }
+  #   combined_warning <- paste(warnings_list[-remove_warn], abs_warning, collapse = "\n")
+  #   warning(combined_warning)
+  # }
 
   return(abs_list)
 }
