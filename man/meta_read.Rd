@@ -4,14 +4,14 @@
 \alias{meta_read}
 \title{Read metadata file from directory}
 \usage{
-meta_read(input, sheet = NULL, validate = TRUE)
+meta_read(input, sheet = NULL, validate_metadata = TRUE)
 }
 \arguments{
 \item{input}{path to folder containing metadata file, or name of metadata file}
 
 \item{sheet}{name of sheet containing metadata. only required if metadata isn't the first sheet of xlsx file}
 
-\item{validate}{logical. should metadata structure be checked for potential issues that will cause issues during
+\item{validate_metadata}{logical. should metadata structure be checked for potential issues that will cause issues during
 further processing? highly recommended to keep as TRUE.}
 }
 \value{

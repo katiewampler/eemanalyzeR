@@ -4,12 +4,16 @@
 \alias{add_metadata}
 \title{Add metadata to absorbance and EEM's data}
 \usage{
-add_metadata(meta, x)
+add_metadata(meta, x, blank_pattern = "BEM|BLK|blank", check_pattern = "tea")
 }
 \arguments{
 \item{meta}{a \code{data.frame} of metadata}
 
 \item{x}{an \code{abslist} or \code{eemlist} object}
+
+\item{blank_pattern}{a regex string to find blanks using pattern matching on filenames}
+
+\item{check_pattern}{a regex string to find check standards using pattern matching on filenames}
 }
 \value{
 returns an object of the same class as the object input into the function (\code{abslist} or \code{eemlist}) with metadata added in

@@ -386,17 +386,25 @@ eem_normalize <- function(eem, factor=NULL){
 
 # TODO test these overloads
 # Overload the bracket operator for eemlist subsetting
+#' Subsetting using `[` for eemlist
+#'
+#' @param eemlist the eemlist to subset
+#' @param i the index for subsetting
+#'
+#' @export
+#' @method `[` eemlist
+#'
 `[.eemlist` <- function(eemlist, i) {
-  sublist <- NextMethod("[")
+  sublist <- NextMethod()
   structure(sublist, class = "eemlist")
-  return(sublist)
 }
 
 
 # Overload the bracket operator for abslist subsetting
 # we want to always return an abslist
+#' @export
+#' @method `[` abslist
 `[.abslist` <- function(abslist, i) {
-  sublist <- NextMethod("[")
+  sublist <- NextMethod()
   structure(sublist, class = "abslist")
-  return(sublist)
 }

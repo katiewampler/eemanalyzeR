@@ -82,15 +82,15 @@ append_warning <- function(condition_message) {
 }
 
 
-# DOC File info
-# Initialize to NULL
-.pkgenv$doc_file <- NULL
-# Getter for DOC file
-
 
 # TODO can I make the DOC file a class with all the required info like
 # filename, sheet name, doc_column, name_column, nskip, doc_delim, etc.. so I don't
 # have to individually have all those parameters in the environment?
+
+# DOC File info
+# Initialize to NULL
+.pkgenv$doc_file <- NULL
+# Getter for DOC file
 
 
 

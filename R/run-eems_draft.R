@@ -54,6 +54,8 @@ run_eems <- function(
   # Optional metadata arguments
   meta_sheet = NULL, # only if excel
   meta_validate = TRUE, # usually we want to validate the metadata
+  meta_blank_pattern = "BEM|BLK|blank",
+  meta_check_pattern = "tea",
 
   # Optional abs_dir_read arguments
   abs_pattern = NULL,
@@ -118,6 +120,12 @@ run_eems <- function(
   # if ("noise_ratio" %in% names(varargs)) set_noise_ratio(varargs[['noise_ratio']])
   # cat("changed noise ratio to", get_noise_ratio(), "\n")
 
+  # TODO adjust this for new R object tracking
+  # create the tracking file path in environment - can I find this one?
+  set_tracking_file(file.path(prjpath,
+                              "5_Processed",
+                              "processing_tracking.txt"))
+
   # Read the Metadata file
   meta_file <- file.path(prjpath, meta_name)
 
@@ -140,7 +148,22 @@ run_eems <- function(
                        recursive = eem_recurse_read,
                        import_function = eem_import_func)
 
+  # Add metadata
+  eems <- add_metadata(metadata,
+                       eems,
+                       blank_pattern = meta_blank_pattern,
+                       check_pattern = meta_check_pattern)
+  abs <- add_metadata(metadata,
+                      abs,
+                      blank_pattern = meta_blank_pattern,
+                      check_pattern = meta_check_pattern)
 
+  # Add blanks
+  # TODO how/why do we handle the blanklist argument
+  # TODO figure out validation
+  eems <- add_blanks(eems,
+                     blanklist = NULL,
+                     pattern = "BEM|Blank$")
 
   # Made it here <-----------------------------------------------------------
 
@@ -161,26 +184,6 @@ run_eems <- function(
   #                   site_loc=site_loc,
   #                   ...)
   # }
-
-  # TODO adjust this for new R object tracking
-  # create the tracking file path in environment - can I find this one?
-  set_tracking_file(file.path(prjpath,
-                              "5_Processed",
-                              "processing_tracking.txt"))
-
-  # Load Data in R
-  cat("Loading data in R \n")
-  data<- load_eems(prjpath)
-  X <- data[[1]]
-  X_blk <- data[[2]]
-  Sabs <- data[[3]]
-
-  # Check data with metadata, remove samples that don't have data
-  test <- check_samps(meta, X, X_blk, Sabs)
-  meta <- test[[1]]
-  X <- test[[2]]
-  X_blk <- test[[3]]
-  Sabs <- test[[4]]
 
   ## Check that the instrument blank is ok before continuing with processing steps
   Iblank <- X_blk[[1]]

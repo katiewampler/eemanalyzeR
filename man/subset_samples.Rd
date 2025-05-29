@@ -4,7 +4,14 @@
 \alias{subset_samples}
 \title{Subset eemlist or abslist using components}
 \usage{
-subset_samples(x, info, sample, keep = F, ignore_case = F, verbose = T)
+subset_samples(
+  x,
+  info,
+  sample,
+  keep = FALSE,
+  ignore_case = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{x}{an object of class \code{eemlist} or \code{abslist}}
