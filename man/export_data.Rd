@@ -41,7 +41,7 @@ The list contains the following items:
 \item{eemlist: the \code{eemlist}}
 \item{abslist: the \code{abslist}}
 \item{readme: a character vector containing information about the data processing steps}
-\item{metadata: the metadata associated with the samples, may be \code{NULL} if not provided}
+\item{meta: the metadata associated with the samples, may be \code{NULL} if not provided}
 \item{indices: a list of EEMs and absorbance indices, may be \code{NULL} if not provided}
 \item{plots: a list of EEMs plots, may be \code{NULL} if not provided}
 }

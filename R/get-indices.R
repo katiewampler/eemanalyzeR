@@ -144,7 +144,15 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
 
         return(index)
       }
-
+      infinite_flag <- function(index){
+        #if index is NA, return NA
+        if(!is.data.frame(index)){return(index)}
+        infinite <- index$value == Inf
+        infinite[is.na(infinite)] <- FALSE
+        index$QAQC_flag[infinite] <- "DATA03"
+        index$value[infinite] <- NA
+        return(index)
+      }
       #check for blanks
       no_snr <- function(index){
         if(!is.data.frame(index)){return(index)}
@@ -157,6 +165,10 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
 
         return(index)
       }
+
+    #inf values
+    indices <- lapply(indices, infinite_flag)
+
     #missing data (no wavelengths)
       indices <- lapply(indices, move_flags)
 
@@ -165,6 +177,7 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
 
     #negative values
       indices <- lapply(indices, negative_flag)
+
 
     #missing data (no DOC): DOC_01
       indices <- lapply(indices, missing_doc_flag)

@@ -21,7 +21,7 @@
 #' \item{eemlist: the \code{eemlist}}
 #' \item{abslist: the \code{abslist}}
 #' \item{readme: a character vector containing information about the data processing steps}
-#' \item{metadata: the metadata associated with the samples, may be \code{NULL} if not provided}
+#' \item{meta: the metadata associated with the samples, may be \code{NULL} if not provided}
 #' \item{indices: a list of EEMs and absorbance indices, may be \code{NULL} if not provided}
 #' \item{plots: a list of EEMs plots, may be \code{NULL} if not provided}
 #' }
@@ -35,11 +35,11 @@
 #' plots <- plot_eem(eems)
 #' indices <- get_indices(eems, abs)
 #' data <- export_data(eems, abs, filename="eemanalyzeR_example",
-#'             indices = indices, plot=plots)
+#'             indices = indices, plot=plots, meta=metadata)
 export_data <- function(eemlist, abslist, filename, output_dir=NULL,
                         meta=NULL, indices=NULL,
                         plot=NULL, csv=FALSE){
-  stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.data.frame(metadata) | is.null(metadata),
+  stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.data.frame(meta) | is.null(meta),
             is.list(indices) | is.null(indices), is.list(plot) | is.null(plot),
             is.logical(csv), is.character(filename))
 
@@ -61,11 +61,9 @@ export_data <- function(eemlist, abslist, filename, output_dir=NULL,
       dir.create(file.path(output_dir, filename))
     }
 
-    output_path <-
-
   #convert everything to list and save
     output <- list(eemlist=eemlist, abslist=abslist,
-                   readme=readme, metadata=metadata,
+                   readme=readme, metadata=meta,
                    indices=indices, plots=plot)
 
     saveRDS(output, file.path(output_dir, filename, paste0("processed_data_", filename,".RDS")))

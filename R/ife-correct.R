@@ -118,7 +118,7 @@ ife_correct <- function(eemlist, abslist, pathlength=1){
       ex_range <- ifelse(length(ex_rm)>0, paste0(range(ex_rm), collapse=" - "),"")
       em_range <- ifelse(length(em_rm)>0, paste0(range(em_rm), collapse=" - "),"")
       assign("readme", c(readme,
-                         paste0("   warning: trimmed EEM's to match absorbance data wavelengths\n\texcitation: ",
+                         paste0("   warning: removed the following wavelengths in EEM's to match absorbance data wavelengths\n\texcitation: ",
                          ex_range, "\n\temission: ", em_range, "\n")), envir = .GlobalEnv)}
     class(res) <- "eemlist"
 

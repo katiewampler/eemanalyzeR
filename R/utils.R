@@ -107,7 +107,7 @@
 
   #get parameters used
   default_par <- formals(sys.function(sys.parent()))
-  user_par <- as.list(match.call()[-1])
+  user_par <- as.list(match.call(definition = sys.function(-1),call=sys.call(-1))[-1])
   pars <- utils::modifyList(default_par, user_par)
   pars$text <- NULL #we don't need the text input
   pars <- pars[lapply(pars,length)>0 & sapply(pars,function(x) x != "")] #remove empty list items

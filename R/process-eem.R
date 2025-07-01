@@ -47,8 +47,6 @@ process_eem <- function(eemlist, abslist, ex_clip = c(247,450),
                         em_clip = c(247,600), type = c(TRUE,TRUE,TRUE,TRUE), width=c(16,3,30,10),
                         interpolate=c(TRUE,TRUE,FALSE,FALSE), method=1,
                         cores=1, pathlength=1){
-  #clear readme if it already exists
-  if(exists("readme")) rm("readme", envir = .GlobalEnv)
 
   #perform processing steps
   eemlist <- subtract_blank(eem = eemlist)
