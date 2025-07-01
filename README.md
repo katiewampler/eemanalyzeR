@@ -17,14 +17,13 @@ analysis and simplify the coding required to process the data.
 It offers functions to clean and preprocess raw optics (absorbance and
 fluorescence) data, perform quality assurance on the data, calculate
 various indices for characterization (e.g., fluorescence index,
-humification index), and generate a range of visualizations including
-contour plots and 3D surface plots.
+humification index), and generate data visualizations.
 
 The package is designed for environmental and analytical chemists
 working with fluorescence spectroscopy data, particularly in the study
 of complex environmental samples like water or soil. It streamlines data
 processing and visualization, helping users extract meaningful
-information from EEM datasets.
+information from absorbance and EEM datasets.
 
 ## Installation
 
