@@ -94,12 +94,24 @@
   return(documentation)
 }
 
+
 #' Write a line of text to the readme object that tracks processing tracking
 #'
 #' @param text line of text to write to the process file
-#' # write.table(readme, "C:/Users/noaha/Downloads/test.txt", quote=F, row.names=F, col.names=F)
+#' @param slot the spot to write the readme lines into
+#' @param append append text to existing text in slot?
 #' @noRd
-.write_readme_line <- function(text){
+.write_readme_line <- function(text, slot, append=FALSE){
+  #if this is the first thing getting written to readme, create
+  if(!exists("readme")){
+    readme <- list(eem_blank_corrected=NA, eem_scatter_corrected=NA,
+                   eem_ife_corrected=NA, eem_raman_normalized=NA,
+                   eem_doc_normalized=NA, eem_dil_corrected=NA,
+                   abs_dil_corrected=NA, abs_doc_normalized=NA,
+                   indices=NA)
+    assign("readme", readme, envir = .GlobalEnv)
+  }
+
   #write processing to readme
   time <- Sys.time()
   time <- strftime(time, format="%Y-%m-%d %H:%M:%S")
@@ -116,11 +128,12 @@
     pars <- paste0(paste("   function parameters:", pars, sep="\n"), "\n")
   }else{pars <- ""}
 
-  if(exists("readme")){
-    assign("readme", c(readme, paste(step, pars, sep="\n")), envir = .GlobalEnv)
-  }else{
-    assign("readme", paste(step, pars, sep="\n"), envir = .GlobalEnv)
-  }
+  if(append){
+    readme[slot] <- paste(readme[slot], step, pars, sep="\n")
+  }else{readme[slot] <- paste(step, pars, sep="\n")}
+
+  assign("readme", readme, envir = .GlobalEnv)
+
 }
 
 #' Answer validation questions yes or no

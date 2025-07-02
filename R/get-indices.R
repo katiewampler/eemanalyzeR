@@ -228,9 +228,9 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
 
   #write step to readme
   if(is.character(index_method)){
-   .write_readme_line("Absorbance and fluorescence indices were calculated using the 'get_indices' function")
+   .write_readme_line("Absorbance and fluorescence indices were calculated using the 'get_indices' function", "indices")
   }else{
-    .write_readme_line("Absorbance and fluorescence indices were calculated using the 'get_indices' function with a custom index method")
+    .write_readme_line("Absorbance and fluorescence indices were calculated using the 'get_indices' function with a custom index method", "indices")
 
   }
     return(indices)

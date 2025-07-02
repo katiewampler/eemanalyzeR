@@ -113,7 +113,7 @@ ife_correct <- function(eemlist, abslist, pathlength=1){
     })
 
     #write processing to readme
-    .write_readme_line("data was corrected for inner filter effects via 'ife_correct' function")
+    .write_readme_line("data was corrected for inner filter effects via 'ife_correct' function", "eem_ife_corrected")
     if(trim){
       ex_range <- ifelse(length(ex_rm)>0, paste0(range(ex_rm), collapse=" - "),"")
       em_range <- ifelse(length(em_rm)>0, paste0(range(em_rm), collapse=" - "),"")

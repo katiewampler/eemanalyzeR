@@ -59,7 +59,7 @@ subtract_blank <- function(eem) {
   }
 
   #write processing to readme
-  .write_readme_line("blanks were subtracted from data via 'subtract_blank' function")
+  .write_readme_line("blanks were subtracted from data via 'subtract_blank' function", "eem_blank_corrected")
 
 
   return(.subtract(eem))

@@ -102,7 +102,7 @@ remove_scattering <- function(eemlist, type = c(TRUE,TRUE,TRUE,TRUE), width=c(16
    class(data) <- "eemlist"
 
  #write readme
-  # .write_readme_line("scattering lines removed via 'remove_scattering' function")
+   .write_readme_line("scattering lines removed via 'remove_scattering' function", "eem_scatter_corrected")
 
    return(data)
 
