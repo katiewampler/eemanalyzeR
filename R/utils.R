@@ -15,7 +15,7 @@
 #' @return text string with eemanalyzeR package version
 #' @noRd
 .eemanalyzeR_ver <- function() {
-  paste0("eemanalyzeR_", utils::packageVersion("eemanalyzeR"))
+  paste0("eemanalyzeR ", utils::packageVersion("eemanalyzeR"))
 }
 
 #' Generate spectral index documenation for
@@ -99,9 +99,10 @@
 #'
 #' @param text line of text to write to the process file
 #' @param slot the spot to write the readme lines into
+#' @param args the argument values from upper functions as character
 #' @param append append text to existing text in slot?
 #' @noRd
-.write_readme_line <- function(text, slot, append=FALSE){
+.write_readme_line <- function(text, slot, args=NULL, append=FALSE){
   #if this is the first thing getting written to readme, create
   if(!exists("readme")){
     readme <- list(eem_blank_corrected=NA, eem_scatter_corrected=NA,
@@ -115,36 +116,33 @@
   #write processing to readme
   time <- Sys.time()
   time <- strftime(time, format="%Y-%m-%d %H:%M:%S")
-  step <- paste0(time, ": ", text)
 
-  pars <- as.list(match.call(definition=sys.function(-1), call=sys.call(-1)))[-1]
-
-  #get parameters used
-    fun <- sys.function(sys.parent())
-    call <- sys.call(sys.parent())
-    fmls <- formals(fun)
-    mc <- as.list(match.call(definition=fun, call=call))[-1]
-
-    # Combine call arguments and defaults
-    args <- fmls
-    for (nm in names(mc)) {  # skip function name
-      args[nm] <- mc[nm]
-    }
-
-
+  if(!is.null(args)){
     args <- paste("\t",paste0(names(args), ": ", args), collapse="\n")
     args <- paste0(paste("   function parameters:", args, sep="\n"), "\n")
+    args <- gsub("~", "", args)
+
+  }else{args <- ""}
 
   if(append){
-    readme[slot] <- paste(readme[slot], step, args, sep="\n")
-  }else{readme[slot] <- paste(step, args, sep="\n")}
+    readme[slot] <- paste(readme[slot], text, args, sep="\n")
+  }else{
+    step <- paste0(time, ": ", text)
+    readme[slot] <- paste(step, args, sep="\n")}
 
   assign("readme", readme, envir = .GlobalEnv)
 
 }
 
 .print_readme <- function(){
-  cat(paste(unlist(readme), collapse = "\n"))
+  readme <- readme[!is.na(readme)]
+
+  #get stuff for the top
+  date <- strftime(Sys.time(), format="%Y-%m-%d %H:%M")
+  version <- paste0("Data processed using ", .eemanalyzeR_ver(), " package in R.")
+  link <- "For details on processing steps, indices, and QA/QC flags see the package website: https://github.com/katiewampler/eemanalyzeR"
+
+  cat(paste(date, version, link, "______________________________\n", paste(unlist(readme), collapse = "\n"), sep="\n"))
 
 }
 #' Answer validation questions yes or no
@@ -244,36 +242,7 @@
   return(equal)
 }
 
-#' Normalize an eem or eemlist based on a normalization factor
-#'
-#' Useful for raman normalization or normalizing to a max of one for blank comparisons.
-#'
-#' @param eem the \code{eem} or \code{eemlist} to normalize
-#' @param factor the normalization factor, either a single value or vector of factors, if NULL it will normalize to the maximum value for each eem
-#'
-#' @return an \code{eem} or \code{eemlist} where \code{x} has been normalized
-#' @export
-#'
-#' @examples
-#' eem_normal <- eem_normalize(example_eems[1])
-#' eems_normal <- eem_normalize(example_eems)
-#'
-eem_normalize <- function(eem, factor=NULL){
 
-  if(.is_eemlist(eem)){
-    eem <- mapply(eem_normalize, eem, factor, SIMPLIFY = F)
-    class(eem) <- "eemlist"
-  }else{
-    if(is.null(factor)){
-      factor <- max(eem$x, na.rm = T)
-    }
-
-    eem$x <- eem$x / factor
-    class(eem) <- "eem"
-  }
-
-  return(eem)
-}
 
 #' Subtract one eem from another
 #'

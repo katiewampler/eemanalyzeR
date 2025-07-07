@@ -10,7 +10,8 @@ remove_scattering(
   width = c(16, 3, 30, 10),
   interpolate = c(TRUE, TRUE, FALSE, FALSE),
   method = 1,
-  cores = 1
+  cores = 1,
+  arg_names = NULL
 )
 }
 \arguments{
@@ -29,6 +30,8 @@ The order is "raman1", "raman2", "rayleigh1" and "rayleigh2" scattering.}
 \item{method}{numeric 0 to 4 for interpolation method to use. Default is 1. See \link[staRdom]{eem_interp} for more info.}
 
 \item{cores}{The number of cores used for parallel computation of interpolation.}
+
+\item{arg_names}{Optional argument used to pass arguments from higher level functions for writing the readme.}
 }
 \value{
 an object of class \code{eemlist}

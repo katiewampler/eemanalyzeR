@@ -50,8 +50,8 @@ correct_dilution <- function(x){
   })
 
   #write processing to readme
-  if(.is_eemlist(x)){.write_readme_line("EEMs data was corrected for dilutions via 'correct_dilution' function", "eem_dil_corrected")}
-  if(.is_abslist(x)){.write_readme_line("absorbance data was corrected for dilutions via 'correct_dilution' function", "abs_dil_corrected")}
+  if(.is_eemlist(x)){.write_readme_line("EEMs data was corrected for dilutions via 'correct_dilution' function", "eem_dil_corrected", NULL)}
+  if(.is_abslist(x)){.write_readme_line("Absorbance data was corrected for dilutions via 'correct_dilution' function", "abs_dil_corrected", NULL)}
 
   class(res) <- class(x)
   return(res)

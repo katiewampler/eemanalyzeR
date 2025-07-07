@@ -24,6 +24,7 @@
 #' abs <- abs_read(abs_files[1])
 
 abs_read <- function(file){
+
     #captures warning from trying to rbind eem's data
 
     .safe_rbind <- function(abs){

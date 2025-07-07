@@ -47,6 +47,13 @@ eem_dir_read <- function(input_dir, pattern = NULL, skip="(?i)abs", file_ext="da
                          recursive = FALSE, import_function="aqualog"){
   stopifnot(dir.exists(input_dir))
 
+  #TODO: change to package environment
+  #remove readme if it exists because new dataset
+  if(exists("readme")){rm("readme", envir = .GlobalEnv)
+    message("NOTE: removed previous 'readme' file")
+    }
+
+
   warnings_list <- list()  # Initialize an empty list to store warnings
 
   #wrapper on eemR::read_eem to try and catch errors from absorbance data being included
@@ -116,6 +123,13 @@ eem_dir_read <- function(input_dir, pattern = NULL, skip="(?i)abs", file_ext="da
 #' @export
 abs_dir_read <- function(input_dir, pattern = NULL, skip="SEM|BEM|Waterfall", file_ext="dat",
                          recursive = FALSE){
+
+  #TODO: change to package environment
+  #remove readme if it exists because new dataset
+  if(exists("readme")){rm("readme", envir = .GlobalEnv)
+    message("NOTE: removed previous 'readme' file")
+  }
+
   stopifnot(dir.exists(input_dir))
   warnings_list <- list()  # Initialize an empty list to store warnings
 

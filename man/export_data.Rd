@@ -58,5 +58,5 @@ eems <- process_eem(eems, abs)
 plots <- plot_eem(eems)
 indices <- get_indices(eems, abs)
 data <- export_data(eems, abs, filename="eemanalyzeR_example",
-            indices = indices, plot=plots)
+            indices = indices, plot=plots, meta=metadata)
 }

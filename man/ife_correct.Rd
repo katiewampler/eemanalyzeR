@@ -9,7 +9,7 @@ Emission-Excitation-Matrix (EEM) Fluorescence Data. R package
 version 1.0.1, \href{https://CRAN.R-project.org/package=eemR}{https://CRAN.R-project.org/package=eemR}
 }
 \usage{
-ife_correct(eemlist, abslist, pathlength = 1)
+ife_correct(eemlist, abslist, pathlength = 1, arg_names = NULL)
 }
 \arguments{
 \item{eemlist}{an \code{eemlist} object containing EEM's data. See details for more info.}
@@ -18,6 +18,8 @@ ife_correct(eemlist, abslist, pathlength = 1)
 
 \item{pathlength}{a numeric value indicating the pathlength (in cm) of the
 cuvette used for absorbance measurement. Default is 1 (1 cm).}
+
+\item{arg_names}{Optional argument used to pass arguments from higher level functions for writing the readme.}
 }
 \value{
 an object of class \code{eemlist}

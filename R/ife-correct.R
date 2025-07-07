@@ -13,6 +13,8 @@
 #' @param abslist an \code{abslist} object containing absorbance data.
 #' @param pathlength a numeric value indicating the pathlength (in cm) of the
 #'   cuvette used for absorbance measurement. Default is 1 (1 cm).
+#' @param arg_names Optional argument used to pass arguments from higher level functions for writing the readme.
+
 #'
 #' @returns an object of class \code{eemlist}
 #' @export
@@ -29,10 +31,17 @@
 #' abslist <- add_metadata(metadata, example_absorbance)
 #' correct_eem <- ife_correct(eemlist, abslist)
 
-ife_correct <- function(eemlist, abslist, pathlength=1){
+ife_correct <- function(eemlist, abslist, pathlength=1, arg_names=NULL){
   if(!any(.meta_added(eemlist), .meta_added(abslist))){
     stop("metadata must be added to eemlist and abslist to link samples. \nPlease add metadata using 'add_metadata' function")
   }
+
+  #collect arguments for readme, and to put into the following functions
+  if(is.null(arg_names)){
+    args <- rlang::enquos(pathlength)
+    names(args) <- c("pathlength")
+  }else{args <- arg_names}
+
   #internal function from eemR, added here to maintain stability
   is_between <- function (x, a, b) {x >= a & x <= b }
 
@@ -113,13 +122,17 @@ ife_correct <- function(eemlist, abslist, pathlength=1){
     })
 
     #write processing to readme
-    .write_readme_line("data was corrected for inner filter effects via 'ife_correct' function", "eem_ife_corrected")
+    .write_readme_line("data was corrected for inner filter effects via 'ife_correct' function", "eem_ife_corrected", args)
     if(trim){
       ex_range <- ifelse(length(ex_rm)>0, paste0(range(ex_rm), collapse=" - "),"")
       em_range <- ifelse(length(em_rm)>0, paste0(range(em_rm), collapse=" - "),"")
-      assign("readme", c(readme,
-                         paste0("   warning: removed the following wavelengths in EEM's to match absorbance data wavelengths\n\texcitation: ",
-                         ex_range, "\n\temission: ", em_range, "\n")), envir = .GlobalEnv)}
+
+      args <- list(excitation = ex_range, emission=em_range)
+
+      .write_readme_line(paste0("   warning: removed the following wavelengths in EEM's to match absorbance data wavelengths\n\texcitation: ",
+                         ex_range, "\n\temission: ", em_range, "\n"), "eem_ife_corrected", NULL, append=TRUE)
+
+      }
     class(res) <- "eemlist"
 
     return(res)

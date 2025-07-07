@@ -9,7 +9,8 @@ get_indices(
   abslist,
   index_method = "eemanalyzeR",
   return = "long",
-  cuvle = 1
+  cuvle = 1,
+  arg_names = NULL
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ get_indices(
 \item{return}{either "long" or "wide" to specify the format of the indices data.frames}
 
 \item{cuvle}{cuvette (path) length in cm}
+
+\item{arg_names}{optional argument used to pass arguments from higher level functions for writing the readme.}
 }
 \value{
 a list with two objects:

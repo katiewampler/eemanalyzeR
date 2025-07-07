@@ -45,11 +45,10 @@ subtract_blank <- function(eem) {
     class(eem) <- "eemlist"
 
     #write processing to readme
-    .write_readme_line("blanks were subtracted from data via 'subtract_blank' function")
+    .write_readme_line("blanks were subtracted from data via 'subtract_blank' function",  "eem_blank_corrected", NULL)
 
     if(warn){
-      assign("readme", c(readme,
-                         "warning: added blanks via 'add_blanks' function\n"), envir = .GlobalEnv)}
+      .write_readme_line("   warning: added blanks via 'add_blanks' function\n", "eem_blank_corrected", NULL)}
 
     return(eem)
   }
@@ -59,7 +58,7 @@ subtract_blank <- function(eem) {
   }
 
   #write processing to readme
-  .write_readme_line("blanks were subtracted from data via 'subtract_blank' function", "eem_blank_corrected")
+  .write_readme_line("blanks were subtracted from data via 'subtract_blank' function", "eem_blank_corrected", NULL)
 
 
   return(.subtract(eem))

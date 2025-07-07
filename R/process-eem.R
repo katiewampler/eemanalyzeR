@@ -61,8 +61,8 @@ process_eem <- function(eemlist, abslist, ex_clip = c(247,450),
                                width=rlang::eval_tidy(pars$width),
                                interpolate=rlang::eval_tidy(pars$interpolate),
                                method=rlang::eval_tidy(pars$method),
-                               cores=rlang::eval_tidy(pars$cores))
-  eemlist <- ife_correct(eemlist = eemlist, abslist, pathlength = rlang::eval_tidy(pars$pathlength))
+                               cores=rlang::eval_tidy(pars$cores), arg_names = pars[names(pars) %in% c("type", "width", "interpolate", "method", "cores")])
+  eemlist <- ife_correct(eemlist = eemlist, abslist, pathlength = rlang::eval_tidy(pars$pathlength), arg_names = pars[names(pars) %in% c("pathlength")])
   eemlist <- raman_normalize(eemlist = eemlist)
   eemlist <- correct_dilution(x = eemlist)
 
@@ -74,7 +74,7 @@ process_eem <- function(eemlist, abslist, ex_clip = c(247,450),
   eemlist <- eemR::eem_cut(eemlist, ex=ex_rm, em=em_rm, exact=T)
 
   #add to readme here
-  .write_readme_line("eems were cropped using the 'eemR::eem_cut' function", "eem_cut")
+  .write_readme_line("EEMs data were cropped using the 'eemR::eem_cut' function", "eem_cut", args = pars[names(pars) %in% c("ex_clip", "em_clip")])
 
   return(eemlist)
 }

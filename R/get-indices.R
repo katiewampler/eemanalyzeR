@@ -8,6 +8,7 @@
 #' @param index_method currently supports "eemanalyzeR", "eemR", and "usgs". See details for more information.
 #' @param return either "long" or "wide" to specify the format of the indices data.frames
 #' @param cuvle cuvette (path) length in cm
+#' @param arg_names optional argument used to pass arguments from higher level functions for writing the readme.
 #'
 #' @export
 #' @return a list with two objects:
@@ -57,7 +58,7 @@
 #' eemlist <- add_metadata(metadata, example_eems)
 #' indices <- get_indices(eemlist, abslist)
 
-get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="long", cuvle=1){
+get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="long", cuvle=1, arg_names=NULL){
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist))
 
   #check if processing has been done, not warn that indices may be unreliable
@@ -70,6 +71,12 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
       missing <- steps[steps$done == FALSE,]
       warning("Data has not been fully processed, and indices may not be accurate. The following processing steps are missing:\n",
               paste(missing$warning, collapse="\n"), "\n\nPlease use eemanalyzeR::process_eem to process EEMs before generating indices.")}
+
+  #collect arguments for readme, and to put into the following functions
+    if(is.null(arg_names)){
+      args <- rlang::enquos(index_method, return, cuvle)
+      names(args) <- c("index_method", "return", "cuvle")
+    }else{args <- arg_names}
 
   #if DOC normalized, make not normalized to not normalize twice for indices
     eemlist <- lapply(eemlist, function(x){
@@ -228,9 +235,9 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
 
   #write step to readme
   if(is.character(index_method)){
-   .write_readme_line("Absorbance and fluorescence indices were calculated using the 'get_indices' function", "indices")
+   .write_readme_line("Absorbance and fluorescence indices were calculated using the 'get_indices' function", "indices", args)
   }else{
-    .write_readme_line("Absorbance and fluorescence indices were calculated using the 'get_indices' function with a custom index method", "indices")
+    .write_readme_line("Absorbance and fluorescence indices were calculated using the 'get_indices' function with a custom index method", "indices", args)
 
   }
     return(indices)

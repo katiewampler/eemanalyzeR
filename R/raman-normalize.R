@@ -42,7 +42,7 @@ raman_normalize <- function(eemlist){
   })
 
   #write readme
-  .write_readme_line("data was normalized for raman area via 'raman_normalize' function", "eem_raman_normalized")
+  .write_readme_line("EEMs data was normalized for raman area via 'raman_normalize' function", "eem_raman_normalized", NULL)
 
   class(res) <- "eemlist"
   return(res)
