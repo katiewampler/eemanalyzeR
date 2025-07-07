@@ -48,20 +48,33 @@ process_eem <- function(eemlist, abslist, ex_clip = c(247,450),
                         interpolate=c(TRUE,TRUE,FALSE,FALSE), method=1,
                         cores=1, pathlength=1){
 
+  #collect parameters for readme, and to put into the following functions
+  pars <- rlang::enquos(ex_clip,em_clip, type, width,
+                        interpolate, method,
+                        cores, pathlength)
+  names(pars) <- c("ex_clip", "em_clip", "type", "width", "interpolate", "method", "cores", "pathlength")
+
   #perform processing steps
   eemlist <- subtract_blank(eem = eemlist)
-  eemlist <- remove_scattering(eemlist = eemlist, type = type, width=width,
-                               interpolate=interpolate, method=method,
-                               cores=cores)
-  eemlist <- ife_correct(eemlist = eemlist, abslist, pathlength = pathlength)
+  eemlist <- remove_scattering(eemlist = eemlist,
+                               type = rlang::eval_tidy(pars$type),
+                               width=rlang::eval_tidy(pars$width),
+                               interpolate=rlang::eval_tidy(pars$interpolate),
+                               method=rlang::eval_tidy(pars$method),
+                               cores=rlang::eval_tidy(pars$cores))
+  eemlist <- ife_correct(eemlist = eemlist, abslist, pathlength = rlang::eval_tidy(pars$pathlength))
   eemlist <- raman_normalize(eemlist = eemlist)
   eemlist <- correct_dilution(x = eemlist)
 
+  #TODO: (make new wrapper to incorporate readme)
   #clip to just the region you care about
   ex_rm <- unique(get_sample_info(eemlist, "ex")[get_sample_info(eemlist, "ex") < ex_clip[1] | get_sample_info(eemlist, "ex") > ex_clip[2]])
   em_rm <- unique(get_sample_info(eemlist, "em")[get_sample_info(eemlist, "em") < em_clip[1] | get_sample_info(eemlist, "em") > em_clip[2]])
 
   eemlist <- eemR::eem_cut(eemlist, ex=ex_rm, em=em_rm, exact=T)
+
+  #add to readme here
+  .write_readme_line("eems were cropped using the 'eemR::eem_cut' function", "eem_cut")
 
   return(eemlist)
 }

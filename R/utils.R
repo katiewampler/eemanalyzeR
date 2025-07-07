@@ -108,7 +108,7 @@
                    eem_ife_corrected=NA, eem_raman_normalized=NA,
                    eem_doc_normalized=NA, eem_dil_corrected=NA,
                    abs_dil_corrected=NA, abs_doc_normalized=NA,
-                   indices=NA)
+                   eem_cut=NA,indices=NA)
     assign("readme", readme, envir = .GlobalEnv)
   }
 
@@ -117,25 +117,36 @@
   time <- strftime(time, format="%Y-%m-%d %H:%M:%S")
   step <- paste0(time, ": ", text)
 
+  pars <- as.list(match.call(definition=sys.function(-1), call=sys.call(-1)))[-1]
+
   #get parameters used
-  default_par <- formals(sys.function(sys.parent()))
-  user_par <- as.list(match.call(definition = sys.function(-1),call=sys.call(-1))[-1])
-  pars <- utils::modifyList(default_par, user_par)
-  pars$text <- NULL #we don't need the text input
-  pars <- pars[lapply(pars,length)>0 & sapply(pars,function(x) x != "")] #remove empty list items
-  if(length(pars)>0){
-    pars <- paste("\t",paste0(names(pars), ": ", pars), collapse="\n")
-    pars <- paste0(paste("   function parameters:", pars, sep="\n"), "\n")
-  }else{pars <- ""}
+    fun <- sys.function(sys.parent())
+    call <- sys.call(sys.parent())
+    fmls <- formals(fun)
+    mc <- as.list(match.call(definition=fun, call=call))[-1]
+
+    # Combine call arguments and defaults
+    args <- fmls
+    for (nm in names(mc)) {  # skip function name
+      args[nm] <- mc[nm]
+    }
+
+
+    args <- paste("\t",paste0(names(args), ": ", args), collapse="\n")
+    args <- paste0(paste("   function parameters:", args, sep="\n"), "\n")
 
   if(append){
-    readme[slot] <- paste(readme[slot], step, pars, sep="\n")
-  }else{readme[slot] <- paste(step, pars, sep="\n")}
+    readme[slot] <- paste(readme[slot], step, args, sep="\n")
+  }else{readme[slot] <- paste(step, args, sep="\n")}
 
   assign("readme", readme, envir = .GlobalEnv)
 
 }
 
+.print_readme <- function(){
+  cat(paste(unlist(readme), collapse = "\n"))
+
+}
 #' Answer validation questions yes or no
 #'
 #' @importFrom rlang is_interactive
