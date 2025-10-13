@@ -82,8 +82,9 @@
 #' \link[eemanalyzeR]{get_indices}. Used to flag indices that warrant further examination to ensure they
 #' are accurate.
 #'
-#'@format A data.frame with 25 rows and 4 columns:
+#'@format A data.frame with 62 rows and 5 columns:
 #' \describe{
+#'   \item{index_method}{the index method used to calculate the index}
 #'   \item{index}{the name of the index metric calculated}
 #'   \item{low_val}{the minimum value expected for the index based on literature sources}
 #'   \item{high_val}{the maximum value expected for the index based on literature sources}

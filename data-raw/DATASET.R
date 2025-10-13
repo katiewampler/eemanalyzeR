@@ -1,7 +1,7 @@
 ## code to prepare `DATASET` dataset goes here
+library(pbapply)
 
-usethis::use_data(DATASET, overwrite = TRUE)
-
+#get full size example files ------
 downscale_eems <- function(file, factor=6){
   #downscale EEMs
   if(grepl("SEM|BEM", file)){
@@ -36,7 +36,6 @@ downscale_eems <- function(file, factor=6){
 
   }}
 
-#get full size example files
 files <- list.files("data-raw/fullsize data", pattern=".dat")
 
 #downscale and save
@@ -58,60 +57,124 @@ for(x in files){
   usethis::use_data(metadata, overwrite = T)
 
 
-  #average is too narrow??/ normalize to max??
-#code to create averaged blank
-  input_dir <- "data-raw/long term standards"
-  avg_blank <- function(input_dir){
-    blank_eems <- eem_dir_read(file.path(input_dir, "EEM/blanks"), pattern="blank")  #this takes a little while because there's a lot of samples
+#code to create long term tea and blanks -----
+  #pull files from Aqualog folder and put in raw data
+    dir <- "T:/Research/Aqualog_Data/2_PNNL_DOM"
+    dates <- list.files(dir, "[0-9]{4}_[0-9]{2}_[0-9]{2}")
+    output_dir <- "data-raw/long-term-standards/blanks"
+    get_blank_info <- function(file, output_dir){
+      #get info about samples and metadata
+        blk_files <- list.files(file.path(dir, file),"blk.*\\.dat|BLK.*\\.dat|Blk.*\\.dat", recursive = TRUE)
 
-    #make all the save wavelengths
-    blank_eems_rd <- staRdom::eem_red2smallest(blank_eems)
+        meta_name <- list.files(file.path(dir, file), "metadata.rds", recursive = TRUE, full.names = TRUE)
+        if(length(meta_name) > 0){
+          meta_file <- readRDS(meta_name)
 
-    #convert to raster to plot
-    flat_X <- lapply(lapply(blank_eems_rd, `[[`, 3), as.vector)
+          #get metadata just for blanks
+          meta_file <- meta_file[sapply(meta_file$data_identifier, function(x){any(grepl(x, blk_files))}),]
 
-    #get unique values, there's likely some duplicates
-    flat_X_unique <- flat_X[!duplicated(lapply(flat_X, sort))]
+          if(nrow(meta_file) > 0){
+            #make unique name based on folder name (if run morn/even blanks are replicated)
+            meta_file$long_term_name <- paste(file, meta_file$data_identifier, sep="_")
 
-    X_df <- do.call(cbind.data.frame, flat_X_unique)
-    colnames(X_df) <- paste0("blk_", 1:ncol(X_df))
-    X_df$val <- 1:nrow(X_df)
+            blk_names <- blk_files
+            for(x in 1:nrow(meta_file)){
+              blk_names <- gsub(meta_file$data_identifier[x], meta_file$long_term_name[x], blk_names)
+            }
 
-    X_df_long <- X_df %>% tidyr::pivot_longer(!val, values_to = "fluor", names_to="sample") #!!need to make flexible
+            blk_name <- basename(blk_names)
 
+            #copy files to new location
+            abs <- grepl("1_Absorbance", blk_files)
+            eem <- grepl("2_Blanks|3_Samples", blk_files)
 
-    ggplot2::ggplot(X_df_long, ggplot2::aes(x=val, y=log(fluor), group=sample), color="black") + ggplot2::geom_line() #visualize to check for outliers
+            file.copy(file.path(dir, file, blk_files[abs]), paste(output_dir, "abs", blk_name[abs], sep="/"), overwrite = TRUE)
+            file.copy(file.path(dir, file, blk_files[eem]), paste(output_dir, "eem", blk_name[eem], sep="/"), overwrite = TRUE)
 
-    #average across all eem's to get a average blank eem
-    eem_list <- lapply(blank_eems_rd, `[[`, 3)
-    eem_list <- lapply(eem_list, function(x) ifelse(x < 0, NA, x)) #remove negatives
-    avg_blank <- purrr::reduce(eem_list,`+`) / length(eem_list)
+            #write metadata
+            meta_file <- meta_file %>%
+              dplyr::select(analysis_date, data_identifier, replicate_no, integration_time_s, dilution, RSU_area_1s, long_term_name)
 
-    avg_blank_flat <- data.frame(val= 1:nrow(X_df), fluor=as.vector(avg_blank))
-    ggplot2::ggplot() + ggplot2::geom_line(data=X_df_long, ggplot2::aes(x=val, y=fluor, group=sample), color="black") +
-      ggplot2::geom_line(data=avg_blank_flat, ggplot2::aes(x=val, y=fluor), color="red") #visualize to check for outliers
+            write.csv(meta_file, file.path(output_dir, paste("metadata/", file, "_metadata.csv")), row.names = FALSE, quote = FALSE)
 
-    avg_blank <- list(file="/data-raw/long term standards/EEM/blanks/avg_blank.dat",
-                      sample = "average_blank",
-                      x = avg_blank,
-                      em = blank_eems_rd[[1]]$em,
-                      ex = blank_eems_rd[[1]]$ex,
-                      location = "data-raw")
+          }}
+    }
 
-    class(avg_blank) <- "eem"
+    pblapply(dates, get_blank_info, output_dir=output_dir)
 
-    staRdom::ggeem(avg_blank)
-    return(avg_blank)
+  #combine metadata and save
+    meta <- list.files(file.path(output_dir, "metadata"))
+    metadata <- lapply(meta, function(x){read.csv(file.path(output_dir, "metadata", x))}) %>% dplyr::bind_rows()
+    write.csv(metadata, file.path(output_dir, "merged-blk-metadata.csv"), row.names=FALSE)
 
-  }
+#do the same for the tea samples
+    #pull files from Aqualog folder and put in raw data
+    dir <- "T:/Research/Aqualog_Data/2_PNNL_DOM"
+    dates <- list.files(dir, "[0-9]{4}_[0-9]{2}_[0-9]{2}")
+    output_dir <- "data-raw/long-term-standards/tea-standards"
+    get_tea_info <- function(file, output_dir){
+      #get info about samples and metadata
+      tea_files <- list.files(file.path(dir, file),"postTea.*\\.dat|preTea.*\\.dat", recursive = TRUE)
 
-  longterm_blank <- avg_blank(input_dir)
+      meta_name <- list.files(file.path(dir, file), "metadata.rds", recursive = TRUE, full.names = TRUE)
+      if(length(meta_name) > 0){
+        meta_file <- readRDS(meta_name)
+
+        #get metadata just for blanks
+        meta_file <- meta_file[sapply(meta_file$data_identifier, function(x){any(grepl(x, tea_files))}),]
+
+        if(nrow(meta_file) > 0){
+          #make unique name based on folder name (if run morn/even blanks are replicated)
+          meta_file$long_term_name <- paste(file, meta_file$data_identifier, sep="_")
+
+          tea_names <- tea_files
+          for(x in 1:nrow(meta_file)){
+            tea_names <- gsub(meta_file$data_identifier[x], meta_file$long_term_name[x], tea_names)
+          }
+
+          tea_name <- basename(tea_names)
+
+          #copy files to new location
+          abs <- grepl("1_Absorbance", tea_files)
+          eem <- grepl("2_Blanks|3_Samples", tea_files)
+
+          file.copy(file.path(dir, file, tea_files[abs]), paste(output_dir, "abs", tea_name[abs], sep="/"), overwrite = TRUE)
+          file.copy(file.path(dir, file, tea_files[eem]), paste(output_dir, "eem", tea_name[eem], sep="/"), overwrite = TRUE)
+
+          #write metadata
+          meta_file <- meta_file %>%
+            dplyr::select(analysis_date, data_identifier, replicate_no, integration_time_s, dilution, RSU_area_1s, long_term_name)
+
+          write.csv(meta_file, file.path(output_dir, paste0("metadata/", file, "_metadata.csv")), row.names = FALSE, quote = FALSE)
+
+        }}
+    }
+
+    pblapply(dates, get_tea_info, output_dir=output_dir)
+
+    #combine metadata and save
+    meta <- list.files(file.path(output_dir, "metadata"))
+    metadata <- lapply(meta, function(x){read.csv(file.path(output_dir, "metadata", x))}) %>% dplyr::bind_rows()
+    write.csv(metadata, file.path(output_dir, "merged-tea-metadata.csv"), row.names=FALSE)
+
   usethis::use_data(longterm_blank, overwrite = T)
 
-  #save index ranges as data.frame
+#save index ranges as data.frame ------
+  make_na <- function(df){
+    df_fix <- df %>%
+      dplyr::mutate(dplyr::across(where(is.character), ~ dplyr::na_if(.x, "N/A"))) %>%
+      dplyr::mutate(dplyr::across(where(is.numeric), ~ dplyr::na_if(.x, -9999))) %>%
+      dplyr::mutate(dplyr::across(where(lubridate::is.POSIXct), ~ dplyr::na_if(.x, as.Date("9999-12-31 00:00:00")))) %>%
+      dplyr::mutate(dplyr::across(where(lubridate::is.Date), ~ dplyr::na_if(.x, as.Date("9999-12-31"))))
+
+    return(df_fix)
+  }
+
   indice_ranges <- read.csv("data-raw/indice-ranges.csv")
-  indice_ranges$low_val[indice_ranges$low_val == -9999] <- NA
-  indice_ranges$high_val[indice_ranges$high_val == -9999] <- NA
-  indice_ranges$sources[indice_ranges$sources == "N/A"] <- NA
+
+  #make long for easier use
+  indice_ranges <- indice_ranges %>% make_na() %>% pivot_longer(eemanalyzeR:eemR, names_to = "index_method", values_to="index") %>%
+    dplyr::select(index_method, index, low_val, high_val, sources)
+  indice_ranges <- indice_ranges[!is.na(indice_ranges$index),]
 
   usethis::use_data(indice_ranges, overwrite = T)

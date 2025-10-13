@@ -1,0 +1,4 @@
+analysis_date,data_identifier,replicate_no,integration_time_s,dilution,RSU_area_1s,long_term_name
+2023-06-21,BLK,1,5,1,1427.56427,2023_06_21_BLK
+2023-06-21,BLK,2,5,1,1427.56427,2023_06_21_BLK
+2023-06-21,BLK,3,5,1,1427.56427,2023_06_21_BLK

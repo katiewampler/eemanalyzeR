@@ -138,7 +138,9 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
       outside_range <- function(index){
         #if index is NA, return NA
         if(!is.data.frame(index)){return(index)}
-        index <- plyr::join(index, eemanalyzeR::indice_ranges, by="index")
+        ranges <- eemanalyzeR::indice_ranges %>% dplyr::filter(.data$index_method == .env$index_method)
+
+        index <- plyr::join(index, ranges, by="index")
         low <- as.numeric(index$value) < index$low_val
         low[is.na(low)] <- FALSE
         index$QAQC_flag[low] <- "VAL01"
@@ -185,12 +187,11 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
     #negative values
       indices <- lapply(indices, negative_flag)
 
-
     #missing data (no DOC): DOC_01
       indices <- lapply(indices, missing_doc_flag)
 
     #questionable, outside normal range
-      if(is.character(index_method) && index_method == "eemanalyzeR"){
+      if(is.character(index_method)){
         indices <- lapply(indices, outside_range)
 
       }
@@ -227,7 +228,7 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
         x$value_flag[x$value != -9999 & x$QAQC_flag != "N/A"] <- paste(signif(x$value[x$value != -9999 & x$QAQC_flag != "N/A"], 4),
                                                                                x$QAQC_flag[x$value != -9999 & x$QAQC_flag != "N/A"], sep="_")
 
-        x_wide <- tidyr::pivot_wider(x[,-c(4:5)], names_from="index", values_from="value_flag")
+        x_wide <- x %>% dplyr::select(-c(index_method, value, QAQC_flag)) %>% tidyr::pivot_wider(names_from="index", values_from="value_flag")
         return(x_wide)
 
       })
