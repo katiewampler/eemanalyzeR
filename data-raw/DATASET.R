@@ -72,6 +72,9 @@ for(x in files){
 
           #get metadata just for blanks
           meta_file <- meta_file[sapply(meta_file$data_identifier, function(x){any(grepl(x, blk_files))}),]
+          meta_file <- meta_file[meta_file$data_identifier != "BLK",] #remove any samples with JUST BLK I don't want to deal
+          meta_file <- meta_file[!(duplicated(meta_file$data_identifier) | duplicated(meta_file$data_identifier, fromLast = TRUE)), ]
+
 
           if(nrow(meta_file) > 0){
             #make unique name based on folder name (if run morn/even blanks are replicated)
@@ -79,7 +82,9 @@ for(x in files){
 
             blk_names <- blk_files
             for(x in 1:nrow(meta_file)){
-              blk_names <- gsub(meta_file$data_identifier[x], meta_file$long_term_name[x], blk_names)
+              match <- grepl(paste0(meta_file$data_identifier[x], "_[0-9]_[0-9]s"), blk_names)
+              blk_names[match] <- gsub(meta_file$data_identifier[x],
+                                       meta_file$long_term_name[x], blk_names[match])
             }
 
             blk_name <- basename(blk_names)
@@ -93,9 +98,9 @@ for(x in files){
 
             #write metadata
             meta_file <- meta_file %>%
-              dplyr::select(analysis_date, data_identifier, replicate_no, integration_time_s, dilution, RSU_area_1s, long_term_name)
+              dplyr::select(analysis_date, data_identifier, replicate_no, integration_time_s, dilution, RSU_area_1s, long_term_name) %>%unique()
 
-            write.csv(meta_file, file.path(output_dir, paste("metadata/", file, "_metadata.csv")), row.names = FALSE, quote = FALSE)
+            write.csv(meta_file, file.path(output_dir, paste0("metadata/", file, "_metadata.csv")), row.names = FALSE, quote = FALSE)
 
           }}
     }

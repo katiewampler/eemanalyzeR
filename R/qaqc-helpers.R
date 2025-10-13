@@ -11,6 +11,7 @@ get_MDL <- function(dir, pattern="BLK", type = "eem", output_dir=NULL){
 
     #get metadata for raman area
       blank_meta <- read.csv(file.path(dir, "merged-blk-metadata.csv"))
+      blank_meta$data_identifier <- blank_meta$long_term_name
 
       test <- add_metadata(blank_meta, blank_eems)
 

@@ -36,6 +36,7 @@ add_metadata <- function(meta, x){
   class_type <- class(x)
   names <- get_sample_info(x, "sample")
 
+  browser()
   meta_order <- data.frame(eem_pos = 1:length(names), meta_row=NA)
 
   .get_row_meta <- function(name, meta){
@@ -46,6 +47,11 @@ add_metadata <- function(meta, x){
   }
 
   meta_order <- sapply(names, .get_row_meta, meta) #get order of eems in metadata
+
+  #return error if more than one row
+  if(inherits(meta_order, "list")){
+    stop("samples matched more than one row in the metadata, please correct and rerun")
+  }
   names(meta_order) <- names
   #meta_order is the order of the eems where the number is the corresponding row of the metadata
 
