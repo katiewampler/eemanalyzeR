@@ -48,3 +48,15 @@
     expect_false(any(is.na(get_sample_info(eem_aug, "integration_time_s")))) #make sure these aren't NA
 
   })
+
+
+ test_that("metadata add works with names contining each other", {
+   #make contained names
+    meta <- eemanalyzeR::metadata
+    meta$data_identifier[2] <- "ExampleSample1"
+
+    example_eems[[3]]$sample <- gsub("TeaStd", "Sample1", example_eems[[3]]$sample)
+    example_eems[[4]]$sample <- gsub("TeaStd", "Sample1", example_eems[[4]]$sample)
+
+    expect_no_error(add_metadata(meta, example_eems))
+ })

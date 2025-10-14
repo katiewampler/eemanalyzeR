@@ -36,12 +36,17 @@ add_metadata <- function(meta, x){
   class_type <- class(x)
   names <- get_sample_info(x, "sample")
 
-  browser()
   meta_order <- data.frame(eem_pos = 1:length(names), meta_row=NA)
 
   .get_row_meta <- function(name, meta){
     name <- gsub("([\\(\\)\\-])", "\\\\\\1", name) #escape special characters
-    row <- which(sapply(gsub("([\\(\\)\\-])", "\\\\\\1", meta$data_identifier), grep, name, fixed=T) == 1)
+    meta$data_identifier <- gsub("([\\(\\)\\-])", "\\\\\\1", meta$data_identifier)
+
+    row <- which(sapply(meta$data_identifier, grep, name, fixed=T) == 1)
+
+    if(length(row) > 1){
+      row <- row[which.max(nchar(meta$data_identifier)[row])]
+    }
     if(length(row) == 0){row <- NA}
     return(row)
   }
