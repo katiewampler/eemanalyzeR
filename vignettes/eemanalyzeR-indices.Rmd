@@ -2,7 +2,7 @@
 title: "Calculating Indices with eemanalyzeR Method"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{eemanalyzeR-indices}
+  %\VignetteIndexEntry{Calculating Indices with eemanalyzeR Method}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

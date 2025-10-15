@@ -4,7 +4,7 @@
 \alias{get_fluorescence}
 \title{Get fluorescence within a specified range}
 \usage{
-get_fluorescence(eem, ex, em, stat = "max", norm = FALSE, SNR_method = "sqrt")
+get_fluorescence(eem, ex, em, stat = "max", norm = FALSE)
 }
 \arguments{
 \item{eem}{an \code{eem} or \code{eemlist} object containing EEM's data}
@@ -16,8 +16,6 @@ get_fluorescence(eem, ex, em, stat = "max", norm = FALSE, SNR_method = "sqrt")
 \item{stat}{either "max" to get the maximum value within the specified range or "sum" to get the sum across the specified range}
 
 \item{norm}{logical, if TRUE will divide index value by the DOC concentration. Note that metadata must be added if TRUE using \link[eemanalyzeR]{add_metadata} or NA will be returned.}
-
-\item{SNR_method}{method used to find signal to noise ratio see \link[eemanalyzeR]{get_SNR} for more details.}
 }
 \value{
 A vector of fluorescence values. If a value cannot be extracted, NA will be returned.

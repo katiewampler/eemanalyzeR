@@ -138,7 +138,7 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
       outside_range <- function(index){
         #if index is NA, return NA
         if(!is.data.frame(index)){return(index)}
-        ranges <- eemanalyzeR::indice_ranges %>% dplyr::filter(.data$index_method == .env$index_method)
+        ranges <- eemanalyzeR::indice_ranges[eemanalyzeR::indice_ranges$index_method == index_method,]
 
         index <- plyr::join(index, ranges, by="index")
         low <- as.numeric(index$value) < index$low_val
@@ -149,7 +149,7 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
         high[is.na(high)] <- FALSE
         index$QAQC_flag[high] <- "VAL02"
 
-        index <- index %>% dplyr::select(-any_of(c("low_val", "high_val", "sources")))
+        index <- index %>% dplyr::select(-any_of(c("low_val", "high_val", "sources", "index_method")))
 
         return(index)
       }
@@ -162,27 +162,12 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
         index$value[infinite] <- NA
         return(index)
       }
-      #check for blanks
-      no_snr <- function(index){
-        if(!is.data.frame(index)){return(index)}
-        no_blank <- get_sample_info(eemlist, "sample")[!.blk_added(eemlist)]
-        flag <- !is.na(index$QAQC_flag)
-
-        index$QAQC_flag[index$sample_name %in% no_blank & flag == FALSE] <- "NOISE02"
-        index$QAQC_flag[index$sample_name %in% no_blank & flag == TRUE] <-
-          paste(index$QAQC_flag[index$sample_name %in% no_blank & flag == TRUE], "NOISE02", sep=";")
-
-        return(index)
-      }
 
     #inf values
     indices <- lapply(indices, infinite_flag)
 
     #missing data (no wavelengths)
       indices <- lapply(indices, move_flags)
-
-    #if ratios or values are below noise
-      indices$eem_index <- no_snr(indices$eem_index)
 
     #negative values
       indices <- lapply(indices, negative_flag)
@@ -228,7 +213,7 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
         x$value_flag[x$value != -9999 & x$QAQC_flag != "N/A"] <- paste(signif(x$value[x$value != -9999 & x$QAQC_flag != "N/A"], 4),
                                                                                x$QAQC_flag[x$value != -9999 & x$QAQC_flag != "N/A"], sep="_")
 
-        x_wide <- x %>% dplyr::select(-c(index_method, value, QAQC_flag)) %>% tidyr::pivot_wider(names_from="index", values_from="value_flag")
+        x_wide <- x %>% dplyr::select(-any_of(c("value", "QAQC_flag"))) %>% tidyr::pivot_wider(names_from="index", values_from="value_flag")
         return(x_wide)
 
       })

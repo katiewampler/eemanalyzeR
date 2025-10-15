@@ -9,7 +9,6 @@
 #' @param em a vector of emission wavelengths
 #' @param stat either "max" to get the maximum value within the specified range or "sum" to get the sum across the specified range
 #' @param norm logical, if TRUE will divide index value by the DOC concentration. Note that metadata must be added if TRUE using \link[eemanalyzeR]{add_metadata} or NA will be returned.
-#' @param SNR_method method used to find signal to noise ratio see \link[eemanalyzeR]{get_SNR} for more details.
 #' @return A vector of fluorescence values. If a value cannot be extracted, NA will be returned.
 #' @export
 #'
@@ -22,12 +21,12 @@
 #' pA_docnorm <- get_fluorescence(eemlist, ex=250:260, em=380:480, norm=TRUE)
 #'
 #'
-get_fluorescence <- function(eem, ex, em, stat="max", norm=FALSE, SNR_method="sqrt"){
+get_fluorescence <- function(eem, ex, em, stat="max", norm=FALSE){
   stopifnot(.is_eem(eem) | .is_eemlist(eem), is.numeric(ex), is.numeric(em), stat %in% c("max","sum"), is.logical(norm))
 
   #apply over eemlist
   if(.is_eemlist(eem)){
-    res <- sapply(eem, get_fluorescence, ex, em, stat, norm, SNR_method)
+    res <- sapply(eem, get_fluorescence, ex, em, stat, norm)
     return(res)
   }
 
@@ -43,12 +42,6 @@ get_fluorescence <- function(eem, ex, em, stat="max", norm=FALSE, SNR_method="sq
     res <- max(int_res, na.rm=TRUE)
   }else if(stat == "sum"){
     res <- sum(int_res, na.rm = TRUE)
-  }
-
-  #check SNR
-  if(.blk_added(eem)){
-    snr <- get_SNR(eem, method=SNR_method)
-    res <- ifelse(res < snr, "NOISE01", res)
   }
 
   #normalize by DOC if requested

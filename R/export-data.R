@@ -61,6 +61,9 @@ export_data <- function(eemlist, abslist, filename, output_dir=NULL,
       dir.create(file.path(output_dir, filename))
     }
 
+  #TODO: replace with package envir
+    readme <- get("readme", envir = .GlobalEnv)
+
   #convert everything to list and save
     output <- list(eemlist=eemlist, abslist=abslist,
                    readme=readme, metadata=meta,

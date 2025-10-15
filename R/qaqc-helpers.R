@@ -1,6 +1,6 @@
 #TODO: where to save
 
-get_MDL <- function(dir, pattern="BLK", type = "eem", output_dir=NULL){
+get_mdl <- function(dir, pattern="BLK", type = "eem", output_dir=NULL){
   stopifnot(type %in% c("eem", "abs"), dir.exists(dir))
 
   if(is.null(output_dir)){output_dir <- tempdir()}
@@ -44,13 +44,13 @@ get_MDL <- function(dir, pattern="BLK", type = "eem", output_dir=NULL){
       colnames(blank_abs_df) <- c("wavelength", "abs")
 
     #get mean and sd across all wavelengths
-      abs_mdls <- blank_abs_df %>% dplyr::group_by(wavelength) %>% dplyr::filter(abs < 5) %>%
+      abs_mdls <- blank_abs_df %>% dplyr::group_by(.data$wavelength) %>% dplyr::filter(abs < 5) %>%
         dplyr::summarise(mean = mean(abs, na.rm = TRUE),
-                         sdev = sd(abs, na.rm = TRUE)) %>% mutate(mdl = (sdev * 3 + mean)) %>%
-        dplyr::select(wavelength, mdl)
+                         sdev = sd(abs, na.rm = TRUE)) %>% mutate(mdl = (.data$sdev * 3 + .data$mean)) %>%
+        dplyr::select(.data$wavelength, .data$mdl)
 
     #visualize (save)
-      ggplot(abs_mdls, aes(x=wavelength, y=mdl)) + ggplot2::geom_line()
+      ggplot(abs_mdls, aes(x=.data$wavelength, y=.data$mdl)) + ggplot2::geom_line()
 
 
     #make some metadata about how generated

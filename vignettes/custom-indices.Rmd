@@ -2,7 +2,7 @@
 title: "Creating a Custom Function to Calculate Indices"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{custom-indices}
+  %\VignetteIndexEntry{Creating a Custom Function to Calculate Indices}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -24,27 +24,27 @@ To maximum flexibility in calculating indices, we've enabled the [get_indices](.
 
 ## Function Requirements
 
-1.  The function needs to have the following arguments:
-    a.  eemlist: an eemlist object containing EEM's data.
-    b.  abslist: an abslist object containing absorbance data.
-    c.  cuvle: the cuvette (path) length in cm.
-2.  The function must return a list with the following items:
-    a.  abs_index: the indices calculated from the absorbance data
-    b.  eem_index: the indices calculated from the EEMs data
+1.  **The function needs to have the following arguments:**
+    a.  `eemlist`: an eemlist object containing EEM's data.
+    b.  `abslist`: an abslist object containing absorbance data.
+    c.  `cuvle`: the cuvette (path) length in cm.
+2.  **The function must return a list with the following items:**
+    a.  `abs_index`: the indices calculated from the absorbance data
+    b.  `eem_index`: the indices calculated from the EEMs data
 
-abs_index and eem_index should both be a data.frame with the following columns:
+`abs_index` and `eem_index` should both be a data.frame with the following columns:
 
--   sample_name: a character, the name of the sample
+-   `sample_name`: a character, the name of the sample
 
--   meta_name: a character, the name of the sample in the metadata if metadata has been added, otherwise the sample name again
+-   `meta_name`: a character, the name of the sample in the metadata if metadata has been added, otherwise the sample name again
 
--   index: a character, the name of the index being reported
+-   `index`: a character, the name of the index being reported
 
--   value: the value of the index, also accepts flag values (see details below)
+-   `value`: the value of the index, also accepts flag values (see details below)
 
 ## Helper Functions
 
-The eemanalyzeR package contains a number of functions helpful in creating custom indices.
+**The eemanalyzeR package contains a number of functions helpful in creating custom indices.**
 
 To get the absorbance values at a certain wavelength the [get_absorbance](../html/get-absorbance.html) function can be used. This function can additionally provide specific absorbance (like SUVA 254).
 
@@ -75,7 +75,8 @@ pA_sum <- get_fluorescence(example_eems, ex=250:260, em=380:480, stat="sum")
 pA_sum
 ```
 
-Lastly, we have a function for getting spectral slopes: [get_abs_slope](../html/get-abs-slope.html) which will convert the absorbance to absorption, interpolate the data if needed, and return the spectral slope within a wavelength range. 
+Lastly, we have a function for getting spectral slopes: [get_abs_slope](../html/get-abs-slope.html) which will convert the absorbance to absorption, interpolate the data if needed, and return the spectral slope within a wavelength range.
+
 ```{r}
 S275_295 <- get_abs_slope(example_absorbance, lim=c(275,295))
 
@@ -95,7 +96,7 @@ There are a few rules to follow with flags:
 
 ### Helper Functions
 
-There are few helper functions within the eemanalyzeR package that will provide some common flags.
+There are few helper functions within the **eemanalyzeR** package that will provide some common flags.
 
 First is the [get_ratios](../html/get-ratios.html) function. This can be helpful when calculating things like peak ratios, where a missing value will result in an `NA` or a value of 0 in the denominator will result in an infinite value.
 
@@ -161,7 +162,7 @@ Once we've gotten the values and the flags, the data needs to be formatted in a 
 
 ## Example 1
 
-Alright, now that we've reviewed all the helper functions and the requirements for the custom function let's do an example. Let's create a custom function to calculate the maximum fluorescence for the five regions defined in Chen et al. 2003:
+Alright, now that we've reviewed all the helper functions and the requirements for the custom function let's do an example. Let's create a custom function to calculate the maximum fluorescence for the five regions defined in **Chen et al. 2003:**
 
 ```{r echo=FALSE, include=TRUE}
 indices <- data.frame(region=c("I", "II", "III", "IV", "V"), 
@@ -188,7 +189,8 @@ We can use the [get_fluorescence](../html/get-fluorescence.html) helper function
 get_fluorescence(example_eems, chen_regions[[1]]$ex, chen_regions[[1]]$em, stat="max")
 
 ```
-To get all the indices let's use the lapply function. 
+
+To get all the indices let's use the lapply function.
 
 ```{r}
 results <- lapply(names(chen_regions), function(region_name) {
@@ -219,14 +221,15 @@ results <- lapply(names(chen_regions), function(region_name){
 results <- do.call(rbind, results)
 ```
 
-
 Lastly, we just need to return the results as a list. Since we don't have any absorbance data we'll just make it NA.
+
 ```{r}
   list(abs_index = NA,
        eem_index=results)
 ```
 
-Great, that all looks good, now we just need to combine all that code to a custom function. 
+Great, that all looks good, now we just need to combine all that code to a custom function.
+
 ```{r}
 chen2003 <- function(eemlist, abslist, cuvle=1){
   #making sure eemlist and abslist are correct objects
@@ -262,15 +265,17 @@ chen2003 <- function(eemlist, abslist, cuvle=1){
 }
 ```
 
-Now let's test our custom function with the [get_indices](../html/get-indices.html) function. Note that we get a warning about the indices because the EEMs data hasn't gone through any processing steps. 
+Now let's test our custom function with the [get_indices](../html/get-indices.html) function. Note that we get a warning about the indices because the EEMs data hasn't gone through any processing steps.
+
 ```{r}
 indices <- get_indices(example_eems, example_absorbance, index_method = chen2003, return = "wide")
 
 indices$eem_index
 ```
 
-## Example 2 
-The last example only used fluorescence data. Let's create another custom function focused on absorbance indices. We'll create a function to calculate the indices used in Erlandsson et al. 2012: 
+## Example 2
+
+The last example only used fluorescence data. Let's create another custom function focused on absorbance indices. We'll create a function to calculate the indices used in **Erlandsson et al. 2012:**
 
 ```{r echo=FALSE, include=TRUE}
 indices <- data.frame(index=c("a254", "a420", "a220_a254", "a250_a364", "a300_a400",
@@ -298,13 +303,14 @@ erlandsson_index <- list(a254=254,
                          SR=c(275:295, 350:400))
 ```
 
-We can use the [get_absorbance](../html/get-absorbance.html) helper function to calculate the absorbance at 254 and 420. For a single wavelength that looks like: 
+We can use the [get_absorbance](../html/get-absorbance.html) helper function to calculate the absorbance at 254 and 420. For a single wavelength that looks like:
 
 ```{r}
 a254 <- get_absorbance(example_absorbance, wl=erlandsson_index[[1]])
 a254
 
 ```
+
 Let's use lapply to get the absorbance, add any flags, and format it correctly. We'll use `do.call` to bind all the lists of indices together.
 
 ```{r}
@@ -326,7 +332,6 @@ abs_data <- lapply(names(erlandsson_index[1:2]), function(index_name){
 abs_data <- do.call(rbind, abs_data)
 ```
 
-
 Next lets get the ratios, we can still use the [get_absorbance](../html/get-absorbance.html) helper function to get the absorbance at the wavelengths, and then use the [get_ratios](../html/get-ratios.html) helper function to get the ratio with any flags. In the case below, we don't have absorbance at 220 nm, so we get flags of DATA01
 
 ```{r}
@@ -337,7 +342,7 @@ a220_a254
 
 ```
 
-Since we're getting multiple different sets of ratios, let's use lapply to get all of the ratios at once. 
+Since we're getting multiple different sets of ratios, let's use lapply to get all of the ratios at once.
 
 ```{r}
 ratios <- lapply(names(erlandsson_index[3:5]), function(index_name){
@@ -350,7 +355,7 @@ ratios <- lapply(names(erlandsson_index[3:5]), function(index_name){
      })
 ```
 
-While we're calculating each index, let's also use the [flag_missing](../html/flag-missing.html) function to see if there's any data missing. Lastly, we'll use the [format_index](../html/format-index.html) function to make sure everything is correctly formatted. We'll use `do.call` to bind all the lists of indices together. 
+While we're calculating each index, let's also use the [flag_missing](../html/flag-missing.html) function to see if there's any data missing. Lastly, we'll use the [format_index](../html/format-index.html) function to make sure everything is correctly formatted. We'll use `do.call` to bind all the lists of indices together.
 
 ```{r}
 ratios <- lapply(names(erlandsson_index[3:5]), function(index_name){
@@ -373,7 +378,8 @@ ratios <- lapply(names(erlandsson_index[3:5]), function(index_name){
 ratios <- do.call(rbind, ratios)
 ```
 
-Lastly we need to get the spectral slopes and spectral ratio. For these we'll use the [get_abs_slope](../html/get-abs-slope.html) function. 
+Lastly we need to get the spectral slopes and spectral ratio. For these we'll use the [get_abs_slope](../html/get-abs-slope.html) function.
+
 ```{r}
 index <- "S275_295"
 vals <- get_abs_slope(example_absorbance, c(275,295))
@@ -387,8 +393,8 @@ SR <- format_index(example_absorbance, index, vals, flags)
 
 ```
 
-
 Lastly, we just need to combine all the indices into a data.frame and return the results as a list using another `do.call`. Since we don't have any EEMs data we'll just make it NA.
+
 ```{r}
  results <- do.call(rbind, list(abs_data, ratios, S275_295, SR))
 
@@ -396,7 +402,8 @@ Lastly, we just need to combine all the indices into a data.frame and return the
        eem_index=NA)
 ```
 
-Great, that all looks good, now we just need to combine all that code to a custom function. 
+Great, that all looks good, now we just need to combine all that code to a custom function.
+
 ```{r}
 erlandsson2012 <- function(eemlist, abslist, cuvle=1){
   #making sure eemlist and abslist are correct objects
@@ -468,17 +475,16 @@ erlandsson2012 <- function(eemlist, abslist, cuvle=1){
 }
 ```
 
-Now let's test our custom function with the [get_indices](../html/get-indices.html) function. Once again note that we get a warning about the indices because the EEMs data hasn't gone through any processing steps.  
+Now let's test our custom function with the [get_indices](../html/get-indices.html) function. Once again note that we get a warning about the indices because the EEMs data hasn't gone through any processing steps.
+
 ```{r}
 indices <- get_indices(example_eems, example_absorbance, index_method = erlandsson2012, return="wide")
 
 indices$abs_index
 ```
 
-
 ## References
 
-Chen, W., Westerhoff, P., Leenheer, J. A., & Booksh, K. (2003). Fluorescence excitation-emission matrix regional integration to quantify spectra for dissolved organic matter. Environmental Science & Technology, 37(24), 5701–5710. <https://doi.org/10.1021/es034354c> 
+Chen, W., Westerhoff, P., Leenheer, J. A., & Booksh, K. (2003). Fluorescence excitation-emission matrix regional integration to quantify spectra for dissolved organic matter. Environmental Science & Technology, 37(24), 5701–5710. <https://doi.org/10.1021/es034354c>
 
 Erlandsson, M., N. Futter, M., N. Kothawala, D., & J. Köhler, S. (2012). Variability in spectral absorbance metrics across boreal lake waters. Journal of Environmental Monitoring, 14(10), 2643-2652. <https://doi.org/10.1039/C2EM30266G>
-
