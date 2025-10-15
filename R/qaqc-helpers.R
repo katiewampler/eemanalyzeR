@@ -13,16 +13,21 @@ get_MDL <- function(dir, pattern="BLK", type = "eem", output_dir=NULL){
       blank_meta <- read.csv(file.path(dir, "merged-blk-metadata.csv"))
       blank_meta$data_identifier <- blank_meta$long_term_name
 
-      test <- add_metadata(blank_meta, blank_eems)
+      blank_eems <- add_metadata(blank_meta, blank_eems)
 
     #blank correct blanks
-      add_blanks(blank_meta)
+      get_sample_info(blank_eems, "sample") #remove _lb
+      blank_eems <- add_blanks(blank_eems, validate = FALSE, pattern="blank")
 
     #blank subtract
+      blank_eems <- subtract_blank(blank_eems)
 
     #raman normalize
+      blank_eems <- raman_normalize(blank_eems)
 
     #get mdl from data
+
+
 
     #save plot
 
