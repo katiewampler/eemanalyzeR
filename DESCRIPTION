@@ -22,7 +22,8 @@ Suggests:
     knitr,
     rmarkdown,
     spelling, 
-    testthat
+    testthat, 
+    withr
 VignetteBuilder: knitr
 Language: en-US
 Imports: 
@@ -40,6 +41,7 @@ Imports:
     plyr,
     pracma,
     purrr,
+    rappdirs,
     readxl,
     rlang,
     staRdom,

@@ -53,7 +53,6 @@ Gironde
 Guilhe
 HIX
 Horiba
-Horiba's
 Huguet
 Humic
 Humification
@@ -67,6 +66,7 @@ Lawaetz
 Leenheer
 Limnology
 Loiselle
+MDL
 Marcarelli
 Markager
 Massicotte
@@ -96,7 +96,6 @@ Rhoades
 Ritchie
 Rossi
 Rostad
-SNR
 SRMtea
 SVA
 Saccomandi
@@ -129,14 +128,12 @@ boreal
 chromophoric
 csv
 cuvette
-cuvle
 diagenetically
 doi
 eem
 eemR
 eemlist
 eems
-electro
 et
 fi
 fluorometer
@@ -148,6 +145,7 @@ https
 humic
 humification
 lapply
+mdl
 mgL
 microbially
 microplastics
@@ -185,7 +183,6 @@ sd
 sdmax
 sdmin
 snowmelt
-spectrofluorometers
 staRdom
 tibble
 tyrosine

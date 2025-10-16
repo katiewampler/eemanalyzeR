@@ -1,22 +1,75 @@
-#TODO: where to save
-
-get_mdl <- function(dir, pattern="BLK", type = "eem", output_dir=NULL){
+#' Calculate method detection limits
+#'
+#' The method detection limit (MDL) is the signal limit that we can reliably have confidence
+#' that the result is greater than zero and distinguishable from blanks. In this case the MDL
+#' is calculated based on the method proposed by Hansen et al. (2018); three times the standard
+#' deviation plus the mean of the long-term blank.
+#'
+#' @param dir path to folder containing long term EEMs and/or absorbance files
+#' @param meta_name name of metadata file. optional if metadata is only xlsx or csv file in input_dir
+#' if not specified function will attempt to load any xlsx or csv file in directory and return an error if there is more than one
+#' @param sheet name of sheet containing metadata. only required if metadata isn't the first sheet
+#' @param pattern optional. a character string containing a \code{\link[base]{regular expression}}
+#' to be matched to the files in input_dir.
+#' only files matching the pattern will be loaded.
+#' @param type which MDL to calculate: either `eem` or `abs`
+#' @param recursive logical. should the function recurse into directories?
+#' @param output_dir the location to save the mdl file to, default is a user-specific data directory (\link[rappdirs]{user_data_dir}). If
+#' FALSE will return the MDL instead of saving.
+#'
+#' @returns
+#' - If output_dir is FALSE, returns an `eem` or `abs` object containing the MDL values.
+#' - Otherwise it saves a .RDS file containing the MDL data formatted as either an `eem` or `abs` object to the specified output_dir.
+#' @md
+#' @export
+#'
+#' @details
+#' To calculate the MDL you need:
+#'
+#' - A directory containing analytical blanks with their associated instrument blanks (less than 20 will prompt a warning)
+#'    - Note: sample names must be unique
+#'
+#' - Metadata for the blanks including (at a minimum) the integration time and raman area in a single file,
+#' formatted as a metadata file (see \link[eemanalyzeR]{metadata})
+#'
+#'
+#' @source
+#' Hansen, A. M., Fleck, J., Kraus, T. E. C., Downing, B. D., von Dessonneck, T., & Bergamaschi, B. (2018).
+#' Procedures for using the Horiba Scientific Aqualog® fluorometer to measure absorbance and fluorescence from dissolved organic matter
+#' (USGS Numbered Series No. 2018-1096). Procedures for using the Horiba Scientific Aqualog® fluorometer to measure absorbance and fluorescence
+#' from dissolved organic matter (Vol. 2018-1096). Reston, VA: U.S. Geological Survey. \url{https://doi.org/10.3133/ofr20181096}
+#'
+#' @examples
+#' eem_mdl <- get_mdl(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
+#' meta_name="longtermblank-metadata.csv", pattern = "longtermblank",
+#' type="eem", output_dir = FALSE)
+#'
+#' plot_eem(eem_mdl)
+#'
+get_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK", type = "eem", recursive=FALSE, output_dir=NULL){
   stopifnot(type %in% c("eem", "abs"), dir.exists(dir))
 
-  if(is.null(output_dir)){output_dir <- rappdirs::user_data_dir()}
+  #set up file structure for saving mdl data
+    if(is.null(output_dir)){output_dir <- file.path(rappdirs::user_data_dir(appname = "eemanalyzeR"), "qaqc-stds")}
+    if(output_dir != FALSE){dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)}
+
+  #get metadata
+    blank_meta <- meta_read(dir, name=meta_name, sheet=sheet, validate = FALSE)
+
+  #get all blanks in directory with instrument blanks
+    if(type == "eem"){blank <- eem_dir_read(dir, pattern=pattern, recursive=recursive)}
+    if(type == "abs"){blank <- abs_dir_read(dir, pattern=pattern, recursive=recursive)}
+
+  #check number of samples
+    n_samps <- length(blank)/2
+    if(n_samps < 20){warning("Calculating MDL based on less than 20 samples, MDL may be unreliable")}
+
+  #add metadata
+    blank <- add_metadata(blank_meta, blank)
 
   if(type == "eem"){
-    #get all blanks in directory with instrument blanks
-      blank_eems <- eem_dir_read(file.path(dir, "eem"), pattern=pattern)
-
-    #get metadata for raman area
-      blank_meta <- read.csv(file.path(dir, "merged-blk-metadata.csv"))
-      blank_meta$data_identifier <- blank_meta$long_term_name
-
-      blank_eems <- add_metadata(blank_meta, blank_eems)
-
     #blank correct blanks
-      blank_eems <- add_blanks(blank_eems, validate = FALSE, pattern="blank")
+      blank_eems <- add_blanks(blank, validate = FALSE, pattern="BEM")
 
     #blank subtract
       blank_eems <- subtract_blank(blank_eems)
@@ -34,13 +87,9 @@ get_mdl <- function(dir, pattern="BLK", type = "eem", output_dir=NULL){
       }
       blank_df <- lapply(blank_eems, eem_to_df) %>% dplyr::bind_rows() %>%
         dplyr::group_by(.data$ex, .data$em) %>%
-        dplyr::summarise(mean = mean(fluor, na.rm = TRUE), sdev = sd(fluor, na.rm = TRUE)) %>%
+        dplyr::summarise(mean = mean(.data$fluor, na.rm = TRUE), sdev = sd(.data$fluor, na.rm = TRUE)) %>%
         mutate(mdl = (.data$sdev * 3 + .data$mean)) %>%
         dplyr::select("ex", "em", "mdl")
-
-    #save plot
-      ggplot(blank_df %>% dplyr::filter(mdl < 0.4), aes(x=ex, y=em, fill=mdl)) + ggplot2::geom_tile() +
-        labs(title = "long-term mdl plot (values above 0.4 filtered out")
 
     #turn into a eem object
       dates <- get_sample_info(blank_eems, "analysis_date")
@@ -61,27 +110,24 @@ get_mdl <- function(dir, pattern="BLK", type = "eem", output_dir=NULL){
                                         min(dates, na.rm=TRUE), " to ", max(dates, na.rm=TRUE),
                                         ". MDL calcuated as the standard devation x 3 + mean of the long term blank-corrected and raman-normalized, analytical blanks.",
                                         "the location description is the directory where the long-term blanks came from."))
-      class(mdl_eem) <- "eem"
 
+      #ensure correct attributes
+        mostattributes(mdl_eem) <- attributes(blank_eems[[1]])
+        names(mdl_eem) <- names(blank_eems[[1]])[-c(15:16)]
 
-      #start of code to cache mdl data
-      path <- file.path(rappdirs::user_data_dir(appname = "eemanalyzeR"))
-      dir.create(path, showWarnings = FALSE, recursive = TRUE)
+      #cache mdl data
+      if(output_dir != FALSE){
+        saveRDS(mdl_eem, file.path(output_dir, "eem-mdl.Rds"))
+      }else{
+        return(mdl_eem)
+      }
+
 
   }
 
   if(type == "abs"){
-    #load all the blank absorbance
-      blank_abs <- abs_dir_read(file.path(dir, "abs"), pattern=pattern)
-
-    #get metadata
-      blank_meta <- read.csv(file.path(dir, "merged-blk-metadata.csv"))
-      blank_meta$data_identifier <- blank_meta$long_term_name
-
-      blank_abs <- add_metadata(blank_meta, blank_abs)
-
     #make a giant df
-      blank_abs_df <- blank_abs %>% purrr::map(function(x){as.data.frame(x[["data"]])}) %>% dplyr::bind_rows()
+      blank_abs_df <- blank %>% purrr::map(function(x){as.data.frame(x[["data"]])}) %>% dplyr::bind_rows()
       colnames(blank_abs_df) <- c("wavelength", "abs")
 
     #get mean and sd across all wavelengths
@@ -90,11 +136,8 @@ get_mdl <- function(dir, pattern="BLK", type = "eem", output_dir=NULL){
                          sdev = sd(abs, na.rm = TRUE)) %>% mutate(mdl = (.data$sdev * 3 + .data$mean)) %>%
         dplyr::select("wavelength", "mdl")
 
-    #visualize (save)
-      ggplot(abs_mdls, aes(x=.data$wavelength, y=.data$mdl)) + ggplot2::geom_line()
-
     #turn into a abs object
-      dates <- get_sample_info(blank_abs, "analysis_date")
+      dates <- get_sample_info(blank, "analysis_date")
       mdl_abs <- list(file= NA,
                       sample="long-term-mdl",
                       n = length(unique(blank_abs_df$wavelength)),
@@ -105,10 +148,21 @@ get_mdl <- function(dir, pattern="BLK", type = "eem", output_dir=NULL){
                       analysis_date = paste(min(dates, na.rm=TRUE), max(dates, na.rm=TRUE), sep=":"),
                       description = "long-term method detection limit for absorbance",
                       doc_mgL = NA,
-                      notes=paste0("long-term method detection limit (MDL) for absorbance samples based on ", length(blank_eems), " samples collected from ",
+                      notes=paste0("long-term method detection limit (MDL) for absorbance samples based on ", length(blank), " samples collected from ",
                                    min(dates, na.rm=TRUE), " to ", max(dates, na.rm=TRUE),
                                    ". MDL calcuated as the standard devation x 3 + mean of the long term blank-corrected and raman-normalized, analytical blanks.",
                                    "the location description is the directory where the long-term blanks came from."))
-      class(mdl_abs) <- "abs"
+
+    #ensure correct attributes
+      mostattributes(mdl_abs) <- attributes(blank[[1]])
+      names(mdl_abs) <- names(blank[[1]])
+
+      #cache mdl data
+      if(output_dir != FALSE){
+        saveRDS(mdl_abs, file.path(output_dir, "abs-mdl.Rds"))
+      }else{
+        return(mdl_abs)
+      }
+
   }
 }

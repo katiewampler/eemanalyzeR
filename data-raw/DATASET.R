@@ -4,8 +4,8 @@ library(pbapply)
 #get full size example files ------
 downscale_eems <- function(file, factor=6){
   #downscale EEMs
-  if(grepl("SEM|BEM", file)){
-    data <- readLines(file.path("data-raw/fullsize data",file)) #read in file
+  if(grepl("SEM|BEM|eem", file)){
+    data <- readLines(file) #read in file
 
     line1 <- unlist(stringr::str_extract_all(data[1], "-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?")) #removes tabs and wavelength
     line1 <- line1[seq(1, length(line1), 6)]
@@ -25,18 +25,18 @@ downscale_eems <- function(file, factor=6){
     }
 
     data <- c(line1, line2)
-    readr::write_lines(data, file.path("data-raw",file))
+    readr::write_lines(data, file.path("data-raw",basename(file)))
   }
 
   #downscale absorbance
-  if(grepl("ABS", file)){
-    data <- readLines(file.path("data-raw/fullsize data",file)) #read in file
+  if(grepl("ABS|abs", file)){
+    data <- readLines(file) #read in file
     data <- data[seq(1, length(data), 6)]
-    readr::write_lines(data, file.path("data-raw",file))
+    readr::write_lines(data, file.path("data-raw",basename(file)))
 
   }}
 
-files <- list.files("data-raw/fullsize data", pattern=".dat")
+files <- list.files("data-raw/fullsize data", pattern=".dat", full.names = TRUE)
 
 #downscale and save
 for(x in files){
@@ -97,8 +97,8 @@ for(x in files){
             file.copy(file.path(dir, file, blk_files[eem]), paste(output_dir, "eem", blk_name[eem], sep="/"), overwrite = TRUE)
 
             #write metadata
-            meta_file <- meta_file %>%
-              dplyr::select(analysis_date, data_identifier, replicate_no, integration_time_s, dilution, RSU_area_1s, long_term_name) %>%unique()
+            meta_file <- meta_file %>% mutate(data_identifier = long_term_name) %>%
+              dplyr::select(analysis_date, data_identifier, replicate_no, integration_time_s, dilution, RSU_area_1s) %>%unique()
 
             write.csv(meta_file, file.path(output_dir, paste0("metadata/", file, "_metadata.csv")), row.names = FALSE, quote = FALSE)
 
@@ -111,6 +111,28 @@ for(x in files){
     meta <- list.files(file.path(output_dir, "metadata"))
     metadata <- lapply(meta, function(x){read.csv(file.path(output_dir, "metadata", x))}) %>% dplyr::bind_rows()
     write.csv(metadata, file.path(output_dir, "merged-blk-metadata.csv"), row.names=FALSE)
+
+  #load in to downscale for example data
+    meta <- read.csv(file.path(output_dir, "merged-blk-metadata.csv"))
+    example_dat <- meta$data_identifier[50:55]
+    dat_files <- list.files(output_dir, recursive = TRUE)
+    for(x in 1:length(example_dat)){
+      files <- grep(example_dat[x], dat_files, value=TRUE)
+
+      for(f in files){
+        downscale_eems(file.path(output_dir, f))
+
+        #rename
+        end <- ifelse(grepl("_blank", f), "BEM", ifelse(grepl("abs/", f), "ABS", "SEM"))
+        file.rename(file.path("data-raw", basename(f)), file.path("inst/extdata/", paste0("longtermblank", x, end, ".dat")))
+      }
+    }
+
+    #write metadata
+      blk_meta <- meta[50:55,]
+      blk_meta$data_identifier <- paste0("longtermblank", 1:length(example_dat))
+      blk_meta <- blk_meta[,-ncol(blk_meta)]
+      write.csv(blk_meta, "inst/extdata/longtermblank-metadata.csv", row.names=FALSE, quote=FALSE)
 
 #do the same for the tea samples
     #pull files from Aqualog folder and put in raw data

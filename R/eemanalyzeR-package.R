@@ -28,6 +28,7 @@
 #' @importFrom pracma interp2
 #' @importFrom purrr discard
 #' @importFrom purrr list_transpose
+#' @importFrom rappdirs user_data_dir
 #' @importFrom readxl read_excel
 #' @importFrom rlang .data
 #' @importFrom rlang as_string
