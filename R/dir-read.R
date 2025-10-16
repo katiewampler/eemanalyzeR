@@ -92,7 +92,7 @@ eem_dir_read <- function(input_dir, pattern = NULL, skip="(?i)abs", file_ext="da
   load_files <- files[which(pattern_choices & skip_choices & ext_choices)]
 
   #read files
-  eem_list <- withCallingHandlers(lapply(load_files, .try_eem_read, import_function=import_function),
+  eem_list <- withCallingHandlers(pbapply::pblapply(load_files, .try_eem_read, import_function=import_function),
                                   warning = function(w) {
                                     warnings_list <<- c(warnings_list, conditionMessage(w))  # Add the warning message
                                     # TODO add warning list to base package environment if used by more functions.
@@ -153,7 +153,7 @@ abs_dir_read <- function(input_dir, pattern = NULL, skip="SEM|BEM|Waterfall", fi
   load_files <- files[which(pattern_choices & skip_choices & ext_choices)]
 
   #read files
-  abs_list <- withCallingHandlers(lapply(load_files, abs_read),
+  abs_list <- withCallingHandlers(pbapply::pblapply(load_files, abs_read),
                                   warning = function(w) {
                                     warnings_list <<- c(warnings_list, conditionMessage(w))  # Add the warning message
                                     invokeRestart("muffleWarning")  # Prevent the warning from printing immediately

@@ -22,6 +22,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom pals parula
 #' @importFrom parallel detectCores
+#' @importFrom pbapply pblapply
 #' @importFrom plyr join
 #' @importFrom plyr round_any
 #' @importFrom pracma interp2

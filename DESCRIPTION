@@ -36,6 +36,7 @@ Imports:
     magrittr,
     pals,
     parallel,
+    pbapply,
     plyr,
     pracma,
     purrr,
