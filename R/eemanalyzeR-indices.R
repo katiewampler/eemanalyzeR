@@ -10,6 +10,7 @@
 #' @param eemlist an \code{eemlist} object containing EEM's data. See details for more info.
 #' @param abslist an \code{abslist} object containing absorbance data.
 #' @param cuvle cuvette (path) length in cm
+#' @param mdl_dir file path to the mdl files generated with \link[eemanalyzeR]{get_mdl}
 #' @note If absorbance is not at a 1 nanometer interval, absorbance will be interpolated using
 #' \link[zoo]{na.approx} which fills in missing values
 #' using linear interpolation.
@@ -36,9 +37,18 @@
 #' abslist <- add_metadata(metadata, example_absorbance)
 #' eemlist <- add_metadata(metadata, example_eems)
 #' eemlist <- add_blanks(eemlist, validate=FALSE)
+#' eemlist <- process_eem(eemlist, abslist)
 #' indices <- eemanalyzeR_indices(eemlist, abslist)
-eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1){
+eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1, mdl_dir=NULL){
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
+
+ #get mdl data
+  # if(is.null(mdl_dir)){mdl_dir <- file.path(rappdirs::user_data_dir(appname = "eemanalyzeR"), "qaqc-stds")}
+  # if(!file.exists(file.path(mdl_dir, "eem-mdl.rds"))){warning("fluoresence MDL is missing, indices will not be checked for MDLs")}
+  # if(!file.exists(file.path(mdl_dir, "abs-mdl.rds"))){warning("absorbance MDL is missing, indices will not be checked for MDLs")}
+  #
+  # eem_mdl <- readRDS(file.path(mdl_dir, "eem-mdl.rds"))
+  # abs_mdl <- readRDS(file.path(mdl_dir, "abs-mdl.rds"))
 
  #fluorescence indices
   #define wavelengths for peaks and metrics to check if there are missing wavelengths

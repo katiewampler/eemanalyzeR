@@ -87,14 +87,7 @@ get_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK", type = "eem"
       blank_eems <- raman_normalize(blank_eems)
 
     #make into a giant df
-      eem_to_df <- function(eem){
-        df <- data.frame(ex= rep(eem$ex, each=length(eem$em)),
-                   em = rep(eem$em, length(eem$ex)),
-                   fluor = as.vector(eem$x))
-
-        return(df)
-      }
-      blank_df <- lapply(blank_eems, eem_to_df) %>% dplyr::bind_rows() %>%
+      blank_df <- lapply(blank_eems, eem_flatten) %>% dplyr::bind_rows() %>%
         dplyr::group_by(.data$ex, .data$em) %>%
         dplyr::summarise(mean = mean(.data$fluor, na.rm = TRUE), sdev = sd(.data$fluor, na.rm = TRUE)) %>%
         mutate(mdl = (.data$sdev * 3 + .data$mean)) %>%
@@ -102,7 +95,7 @@ get_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK", type = "eem"
 
     #turn into a eem object
       dates <- get_sample_info(blank_eems, "analysis_date")
-      mdl_eem <- list(file= NA,
+      mdl_eem <- list(file= file.path(output_dir, "eem-mdl.Rds"),
                       sample="long-term-mdl",
                       x = matrix(data=blank_df$mdl, nrow=length(unique(blank_df$em)), ncol=length(unique(blank_df$ex))),
                       ex = unique(blank_df$ex),
@@ -146,7 +139,7 @@ get_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK", type = "eem"
 
     #make a giant df
       blank_abs_df <- get_sample_info(blank, "data") %>% as.data.frame() %>%
-        pivot_longer(-.data$wavelength, names_to = "sample", values_to = "abs") %>%
+        pivot_longer(-"wavelength", names_to = "sample", values_to = "abs") %>%
         dplyr::select(-"sample")
 
     #get mean and sd across all wavelengths
@@ -157,7 +150,7 @@ get_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK", type = "eem"
 
     #turn into a abs object
       dates <- get_sample_info(blank, "analysis_date")
-      mdl_abs <- list(file= NA,
+      mdl_abs <- list(file= file.path(output_dir, "abs-mdl.Rds"),
                       sample="long-term-mdl",
                       n = length(unique(blank_abs_df$wavelength)),
                       data = unname(as.matrix(abs_mdls[order(abs_mdls$wavelength, decreasing=TRUE),])),

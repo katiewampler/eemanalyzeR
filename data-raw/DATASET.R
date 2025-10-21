@@ -135,6 +135,15 @@ for(x in files){
       blk_meta <- blk_meta[,-ncol(blk_meta)]
       write.csv(blk_meta, "inst/extdata/long-term-blanks/longtermblank-metadata.csv", row.names=FALSE, quote=FALSE)
 
+  #make a test mdl file for functions
+    get_mdl(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
+                      meta_name="longtermblank-metadata.csv", pattern = "longtermblank",
+                      type="eem", output_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
+
+    get_mdl(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
+            meta_name="longtermblank-metadata.csv", pattern = "longtermblank",
+            type="abs", output_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
+
 #do the same for the tea samples
     #pull files from Aqualog folder and put in raw data
     dir <- "T:/Research/Aqualog_Data/2_PNNL_DOM"

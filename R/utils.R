@@ -320,3 +320,28 @@ check_processing <- function(eem){
 
   return(steps)
 }
+
+
+#' Convert an EEM matrix to a data.frame
+#'
+#' Sometimes it's easier to subset an EEMs matrix if it's in a long format,
+#' this will take an EEM matrix and turn it into a data.frame.
+#'
+#' @param eem an object of class `eem`
+#'
+#' @returns
+#' a `data.frame` with three columns:
+#'  - ex: the excitation wavelengths
+#'  - em: the emission wavelengths
+#'  - fluor: the fluorescence value
+#'
+#' @noRd
+#' @md
+#'
+eem_flatten <- function(eem){
+  df <- data.frame(ex= rep(eem$ex, each=length(eem$em)),
+                   em = rep(eem$em, length(eem$ex)),
+                   fluor = as.vector(eem$x))
+
+  return(df)
+}

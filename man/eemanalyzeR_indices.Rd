@@ -4,7 +4,7 @@
 \alias{eemanalyzeR_indices}
 \title{Default package methods for fluorescence and absorbance indices}
 \usage{
-eemanalyzeR_indices(eemlist, abslist, cuvle = 1)
+eemanalyzeR_indices(eemlist, abslist, cuvle = 1, mdl_dir = NULL)
 }
 \arguments{
 \item{eemlist}{an \code{eemlist} object containing EEM's data. See details for more info.}
@@ -12,6 +12,8 @@ eemanalyzeR_indices(eemlist, abslist, cuvle = 1)
 \item{abslist}{an \code{abslist} object containing absorbance data.}
 
 \item{cuvle}{cuvette (path) length in cm}
+
+\item{mdl_dir}{file path to the mdl files generated with \link[eemanalyzeR]{get_mdl}}
 }
 \value{
 a list with two objects:
@@ -44,5 +46,6 @@ using \link[pracma]{interp2}.
 abslist <- add_metadata(metadata, example_absorbance)
 eemlist <- add_metadata(metadata, example_eems)
 eemlist <- add_blanks(eemlist, validate=FALSE)
+eemlist <- process_eem(eemlist, abslist)
 indices <- eemanalyzeR_indices(eemlist, abslist)
 }

@@ -107,7 +107,7 @@ get_tea_std <- function(dir, meta_name=NULL, sheet=NULL, pattern="Tea",
 
     #turn into a eem object
     dates <- get_sample_info(tea_eems, "analysis_date")
-    tea_eem <- list(file= NA,
+    tea_eem <- list(file= file.path(output_dir, "eem-tea-std.Rds"),
                     sample="long-term-tea-std",
                     x = mean,
                     ex = get_sample_info(tea_eems, "ex")[1,],
@@ -151,7 +151,7 @@ get_tea_std <- function(dir, meta_name=NULL, sheet=NULL, pattern="Tea",
 
     #make a giant df
       tea_abs_df <- get_sample_info(tea, "data") %>% as.data.frame() %>%
-        pivot_longer(-.data$wavelength, names_to = "sample", values_to = "abs") %>%
+        pivot_longer(-"wavelength", names_to = "sample", values_to = "abs") %>%
         dplyr::select(-"sample")
 
     #get mean and sd across all wavelengths
@@ -161,7 +161,7 @@ get_tea_std <- function(dir, meta_name=NULL, sheet=NULL, pattern="Tea",
 
     #turn into a abs object
     dates <- get_sample_info(tea, "analysis_date")
-    tea_abs <- list(file= NA,
+    tea_abs <- list(file= file.path(output_dir, "abs-tea-std.Rds"),
                     sample="long-term-tea-std",
                     n = length(unique(tea_abs_df$wavelength)),
                     data = unname(as.matrix(abs_tea[order(abs_tea$wavelength, decreasing=TRUE),])),
