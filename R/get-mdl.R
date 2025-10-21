@@ -68,6 +68,15 @@ get_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK", type = "eem"
     blank <- add_metadata(blank_meta, blank)
 
   if(type == "eem"){
+    #check if the wavelengths are different across data if so, stop and provide info
+    ex <- unique(get_sample_info(blank, "ex"))
+    em <- unique(get_sample_info(blank, "em"))
+
+    if(nrow(ex) > 1 | nrow(em) > 1){
+      stop(paste0("Excitation and/or emission wavelengths are inconsistent across analytical blanks.",
+                  "\nUse staRdom::eem_checksize to identify samples with larger ranges and staRdom::eem_extend2largest to fill in missing wavlengths."))
+    }
+
     #blank correct blanks
       blank_eems <- add_blanks(blank, validate = FALSE, pattern="BEM")
 
@@ -126,9 +135,19 @@ get_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK", type = "eem"
   }
 
   if(type == "abs"){
+    #check if the wavelengths are different across data if so, stop and provide info
+      data <- get_sample_info(blank, "data")
+      missing <- sum(sapply(data, is.na))
+
+      if(missing > 0){
+        stop(paste0("Absorbance wavelengths are inconsistent across analytical blanks.",
+                    "\nPlease interpolate across the missing wavlengths."))
+      }
+
     #make a giant df
-      blank_abs_df <- blank %>% purrr::map(function(x){as.data.frame(x[["data"]])}) %>% dplyr::bind_rows()
-      colnames(blank_abs_df) <- c("wavelength", "abs")
+      blank_abs_df <- get_sample_info(blank, "data") %>% as.data.frame() %>%
+        pivot_longer(-.data$wavelength, names_to = "sample", values_to = "abs") %>%
+        dplyr::select(-"sample")
 
     #get mean and sd across all wavelengths
       abs_mdls <- blank_abs_df %>% dplyr::group_by(.data$wavelength) %>% dplyr::filter(abs < 5) %>%

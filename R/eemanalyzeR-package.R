@@ -6,6 +6,7 @@
 #' @importFrom dplyr across
 #' @importFrom dplyr any_of
 #' @importFrom dplyr mutate
+#' @importFrom dplyr select
 #' @importFrom eemR eem_biological_index
 #' @importFrom eemR eem_coble_peaks
 #' @importFrom eemR eem_cut

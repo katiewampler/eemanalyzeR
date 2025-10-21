@@ -124,7 +124,8 @@ for(x in files){
 
         #rename
         end <- ifelse(grepl("_blank", f), "BEM", ifelse(grepl("abs/", f), "ABS", "SEM"))
-        file.rename(file.path("data-raw", basename(f)), file.path("inst/extdata/", paste0("longtermblank", x, end, ".dat")))
+        file.rename(file.path("data-raw", basename(f)),
+                    file.path("inst/extdata/long-term-blanks/", paste0("longtermblank", x, end, ".dat")))
       }
     }
 
@@ -132,7 +133,7 @@ for(x in files){
       blk_meta <- meta[50:55,]
       blk_meta$data_identifier <- paste0("longtermblank", 1:length(example_dat))
       blk_meta <- blk_meta[,-ncol(blk_meta)]
-      write.csv(blk_meta, "inst/extdata/longtermblank-metadata.csv", row.names=FALSE, quote=FALSE)
+      write.csv(blk_meta, "inst/extdata/long-term-blanks/longtermblank-metadata.csv", row.names=FALSE, quote=FALSE)
 
 #do the same for the tea samples
     #pull files from Aqualog folder and put in raw data
@@ -184,7 +185,29 @@ for(x in files){
     metadata <- lapply(meta, function(x){read.csv(file.path(output_dir, "metadata", x))}) %>% dplyr::bind_rows()
     write.csv(metadata, file.path(output_dir, "merged-tea-metadata.csv"), row.names=FALSE)
 
-  usethis::use_data(longterm_blank, overwrite = T)
+  #load in to downscale for example data
+    meta <- read.csv(file.path(output_dir, "merged-tea-metadata.csv"))
+    example_dat <- meta$long_term_name[50:55]
+    dat_files <- list.files(output_dir, recursive = TRUE)
+    for(x in 1:length(example_dat)){
+      files <- grep(example_dat[x], dat_files, value=TRUE)
+
+      for(f in files){
+        downscale_eems(file.path(output_dir, f))
+
+        #rename
+        end <- ifelse(grepl("_blank", f), "BEM", ifelse(grepl("abs/", f), "ABS", "SEM"))
+        file.rename(file.path("data-raw", basename(f)),
+                    file.path("inst/extdata/long-term-tea", paste0("longterm-teastd", x, end, ".dat")))
+      }
+    }
+
+    #write metadata
+    blk_meta <- meta[50:55,]
+    blk_meta$data_identifier <- paste0("longterm-teastd", 1:length(example_dat))
+    blk_meta <- blk_meta[,-ncol(blk_meta)]
+    write.csv(blk_meta, "inst/extdata/long-term-tea/longtermteastd-metadata.csv", row.names=FALSE, quote=FALSE)
+
 
 #save index ranges as data.frame ------
   make_na <- function(df){
