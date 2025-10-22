@@ -6,6 +6,12 @@
 #' @name class-testing
 #' @param eem an object
 #'
+#' @examples
+#' .is_eem(example_eems)
+#' .is_eemlist(example_eems)
+#'
+#' .is_abslist(example_abs)
+#' .is_eem(example_abs)
 #' @export
 #' @returns a logical, \code{TRUE} or \code{FALSE} of if the object is that class
 #' @source \code{.is_eem} and \code{.is_eemlist} functions were directly pulled from

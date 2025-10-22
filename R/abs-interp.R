@@ -10,8 +10,8 @@
 #' @export
 #'
 #' @examples
-#' abslist_filled <- abs_interp(example_absorbance)
-#' abs_filled <- abs_interp(example_absorbance[[1]])
+#' abslist_filled <- abs_interp(example_abs)
+#' abs_filled <- abs_interp(example_abs[[1]])
 abs_interp <- function(abs, type = "linear"){
   stopifnot(.is_abs(abs) | .is_abslist(abs), type %in% c("linear", "spline"))
 

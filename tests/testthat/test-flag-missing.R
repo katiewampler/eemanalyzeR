@@ -1,13 +1,13 @@
 test_that("errors are returned", {
   expect_error(flag_missing(data.frame()), ".is_abs")
-  expect_error(flag_missing(example_absorbance), "is.null")
+  expect_error(flag_missing(example_abs), "is.null")
 })
 
 test_that("correct values are given", {
   #checking absorbance data
-    expect_equal(flag_missing(example_absorbance, wl=400), rep(NA, 3)) #data exists
-    expect_equal(flag_missing(example_absorbance, wl=100), rep("DATA01", 3)) #data doesn't exist
-    expect_equal(flag_missing(example_absorbance, wl=100:254, all=FALSE), rep("DATA02", 3)) #some data exists, still calculate
+    expect_equal(flag_missing(example_abs, wl=400), rep(NA, 3)) #data exists
+    expect_equal(flag_missing(example_abs, wl=100), rep("DATA01", 3)) #data doesn't exist
+    expect_equal(flag_missing(example_abs, wl=100:254, all=FALSE), rep("DATA02", 3)) #some data exists, still calculate
 
   #checking fluorescence data
     expect_equal(flag_missing(example_eems, ex=270:280, em=300:320), rep(NA, 6)) #data exists

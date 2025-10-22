@@ -38,7 +38,7 @@ function. Extracts components of an \code{eemlist/eem} and \code{abslist/abs} ob
 \examples{
 #get names
 get_sample_info(example_eems, "sample")
-get_sample_info(example_absorbance, "sample")
+get_sample_info(example_abs, "sample")
 
 #get analysis_date
 eemlist <- add_metadata(metadata, example_eems)
@@ -52,5 +52,5 @@ get_sample_info(eemlist[[5]], "doc_mgL")
 get_sample_info(example_eems, "em")
 
 #get absorbance data
-get_sample_info(example_absorbance, "data")
+get_sample_info(example_abs, "data")
 }

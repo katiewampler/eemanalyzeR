@@ -63,7 +63,8 @@ formatted as a metadata file (see \link[eemanalyzeR]{metadata})
 }
 }
 \examples{
-eem_mdl <- get_mdl(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
+eem_mdl <- get_mdl(file.path(system.file("extdata", package = "eemanalyzeR"),
+"long-term-blanks"),
 meta_name="longtermblank-metadata.csv", pattern = "longtermblank",
 type="eem", output_dir = FALSE)
 

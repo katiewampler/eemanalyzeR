@@ -34,10 +34,8 @@ modified by specifying which plot you want to modify. See examples for more deta
 If you find that plotting is taking more than a few seconds, it could be due to your default graphics device. See \href{https://forum.posit.co/t/graphics-not-working-in-rstudio/149111}{this} link for information on how to change this.
 }
 \examples{
-eems <- add_metadata(metadata, example_eems)
-eems <- add_blanks(eems, validate=FALSE)
-eems <- subtract_blank(eems)
-eems <- remove_scattering(eems)
+
+eems <- example_processed_eems
 
 #plot just one EEM
 plot_eem(eems[[3]])

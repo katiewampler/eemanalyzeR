@@ -1,6 +1,6 @@
 test_that("processing works", {
   eemlist <- add_metadata(metadata,example_eems)
-  abslist <- add_metadata(metadata, example_absorbance)
+  abslist <- add_metadata(metadata, example_abs)
   eemlist <- add_blanks(eemlist, validate=FALSE)
 
 

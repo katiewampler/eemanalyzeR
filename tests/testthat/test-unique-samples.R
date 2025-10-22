@@ -1,8 +1,8 @@
 test_that("unique works", {
   expect_length(unique(example_eems), 4)
-  expect_length(unique(example_absorbance), 3)
+  expect_length(unique(example_abs), 3)
 
-  dup_abs <- c(example_absorbance, example_absorbance)
+  dup_abs <- c(example_abs, example_abs)
   class(dup_abs) <- "abslist"
   expect_length(unique(dup_abs), 3)
 

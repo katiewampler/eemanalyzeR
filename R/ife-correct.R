@@ -27,8 +27,8 @@
 #' version 1.0.1, \href{https://CRAN.R-project.org/package=eemR}{https://CRAN.R-project.org/package=eemR}
 #'
 #' @examples
-#' eemlist <- add_metadata(metadata,example_eems)
-#' abslist <- add_metadata(metadata, example_absorbance)
+#' eemlist <- add_metadata(metadata, example_eems)
+#' abslist <- add_metadata(metadata, example_abs)
 #' correct_eem <- ife_correct(eemlist, abslist)
 
 ife_correct <- function(eemlist, abslist, pathlength=1, arg_names=NULL){

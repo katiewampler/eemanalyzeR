@@ -3,12 +3,12 @@
   meta <- rbind(metadata, metadata[1,])
   meta$data_identifier[4] <- "missing_sample"
 
-  expect_warning(abs_test <- add_metadata(meta, example_absorbance), "the following sample is in metadata but was missing in data")
+  expect_warning(abs_test <- add_metadata(meta, example_abs), "the following sample is in metadata but was missing in data")
   expect_s3_class(abs_test, "abslist")
   expect_equal(length(abs_test), 3)
 
   meta <- metadata[1,]
-  expect_warning(abs_test <- add_metadata(meta, example_absorbance), "the following data are missing from metadata")
+  expect_warning(abs_test <- add_metadata(meta, example_abs), "the following data are missing from metadata")
   expect_s3_class(abs_test, "abslist")
   expect_equal(length(abs_test), 1)
 
@@ -26,7 +26,7 @@
 })
 
   test_that("metadata is added", {
-    abs_names <- lapply(add_metadata(metadata, example_absorbance), names)
+    abs_names <- lapply(add_metadata(metadata, example_abs), names)
     expect_length(abs_names[[1]], 11)
     expect_equal(abs_names[[1]], abs_names[[3]])
     expect_equal(abs_names[[1]], c("file","sample", "n", "data","location","meta_name","dilution","analysis_date", "description","doc_mgL","notes"))
@@ -38,7 +38,7 @@
     expect_equal(eem_names[[1]], c("file","sample", "x", "ex", "em", "location","meta_name","dilution",
                                    "integration_time_s", "raman_area_1s", "analysis_date", "description","doc_mgL","notes"))
 
-    abs_aug <- add_metadata(metadata, example_absorbance)
+    abs_aug <- add_metadata(metadata, example_abs)
     eem_aug <- add_metadata(metadata, example_eems)
 
     expect_equal(get_sample_info(eem_aug, "meta_name"), rep(c("ExampleBlank", "ExampleTeaStd", "ExampleSample"), each=2))

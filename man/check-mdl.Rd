@@ -2,14 +2,17 @@
 % Please edit documentation in R/check-mdl.R
 \name{check_eem_mdl}
 \alias{check_eem_mdl}
+\alias{check_abs_mdl}
 \title{Check if a EEM sample is above the MDL}
 \usage{
 check_eem_mdl(eem, mdl = NULL, ex, em, vals = FALSE)
+
+check_abs_mdl(abs, mdl = NULL, wl, vals = FALSE)
 }
 \arguments{
-\item{eem}{an \code{eem} or \code{eemlist} object containing EEM's data}
+\item{eem}{an object of class \code{eem} or \code{eemlist}}
 
-\item{mdl}{a \code{eem} object containing MDL data, if no MLD provided will return NA}
+\item{mdl}{a \code{eem} object containing MDL data, if no MDL provided will return NA}
 
 \item{ex}{a vector of excitation wavelengths}
 
@@ -17,6 +20,10 @@ check_eem_mdl(eem, mdl = NULL, ex, em, vals = FALSE)
 
 \item{vals}{logical, if FALSE will return a TRUE or FALSE, if TRUE will
 return a table with the eem and mdl values for the ex/em pair}
+
+\item{abs}{an object of class \code{abs} or \code{abslist}}
+
+\item{wl}{a vector of absorbance wavelengths}
 }
 \value{
 If \code{vals} is FALSE:
@@ -43,16 +50,18 @@ Given a set of excitation and emission wavelengths, will check if the values in 
 for all excitation-emission pairs.
 }
 \examples{
-abslist <- add_metadata(metadata, example_absorbance)
-eemlist <- add_metadata(metadata, example_eems)
-eemlist <- add_blanks(eemlist, validate=FALSE)
-eemlist <- process_eem(eemlist, abslist)
-mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),
+#get MDL data
+eem_mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),
 "eem-mdl.rds"))
+abs_mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),
+"abs-mdl.rds"))
 
 #works with a single sample
-check_eem_mdl(eemlist[[1]], mdl, ex = 270:280, em=300:320)
+check_eem_mdl(example_processed_eems[[1]], eem_mdl, ex = 270:280, em=300:320)
 
 #or an eemlist
-check_eem_mdl(eemlist, mdl, ex = 270:280, em=300:320)
+check_eem_mdl(example_processed_eems, eem_mdl, ex = 270:280, em=300:320)
+
+check_abs_mdl(example_processed_abs[[2]], abs_mdl, wl=254)
+check_abs_mdl(example_processed_abs, abs_mdl, wl=254)
 }

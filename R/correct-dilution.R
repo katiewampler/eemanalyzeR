@@ -17,7 +17,7 @@
 #' eemlist <- eem_rm_blank(eemlist)
 #' correct_eem <- correct_dilution(eemlist)
 #'
-#' abslist <- add_metadata(metadata,example_absorbance)
+#' abslist <- add_metadata(metadata,example_abs)
 #' abslist <- eem_rm_blank(abslist)
 #' correct_abs <- correct_dilution(abslist)
 

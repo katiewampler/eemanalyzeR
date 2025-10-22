@@ -40,7 +40,8 @@
 #' from dissolved organic matter (Vol. 2018-1096). Reston, VA: U.S. Geological Survey. \url{https://doi.org/10.3133/ofr20181096}
 #'
 #' @examples
-#' eem_mdl <- get_mdl(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
+#' eem_mdl <- get_mdl(file.path(system.file("extdata", package = "eemanalyzeR"),
+#' "long-term-blanks"),
 #' meta_name="longtermblank-metadata.csv", pattern = "longtermblank",
 #' type="eem", output_dir = FALSE)
 #'
@@ -134,7 +135,7 @@ get_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK", type = "eem"
 
       if(missing > 0){
         stop(paste0("Absorbance wavelengths are inconsistent across analytical blanks.",
-                    "\nPlease interpolate across the missing wavlengths."))
+                    "\nPlease use eemanalyzeR::abs_interp to interpolate across the missing wavlengths."))
       }
 
     #make a giant df

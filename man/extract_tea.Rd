@@ -26,5 +26,5 @@ see \link[eemR]{eem} for base \code{eem} component names and \link[eemanalyzeR]{
 for extended \code{eem} component names.
 }
 \examples{
-tea <- abs_get_tea(example_absorbance, pattern = "tea")
+tea <- abs_get_tea(example_abs, pattern = "tea")
 }

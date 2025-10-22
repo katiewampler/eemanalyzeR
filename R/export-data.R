@@ -27,15 +27,11 @@
 #' }
 #'
 #' @examples
-#' eems <- add_metadata(metadata, example_eems)
-#' abs <- add_metadata(metadata, example_absorbance)
-#' eems <- add_blanks(eems, validate = FALSE)
-#' abs <- correct_dilution(abs)
-#' eems <- process_eem(eems, abs)
-#' plots <- plot_eem(eems)
-#' indices <- get_indices(eems, abs)
-#' data <- export_data(eems, abs, filename="eemanalyzeR_example",
-#'             indices = indices, plot=plots, meta=metadata)
+#' plots <- plot_eem(example_processed_eems)
+#' indices <- get_indices(example_processed_eems, example_processed_abs)
+#' data <- export_data(example_processed_eems, example_processed_abs,
+#'     filename="eemanalyzeR_example",
+#'     indices = indices, plot=plots, meta=metadata)
 export_data <- function(eemlist, abslist, filename, output_dir=NULL,
                         meta=NULL, indices=NULL,
                         plot=NULL, csv=FALSE){

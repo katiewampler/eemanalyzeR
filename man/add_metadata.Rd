@@ -37,7 +37,7 @@ if \code{eemlist} contains blanks, the blanks will get the metadata of the corre
 \examples{
 
 #add metadata to absorbance data
-abs_augment <- add_metadata(metadata, example_absorbance)
+abs_augment <- add_metadata(metadata, example_abs)
 
 #add metadata to EEM's data
 eem_augment <- add_metadata(metadata, example_eems)

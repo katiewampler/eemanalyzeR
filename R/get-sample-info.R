@@ -30,7 +30,7 @@
 #' @examples
 #' #get names
 #' get_sample_info(example_eems, "sample")
-#' get_sample_info(example_absorbance, "sample")
+#' get_sample_info(example_abs, "sample")
 #'
 #' #get analysis_date
 #' eemlist <- add_metadata(metadata, example_eems)
@@ -44,7 +44,7 @@
 #' get_sample_info(example_eems, "em")
 #'
 #' #get absorbance data
-#' get_sample_info(example_absorbance, "data")
+#' get_sample_info(example_abs, "data")
 
 get_sample_info <- function(x, info) {
   stopifnot(.is_eemlist(x) | .is_eem(x) | .is_abslist(x) | .is_abs(x))

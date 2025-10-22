@@ -19,6 +19,6 @@ Interpolates absorbance data to 1 nanometer resolution to enable index calculati
 wavelengths that weren't specifically measured.
 }
 \examples{
-abslist_filled <- abs_interp(example_absorbance)
-abs_filled <- abs_interp(example_absorbance[[1]])
+abslist_filled <- abs_interp(example_abs)
+abs_filled <- abs_interp(example_abs[[1]])
 }

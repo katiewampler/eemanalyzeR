@@ -17,7 +17,7 @@
 #' @rdname extract_tea
 #
 #' @examples
-#' tea <- abs_get_tea(example_absorbance, pattern = "tea")
+#' tea <- abs_get_tea(example_abs, pattern = "tea")
 abs_get_tea <- function(abslist, pattern = "tea", info = "sample") {
 
   tea_names <- grep(pattern, get_sample_info(abslist, info), value = T, ignore.case = TRUE)

@@ -43,27 +43,15 @@
 #' from dissolved organic matter (Vol. 2018-1096). Reston, VA: U.S. Geological Survey. \url{https://doi.org/10.3133/ofr20181096}
 #'
 #' @examples
-#' abslist <- add_metadata(metadata, example_absorbance)
-#' eemlist <- add_metadata(metadata, example_eems)
-#' eemlist <- add_blanks(eemlist, validate=FALSE)
-#' eemlist <- process_eem(eemlist, abslist)
-#' indices <- usgs_indices(eemlist, abslist,
+#' indices <- usgs_indices(example_processed_eems, example_processed_abs,
 #' mdl_dir = system.file("extdata", package = "eemanalyzeR"))
 usgs_indices <- function(eemlist, abslist, cuvle=1, mdl_dir=.qaqc_dir()){
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
 
   #get mdl data
-    check_eem <- file.exists(file.path(mdl_dir, "eem-mdl.rds"))
-    check_abs <- file.exists(file.path(mdl_dir, "abs-mdl.rds"))
-
-    #load mdl data or warn
-    if(!check_eem){
-      warning("fluorescence MDL is missing, indices will not be checked for MDLs")
-    }else{eem_mdl <- readRDS(file.path(mdl_dir, "eem-mdl.rds"))}
-
-    if(!check_abs){
-      warning("absorbance MDL is missing, indices will not be checked for MDLs")
-    }else{abs_mdl <- readRDS(file.path(mdl_dir, "abs-mdl.rds"))}
+   mdls <- .check_mdl_file(mdl_dir)
+   eem_mdl <- mdls$eem_mdl
+   abs_mdl <- mdls$abs_mdl
 
   #get fluoresence peaks
     #define wavelengths for peaks and metrics to check if there are missing wavelengths
@@ -137,7 +125,9 @@ usgs_indices <- function(eemlist, abslist, cuvle=1, mdl_dir=.qaqc_dir()){
       #get SUVA 254
       index <- "SUVA254_63162"
       vals <-get_absorbance(abslist, wl=254, suva = TRUE)
-      flags <- flag_missing(abslist, wl=abs_wl[[index]])
+      missflags <- flag_missing(abslist, wl=abs_wl[[index]])
+      mdlflags <- check_abs_mdl(abslist, mdl=abs_mdl, wl=254)
+      flags <- .combine_flags(missflags, mdlflags)
       suva254 <- format_index(abslist, index, vals, flags)
 
       #get values at specific wavelengths
@@ -148,15 +138,16 @@ usgs_indices <- function(eemlist, abslist, cuvle=1, mdl_dir=.qaqc_dir()){
         vals <- get_absorbance(abslist, wl=index, suva = FALSE)
 
         #get flags
-        flags <- flag_missing(abslist, wl=index, all=TRUE)
+        missflags <- flag_missing(abslist, wl=index)
+        mdlflags <- check_abs_mdl(abslist, mdl=abs_mdl, wl=index)
+        flags <- .combine_flags(missflags, mdlflags)
 
         #add sample names and make into data.frame (get index name)
         res <- format_index(abslist, index_name, vals, flags)
 
         #return res
         return(res)
-      })
-      abs_data <- do.call(rbind, abs_data)
+      }) %>% dplyr::bind_rows()
 
       #get spectral slopes
       abs_slopes <- lapply(names(abs_wl[7:10]), function(index_name){
@@ -168,15 +159,16 @@ usgs_indices <- function(eemlist, abslist, cuvle=1, mdl_dir=.qaqc_dir()){
         vals <- get_abs_slope(abslist, c(start,end))
 
         #get flags
-        flags <- flag_missing(abslist, wl=index, all=TRUE)
+        missflags <- flag_missing(abslist, wl=index)
+        mdlflags <- check_abs_mdl(abslist, mdl=abs_mdl, wl=index)
+        flags <- .combine_flags(missflags, mdlflags)
 
         #add sample names and make into data.frame (get index name)
         res <- format_index(abslist, index_name, vals, flags)
 
         #return res
         return(res)
-      })
-      abs_slopes <- do.call(rbind, abs_slopes)
+      }) %>% dplyr::bind_rows()
 
       #merge indices together
       abs_index <- do.call(rbind, list(suva254, abs_data, abs_slopes))

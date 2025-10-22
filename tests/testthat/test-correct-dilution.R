@@ -5,7 +5,7 @@ test_that("dilution corrections are performed", {
   eemlist[[3]]$dilution <- 2
   correct_eem <- correct_dilution(eemlist)
 
-  abslist <- add_metadata(metadata, example_absorbance)
+  abslist <- add_metadata(metadata, example_abs)
   abslist[[3]]$dilution <- 2
   correct_abs <- correct_dilution(abslist)
 

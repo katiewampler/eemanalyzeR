@@ -27,10 +27,8 @@
 #' @note
 #' If you find that plotting is taking more than a few seconds, it could be due to your default graphics device. See \href{https://forum.posit.co/t/graphics-not-working-in-rstudio/149111}{this} link for information on how to change this.
 #' @examples
-#' eems <- add_metadata(metadata, example_eems)
-#' eems <- add_blanks(eems, validate=FALSE)
-#' eems <- subtract_blank(eems)
-#' eems <- remove_scattering(eems)
+#'
+#' eems <- example_processed_eems
 #'
 #' #plot just one EEM
 #' plot_eem(eems[[3]])
@@ -75,9 +73,14 @@ plot_eem <- function(eem, nbin=8, equal_scale=FALSE, pal=NULL, remove_lower = FA
 
     plot <- lapply(eem, .plot_eem, nbin, z_min, z_max, pal, remove_lower, title=TRUE)
     names(plot) <- get_sample_info(eem, "sample")
-    #print(patchwork::wrap_plots(plot) + patchwork::plot_layout(guides="collect"))
 
-    print(ggpubr::ggarrange(plotlist = plot, common.legend=scale, legend = "right"))
+    #only show if interactive to prevent a pdf from being written
+    if(is_interactive()){
+      print(ggpubr::ggarrange(plotlist = plot, common.legend=scale, legend = "right"))
+    }else{
+      ggpubr::ggarrange(plotlist = plot, common.legend=scale, legend = "right")
+    }
+
     return(invisible(plot))
   }
 

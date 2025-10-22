@@ -48,12 +48,12 @@ for(x in files){
   example_eems <- eem_dir_read("data-raw", pattern="SEM|BEM")
 
   #read in absorbance
-  example_absorbance <- abs_dir_read("data-raw", pattern="ABS[.]dat")
+  example_abs <- abs_dir_read("data-raw", pattern="ABS[.]dat")
 
     usethis::use_data(example_eems, overwrite = T)
-    usethis::use_data(example_absorbance, overwrite = T)
+    usethis::use_data(example_abs, overwrite = T)
 
-  metadata <- meta_read("data-raw")
+  metadata <- meta_read("data-raw", name="metadata_example")
   usethis::use_data(metadata, overwrite = T)
 
 
@@ -237,3 +237,13 @@ for(x in files){
   indice_ranges <- indice_ranges[!is.na(indice_ranges$index),]
 
   usethis::use_data(indice_ranges, overwrite = T)
+
+#make files that are fully processed to prevent needing to do all the steps
+  example_processed_abs <- add_metadata(metadata, example_abs)
+  example_processed_abs <- correct_dilution(example_processed_abs)
+  example_processed_eems <- add_metadata(metadata, example_eems)
+  example_processed_eems <- add_blanks(example_processed_eems, validate=FALSE)
+  example_processed_eems <- process_eem(example_processed_eems, example_processed_abs)
+
+  usethis::use_data(example_processed_eems, overwrite = T)
+  usethis::use_data(example_processed_abs, overwrite = T)

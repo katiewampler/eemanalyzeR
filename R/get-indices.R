@@ -58,9 +58,8 @@
 #'  \item VAL02: Value was above expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
 #' }
 #' @examples
-#' abslist <- add_metadata(metadata, example_absorbance)
-#' eemlist <- add_metadata(metadata, example_eems)
-#' indices <- get_indices(eemlist, abslist)
+#' indices <- get_indices(example_processed_eems, example_processed_abs,
+#' mdl_dir = system.file("extdata", package = "eemanalyzeR"))
 
 get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="long",
                         cuvle=1, mdl_dir= .qaqc_dir(), arg_names=NULL){
@@ -79,8 +78,8 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
 
   #collect arguments for readme, and to put into the following functions
     if(is.null(arg_names)){
-      args <- rlang::enquos(index_method, return, cuvle)
-      names(args) <- c("index_method", "return", "cuvle")
+      args <- rlang::enquos(index_method, return, cuvle, mdl_dir)
+      names(args) <- c("index_method", "return", "cuvle", "mdl_dir")
     }else{args <- arg_names}
 
   #if DOC normalized, make not normalized to not normalize twice for indices

@@ -30,7 +30,33 @@
 #'   \item{\strong{B1S3ExampleSampleABS}: Absorbance measured for a sample of stream water from Oregon, USA}
 #' }
 #' @source Oregon State University Forest Ecohydrology and Watershed Sciences Lab (2022-11-14)
-"example_absorbance"
+"example_abs"
+
+#' Down-scaled and processed excitation emission matrices
+#'
+#' \link[eemanalyzeR]{example_eems} processed using \code{eemanalyzeR}.
+#'
+#' @format An \code{eemlist} with three samples:
+#' \itemize{
+#'   \item{\strong{B1S1ExampleBlankSEM}: Fluorescence measured for a sample of Type 1 water}
+#'   \item{\strong{B1S2ExampleTeaStdSEM}: Fluorescence measured for a sample of dilute unsweetened tea}
+#'   \item{\strong{B1S3ExampleSampleSEM}: Fluorescence measured for a sample of stream water from Oregon, USA}
+#' }
+#' @source Oregon State University Forest Ecohydrology and Watershed Sciences Lab (2022-11-14)
+"example_processed_eems"
+
+#' Down-scaled and processed absorbance data
+#'
+#' \link[eemanalyzeR]{example_abs} processed using \code{eemanalyzeR}.
+#'
+#' @format An \code{abslist} with three samples
+#' \itemize{
+#'   \item{\strong{B1S1ExampleBlankABS}: Absorbance measured for a sample of Type 1 water}
+#'   \item{\strong{B1S2ExampleTeaStdABS}: Absorbance measured for a sample of dilute unsweetened tea}
+#'   \item{\strong{B1S3ExampleSampleABS}: Absorbance measured for a sample of stream water from Oregon, USA}
+#' }
+#' @source Oregon State University Forest Ecohydrology and Watershed Sciences Lab (2022-11-14)
+"example_processed_abs"
 
 #' Example metadata
 #'

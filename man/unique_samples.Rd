@@ -25,5 +25,5 @@ Get unique EEM's or absorbance
 }
 \examples{
 unique_eems <- unique(example_eems)
-unique_abs <- unique(example_absorbance)
+unique_abs <- unique(example_abs)
 }

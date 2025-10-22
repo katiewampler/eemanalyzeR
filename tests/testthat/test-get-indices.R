@@ -1,10 +1,8 @@
 #TODO: check that different methods work
 
   test_that("missing wavelengths don't break indices code", {
-    abslist <- add_metadata(metadata, example_absorbance)
-    eemlist <- add_metadata(metadata, example_eems)
-    eemlist <- add_blanks(eemlist, validate=FALSE)
-    expect_warning(eemlist <- process_eem(eemlist, abslist))
+    abslist <- example_processed_abs
+    eemlist <- example_processed_eems
     mdl_dir <- system.file("extdata", package = "eemanalyzeR")
     eemlist <- eemR::eem_cut(eemlist, ex=400:900, em=400:900, exact=F) #cut down so there's missing wavelengths
 
@@ -13,10 +11,8 @@
           })
 
   test_that("removing doc normalized data works", {
-    abslist <- add_metadata(metadata, example_absorbance)
-    eemlist <- add_metadata(metadata, example_eems)
-    eemlist <- add_blanks(eemlist, validate=FALSE)
-    expect_warning(eemlist <- process_eem(eemlist, abslist))
+    abslist <- example_processed_abs
+    eemlist <- example_processed_eems
     mdl_dir <- system.file("extdata", package = "eemanalyzeR")
     doc <- ifelse(is.na(get_sample_info(eemlist, "doc_mgL")), 1, get_sample_info(eemlist, "doc_mgL"))
     eemlist_doc <- eem_normalize(eemlist, doc)
@@ -33,10 +29,8 @@
   })
 
   test_that("format is correct", {
-    abslist <- add_metadata(metadata, example_absorbance)
-    eemlist <- add_metadata(metadata, example_eems)
-    eemlist <- add_blanks(eemlist, validate=FALSE)
-    expect_warning(eemlist <- process_eem(eemlist, abslist))
+    abslist <- example_processed_abs
+    eemlist <- example_processed_eems
     mdl_dir <- system.file("extdata", package = "eemanalyzeR")
 
     indices <- get_indices(eemlist, abslist, mdl_dir=mdl_dir)
@@ -77,7 +71,7 @@
     return_NA <- function(eemlist, abslist, cuvle=1, mdl_dir=NULL){
       return(list(abs_index=NA, eem_index=NA))}
 
-    expect_no_error(expect_warning(get_indices(example_eems, example_absorbance, index_method=return_NA)))
+    expect_no_error(expect_warning(get_indices(example_eems, example_abs, index_method=return_NA)))
   })
 
   test_that("steps are checked",{
@@ -85,11 +79,11 @@
     eemlist <- raman_normalize(eemlist)
     mdl_dir <- system.file("extdata", package = "eemanalyzeR")
 
-    expect_warning(expect_error(get_indices(eemlist, example_absorbance, mdl_dir = mdl_dir), "is_blank_corrected"),"Data has not been fully processed" )
+    expect_warning(expect_error(get_indices(eemlist, example_abs, mdl_dir = mdl_dir), "is_blank_corrected"),"Data has not been fully processed" )
   })
 
   test_that("flags are correct", {
-    abslist <- add_metadata(metadata, example_absorbance)
+    abslist <- add_metadata(metadata, example_abs)
     eemlist <- add_metadata(metadata, example_eems)
     eemlist <- add_blanks(eemlist, validate=FALSE)
     expect_warning(eemlist <- process_eem(eemlist, abslist))

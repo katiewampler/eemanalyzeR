@@ -4,13 +4,16 @@
 #' `eem` or `eemlist` are above the method detection limit (MDL)
 #' for all excitation-emission pairs.
 #'
-#' @param eem an \code{eem} or \code{eemlist} object containing EEM's data
-#' @param mdl a `eem` object containing MDL data, if no MLD provided will return NA
+#' @param eem an object of class \code{eem} or \code{eemlist}
+#' @param abs an object of class \code{abs} or \code{abslist}
+#' @param mdl a `eem` object containing MDL data, if no MDL provided will return NA
 #' @param ex a vector of excitation wavelengths
 #' @param em a vector of emission wavelengths
+#' @param wl a vector of absorbance wavelengths
 #' @param vals logical, if FALSE will return a TRUE or FALSE, if TRUE will
 #' return a table with the eem and mdl values for the ex/em pair
 #' @md
+#' @rdname check-mdl
 #' @returns
 #' If `vals` is FALSE:
 #'  - MDL01 if all values are below the MDL
@@ -26,18 +29,20 @@
 #' @export
 #'
 #' @examples
-#' abslist <- add_metadata(metadata, example_absorbance)
-#' eemlist <- add_metadata(metadata, example_eems)
-#' eemlist <- add_blanks(eemlist, validate=FALSE)
-#' eemlist <- process_eem(eemlist, abslist)
-#' mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),
+#' #get MDL data
+#' eem_mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),
 #' "eem-mdl.rds"))
+#' abs_mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),
+#' "abs-mdl.rds"))
 #'
 #' #works with a single sample
-#' check_eem_mdl(eemlist[[1]], mdl, ex = 270:280, em=300:320)
+#' check_eem_mdl(example_processed_eems[[1]], eem_mdl, ex = 270:280, em=300:320)
 #'
 #' #or an eemlist
-#' check_eem_mdl(eemlist, mdl, ex = 270:280, em=300:320)
+#' check_eem_mdl(example_processed_eems, eem_mdl, ex = 270:280, em=300:320)
+#'
+#' check_abs_mdl(example_processed_abs[[2]], abs_mdl, wl=254)
+#' check_abs_mdl(example_processed_abs, abs_mdl, wl=254)
 
 check_eem_mdl <- function(eem, mdl=NULL, ex, em,  vals = FALSE){
   #if no mdl, return NA so we can run the function without checking if we have mdl or not
@@ -100,4 +105,47 @@ check_eem_mdl <- function(eem, mdl=NULL, ex, em,  vals = FALSE){
     if(all(na.omit(mdl_table$fluor > mdl_table$mdl))){return(NA)} #if all non NA above MDL -> no flag needed
     if(all(na.omit(mdl_table$fluor < mdl_table$mdl))){return("MDL01")} #if all values below MDL -> flag with MDL01
     if(any(na.omit(mdl_table$fluor < mdl_table$mdl))){return("MDL02")} #if any values are below MDL -> flag with MDL02
+}
+
+#' @export
+#' @rdname check-mdl
+check_abs_mdl <- function(abs, mdl=NULL, wl, vals = FALSE){
+  stopifnot(all(is.numeric(wl)),
+            .is_abs(abs) | .is_abslist(abs))
+
+  if(.is_abslist(abs)){
+    if(vals){
+      mdl_table <- lapply(abs, function(x){
+        table <- check_abs_mdl(x, mdl, wl, vals)
+        table$sample <- x$meta_name
+        return(table)
+      })  %>% dplyr::bind_rows()
+      return(mdl_table)
+    }
+
+    above_mdl <- sapply(abs,check_abs_mdl, mdl=mdl, vals=vals, wl=wl)
+    return(above_mdl)
+  }
+
+  #return NA if no mdl data is provided
+  if(is.null(mdl)){return(NA)}
+
+  #interpolate mdl to make sure it matches the sample and index requested
+    mdl_val <- abs_interp(mdl) %>% get_sample_info("data") %>% as.data.frame() %>%
+      dplyr::rename("wl" = "X1", "mdl" = "X2") %>%
+      dplyr::filter(.data$wl %in% !!wl)
+
+  #get same values in eem, interpolate if needed
+    abs_val <- abs_interp(abs) %>% get_sample_info("data") %>% as.data.frame() %>%
+      dplyr::rename("wl" = "X1", "abs" = "X2") %>%
+      dplyr::filter(.data$wl %in% !!wl)
+
+  #make into a table
+  mdl_table <- merge(abs_val, mdl_val, by=c("wl"))
+  if(vals){return(mdl_table)} #return if this is requested
+
+  #otherwise return NA or MDL01 flag
+  if(all(na.omit(mdl_table$abs > mdl_table$mdl))){return(NA)} #if all non NA above MDL -> no flag needed
+  if(all(na.omit(mdl_table$abs < mdl_table$mdl))){return("MDL01")} #if all values below MDL -> flag with MDL01
+  if(any(na.omit(mdl_table$abs < mdl_table$mdl))){return("MDL02")} #if any values are below MDL -> flag with MDL02
 }

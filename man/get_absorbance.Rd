@@ -28,7 +28,7 @@ If the wavelength requested is not
 in the absorbance data, it will be interpolated first using \link[eemanalyzeR]{abs_interp}.
 }
 \examples{
-abslist <- add_metadata(metadata, example_absorbance)
+abslist <- add_metadata(metadata, example_abs)
 
 a254 <- get_absorbance(abslist, 254)
 suva254 <- get_absorbance(abslist, 254, suva=TRUE)

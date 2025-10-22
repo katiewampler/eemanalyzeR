@@ -35,7 +35,7 @@ name which should be the same between the two datasets, because of this,
 samples must have metadata already added to the samples using \link[eemanalyzeR]{add_metadata}.
 }
 \examples{
-eemlist <- add_metadata(metadata,example_eems)
-abslist <- add_metadata(metadata, example_absorbance)
+eemlist <- add_metadata(metadata, example_eems)
+abslist <- add_metadata(metadata, example_abs)
 correct_eem <- ife_correct(eemlist, abslist)
 }

@@ -47,10 +47,6 @@ are generated using the staRdom function \link[staRdom]{abs_parms}.
 }
 }
 \examples{
-abslist <- add_metadata(metadata, example_absorbance)
-eemlist <- add_metadata(metadata, example_eems)
-eemlist <- add_blanks(eemlist, validate=FALSE)
-eemlist <- process_eem(eemlist, abslist)
-indices <- eemR_indices(eemlist, abslist,
+indices <- eemR_indices(example_processed_eems, example_processed_abs,
 mdl_dir = system.file("extdata", package = "eemanalyzeR"))
 }

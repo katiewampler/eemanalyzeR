@@ -1,10 +1,8 @@
 #assuming that the function values are correct
 
 test_that("output is correct",{
-  abslist <- add_metadata(metadata, example_absorbance)
-  eemlist <- add_metadata(metadata, example_eems)
-  eemlist <- add_blanks(eemlist, validate=FALSE)
-  expect_warning(eemlist <- process_eem(eemlist, abslist))
+  abslist <- example_processed_abs
+  eemlist <- example_processed_eems
   mdl_dir <- system.file("extdata", package = "eemanalyzeR")
   indices <- usgs_indices(eemlist, abslist, mdl_dir = mdl_dir)
 

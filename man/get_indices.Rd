@@ -80,7 +80,6 @@ The index values will be checked for potential errors prior to reporting and fla
 }
 }
 \examples{
-abslist <- add_metadata(metadata, example_absorbance)
-eemlist <- add_metadata(metadata, example_eems)
-indices <- get_indices(eemlist, abslist)
+indices <- get_indices(example_processed_eems, example_processed_abs,
+mdl_dir = system.file("extdata", package = "eemanalyzeR"))
 }

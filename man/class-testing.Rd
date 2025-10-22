@@ -31,3 +31,10 @@ a logical, \code{TRUE} or \code{FALSE} of if the object is that class
 \description{
 Utility functions to test class of objects, returning a logical.
 }
+\examples{
+.is_eem(example_eems)
+.is_eemlist(example_eems)
+
+.is_abslist(example_abs)
+.is_eem(example_abs)
+}

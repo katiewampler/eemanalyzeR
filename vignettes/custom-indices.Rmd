@@ -28,6 +28,7 @@ To maximum flexibility in calculating indices, we've enabled the [get_indices](.
     a.  `eemlist`: an eemlist object containing EEM's data.
     b.  `abslist`: an abslist object containing absorbance data.
     c.  `cuvle`: the cuvette (path) length in cm.
+    d.  `mdl_dir`: the file path to the mdl files generated with \link[eemanalyzeR]{get_mdl}
 2.  **The function must return a list with the following items:**
     a.  `abs_index`: the indices calculated from the absorbance data
     b.  `eem_index`: the indices calculated from the EEMs data
@@ -49,8 +50,7 @@ To maximum flexibility in calculating indices, we've enabled the [get_indices](.
 To get the absorbance values at a certain wavelength the [get_absorbance](../html/get-absorbance.html) function can be used. This function can additionally provide specific absorbance (like SUVA 254).
 
 ```{r}
-#add metadata to get DOC values
-abslist <- add_metadata(metadata, example_absorbance)
+abslist <- example_processed_abs
 
 #absorbance at 254 nm
 a254 <- eemanalyzeR::get_absorbance(abslist, 254) 
@@ -64,21 +64,24 @@ suva254
 A similar function exists for getting fluorescence values from EEMs data: [get_fluorescence](../html/get-fluorescence.html). Here, you can specify a range of excitation and/or emission wavelengths. If stat is set to `sum` the sum of fluorescence will be returned, otherwise if `max` is used the maximum fluorescence across that range will be returned.
 
 ```{r}
+
+eemlist <- example_processed_eems
+
 #get maximum fluorescence across ranges for Peak A and D
-pA <- get_fluorescence(example_eems, ex=250:260, em=380:480, stat="max")
+pA <- get_fluorescence(eemlist, ex=250:260, em=380:480, stat="max")
 pA
-pD <- get_fluorescence(example_eems, ex=390, em=509, stat="max")
+pD <- get_fluorescence(eemlist, ex=390, em=509, stat="max")
 pD 
 
 #get sum of fluorescence across range of Peak A
-pA_sum <- get_fluorescence(example_eems, ex=250:260, em=380:480, stat="sum")
+pA_sum <- get_fluorescence(eemlist, ex=250:260, em=380:480, stat="sum")
 pA_sum
 ```
 
 Lastly, we have a function for getting spectral slopes: [get_abs_slope](../html/get-abs-slope.html) which will convert the absorbance to absorption, interpolate the data if needed, and return the spectral slope within a wavelength range.
 
 ```{r}
-S275_295 <- get_abs_slope(example_absorbance, lim=c(275,295))
+S275_295 <- get_abs_slope(abslist, lim=c(275,295))
 
 ```
 
@@ -102,8 +105,8 @@ First is the [get_ratios](../html/get-ratios.html) function. This can be helpful
 
 ```{r}
 #calculate the ratio of Peak A to Peak T
- pA <- get_fluorescence(example_eems, ex=250:260, em=380:480)
- pT <- get_fluorescence(example_eems, ex=270:280, em=320:350)
+ pA <- get_fluorescence(eemlist, ex=250:260, em=380:480)
+ pT <- get_fluorescence(eemlist, ex=270:280, em=320:350)
  rAT <- get_ratios(pA, pT)
  rAT
  
@@ -113,8 +116,8 @@ First is the [get_ratios](../html/get-ratios.html) function. This can be helpful
     rAT
  
 #calculate HIX 
-  sum_high <- get_fluorescence(example_eems, ex=254, em=435:480, stat = "sum")
-  sum_low <- get_fluorescence(example_eems, ex=254, em=300:345, stat="sum")
+  sum_high <- get_fluorescence(eemlist, ex=254, em=435:480, stat = "sum")
+  sum_low <- get_fluorescence(eemlist, ex=254, em=300:345, stat="sum")
   HIX <- get_ratios(sum_high,sum_low)
   HIX
   
@@ -130,33 +133,84 @@ There's also a function that will flag indices that can't be calculated because 
 ```{r}
 #checking absorbance data
   #data exists, so there are no flags, NA is returned
-  flag_missing(example_absorbance, wl=400) 
+  flag_missing(abslist, wl=400) 
 
  #data doesn't exist
-  flag_missing(example_absorbance, wl=100)
+  flag_missing(abslist, wl=100)
   
  #some data exists, still calculate
-  flag_missing(example_absorbance, wl=100:254, all=FALSE)
+  flag_missing(abslist, wl=100:254, all=FALSE)
 
 #checking fluorescence data
   #data exists, so there are no flags, NA is returned
-  flag_missing(example_eems, ex=270:280, em=300:320) 
+  flag_missing(eemlist, ex=270:280, em=300:320) 
   
   #data doesn't exist
-  flag_missing(example_eems, ex=100:150, em=300:320) 
+  flag_missing(eemlist, ex=100:150, em=300:320) 
   
   #some data exists, still calculate
-  flag_missing(example_eems, ex=100:350, em=300:320, all=FALSE) 
+  flag_missing(eemlist, ex=100:350, em=300:320, all=FALSE) 
 ```
+You may also want to flag values below the method detection limit (MDL) this can be done with: [check_*_mdl](../html/check-mdl.html). This is useful to ensure that the blanks are actually blank and ratio values that are returned are based on "real" data. 
 
+```{r}
+#checking absorbance data
+  #get mdl 
+    abs_mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"), 
+                                 "abs-mdl.rds"))
+
+  #data is fully above the MDL so NA is returned 
+    check_abs_mdl(abslist[[2]], abs_mdl, wl=254)
+    
+  #data is fully below the MDL so MDL01 is returned
+    check_abs_mdl(abslist[[1]], abs_mdl, wl=254)
+    
+#checking fluorescence data
+  #get mdl 
+    eem_mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"), 
+                                 "eem-mdl.rds"))
+    
+  #data is completely above the MDL so NA is returned
+   check_eem_mdl(eemlist[[2]], mdl = eem_mdl, ex=270:280, em=300:320)
+    
+  #data is fully below the MDL so MDL01 is returned
+   check_eem_mdl(eemlist[[1]], mdl = eem_mdl, ex=270:280, em=300:320)
+
+  #some of the data is below the MDL so MDL02 is returned
+    eemlist[[2]]$x[1,4] <- 0.000001 #set a low value so it spans the MDL in the region for an example
+    check_eem_mdl(eemlist[[2]], mdl = eem_mdl, ex = 314, em=250:262)
+
+
+```
+If your function generates more than one flag (say a flag for missing data and an MDL flag) you can use the [.combine_flags](../html/dot-combine-flags.html) function to nicely combine the flags. 
+
+```{r}
+  #works with a single set of flags 
+    .combine_flags("DATA01", NA)
+    .combine_flags(NA, "MDL01")
+    .combine_flags(NA, NA)
+    .combine_flags("DATAO1", "MDL01")
+    .combine_flags("DATA01", "DATA01")
+  
+  #also works with a vector of flags 
+    flag1 <- c("MDL01", "MDL02", NA)
+    flag2 <- c("DATA01", NA, NA)
+    .combine_flags(flag1, flag2)
+    
+  #if you set MDL to TRUE, it knows it's combining two MDL flags 
+    #so if one is MDL01 and one is MDL02, it will return MDL02, some of the 
+    #data was below the MDL 
+    #this function is useful for indices using ratios
+    .combine_flags("MDL01", "MDL02", mdl=TRUE)
+```
 Once we've gotten the values and the flags, the data needs to be formatted in a specific way to input into the [get_indices](../html/get-indices.html) function. To do this we can use the [format_index](../html/format-index.html) function.
 
 ```{r}
   ex <- 240:260
   em <- 300:320
-  vals <- get_fluorescence(example_eems, ex, em, stat = "max")
-  flags <- flag_missing(example_eems, ex=ex, em=em, all=FALSE)
-  index_formatted <- format_index(example_eems, "test_index", vals, flags)
+  vals <- get_fluorescence(eemlist, ex, em, stat = "max")
+  flags <- flag_missing(eemlist, ex=ex, em=em, all=FALSE)
+  index_formatted <- format_index(eemlist, "test_index", vals, flags)
   index_formatted
 ```
 
@@ -186,7 +240,8 @@ chen_regions <- list(r1 = list(ex=240:250, em=245:300),
 We can use the [get_fluorescence](../html/get-fluorescence.html) helper function to calculate the maximum fluorescence in these regions. For a single region that would look like:
 
 ```{r}
-get_fluorescence(example_eems, chen_regions[[1]]$ex, chen_regions[[1]]$em, stat="max")
+eemlist <- example_processed_eems
+get_fluorescence(eemlist, chen_regions[[1]]$ex, chen_regions[[1]]$em, stat="max")
 
 ```
 
@@ -195,7 +250,7 @@ To get all the indices let's use the lapply function.
 ```{r}
 results <- lapply(names(chen_regions), function(region_name) {
   region <- chen_regions[[region_name]]
-  get_fluorescence(example_eems, region$ex, region$em, stat = "max")
+  get_fluorescence(eemlist, region$ex, region$em, stat = "max")
   })
 
 ```
@@ -206,13 +261,15 @@ While we're calculating each index, let's also use the [flag_missing](../html/fl
 results <- lapply(names(chen_regions), function(region_name){
   #get values
   region <- chen_regions[[region_name]]
-  vals <- get_fluorescence(example_eems, region$ex, region$em, stat = "max")
+  vals <- get_fluorescence(eemlist, region$ex, region$em, stat = "max")
 
   #get flags
-  flags <- flag_missing(example_eems, ex=region$ex, em=region$em, all=FALSE)
+    missflags <- flag_missing(eemlist, ex=region$ex, em=region$em, all=FALSE)
+    mdlflags <- check_eem_mdl(eemlist, eem_mdl, region$ex, region$em)
+    flags <- .combine_flags(missflags, mdlflags)
 
   #add sample names and make into data.frame (get index name)
-  res <- format_index(example_eems, region_name, vals, flags)
+  res <- format_index(eemlist, region_name, vals, flags)
     
   #return res
   return(res)
@@ -220,6 +277,20 @@ results <- lapply(names(chen_regions), function(region_name){
 
 results <- do.call(rbind, results)
 ```
+
+Now we need to make sure to add in the MDL data so we can use it to check our values. If the MDL is NULL, we want to have a warning, but still run. 
+```{r}
+ mdl_dir <- file.path(system.file("extdata", package = "eemanalyzeR"))
+ #get mdl data
+  check_eem <- file.exists(file.path(mdl_dir, "eem-mdl.rds"))
+
+  #load mdl data or warn
+  if(!check_eem){
+    warning("fluorescence MDL is missing, indices will not be checked for MDLs")
+    eem_mdl <- NULL
+    }else{eem_mdl <- readRDS(file.path(mdl_dir, "eem-mdl.rds"))}
+```
+
 
 Lastly, we just need to return the results as a list. Since we don't have any absorbance data we'll just make it NA.
 
@@ -231,9 +302,19 @@ Lastly, we just need to return the results as a list. Since we don't have any ab
 Great, that all looks good, now we just need to combine all that code to a custom function.
 
 ```{r}
-chen2003 <- function(eemlist, abslist, cuvle=1){
+chen2003 <- function(eemlist, abslist, cuvle=1, mdl_dir){
   #making sure eemlist and abslist are correct objects
     stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
+  
+  #get mdl data
+  check_eem <- file.exists(file.path(mdl_dir, "eem-mdl.rds"))
+
+  #load mdl data or warn
+  if(!check_eem){
+    warning("fluorescence MDL is missing, indices will not be checked for MDLs")
+    eem_mdl <- NULL
+  }else{eem_mdl <- readRDS(file.path(mdl_dir, "eem-mdl.rds"))}
+  
   #specify regions
     chen_regions <- list(r1 = list(ex=240:250, em=245:300),
                      r2 = list(ex=240:250, em=330:380),
@@ -248,7 +329,9 @@ chen2003 <- function(eemlist, abslist, cuvle=1){
     vals <- get_fluorescence(eemlist, region$ex, region$em, stat = "max")
   
     #get flags
-    flags <- flag_missing(eemlist, ex=region$ex, em=region$em, all=FALSE)
+    missflags <- flag_missing(eemlist, ex=region$ex, em=region$em, all=FALSE)
+    mdlflags <- check_eem_mdl(eemlist, eem_mdl, region$ex, region$em)
+    flags <- .combine_flags(missflags, mdlflags)
   
     #add sample names and make into data.frame (get index name)
     res <- format_index(eemlist, region_name, vals, flags)
@@ -268,7 +351,8 @@ chen2003 <- function(eemlist, abslist, cuvle=1){
 Now let's test our custom function with the [get_indices](../html/get-indices.html) function. Note that we get a warning about the indices because the EEMs data hasn't gone through any processing steps.
 
 ```{r}
-indices <- get_indices(example_eems, example_absorbance, index_method = chen2003, return = "wide")
+indices <- get_indices(example_processed_eems, example_processed_abs, index_method = chen2003, return = "wide", 
+                       mdl_dir = file.path(system.file("extdata", package = "eemanalyzeR")))
 
 indices$eem_index
 ```
@@ -306,7 +390,8 @@ erlandsson_index <- list(a254=254,
 We can use the [get_absorbance](../html/get-absorbance.html) helper function to calculate the absorbance at 254 and 420. For a single wavelength that looks like:
 
 ```{r}
-a254 <- get_absorbance(example_absorbance, wl=erlandsson_index[[1]])
+abslist <- example_processed_abs
+a254 <- get_absorbance(abslist, wl=erlandsson_index[[1]])
 a254
 
 ```
@@ -318,13 +403,15 @@ abs_data <- lapply(names(erlandsson_index[1:2]), function(index_name){
        index <- erlandsson_index[[index_name]]
 
        #get values
-       vals <- get_absorbance(example_absorbance, wl=index) 
+       vals <- get_absorbance(abslist, wl=index) 
        
        #get flags
-        flags <- flag_missing(example_absorbance, wl=index, all=TRUE)
+        missflags <- flag_missing(abslist, wl=index, all=TRUE)
+        mdlflags <- check_abs_mdl(abslist, abs_mdl, wl=index)
+        flags <- .combine_flags(missflags, mdlflags)
 
       #add sample names and make into data.frame (get index name)
-        res <- format_index(example_absorbance, index_name, vals, flags)
+        res <- format_index(abslist, index_name, vals, flags)
 
         #return res
         return(res)
@@ -335,8 +422,8 @@ abs_data <- do.call(rbind, abs_data)
 Next lets get the ratios, we can still use the [get_absorbance](../html/get-absorbance.html) helper function to get the absorbance at the wavelengths, and then use the [get_ratios](../html/get-ratios.html) helper function to get the ratio with any flags. In the case below, we don't have absorbance at 220 nm, so we get flags of DATA01
 
 ```{r}
-a220 <- get_absorbance(example_absorbance, wl=220) 
-a254 <- get_absorbance(example_absorbance, wl=254)
+a220 <- get_absorbance(abslist, wl=220) 
+a254 <- get_absorbance(abslist, wl=254)
 a220_a254 <- get_ratios(a220, a254)
 a220_a254
 
@@ -349,8 +436,8 @@ ratios <- lapply(names(erlandsson_index[3:5]), function(index_name){
        index <- erlandsson_index[[index_name]]
 
        #get values
-       a1 <- get_absorbance(example_absorbance, wl=index[1]) 
-       a2 <- get_absorbance(example_absorbance, wl=index[2])
+       a1 <- get_absorbance(abslist, wl=index[1]) 
+       a2 <- get_absorbance(abslist, wl=index[2])
        get_ratios(a1, a2)
      })
 ```
@@ -362,15 +449,17 @@ ratios <- lapply(names(erlandsson_index[3:5]), function(index_name){
        index <- erlandsson_index[[index_name]]
 
        #get values
-       a1 <- get_absorbance(example_absorbance, wl=index[1]) 
-       a2 <- get_absorbance(example_absorbance, wl=index[2])
+       a1 <- get_absorbance(abslist, wl=index[1]) 
+       a2 <- get_absorbance(abslist, wl=index[2])
        vals <- get_ratios(a1, a2)
        
-       #get flags
-        flags <- flag_missing(example_absorbance, wl=index)
+        #get flags
+        missflags <- flag_missing(abslist, wl=index, all=TRUE)
+        mdlflags <- check_abs_mdl(abslist, abs_mdl, wl=index)
+        flags <- .combine_flags(missflags, mdlflags)
 
       #add sample names and make into data.frame (get index name)
-      res <- format_index(example_absorbance, index_name, vals, flags)
+      res <- format_index(abslist, index_name, vals, flags)
         
       #return res
       return(res)
@@ -382,16 +471,35 @@ Lastly we need to get the spectral slopes and spectral ratio. For these we'll us
 
 ```{r}
 index <- "S275_295"
-vals <- get_abs_slope(example_absorbance, c(275,295))
-flags <- flag_missing(example_absorbance, wl=erlandsson_index[[index]])
-S275_295 <- format_index(example_absorbance, index, vals, flags)
+vals <- get_abs_slope(abslist, c(275,295))
+missflags <- flag_missing(abslist, wl=erlandsson_index[[index]])
+mdlflags <- check_abs_mdl(abslist, mdl=abs_mdl, wl=erlandsson_index[[index]])
+flags <- .combine_flags(missflags, mdlflags)
+S275_295 <- format_index(abslist, index, vals, flags)
 
 index <- "SR"
-vals <- get_ratios(get_abs_slope(example_absorbance, c(275,295)), get_abs_slope(example_absorbance, c(350,400)))
-flags <- flag_missing(example_absorbance, wl=erlandsson_index[[index]])
-SR <- format_index(example_absorbance, index, vals, flags)
+vals <- get_ratios(get_abs_slope(abslist, c(275,295)), get_abs_slope(abslist, c(350,400)))
+missflags <- flag_missing(abslist, wl=erlandsson_index[[index]])
+mdlflags <- .combine_flags(check_abs_mdl(abslist, mdl=abs_mdl, wl=275:295),
+                           check_abs_mdl(abslist, mdl=abs_mdl, wl=350:400))
+flags <- .combine_flags(missflags, mdlflags)
+SR <- format_index(abslist, index, vals, flags)
 
 ```
+
+Now we need to make sure to add in the MDL data so we can use it to check our values. If the MDL is NULL, we want to have a warning, but still run. 
+```{r}
+ mdl_dir <- file.path(system.file("extdata", package = "eemanalyzeR"))
+ #get mdl data
+  check_abs <- file.exists(file.path(mdl_dir, "abs-mdl.rds"))
+
+  #load mdl data or warn
+  if(!check_abs){
+    warning("absorbance MDL is missing, indices will not be checked for MDLs")
+    abs_mdl <- NULL
+    }else{abs_mdl <- readRDS(file.path(mdl_dir, "abs-mdl.rds"))}
+```
+
 
 Lastly, we just need to combine all the indices into a data.frame and return the results as a list using another `do.call`. Since we don't have any EEMs data we'll just make it NA.
 
@@ -405,9 +513,18 @@ Lastly, we just need to combine all the indices into a data.frame and return the
 Great, that all looks good, now we just need to combine all that code to a custom function.
 
 ```{r}
-erlandsson2012 <- function(eemlist, abslist, cuvle=1){
+erlandsson2012 <- function(eemlist, abslist, cuvle=1, mdl_dir){
   #making sure eemlist and abslist are correct objects
     stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
+  
+  #get mdl 
+  check_abs <- file.exists(file.path(mdl_dir, "abs-mdl.rds"))
+
+  #load mdl data or warn
+  if(!check_abs){
+    warning("absorbance MDL is missing, indices will not be checked for MDLs")
+    abs_mdl <- NULL
+  }else{abs_mdl <- readRDS(file.path(mdl_dir, "abs-mdl.rds"))}
   
   #specify wavelengths
     erlandsson_index <- list(a254=254,
@@ -426,8 +543,10 @@ erlandsson2012 <- function(eemlist, abslist, cuvle=1){
        vals <- get_absorbance(abslist, wl=index) 
        
        #get flags
-        flags <- flag_missing(abslist, wl=index, all=TRUE)
-
+        missflags <- flag_missing(abslist, wl=index, all=TRUE)
+        mdlflags <- check_abs_mdl(abslist, abs_mdl, wl=index)
+        flags <- .combine_flags(missflags, mdlflags)
+        
       #add sample names and make into data.frame (get index name)
         res <- format_index(abslist, index_name, vals, flags)
 
@@ -444,8 +563,10 @@ erlandsson2012 <- function(eemlist, abslist, cuvle=1){
        a2 <- get_absorbance(abslist, wl=index[2])
        vals <- get_ratios(a1, a2)
        
-       #get flags
-        flags <- flag_missing(abslist, wl=index)
+        #get flags
+        missflags <- flag_missing(abslist, wl=index, all=TRUE)
+        mdlflags <- check_abs_mdl(abslist, abs_mdl, wl=index)
+        flags <- .combine_flags(missflags, mdlflags)
 
       #add sample names and make into data.frame (get index name)
       res <- format_index(abslist, index_name, vals, flags)
@@ -457,14 +578,18 @@ erlandsson2012 <- function(eemlist, abslist, cuvle=1){
     
     index <- "S275_295"
     vals <- get_abs_slope(abslist, c(275,295))
-    flags <- flag_missing(abslist, wl=erlandsson_index[[index]])
+    missflags <- flag_missing(abslist, wl=erlandsson_index[[index]])
+    mdlflags <- check_abs_mdl(abslist, mdl=abs_mdl, wl=erlandsson_index[[index]])
+    flags <- .combine_flags(missflags, mdlflags)
     S275_295 <- format_index(abslist, index, vals, flags)
     
     index <- "SR"
-    vals <- get_ratios(get_abs_slope(abslist, c(275,295)), get_abs_slope(abslist, c(350,400)))
-    flags <- flag_missing(abslist, wl=erlandsson_index[[index]])
+    vals <- get_ratios(get_abs_slope(abslist, c(275,295)), get_abs_slope(example_processed_abs, c(350,400)))
+    missflags <- flag_missing(abslist, wl=erlandsson_index[[index]])
+    mdlflags <- .combine_flags(check_abs_mdl(abslist, mdl=abs_mdl, wl=275:295),
+                               check_abs_mdl(abslist, mdl=abs_mdl, wl=350:400))
+    flags <- .combine_flags(missflags, mdlflags)
     SR <- format_index(abslist, index, vals, flags)
-
 
   #combine lists together
     results <- do.call(rbind, list(abs_data, ratios, S275_295, SR))
@@ -478,7 +603,8 @@ erlandsson2012 <- function(eemlist, abslist, cuvle=1){
 Now let's test our custom function with the [get_indices](../html/get-indices.html) function. Once again note that we get a warning about the indices because the EEMs data hasn't gone through any processing steps.
 
 ```{r}
-indices <- get_indices(example_eems, example_absorbance, index_method = erlandsson2012, return="wide")
+indices <- get_indices(example_processed_eems, example_processed_abs, index_method = erlandsson2012, 
+                       mdl_dir = file.path(system.file("extdata", package = "eemanalyzeR")), return="wide")
 
 indices$abs_index
 ```

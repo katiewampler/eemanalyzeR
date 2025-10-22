@@ -20,5 +20,5 @@ A vector of spectral slope values, one for each sample in abslist. If a value ca
 A wrapper for \link[staRdom]{abs_fit_slope} which interpolates the data as needed, calculates absorption, calculates the slope, and flags any missing values.
 }
 \examples{
-S275_295 <- get_abs_slope(example_absorbance, lim=c(275,295))
+S275_295 <- get_abs_slope(example_abs, lim=c(275,295))
 }

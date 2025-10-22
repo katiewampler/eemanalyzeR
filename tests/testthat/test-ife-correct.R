@@ -1,8 +1,8 @@
 test_that("ife corrections are performed", {
-  expect_error(ife_correct(example_eems, example_absorbance), "metadata must be added to eemlist and abslist to link samples")
+  expect_error(ife_correct(example_eems, example_abs), "metadata must be added to eemlist and abslist to link samples")
 
   eemlist <- add_metadata(metadata,example_eems)
-  abslist <- add_metadata(metadata, example_absorbance)
+  abslist <- add_metadata(metadata, example_abs)
   expect_warning(correct_eem <- ife_correct(eemlist, abslist), "trimmed EEM's to match absorbance data wavelengths")
 
   #ensure corrections are marked as true

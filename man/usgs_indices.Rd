@@ -50,10 +50,6 @@ If EEMs data is not a 1 nanometer interval, fluorescence will be interpolated
 using \link[pracma]{interp2}.
 }
 \examples{
-abslist <- add_metadata(metadata, example_absorbance)
-eemlist <- add_metadata(metadata, example_eems)
-eemlist <- add_blanks(eemlist, validate=FALSE)
-eemlist <- process_eem(eemlist, abslist)
-indices <- usgs_indices(eemlist, abslist,
+indices <- usgs_indices(example_processed_eems, example_processed_abs,
 mdl_dir = system.file("extdata", package = "eemanalyzeR"))
 }

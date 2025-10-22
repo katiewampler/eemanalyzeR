@@ -1,5 +1,5 @@
 test_that("errors are returned", {
-  expect_error(get_fluorescence(example_absorbance), ".is_eem")
+  expect_error(get_fluorescence(example_abs), ".is_eem")
   expect_error(get_fluorescence(example_eems, ex="not_number"), "is.numeric")
   expect_error(get_fluorescence(example_eems, ex=254, em="not_number"), "is.numeric")
   expect_error(get_fluorescence(example_eems, ex=254, em=400, stat="wrong"), "stat")

@@ -38,30 +38,15 @@
 #' @export
 #'
 #' @examples
-#' abslist <- add_metadata(metadata, example_absorbance)
-#' eemlist <- add_metadata(metadata, example_eems)
-#' eemlist <- add_blanks(eemlist, validate=FALSE)
-#' eemlist <- process_eem(eemlist, abslist)
-#' indices <- eemanalyzeR_indices(eemlist, abslist,
+#' indices <- eemanalyzeR_indices(example_processed_eems, example_processed_abs,
 #' mdl_dir = system.file("extdata", package = "eemanalyzeR"))
 eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1, mdl_dir=.qaqc_dir()){
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
 
- #get mdl data
-  check_eem <- file.exists(file.path(mdl_dir, "eem-mdl.rds"))
-  check_abs <- file.exists(file.path(mdl_dir, "abs-mdl.rds"))
-
-  #load mdl data or warn
-  if(!check_eem){
-    warning("fluorescence MDL is missing, indices will not be checked for MDLs")
-    eem_mdl <- NULL
-    }else{eem_mdl <- readRDS(file.path(mdl_dir, "eem-mdl.rds"))}
-
-  if(!check_abs){
-    warning("absorbance MDL is missing, indices will not be checked for MDLs")
-    abs_mdl <- NULL
-    }else{abs_mdl <- readRDS(file.path(mdl_dir, "abs-mdl.rds"))}
-
+  #get mdl data
+    mdls <- .check_mdl_file(mdl_dir)
+    eem_mdl <- mdls$eem_mdl
+    abs_mdl <- mdls$abs_mdl
 
  #fluorescence indices
   #define wavelengths for peaks and metrics to check if there are missing wavelengths
@@ -222,26 +207,31 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1, mdl_dir=.qaqc_dir()){
        vals <- get_absorbance(abslist, wl=index, suva = TRUE)
 
        #get flags
-       flags <- flag_missing(abslist, wl=index)
+       missflags <- flag_missing(abslist, wl=index)
+       mdlflags <- check_abs_mdl(abslist, mdl=abs_mdl, wl=index)
+       flags <- .combine_flags(missflags, mdlflags)
 
        #add sample names and make into data.frame (get index name)
        res <- format_index(abslist, index_name, vals, flags)
 
        #return res
        return(res)
-     })
-     suva <- do.call(rbind, suva)
+     }) %>% dplyr::bind_rows()
 
 
    #get spectral slopes
      index <- "S275_295"
      vals <- get_abs_slope(abslist, c(275,295))
-     flags <- flag_missing(abslist, wl=abs_wl[[index]])
+     missflags <- flag_missing(abslist, wl=abs_wl[[index]])
+     mdlflags <- check_abs_mdl(abslist, mdl=abs_mdl, wl=275:295)
+     flags <- .combine_flags(missflags, mdlflags)
      S275_295 <- format_index(abslist, index, vals, flags)
 
      index <- "S350_400"
      vals <- get_abs_slope(abslist, c(350,400))
-     flags <- flag_missing(abslist, wl=abs_wl[[index]])
+     missflags <- flag_missing(abslist, wl=abs_wl[[index]])
+     mdlflags <- check_abs_mdl(abslist, mdl=abs_mdl, wl=350:400)
+     flags <- .combine_flags(missflags, mdlflags)
      S350_400 <- format_index(abslist, index, vals, flags)
 
     #get ratios
@@ -250,22 +240,29 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1, mdl_dir=.qaqc_dir()){
        denominator <- stringr::str_split_i(S350_400$value, "_", i=1)
 
        #if flag is a DATA04, will get "DATA" replace with NA
-       numerator[numerator == "DATA"] <- NA
-       denominator[denominator == "DATA"] <- NA
+       numerator[numerator %in% c("DATA04", "MDL01")] <- NA
+       denominator[denominator %in% c("DATA04", "MDL01")] <- NA
 
        index <- "SR"
        vals <- get_ratios(numerator, denominator)
-       flags <- flag_missing(abslist, wl=abs_wl[[index]])
+       missflags <- flag_missing(abslist, wl=abs_wl[[index]])
+       mdlflags <- .combine_flags(check_abs_mdl(abslist, mdl=abs_mdl, wl=275:295),
+                                  check_abs_mdl(abslist, mdl=abs_mdl, wl=350:400))
+       flags <- .combine_flags(missflags, mdlflags)
        SR <- format_index(abslist, index, vals, flags)
 
        index <- "E2_E3"
        vals <- get_ratios(get_absorbance(abslist, 250), get_absorbance(abslist, 365))
-       flags <- flag_missing(abslist, wl=abs_wl[[index]])
+       missflags <- flag_missing(abslist, wl=abs_wl[[index]])
+       mdlflags <- check_abs_mdl(abslist, mdl=abs_mdl, wl =c(250, 365))
+       flags <- .combine_flags(missflags, mdlflags)
        E2_E3 <- format_index(abslist, index, vals, flags)
 
        index <- "E4_E6"
        vals <- get_ratios(get_absorbance(abslist, 465), get_absorbance(abslist, 665))
-       flags <- flag_missing(abslist, wl=abs_wl[[index]])
+       missflags <- flag_missing(abslist, wl=abs_wl[[index]])
+       mdlflags <- check_abs_mdl(abslist, mdl=abs_mdl, wl =c(465, 665))
+       flags <- .combine_flags(missflags, mdlflags)
        E4_E6 <- format_index(abslist, index, vals, flags)
 
 

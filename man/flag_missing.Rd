@@ -30,9 +30,9 @@ Checks if a metric can't be calculated or may be inaccurate due to missing wavel
 }
 \examples{
 #checking absorbance data
-  flag_missing(example_absorbance, wl=400) #data exists
-  flag_missing(example_absorbance, wl=100) #data doesn't exist
-  flag_missing(example_absorbance, wl=100:254, all=FALSE) #some data exists, still calculate
+  flag_missing(example_abs, wl=400) #data exists
+  flag_missing(example_abs, wl=100) #data doesn't exist
+  flag_missing(example_abs, wl=100:254, all=FALSE) #some data exists, still calculate
 
 #checking fluorescence data
   flag_missing(example_eems, ex=270:280, em=300:320) #data exists
