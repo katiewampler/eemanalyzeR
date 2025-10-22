@@ -5,7 +5,7 @@
 #' for all excitation-emission pairs.
 #'
 #' @param eem an \code{eem} or \code{eemlist} object containing EEM's data
-#' @param mdl a `eem` object containing MDL data
+#' @param mdl a `eem` object containing MDL data, if no MLD provided will return NA
 #' @param ex a vector of excitation wavelengths
 #' @param em a vector of emission wavelengths
 #' @param vals logical, if FALSE will return a TRUE or FALSE, if TRUE will
@@ -13,8 +13,9 @@
 #' @md
 #' @returns
 #' If `vals` is FALSE:
-#'  - TRUE if all values are above the MDL
-#'  - FALSE if one or more values within the range are below the MDL.
+#'  - MDL01 if all values are below the MDL
+#'  - MDL02 if some of the values are below the MDL
+#'  - NA if all are above the MDL
 #'
 #' If `vals` is TRUE:
 #'  - a `data.frame` with four columns:
@@ -38,9 +39,12 @@
 #' #or an eemlist
 #' check_eem_mdl(eemlist, mdl, ex = 270:280, em=300:320)
 
-check_eem_mdl <- function(eem, mdl, ex, em, vals = FALSE){
+check_eem_mdl <- function(eem, mdl=NULL, ex, em,  vals = FALSE){
+  #if no mdl, return NA so we can run the function without checking if we have mdl or not
+  if(is.null(mdl)){return(NA)}
+
   #has eem been blank subtracted and raman normalized?
-    stopifnot(all(is.numeric(ex)), all(is.numeric(em)), .is_eem(mdl),
+    stopifnot(all(is.numeric(ex)), all(is.numeric(em)),
               .is_eem(eem) | .is_eemlist(eem))
 
   if(.is_eemlist(eem)){
@@ -64,12 +68,9 @@ check_eem_mdl <- function(eem, mdl, ex, em, vals = FALSE){
   stopifnot(attr(eem, "is_raman_normalized"),
             attr(eem, "is_blank_corrected"))
 
-  #get portions of mdl to check (based on wavelengths in eem)
-    ex <- eem$ex[eem$ex >= min(ex, na.rm = TRUE) & eem$ex <= max(ex, na.rm = TRUE)]
-    em <- eem$em[eem$em >= min(em, na.rm = TRUE) & eem$em <= max(em, na.rm = TRUE)]
-
-  #interpolate mdl to make sure it matches the sample
-    if(all(eem$ex %in% mdl$ex) & all(eem$em %in% mdl$em)){
+  #interpolate mdl to make sure it matches the sample and index requested
+    if(all(eem$ex %in% mdl$ex) & all(eem$em %in% mdl$em) &
+       all(ex %in% eem$ex) & all(em %in% eem$em)){
       mdl_val <- eem_flatten(mdl) %>% dplyr::rename("mdl" = "fluor") %>%
         dplyr::filter(.data$ex %in% !!ex & .data$em %in% !!em)
     }else{
@@ -79,15 +80,22 @@ check_eem_mdl <- function(eem, mdl, ex, em, vals = FALSE){
                             mdl = pracma::interp2(mdl$ex, mdl$em, mdl$x, ex_p, em_p))
     }
 
-  #get same values in eem and see if they're all larger
-    eem_val <- eem_flatten(eem) %>% dplyr::filter(.data$ex %in% !!ex & .data$em %in% !!em)
+  #get same values in eem, interpolate if needed
+    if(all(ex %in% eem$ex) & all(em %in% eem$em)){
+      eem_val <- eem_flatten(eem) %>% dplyr::filter(.data$ex %in% !!ex & .data$em %in% !!em)
+    }else{
+      ex_p <- rep(ex, length(em)) #gives values to interpolate between
+      em_p <- rep(em, length(ex)) #gives values to interpolate between
+      eem_val <- data.frame(ex = ex_p, em = em_p,
+                            fluor = pracma::interp2(eem$ex, eem$em, eem$x, ex_p, em_p))
+    }
 
   #make into a table
     mdl_table <- merge(eem_val, mdl_val, by=c("ex", "em"))
     if(vals){return(mdl_table)} #return if this is requested
 
-  #otherwise return T/F
-    above_mdl <- all(na.omit(mdl_table$fluor > mdl_table$mdl))
-
-    return(above_mdl)
+  #otherwise return NA or MDL01 flag
+    if(all(na.omit(mdl_table$fluor > mdl_table$mdl))){return(NA)} #if all non NA above MDL -> no flag needed
+    if(all(na.omit(mdl_table$fluor < mdl_table$mdl))){return("MDL01")} #if all values below MDL -> flag with MDL01
+    if(any(na.omit(mdl_table$fluor < mdl_table$mdl))){return("MDL02")} #if any values are below MDL -> flag with MDL02
 }

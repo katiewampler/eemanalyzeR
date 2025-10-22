@@ -1,6 +1,7 @@
 #' Format Index and Flag Data
 #'
 #' Takes index values, QA/QC flags, and dataset and combines and combines data and formats data for further processing.
+#' Will remove any values with a flag of MDL01 as these are below the detection limit and won't be reported.
 #'
 #' @param x an \code{eemlist} or \code{abslist} object
 #' @param index a character, the name of the index
@@ -34,6 +35,8 @@ format_index <- function(x, index, value, flag){
     }else{
       meta_name <-  get_sample_info(x, "sample")}
 
+  #set values below MDL to NA
+    value[grep("MDL01", flag)] <- NA
 
   #combine vals and flags
     merge <- !is.na(value) & !is.na(flag) & value != flag

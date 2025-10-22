@@ -12,10 +12,10 @@ test_that("we can get the mdl for eems data", {
   expect_warning(eemlist <- process_eem(eemlist, abslist))
 
   #works with a single sample
-  expect_false(check_eem_mdl(eemlist[[1]], mdl, ex = 270:280, em=300:320))
+  expect_equal(check_eem_mdl(eemlist[[1]], mdl, ex = 270:280, em=300:320), "MDL01")
 
   #or an eemlist
-  expect_equal(check_eem_mdl(eemlist, mdl, ex = 270:280, em=300:320), c(FALSE, TRUE, TRUE))
+  expect_equal(check_eem_mdl(eemlist, mdl, ex = 270:280, em=300:320), c("MDL01", NA, NA))
 
   #returns a table
   single_table <- check_eem_mdl(eemlist[[1]], mdl, ex = 270:280, em=300:320, vals=TRUE)
@@ -25,5 +25,8 @@ test_that("we can get the mdl for eems data", {
   table <- check_eem_mdl(eemlist, mdl, ex = 270:280, em=300:320, vals=TRUE)
   expect_s3_class(table, "data.frame")
   expect_equal(colnames(table), c("ex", "em", "fluor", "mdl", "sample"))
+
+  #ensure it return NA if no mdl provided
+  expect_equal(check_eem_mdl(eemlist, ex = 270:280, em=300:320), NA)
 
 })

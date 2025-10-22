@@ -345,3 +345,45 @@ eem_flatten <- function(eem){
 
   return(df)
 }
+
+#' Nicely combine data QAQC flags
+#'
+#' If the previous flags were `NA`, replaces with the new flagged value, otherwise combines
+#' the flags with a "_" between.
+#'
+#' @param x existing flags
+#' @param x1 flags to add
+#'
+#' @returns
+#' @noRd
+#' @examples
+#' .combine_flags("DATA01", NA)
+#' .combine_flags(NA, "MDL01")
+#' .combine_flags(NA, NA)
+#' .combine_flags("DATAO1", "MDL01")
+#' .combine_flags("DATA01", "DATA01")
+.combine_flags <- function(x, x1){
+  stopifnot(length(x) == length(x1))
+
+  if(length(x) > 1){
+    flags <- sapply(1:length(x), function(n){.combine_flags(x[n], x1[n])})
+    return(flags)
+  }
+
+  if(is.na(x) & is.na(x1)){return(NA)}
+
+  if(is.na(x) & !is.na(x1)){return(x1)}
+
+  if(!is.na(x) & is.na(x1)){return(x)}
+
+  if(!is.na(x) & !is.na(x1)){
+    if(x == x1){return(x)}else{
+      return(paste(x,x1, sep="_"))
+    }}
+}
+
+#' Just a nicer way to get the directory where the QAQC files should live
+#' @noRd
+.qaqc_dir <- function(){
+  return(file.path(rappdirs::user_data_dir(appname = "eemanalyzeR"), "qaqc-stds"))
+}

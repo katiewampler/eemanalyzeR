@@ -11,6 +11,9 @@
 #' @param eemlist an \code{eemlist} object containing EEM's data. See details for more info.
 #' @param abslist an \code{abslist} object containing absorbance data.
 #' @param cuvle cuvette (path) length in cm
+#' @param mdl_dir file path to the mdl files generated with \link[eemanalyzeR]{get_mdl},
+#' default is a user-specific data directory (\link[rappdirs]{user_data_dir})
+#'
 #' @note If absorbance is not at a 1 nanometer interval, absorbance will be interpolated using
 #' \link[zoo]{na.approx} which fills in missing values
 #' using linear interpolation.
@@ -42,9 +45,25 @@
 #' @examples
 #' abslist <- add_metadata(metadata, example_absorbance)
 #' eemlist <- add_metadata(metadata, example_eems)
-#' indices <- usgs_indices(eemlist, abslist)
-usgs_indices <- function(eemlist, abslist, cuvle=1){
+#' eemlist <- add_blanks(eemlist, validate=FALSE)
+#' eemlist <- process_eem(eemlist, abslist)
+#' indices <- usgs_indices(eemlist, abslist,
+#' mdl_dir = system.file("extdata", package = "eemanalyzeR"))
+usgs_indices <- function(eemlist, abslist, cuvle=1, mdl_dir=.qaqc_dir()){
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
+
+  #get mdl data
+    check_eem <- file.exists(file.path(mdl_dir, "eem-mdl.rds"))
+    check_abs <- file.exists(file.path(mdl_dir, "abs-mdl.rds"))
+
+    #load mdl data or warn
+    if(!check_eem){
+      warning("fluoresence MDL is missing, indices will not be checked for MDLs")
+    }else{eem_mdl <- readRDS(file.path(mdl_dir, "eem-mdl.rds"))}
+
+    if(!check_abs){
+      warning("absorbance MDL is missing, indices will not be checked for MDLs")
+    }else{abs_mdl <- readRDS(file.path(mdl_dir, "abs-mdl.rds"))}
 
   #get fluoresence peaks
     #define wavelengths for peaks and metrics to check if there are missing wavelengths
@@ -69,20 +88,23 @@ usgs_indices <- function(eemlist, abslist, cuvle=1){
       vals <- get_fluorescence(eemlist, index$ex, index$em, stat = "max")
 
       #get flags
-      flags <- flag_missing(eemlist, ex=index$ex, em=index$em, all=FALSE)
+        missflags <- flag_missing(eemlist, ex=index$ex, em=index$em, all=FALSE)
+        mdlflags <- check_eem_mdl(eemlist, eem_mdl, index$ex, index$em)
+        flags <- .combine_flags(missflags, mdlflags)
 
       #add sample names and make into data.frame (get index name)
       res <- format_index(eemlist, index_name, vals, flags)
 
       #return res
       return(res)
-    })
-    coble <- do.call(rbind, coble)
+    }) %>% dplyr::bind_rows()
 
     #get FI
     index <- "FI_32312"
     vals <- get_ratios(get_fluorescence(eemlist, 370, 470), get_fluorescence(eemlist, 370, 520))
-    flags <- flag_missing(eemlist, ex=peaks[[index]]$ex, em=peaks[[index]]$ex, all=FALSE)
+    missflags <- flag_missing(eemlist, ex=peaks[[index]]$ex, em=peaks[[index]]$ex, all=FALSE)
+    mdlflags <- .combine_flags(check_eem_mdl(eemlist, eem_mdl, 370, 470), check_eem_mdl(eemlist, eem_mdl, 370, 520))
+    flags <- .combine_flags(missflags, mdlflags)
     FI <- format_index(eemlist, index, vals, flags)
 
     #get HIX
@@ -90,7 +112,9 @@ usgs_indices <- function(eemlist, abslist, cuvle=1){
     low <- get_fluorescence(eemlist, 254, 300:345, stat="sum")
     high <- get_fluorescence(eemlist, 254, 435:480, stat="sum")
     vals <- get_ratios(high, low)
-    flags <- flag_missing(eemlist, ex=peaks[[index]]$ex, em=peaks[[index]]$ex, all=FALSE)
+    missflags <- flag_missing(eemlist, ex=peaks[[index]]$ex, em=peaks[[index]]$ex, all=FALSE)
+    mdlflags <- .combine_flags(check_eem_mdl(eemlist, eem_mdl, 254, 300:345), check_eem_mdl(eemlist, eem_mdl, 254, 435:480))
+    flags <- .combine_flags(missflags, mdlflags)
     HIX <- format_index(eemlist, index, vals, flags)
 
     #merge indices together

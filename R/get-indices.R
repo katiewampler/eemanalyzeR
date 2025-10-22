@@ -47,6 +47,8 @@
 #'  \item DATA03: Unable to calculate ratio because denominator was zero
 #'  \item DATA04: Spectral slope was unable to be calculated
 #'  \item DOC01: Missing dissolved organic carbon data, so index was not able to be calculated
+#'  \item MDL01: All values were below the MDL for those wavelengths
+#'  \item MDL02: Some of the values were below the MDL for those wavelengths
 #'  \item NEG01: Value was negative
 #'  \item NOISE01: Value was below signal to noise ratio and therefore was not calculated
 #'  \item NOISE02: Value was not able to be checked for signal to noise ratio

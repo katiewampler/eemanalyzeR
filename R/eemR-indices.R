@@ -10,7 +10,8 @@
 #' @param eemlist an \code{eemlist} object containing EEM's data. See details for more info.
 #' @param abslist an \code{abslist} object containing absorbance data.
 #' @param cuvle cuvette (path) length in cm
-#'
+#' @param mdl_dir file path to the mdl files generated with \link[eemanalyzeR]{get_mdl},
+#' default is a user-specific data directory (\link[rappdirs]{user_data_dir})
 #' @return a list with two objects:
 #' \itemize{
 #'   \item eem_index: a data.frame of all the fluorescence indices
@@ -42,9 +43,25 @@
 #' @examples
 #' abslist <- add_metadata(metadata, example_absorbance)
 #' eemlist <- add_metadata(metadata, example_eems)
-#' indices <- eemR_indices(eemlist, abslist)
-eemR_indices <- function(eemlist, abslist, cuvle=1){
+#' eemlist <- add_blanks(eemlist, validate=FALSE)
+#' eemlist <- process_eem(eemlist, abslist)
+#' indices <- eemR_indices(eemlist, abslist,
+#' mdl_dir = system.file("extdata", package = "eemanalyzeR"))
+eemR_indices <- function(eemlist, abslist, cuvle=1, mdl_dir=.qaqc_dir()){
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
+
+  #get mdl data
+    check_eem <- file.exists(file.path(mdl_dir, "eem-mdl.rds"))
+    check_abs <- file.exists(file.path(mdl_dir, "abs-mdl.rds"))
+
+    #load mdl data or warn
+    if(!check_eem){
+      warning("fluoresence MDL is missing, indices will not be checked for MDLs")
+    }else{eem_mdl <- readRDS(file.path(mdl_dir, "eem-mdl.rds"))}
+
+    if(!check_abs){
+      warning("absorbance MDL is missing, indices will not be checked for MDLs")
+    }else{abs_mdl <- readRDS(file.path(mdl_dir, "abs-mdl.rds"))}
 
   #get fluoresence peaks
     #define wavelengths for peaks and metrics to check if there are missing wavelengths
@@ -58,6 +75,15 @@ eemR_indices <- function(eemlist, abslist, cuvle=1){
                   hix = list(ex=254, em=c(300:345,435:480)),
                   hix_scaled = list(ex=254, em=c(300:345,435:480)),
                   bix = list(ex=310, em=c(380, 430)))
+
+    split_groups <- function(em){
+      # Sort and remove duplicates
+      em <- sort(unique(em))
+      # Find breaks where the gap > 1
+      breaks <- cumsum(c(TRUE, diff(em) != 1))
+      # Split based on those breaks
+      split(em, breaks)
+    }
 
     #get metrics using eemR functions
     #get fluorescence indices
@@ -77,15 +103,17 @@ eemR_indices <- function(eemlist, abslist, cuvle=1){
         vals <- eem_index[[index_name]]
 
         #get flags
-        flags <- flag_missing(eemlist, ex=index$ex, em=index$em, all=FALSE)
+        missflags <- ifelse(is.na(vals) | is.nan(vals), "DATA01", NA)
+        mdlflags <- sapply(split_groups(index$em), function(x){check_eem_mdl(eemlist, eem_mdl, index$ex, x)})
+        if(ncol(mdlflags) > 1){mdlflags <- .combine_flags(mdlflags[,1], mdlflags[,2])}else{mdlflags <- as.vector(mdlflags)}
+        flags <- .combine_flags(missflags, mdlflags)
 
         #add sample names and make into data.frame (get index name)
         res <- format_index(eemlist, index_name, vals, flags)
 
         #return res
         return(res)
-      })
-      eem_index <- do.call(rbind, eem_index)
+      }) %>% dplyr::bind_rows()
 
   #absorbance peaks
     abslist <- abs_interp(abslist)
