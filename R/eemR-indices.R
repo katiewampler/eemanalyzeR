@@ -56,7 +56,7 @@ eemR_indices <- function(eemlist, abslist, cuvle=1, mdl_dir=.qaqc_dir()){
 
     #load mdl data or warn
     if(!check_eem){
-      warning("fluoresence MDL is missing, indices will not be checked for MDLs")
+      warning("fluorescence MDL is missing, indices will not be checked for MDLs")
     }else{eem_mdl <- readRDS(file.path(mdl_dir, "eem-mdl.rds"))}
 
     if(!check_abs){

@@ -354,7 +354,6 @@ eem_flatten <- function(eem){
 #' @param x existing flags
 #' @param x1 flags to add
 #'
-#' @returns
 #' @noRd
 #' @examples
 #' .combine_flags("DATA01", NA)

@@ -8,6 +8,8 @@
 #' @param index_method currently supports "eemanalyzeR", "eemR", and "usgs". See details for more information.
 #' @param return either "long" or "wide" to specify the format of the indices data.frames
 #' @param cuvle cuvette (path) length in cm
+#' @param mdl_dir file path to the mdl files generated with \link[eemanalyzeR]{get_mdl},
+#' default is a user-specific data directory (\link[rappdirs]{user_data_dir})
 #' @param arg_names optional argument used to pass arguments from higher level functions for writing the readme.
 #'
 #' @export
@@ -60,7 +62,8 @@
 #' eemlist <- add_metadata(metadata, example_eems)
 #' indices <- get_indices(eemlist, abslist)
 
-get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="long", cuvle=1, arg_names=NULL){
+get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="long",
+                        cuvle=1, mdl_dir= .qaqc_dir(), arg_names=NULL){
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist))
 
   #check if processing has been done, not warn that indices may be unreliable
@@ -94,7 +97,7 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
   index_function <- get_indices_function(index_method)
 
   #get indices
-  indices <- index_function(eemlist, abslist, cuvle = cuvle)
+  indices <- index_function(eemlist, abslist, cuvle = cuvle, mdl_dir=mdl_dir)
 
   #flag if needed
     #helper functions to make flags

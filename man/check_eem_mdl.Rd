@@ -4,12 +4,12 @@
 \alias{check_eem_mdl}
 \title{Check if a EEM sample is above the MDL}
 \usage{
-check_eem_mdl(eem, mdl, ex, em, vals = FALSE)
+check_eem_mdl(eem, mdl = NULL, ex, em, vals = FALSE)
 }
 \arguments{
 \item{eem}{an \code{eem} or \code{eemlist} object containing EEM's data}
 
-\item{mdl}{a \code{eem} object containing MDL data}
+\item{mdl}{a \code{eem} object containing MDL data, if no MLD provided will return NA}
 
 \item{ex}{a vector of excitation wavelengths}
 
@@ -21,8 +21,9 @@ return a table with the eem and mdl values for the ex/em pair}
 \value{
 If \code{vals} is FALSE:
 \itemize{
-\item TRUE if all values are above the MDL
-\item FALSE if one or more values within the range are below the MDL.
+\item MDL01 if all values are below the MDL
+\item MDL02 if some of the values are below the MDL
+\item NA if all are above the MDL
 }
 
 If \code{vals} is TRUE:

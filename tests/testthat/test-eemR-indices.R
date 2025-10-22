@@ -3,7 +3,10 @@
 test_that("output is correct",{
   abslist <- add_metadata(metadata, example_absorbance)
   eemlist <- add_metadata(metadata, example_eems)
-  indices <- eemR_indices(eemlist, abslist)
+  eemlist <- add_blanks(eemlist, validate=FALSE)
+  expect_warning(eemlist <- process_eem(eemlist, abslist))
+  mdl_dir <- system.file("extdata", package = "eemanalyzeR")
+  indices <- eemR_indices(eemlist, abslist, mdl_dir = mdl_dir)
 
   expect_equal(class(indices), "list")
   expect_length(indices, 2)

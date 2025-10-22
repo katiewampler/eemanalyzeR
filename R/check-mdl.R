@@ -41,7 +41,6 @@
 
 check_eem_mdl <- function(eem, mdl=NULL, ex, em,  vals = FALSE){
   #if no mdl, return NA so we can run the function without checking if we have mdl or not
-  if(is.null(mdl)){return(NA)}
 
   #has eem been blank subtracted and raman normalized?
     stopifnot(all(is.numeric(ex)), all(is.numeric(em)),
@@ -63,6 +62,9 @@ check_eem_mdl <- function(eem, mdl=NULL, ex, em,  vals = FALSE){
     above_mdl <- sapply(eem,  check_eem_mdl, mdl=mdl, vals=vals, ex=ex, em=em)
     return(above_mdl)
   }
+
+  #return NA if no mdl data is provided
+  if(is.null(mdl)){return(NA)}
 
   #ensure processing has been done so the mdl is the same units
   stopifnot(attr(eem, "is_raman_normalized"),

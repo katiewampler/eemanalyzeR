@@ -3,8 +3,14 @@ test_that("absorbance indices are correct", {
   #get indices
     abslist <- add_metadata(metadata, example_absorbance)
     eemlist <- add_metadata(metadata, example_eems)
-    indices <- eemanalyzeR_indices(eemlist, abslist)
+    eemlist <- add_blanks(eemlist, validate=FALSE)
+    expect_warning(eemlist <- process_eem(eemlist, abslist))
+    mdl_dir <- system.file("extdata", package = "eemanalyzeR")
 
+    #should give warnings about no using mdl
+    expect_warning(expect_warning(indices <- eemanalyzeR_indices(eemlist, abslist), "fluorescence"), "absorbance")
+
+    indices <- eemanalyzeR_indices(eemlist, abslist, mdl_dir = mdl_dir)
     index <- indices$abs_index #get abs indices
     index$value[grep("DOC|DATA", index$value)] <- NA
     index$value <- as.numeric(index$value) #make numeric, can't do in function because flags
@@ -44,7 +50,12 @@ test_that("eems indices are correct", {
   eemlist <- add_metadata(metadata, example_eems)
   eemlist <- add_blanks(eemlist, validate = F)
   expect_warning(eemlist <- process_eem(eemlist, abslist))
-  indices <- eemanalyzeR_indices(eemlist, abslist)
+  mdl_dir <- system.file("extdata", package = "eemanalyzeR")
+
+  #should give warnings about no using mdl
+  expect_warning(expect_warning(indices <- eemanalyzeR_indices(eemlist, abslist), "fluorescence"), "absorbance")
+
+  indices <- eemanalyzeR_indices(eemlist, abslist, mdl_dir = mdl_dir)
 
   #compare values to see if anything changed
   expect_snapshot(indices$eem_index)
@@ -54,7 +65,10 @@ test_that("eems indices are correct", {
 test_that("output is correct",{
   abslist <- add_metadata(metadata, example_absorbance)
   eemlist <- add_metadata(metadata, example_eems)
-  indices <- eemanalyzeR_indices(eemlist, abslist)
+  eemlist <- add_blanks(eemlist, validate = F)
+  expect_warning(eemlist <- process_eem(eemlist, abslist))
+  mdl_dir <- system.file("extdata", package = "eemanalyzeR")
+  indices <- eemanalyzeR_indices(eemlist, abslist, mdl_dir = mdl_dir)
 
   expect_equal(class(indices), "list")
   expect_length(indices, 2)

@@ -27,6 +27,10 @@ test_that("we can get the mdl for eems data", {
   expect_equal(colnames(table), c("ex", "em", "fluor", "mdl", "sample"))
 
   #ensure it return NA if no mdl provided
-  expect_equal(check_eem_mdl(eemlist, ex = 270:280, em=300:320), NA)
+  expect_equal(check_eem_mdl(eemlist, ex = 270:280, em=300:320), c(NA, NA, NA))
+
+  #check that a partial MDL is flagged
+    eemlist[[2]]$x[1,4] <- 0.000001 #set a low value so it spans the MDL in the region
+    expect_equal(check_eem_mdl(eemlist, mdl, ex = 314, em=250:262)[2], "MDL02")
 
 })

@@ -26,6 +26,7 @@ a data.frame with four columns:
 }
 \description{
 Takes index values, QA/QC flags, and dataset and combines and combines data and formats data for further processing.
+Will remove any values with a flag of MDL01 as these are below the detection limit and won't be reported.
 }
 \examples{
  ex <- 240:260

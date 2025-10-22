@@ -4,7 +4,7 @@
 \alias{eemR_indices}
 \title{eemR and staRdom methods for fluorescence and absorbance indices}
 \usage{
-eemR_indices(eemlist, abslist, cuvle = 1)
+eemR_indices(eemlist, abslist, cuvle = 1, mdl_dir = .qaqc_dir())
 }
 \arguments{
 \item{eemlist}{an \code{eemlist} object containing EEM's data. See details for more info.}
@@ -12,6 +12,9 @@ eemR_indices(eemlist, abslist, cuvle = 1)
 \item{abslist}{an \code{abslist} object containing absorbance data.}
 
 \item{cuvle}{cuvette (path) length in cm}
+
+\item{mdl_dir}{file path to the mdl files generated with \link[eemanalyzeR]{get_mdl},
+default is a user-specific data directory (\link[rappdirs]{user_data_dir})}
 }
 \value{
 a list with two objects:
@@ -46,5 +49,8 @@ are generated using the staRdom function \link[staRdom]{abs_parms}.
 \examples{
 abslist <- add_metadata(metadata, example_absorbance)
 eemlist <- add_metadata(metadata, example_eems)
-indices <- eemR_indices(eemlist, abslist)
+eemlist <- add_blanks(eemlist, validate=FALSE)
+eemlist <- process_eem(eemlist, abslist)
+indices <- eemR_indices(eemlist, abslist,
+mdl_dir = system.file("extdata", package = "eemanalyzeR"))
 }
