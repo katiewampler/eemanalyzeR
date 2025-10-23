@@ -8,6 +8,11 @@
       #(2) it tests different sizes/shapes of files
   library(here)
 
+
+  #get mdls
+    get_mdl("data-raw/long-term-standards/blanks", recursive = TRUE, type="eem")
+    get_mdl("data-raw/long-term-standards/blanks", recursive = TRUE, type="abs", pattern="Abs")
+
   #example 1: Hohner-Lab-2024-07-29
     input_dir <- here("dev/dev-examples/Hohner-Lab-2024-07-29")
     abs <- abs_dir_read(input_dir)
@@ -19,18 +24,20 @@
       #processing steps
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
-      plot_eem(eems, remove_lower = T)
-      indices <- get_indices(eems, abs, return="wide")
+      plots <- plot_eem(eems, remove_lower = T)
+      indices <- get_indices(eems, abs, return="wide", mdl_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      indices <- get_indices(eems, abs, return="wide", index_method = "usgs")
+      indices <- get_indices(eems, abs, return="wide", index_method = "usgs",  mdl_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      indices <- get_indices(eems, abs, return="wide", index_method = "eemR")
+      indices <- get_indices(eems, abs, return="wide", index_method = "eemR",  mdl_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
+
+      export_data(eems, abs, "devtest1", tempdir(),meta, indices, plots)
 
     #example 2: Hohner-Lab-2025-01-08
     input_dir <- here("dev/dev-examples/Hohner-Lab-2025-01-08")
@@ -44,18 +51,20 @@
       #processing steps
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
-      plot_eem(eems, remove_lower = T)
-      indices <- get_indices(eems, abs, return="wide")
+      plots <- plot_eem(eems, remove_lower = T)
+      indices <- get_indices(eems, abs, return="wide", mdl_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      indices <- get_indices(eems, abs, return="wide", index_method = "usgs")
+      indices <- get_indices(eems, abs, return="wide", index_method = "usgs", mdl_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      indices <- get_indices(eems, abs, return="wide", index_method = "eemR")
+      indices <- get_indices(eems, abs, return="wide", index_method = "eemR", mdl_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
+
+      export_data(eems, abs, "devtest2", tempdir(), meta, indices, plots)
 
   #example 3: PNNL-2022-11-10
     input_dir <- here("dev/dev-examples/PNNL-2022-11-10")
@@ -70,18 +79,20 @@
       #processing steps
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
-      plot_eem(eems, remove_lower = T)
-      indices <- get_indices(eems, abs, return="wide")
+      plots <- plot_eem(eems, remove_lower = T)
+      indices <- get_indices(eems, abs, return="wide", mdl_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      indices <- get_indices(eems, abs, return="wide", index_method = "usgs")
+      indices <- get_indices(eems, abs, return="wide", index_method = "usgs", mdl_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      indices <- get_indices(eems, abs, return="wide", index_method = "eemR")
+      indices <- get_indices(eems, abs, return="wide", index_method = "eemR", mdl_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
+
+      export_data(eems, abs, "devtest3", tempdir(), meta, indices, plots)
 
   #example 4: Vick-Majors-Lab-2024-11-04
     input_dir <- here("dev/dev-examples/Vick-Majors-Lab-2024-11-04")
@@ -94,18 +105,20 @@
       #processing steps
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
-      plot_eem(eems, remove_lower = T)
-      indices <- get_indices(eems, abs, return="wide")
+      plots <- plot_eem(eems, remove_lower = T)
+      indices <- get_indices(eems, abs, return="wide", mdl_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      indices <- get_indices(eems, abs, return="wide", index_method = "usgs")
+      indices <- get_indices(eems, abs, return="wide", index_method = "usgs", mdl_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      indices <- get_indices(eems, abs, return="wide", index_method = "eemR")
+      indices <- get_indices(eems, abs, return="wide", index_method = "eemR", mdl_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
+
+      export_data(eems, abs, "devtest4", tempdir(), meta, indices, plots)
 
   #example 5: Bladon-Lab-2024-08-19
     input_dir <- here("dev/dev-examples/Bladon-Lab-2024-08-19")
@@ -118,7 +131,7 @@
       #processing steps
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
-      plot_eem(eems, remove_lower = T)
+      plots <- plot_eem(eems, remove_lower = T)
       indices <- get_indices(eems, abs, return="wide")
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
@@ -130,6 +143,8 @@
       indices <- get_indices(eems, abs, return="wide", index_method = "eemR")
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
+
+      export_data(eems, abs, "devtest5", tempdir(), meta, indices, plots)
 
   #example 6: Bladon-Lab-2024-08-22
     input_dir <- here("dev/dev-examples/Bladon-Lab-2024-08-22")
@@ -142,7 +157,7 @@
       #processing steps
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
-      plot_eem(eems, remove_lower = T)
+      plots <- plot_eem(eems, remove_lower = T)
       indices <- get_indices(eems, abs, return="wide")
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
@@ -155,6 +170,8 @@
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
+      export_data(eems, abs, "devtest6", tempdir(), meta, indices, plots)
+
   #example 7: Bladon-Lab-2024-11-01
     input_dir <- here("dev/dev-examples/Bladon-Lab-2024-11-01")
     abs <- abs_dir_read(input_dir)
@@ -166,7 +183,7 @@
       #processing steps
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
-      plot_eem(eems, remove_lower = T)
+      plots <- plot_eem(eems, remove_lower = T)
       indices <- get_indices(eems, abs, return = "wide")
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
@@ -178,4 +195,6 @@
       indices <- get_indices(eems, abs, return="wide", index_method = "eemR")
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
+      export_data(eems, abs, "devtest7", tempdir(), meta, indices, plots)
+
 

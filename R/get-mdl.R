@@ -79,7 +79,7 @@ get_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK", type = "eem"
     }
 
     #blank correct blanks
-      blank_eems <- add_blanks(blank, validate = FALSE, pattern="BEM")
+      blank_eems <- add_blanks(blank, validate = FALSE, pattern="BEM|blank")
 
     #blank subtract
       blank_eems <- subtract_blank(blank_eems)

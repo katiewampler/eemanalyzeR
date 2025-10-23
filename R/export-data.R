@@ -68,7 +68,7 @@ export_data <- function(eemlist, abslist, filename, output_dir=NULL,
     saveRDS(output, file.path(output_dir, filename, paste0("processed_data_", filename,".RDS")))
 
   #save readme as text file (add initial information about package to it)
-    write.table(readme, file.path(output_dir, filename, paste0("readme_", filename,".txt")),
+    write.table(capture.output(.print_readme()), file.path(output_dir, filename, paste0("readme_", filename,".txt")),
                 quote=FALSE, col.names = FALSE, row.names = FALSE)
 
   #save plots as png (default is yes)
@@ -107,5 +107,4 @@ export_data <- function(eemlist, abslist, filename, output_dir=NULL,
       })
     }
 
-    return(output)
 }
