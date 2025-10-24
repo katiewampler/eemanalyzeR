@@ -295,17 +295,16 @@ eem_flatten <- function(eem){
 
   if(is.na(x) & is.na(x1)){return(NA)}
 
-  #if combining two mdl columns, turn a NA and MDL01 to a MDL02
-  if(mdl){
-    if(is.na(x) & x1 == "MDL01"){x1 <- "MDL02"}
-    if(is.na(x1) & x == "MDL01"){x <- "MDL02"} }
-
   if(mdl & !is.na(x) & !is.na(x1)){
-    #if one is full mdl, but another is partial, return partial
-    if(x1 == "MDL01" & x == "MDL02"){x1 <- "MDL02"}
-    if(x == "MDL01" & x1 == "MDL02"){x <- "MDL02"}
+    #if one is full mdl, but another is partial, return MDL03 indicating that one set was totally below
+    if(x1 == "MDL01" & x == "MDL02"){x1 <- x <-  "MDL03"}
+    if(x == "MDL01" & x1 == "MDL02"){x <- x1 <- "MDL03"}
   }
 
+  #if combining two mdl columns, (should always be a ratio, so if one is NA and the other is MDL01, don't report -> MDL03)
+  if(mdl){
+    if(is.na(x) & x1 == "MDL01"){x1 <- "MDL03"}
+    if(is.na(x1) & x == "MDL01"){x <- "MDL03"}}
 
 
   if(is.na(x) & !is.na(x1)){return(x1)}

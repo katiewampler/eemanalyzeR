@@ -36,7 +36,7 @@ format_index <- function(x, index, value, flag){
       meta_name <-  get_sample_info(x, "sample")}
 
   #set values below MDL to NA
-    value[grep("MDL01", flag)] <- NA
+    value[grep("MDL01|MDL03", flag)] <- NA
 
   #combine vals and flags
     merge <- !is.na(value) & !is.na(flag) & value != flag

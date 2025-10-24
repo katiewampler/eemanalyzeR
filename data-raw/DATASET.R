@@ -61,6 +61,10 @@ for(x in files){
   #pull files from Aqualog folder and put in raw data
     dir <- "T:/Research/Aqualog_Data/2_PNNL_DOM"
     dates <- list.files(dir, "[0-9]{4}_[0-9]{2}_[0-9]{2}")
+    #days with problems, obv blank cont. weird stuff
+    date_rm <- c("2023_12_15", "2022_11_08", "2023_09_15b", "2023_03_24b", "2024_05_08", "2023_09_17", "2023_12_15b")
+
+    dates <- dates[!(dates %in% date_rm)]
     output_dir <- "data-raw/long-term-standards/blanks"
     get_blank_info <- function(file, output_dir){
       #get info about samples and metadata

@@ -1,3 +1,3 @@
-analysis_date,data_identifier,replicate_no,integration_time_s,dilution,RSU_area_1s,long_term_name
-2022-11-14,BLK2211141,1,5,1,1460.23798,2022_11_14_BLK2211141
-2022-11-14,BLK2211142,1,5,1,1460.23798,2022_11_14_BLK2211142
+analysis_date,data_identifier,replicate_no,integration_time_s,dilution,RSU_area_1s
+2022-11-14,2022_11_14_BLK2211141,1,5,1,1460.23798
+2022-11-14,2022_11_14_BLK2211142,1,5,1,1460.23798

@@ -53,6 +53,7 @@
 #' @importFrom tidyr pivot_wider
 #' @importFrom tools file_ext
 #' @importFrom usethis use_data
+#' @importFrom utils capture.output
 #' @importFrom utils modifyList
 #' @importFrom utils read.csv
 #' @importFrom utils write.csv

@@ -149,7 +149,7 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1, mdl_dir=.qaqc_dir()){
       index <- "FI"
       vals <- get_ratios(get_fluorescence(eemlist, 370, 470), get_fluorescence(eemlist, 370, 520))
       missflags <- flag_missing(eemlist, ex=peaks[[index]]$ex, em=peaks[[index]]$ex, all=FALSE)
-      mdlflags <- .combine_flags(check_eem_mdl(eemlist, eem_mdl, 370, 470), check_eem_mdl(eemlist, eem_mdl, 370, 520))
+      mdlflags <- .combine_flags(check_eem_mdl(eemlist, eem_mdl, 370, 470), check_eem_mdl(eemlist, eem_mdl, 370, 520), mdl=TRUE)
       flags <- .combine_flags(missflags, mdlflags)
       FI <- format_index(eemlist, index, vals, flags)
 
@@ -159,7 +159,7 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1, mdl_dir=.qaqc_dir()){
       high <- get_fluorescence(eemlist, 254, 435:480, stat="sum")
       vals <- get_ratios(high, low)
       missflags <- flag_missing(eemlist, ex=peaks[[index]]$ex, em=peaks[[index]]$ex, all=FALSE)
-      mdlflags <- .combine_flags(check_eem_mdl(eemlist, eem_mdl, 254, 300:345), check_eem_mdl(eemlist, eem_mdl, 254, 435:480))
+      mdlflags <- .combine_flags(check_eem_mdl(eemlist, eem_mdl, 254, 300:345), check_eem_mdl(eemlist, eem_mdl, 254, 435:480), mdl=TRUE)
       flags <- .combine_flags(missflags, mdlflags)
       HIX <- format_index(eemlist, index, vals, flags)
 
@@ -172,7 +172,7 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1, mdl_dir=.qaqc_dir()){
       index <- "fresh"
       vals <- get_ratios(get_fluorescence(eemlist, 310, 380), get_fluorescence(eemlist, 310, 420:435, stat="max"))
       missflags <- flag_missing(eemlist, ex=peaks[[index]]$ex, em=peaks[[index]]$ex, all=FALSE)
-      mdlflags <- .combine_flags(check_eem_mdl(eemlist, eem_mdl, 310, 380), check_eem_mdl(eemlist, eem_mdl, 310, 420:435))
+      mdlflags <- .combine_flags(check_eem_mdl(eemlist, eem_mdl, 310, 380), check_eem_mdl(eemlist, eem_mdl, 310, 420:435), mdl=TRUE)
       flags <- .combine_flags(missflags, mdlflags)
       fresh <- format_index(eemlist, index, vals, flags)
 
@@ -180,7 +180,7 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1, mdl_dir=.qaqc_dir()){
       index <- "BIX"
       vals <- get_ratios(get_fluorescence(eemlist, 310, 380), get_fluorescence(eemlist, 310, 430))
       missflags <- flag_missing(eemlist, ex=peaks[[index]]$ex, em=peaks[[index]]$ex, all=FALSE)
-      mdlflags <- .combine_flags(check_eem_mdl(eemlist, eem_mdl, 310, 380), check_eem_mdl(eemlist, eem_mdl, 310, 430))
+      mdlflags <- .combine_flags(check_eem_mdl(eemlist, eem_mdl, 310, 380), check_eem_mdl(eemlist, eem_mdl, 310, 430), mdl=TRUE)
       flags <- .combine_flags(missflags, mdlflags)
       BIX <- format_index(eemlist, index, vals, flags)
 
@@ -247,7 +247,7 @@ eemanalyzeR_indices <- function(eemlist, abslist, cuvle=1, mdl_dir=.qaqc_dir()){
        vals <- get_ratios(numerator, denominator)
        missflags <- flag_missing(abslist, wl=abs_wl[[index]])
        mdlflags <- .combine_flags(check_abs_mdl(abslist, mdl=abs_mdl, wl=275:295),
-                                  check_abs_mdl(abslist, mdl=abs_mdl, wl=350:400))
+                                  check_abs_mdl(abslist, mdl=abs_mdl, wl=350:400), mdl=TRUE)
        flags <- .combine_flags(missflags, mdlflags)
        SR <- format_index(abslist, index, vals, flags)
 

@@ -24,7 +24,6 @@
 #' abs <- abs_read(abs_files[1])
 
 abs_read <- function(file){
-
     #captures warning from trying to rbind eem's data
 
     .safe_rbind <- function(abs){
@@ -58,12 +57,16 @@ abs_read <- function(file){
       abs <- .safe_rbind(abs)
     }
 
+
     #give column names and make into df if not skipped
     if(is.null(abs) == F){
       #thrown an error if the wavelength isn't continuous, suggesting transmittance data was added
       if(sum(diff(abs[1,]) > 0) > 0){
         stop("wavelengths aren't continuous, please ensure transmitance data wasn't included in absorbance file:\n", file)
       }
+
+      #if there's an NA value, it'll get the value of the wavelength, replace with NA
+      abs[abs[,1] == abs[,2],2] <- NA
 
       #create into class "abs"
       obj <- list(file = file,

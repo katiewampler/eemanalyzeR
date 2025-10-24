@@ -79,7 +79,7 @@ get_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK", type = "eem"
     }
 
     #blank correct blanks
-      blank_eems <- add_blanks(blank, validate = FALSE, pattern="BEM|blank")
+      blank_eems <- add_blanks(blank, validate = FALSE, pattern="BEM|blank$")
 
     #blank subtract
       blank_eems <- subtract_blank(blank_eems)
@@ -140,11 +140,23 @@ get_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK", type = "eem"
 
     #make a giant df
       blank_abs_df <- get_sample_info(blank, "data") %>% as.data.frame() %>%
-        pivot_longer(-"wavelength", names_to = "sample", values_to = "abs") %>%
-        dplyr::select(-"sample")
+        pivot_longer(-"wavelength", names_to = "sample", values_to = "abs")
+
+    #warn if there's suspicious samples to double check
+      check <- blank_abs_df %>% dplyr::group_by(.data$sample) %>% dplyr::summarise(max=max(abs, na.rm = TRUE),
+                                                                 min = min(abs, na.rm=TRUE))
+      high <- check %>% dplyr::filter(.data$max > 0.05)
+      if(nrow(high) >0 ){
+        warning("the following samples have high absorbance, please check:\n", paste(high$sample, collapse ="\n"))
+      }
+
+      neg <- check %>% dplyr::filter(.data$min < -0.01 | .data$max < -0.001)
+      if(nrow(neg) >0 ){
+        warning("the following samples have substantial negative absorbance, please check:\n", paste(neg$sample, collapse ="\n"))
+      }
 
     #get mean and sd across all wavelengths
-      abs_mdls <- blank_abs_df %>% dplyr::group_by(.data$wavelength) %>% dplyr::filter(abs < 5) %>%
+      abs_mdls <- blank_abs_df %>% select(-"sample") %>% dplyr::group_by(.data$wavelength) %>%
         dplyr::summarise(mean = mean(abs, na.rm = TRUE),
                          sdev = sd(abs, na.rm = TRUE)) %>% mutate(mdl = (.data$sdev * 3 + .data$mean)) %>%
         dplyr::select("wavelength", "mdl")

@@ -44,11 +44,11 @@ export_data <- function(eemlist, abslist, filename, output_dir=NULL,
     steps <- steps[-nrow(steps),] #remove check for DOC
 
     if(all(!steps$done)){
-      warning("Data has not been processed. \nIt's reccomended to use eemanalyzeR::process_eem to process EEMs before saving.")
+      warning("Data has not been processed. \nIt's recomended to use eemanalyzeR::process_eem to process EEMs before saving.")
     }else if(any(!steps$done)){
       missing <- steps[steps$done == FALSE,]
       warning("Data has not been fully processed. The following processing steps are missing:\n",
-              paste(missing$warning, collapse="\n"), "\n\nIt's reccomended to use eemanalyzeR::process_eem to process EEMs before saving.")}
+              paste(missing$warning, collapse="\n"), "\n\nIt's recomended to use eemanalyzeR::process_eem to process EEMs before saving.")}
 
 
   #if no output_dir is specified get the temp directory
@@ -73,16 +73,26 @@ export_data <- function(eemlist, abslist, filename, output_dir=NULL,
 
   #save plots as png (default is yes)
     if(!is.null(plot)){
-      summary <- ggpubr::ggarrange(plotlist = plot)
+      #figure out dim for summary plot
+        height <- ceiling(length(plot)/4)
+        width <- ceiling(length(plot)/height)
+
+      summary <- ggpubr::ggarrange(plotlist = plot, nrow=height, ncol=width)
       ggplot2::ggsave(filename = paste0("summary_plots_", filename, ".png"),
                       path = file.path(output_dir, filename),
-                      plot = summary)
+                      plot = summary,
+                      units = "cm",
+                      height = height*13,
+                      width=17*width)
 
      lapply(names(plot), function(name) {
         file <- paste0(name, ".png")
         ggplot2::ggsave(filename = file,
                         path = file.path(output_dir, filename),
-                        plot = plot[[name]])})
+                        plot = plot[[name]],
+                        units = "cm",
+                        height = 13,
+                        width=17)})
 
     }
 
@@ -98,13 +108,14 @@ export_data <- function(eemlist, abslist, filename, output_dir=NULL,
     if(csv == TRUE){
       lapply(eemlist, function(x){
         name <- paste0(x$sample, "_processed.csv")
-        write.csv(x, file.path(output_dir, filename, name))
+        data <- get_sample_info(x, "x")
+        write.csv(data, file.path(output_dir, filename, name), row.names = TRUE)
       })
 
-      lapply(abslist, function(x){
-        name <- paste0(x$sample, "_processed.csv")
-        write.csv(x, file.path(output_dir, filename, name))
-      })
+      name <- paste0("absorbance_processed_", filename, ".csv")
+      data <- get_sample_info(abslist, "data")
+      write.csv(data, file.path(output_dir, filename, name), row.names = FALSE)
+
     }
 
 }

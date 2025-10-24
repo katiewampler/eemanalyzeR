@@ -5,8 +5,8 @@ test_that("absorbance indices are correct", {
     eemlist <- example_processed_eems
     mdl_dir <- system.file("extdata", package = "eemanalyzeR")
 
-    #should give warnings about no using mdl
-    expect_warning(expect_warning(indices <- eemanalyzeR_indices(eemlist, abslist), "fluorescence"), "absorbance")
+    #should give warnings about not using mdl
+    expect_warning(expect_warning(indices <- eemanalyzeR_indices(eemlist, abslist, mdl_dir = tempdir()), "fluorescence"), "absorbance")
 
     indices <- eemanalyzeR_indices(eemlist, abslist, mdl_dir = mdl_dir)
     index <- indices$abs_index #get abs indices

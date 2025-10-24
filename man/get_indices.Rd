@@ -72,6 +72,7 @@ The index values will be checked for potential errors prior to reporting and fla
  \item DOC01: Missing dissolved organic carbon data, so index was not able to be calculated
  \item MDL01: All values were below the MDL for those wavelengths
  \item MDL02: Some of the values were below the MDL for those wavelengths
+ \item MDL03: Index was a ratio, and either numerator or denominator was completely below the MDL
  \item NEG01: Value was negative
  \item NOISE01: Value was below signal to noise ratio and therefore was not calculated
  \item NOISE02: Value was not able to be checked for signal to noise ratio
