@@ -73,6 +73,18 @@ run_eems <- function(
 
 
   # TODO Optional Validation arguments
+  ## TEA Validation user input percent (how different from long term average? default 20%)
+
+  ## MDL (on blanks) checks:
+  ## Blanks must be raman normalized and processed. The function works the same
+  ## for EEMs and Absorbance (pointed at dir of blank files with metadata.
+  ## There is a pattern argument)
+
+  ## TODO - is there a non-visual blank check we can run? Since the MDL checks run
+  ## on raman normalized blanks
+
+
+
 
 
   # TODO Optional Processing arguments
@@ -168,23 +180,6 @@ run_eems <- function(
   # Made it here <-----------------------------------------------------------
 
 
-  # TODO decide if we're gonna remove the get_doc function from the package
-  # if(get_doc == T){
-  #   # Add code to append prjpath to DOC file (in case it's a relative path)
-  #   doc_file <- file.path(prjpath,
-  #                         doc_file)
-  #   meta <- get_doc(doc_file=doc_file,
-  #                   doc_sheet=doc_sheet,
-  #                   doc_column=doc_column,
-  #                   name_column=name_column,
-  #                   nskip=nskip,
-  #                   doc_delim=doc_delim,
-  #                   meta_file=meta_file,
-  #                   meta_sheet=meta_sheet,
-  #                   site_loc=site_loc,
-  #                   ...)
-  # }
-
   ## Check that the instrument blank is ok before continuing with processing steps
   Iblank <- X_blk[[1]]
   Sblank <- X[sapply(X,
@@ -193,6 +188,8 @@ run_eems <- function(
                                 ignore.case = TRUE))]
   class(Sblank) <- "eemlist"
   blanks_eemlist <- eemR::eem_bind(Iblank, Sblank)
+
+  ## NOTE: rlang::is_interactive might not work great with box large file storage
   if (rlang::is_interactive()) {
     blank_validation <- validate_instrument_blank(blanks_eemlist) }
   else {blank_validation <- FALSE}
@@ -200,6 +197,12 @@ run_eems <- function(
   # Process the EEMs
 
   # Validation checks on Processed EEMs and Absorbance Data
+
+  ## Blank Checks
+
+  ## Tea Checks
+
+  ## MDL Checks
 
   # Report the data
 

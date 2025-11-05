@@ -19,6 +19,13 @@
 # -[]
 
 
+# TODO make getters and setters grouped by functions so we can find defaults
+# quickly
+
+# TODO Make one big function for user to get and set defaults for processing and
+# save in same place as MDLs on user's computer for consistency
+
+
 # Create an empty environment to store EEMS processing arguments and parameters
 .pkgenv <- new.env(parent = emptyenv())
 
@@ -80,18 +87,6 @@ append_warning <- function(condition_message) {
   .pkgenv$warnings_list <- append(.pkgenv$warnings_list, condition_message)
   invisible(old)
 }
-
-
-
-# TODO can I make the DOC file a class with all the required info like
-# filename, sheet name, doc_column, name_column, nskip, doc_delim, etc.. so I don't
-# have to individually have all those parameters in the environment?
-
-# DOC File info
-# Initialize to NULL
-.pkgenv$doc_file <- NULL
-# Getter for DOC file
-
 
 
 
