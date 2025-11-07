@@ -4,7 +4,7 @@ library(pbapply)
 #get full size example files ------
 downscale_eems <- function(file, factor=6){
   #downscale EEMs
-  if(grepl("SEM|BEM|eem", file)){
+  if(grepl("SEM|BEM|eem|Waterfall", file)){
     data <- readLines(file) #read in file
 
     line1 <- unlist(stringr::str_extract_all(data[1], "-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?")) #removes tabs and wavelength
@@ -29,9 +29,16 @@ downscale_eems <- function(file, factor=6){
   }
 
   #downscale absorbance
-  if(grepl("ABS|abs", file)){
+  if(grepl("ABS|abs|Abs", file)){
     data <- readLines(file) #read in file
-    data <- data[seq(1, length(data), 6)]
+
+    #check for manual format, if so deal with differently
+    if(grepl("nm\tuA", data[2])){
+      end_abs <- grep("Wavelength\t", data)[2]
+      data <- c(data[1:3],data[seq(4, end_abs, 6)])
+    }else{
+      data <- data[seq(1, length(data), 6)]
+    }
     readr::write_lines(data, file.path("data-raw",basename(file)))
 
   }}

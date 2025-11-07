@@ -78,7 +78,7 @@ check_eem_mdl <- function(eem, mdl=NULL, ex, em,  vals = FALSE){
   #interpolate mdl to make sure it matches the sample and index requested
     if(all(eem$ex %in% mdl$ex) & all(eem$em %in% mdl$em) &
        all(ex %in% eem$ex) & all(em %in% eem$em)){
-      mdl_val <- eem_flatten(mdl) %>% dplyr::rename("mdl" = "fluor") %>%
+      mdl_val <- eem_transform(mdl) %>% dplyr::rename("mdl" = "fluor") %>%
         dplyr::filter(.data$ex %in% !!ex & .data$em %in% !!em)
     }else{
       ex_p <- rep(ex, length(em)) #gives values to interpolate between
@@ -89,7 +89,7 @@ check_eem_mdl <- function(eem, mdl=NULL, ex, em,  vals = FALSE){
 
   #get same values in eem, interpolate if needed
     if(all(ex %in% eem$ex) & all(em %in% eem$em)){
-      eem_val <- eem_flatten(eem) %>% dplyr::filter(.data$ex %in% !!ex & .data$em %in% !!em)
+      eem_val <- eem_transform(eem) %>% dplyr::filter(.data$ex %in% !!ex & .data$em %in% !!em)
     }else{
       ex_p <- rep(ex, length(em)) #gives values to interpolate between
       em_p <- rep(em, length(ex)) #gives values to interpolate between

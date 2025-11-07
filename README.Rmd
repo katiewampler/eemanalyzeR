@@ -38,11 +38,3 @@ Below is a flow chart illustrating the pre-processing steps and data required, t
 
 <img src="man/figures/eemanalyzeR_workflow.png" alt="" width="650" />
 
-## Example
-
-This is a basic example which shows you how to solve a common problem:
-
-```{r example}
-library(eemanalyzeR)
-## basic example code
-```

@@ -47,7 +47,8 @@
 #'
 #' plot_eem(eem_mdl)
 #'
-get_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK", type = "eem", recursive=FALSE, output_dir=NULL){
+get_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK",
+                    type = "eem", recursive=FALSE, output_dir=NULL){
   stopifnot(type %in% c("eem", "abs"), dir.exists(dir))
 
   #set up file structure for saving mdl data
@@ -88,7 +89,7 @@ get_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK", type = "eem"
       blank_eems <- raman_normalize(blank_eems)
 
     #make into a giant df
-      blank_df <- lapply(blank_eems, eem_flatten) %>% dplyr::bind_rows() %>%
+      blank_df <- lapply(blank_eems, eem_transform) %>% dplyr::bind_rows() %>%
         dplyr::group_by(.data$ex, .data$em) %>%
         dplyr::summarise(mean = mean(.data$fluor, na.rm = TRUE), sdev = sd(.data$fluor, na.rm = TRUE)) %>%
         mutate(mdl = (.data$sdev * 3 + .data$mean)) %>%
