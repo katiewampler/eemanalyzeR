@@ -61,7 +61,7 @@ abs_read <- function(file){
     if(is.null(abs) == F){
       #thrown an error if the wavelength isn't continuous, suggesting transmittance data was added
       if(sum(diff(abs[1,]) > 0) > 0){
-        stop("wavelengths aren't continuous, please ensure transmitance data wasn't included in absorbance file:\n", file)
+        stop("wavelengths aren't continuous, please ensure transmittance data wasn't included in absorbance file:\n", file)
       }
 
       #create into class "abs"
