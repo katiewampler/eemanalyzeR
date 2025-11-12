@@ -1,7 +1,4 @@
-#TO DO:
-#test that converting dates works with different date types
-
-
+# Tests for meta checking function
 test_that("missing columns are caught",{
   meta <- suppressMessages(meta_read(system.file("extdata", package = "eemanalyzeR")))
 

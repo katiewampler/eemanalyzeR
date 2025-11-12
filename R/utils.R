@@ -128,7 +128,7 @@
 #' @param i the index for subsetting
 #'
 #' @export
-#' @method `[` eemlist
+#' @S3method `[` eemlist
 #'
 `[.eemlist` <- function(eemlist, i) {
   sublist <- NextMethod()
@@ -138,8 +138,15 @@
 
 # Overload the bracket operator for abslist subsetting
 # we want to always return an abslist
+
+#'Subsetting using `[` for an abslist
+#' 
+#' @param abslist the abslist to subset
+#' @param i the index for subsetting
+#' 
 #' @export
-#' @method `[` abslist
+#' @S3method `[` abslist
+#' 
 `[.abslist` <- function(abslist, i) {
   sublist <- NextMethod()
   structure(sublist, class = "abslist")
