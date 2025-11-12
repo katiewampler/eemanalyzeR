@@ -1,6 +1,0 @@
-# get-data branch todos
-
--[] Delete tests that don't relate to getting data
--[] Check all get-data tests pass
--[] check all build checks pass
--[] merge get-data into master
