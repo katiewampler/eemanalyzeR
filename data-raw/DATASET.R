@@ -228,6 +228,14 @@ for(x in files){
     blk_meta <- blk_meta[,-ncol(blk_meta)]
     write.csv(blk_meta, "inst/extdata/long-term-tea/longtermteastd-metadata.csv", row.names=FALSE, quote=FALSE)
 
+    #make a test tea file for functions
+    get_tea_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-tea"),
+            meta_name="longtermteastd-metadata.csv", pattern = "longterm-teastd",
+            type="eem", output_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
+
+    get_tea_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-tea"),
+            meta_name="longtermteastd-metadata.csv", pattern = "longterm-teastd",
+            type="abs", output_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
 
 #save index ranges as data.frame ------
   make_na <- function(df){

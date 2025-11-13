@@ -216,60 +216,60 @@ Once we've gotten the values and the flags, the data needs to be formatted in a 
 
 ## Example 1
 
-Alright, now that we've reviewed all the helper functions and the requirements for the custom function let's do an example. Let's create a custom function to calculate the maximum fluorescence for the five regions defined in **Chen et al. 2003:**
+Alright, now that we've reviewed all the helper functions and the requirements for the custom function let's do an example. Let's create a custom function to calculate some new fluorescence indices presented in **Zhang et al. 2025:**
 
-```{r echo=FALSE, include=TRUE}
-indices <- data.frame(region=c("I", "II", "III", "IV", "V"), 
-                      excitation=c("<250", "<250", "<250", ">250", ">250"),
-                      emission=c("<300","330-380", ">380", "<380",">380"))
+$$ \text{U-SoI} =\frac{U1_{ex:245, em:440}}{U2_{ex:230, em:260}}  $$ 
 
-colnames(indices) <- c("Region", "Excitation (nm)", "Emission (nm)")
-knitr::kable(indices)
-```
+$$ \text{A-SoI} =\frac{A1_{ex:245, em:325}}{A2_{ex:260, em:430}}  $$
 
-First let's turn the different regions into a list of excitation and emission wavelengths.
+$$ \text{T-SoI} =\frac{T1_{ex:260, em:430}}{T2_{ex:285, em:365}}  $$
+
+First let's turn the different indices into a list of excitation and emission wavelengths.
 
 ```{r}
-chen_regions <- list(r1 = list(ex=240:250, em=245:300),
-                     r2 = list(ex=240:250, em=330:380),
-                     r3 = list(ex=240:250, em=380:550),
-                     r4 = list(ex=250:800, em=245:380),
-                     r5 = list(ex=250:800, em=380:550))
+zhang_indices <- list(USoI = list(ex=c(245,230), em=c(440,260)),
+                     ASoI = list(ex=c(245,260), em=c(325,430)),
+                     TSoI = list(ex=c(260,285), em=c(430,365)))
 ```
 
-We can use the [get_fluorescence](../html/get-fluorescence.html) helper function to calculate the maximum fluorescence in these regions. For a single region that would look like:
+We can use the [get_fluorescence](../html/get-fluorescence.html) helper function to calculate the fluorescence for the numerator and denominator of the ratio. Then we can use the [get_ratios](../html/get-ratios.html) helper function to get the ratio. For a single index this would look like:
 
 ```{r}
 eemlist <- example_processed_eems
-get_fluorescence(eemlist, chen_regions[[1]]$ex, chen_regions[[1]]$em, stat="max")
+get_ratios(get_fluorescence(eemlist, zhang_indices$TSoI$ex[1], zhang_indices$TSoI$em[1]), 
+           get_fluorescence(eemlist, zhang_indices$TSoI$ex[2], zhang_indices$TSoI$em[2]))
 
 ```
 
 To get all the indices let's use the lapply function.
 
 ```{r}
-results <- lapply(names(chen_regions), function(region_name) {
-  region <- chen_regions[[region_name]]
-  get_fluorescence(eemlist, region$ex, region$em, stat = "max")
+results <- lapply(names(zhang_indices), function(index_name) {
+  index <- zhang_indices[[index_name]]
+  get_ratios(get_fluorescence(eemlist, index$ex[1], index$em[1]), 
+           get_fluorescence(eemlist, index$ex[2], index$em[2]))
+  
   })
 
 ```
 
-While we're calculating each index, let's also use the [flag_missing](../html/flag-missing.html) function to see if there's any data missing. Since we're finding the maximum value, we'll set `all` to `FALSE` so it will report a value if there's some data. Lastly, we'll use the [format_index](../html/format-index.html) function to make sure everything is correctly formatted.
+While we're calculating each index, let's also use the [flag_missing](../html/flag-missing.html) function to see if there's any data missing. Since we're finding the maximum value, we'll set `all` to `FALSE` so it will report a value if there's some data. We'll also check to see if any of the data is below the MDL, since we have two descrite values we can use [.combine_flags](../html/dot-combine-flags.html) to combine the returned MDL flags. Lastly, we'll use the [format_index](../html/format-index.html) function to make sure everything is correctly formatted.
 
 ```{r}
-results <- lapply(names(chen_regions), function(region_name){
+results <- lapply(names(zhang_indices), function(index_name){
   #get values
-  region <- chen_regions[[region_name]]
-  vals <- get_fluorescence(eemlist, region$ex, region$em, stat = "max")
+  index <- zhang_indices[[index_name]]
+  vals <- get_ratios(get_fluorescence(eemlist, index$ex[1], index$em[1]), 
+           get_fluorescence(eemlist, index$ex[2], index$em[2]))
 
   #get flags
-    missflags <- flag_missing(eemlist, ex=region$ex, em=region$em, all=FALSE)
-    mdlflags <- check_eem_mdl(eemlist, eem_mdl, region$ex, region$em)
+    missflags <- flag_missing(eemlist, ex=index$ex, em=index$em, all=TRUE)
+    mdlflags <- .combine_flags(check_eem_mdl(eemlist, eem_mdl, index$ex[1], index$em[1]), 
+                               check_eem_mdl(eemlist, eem_mdl, index$ex[2], index$em[2]), mdl=TRUE)
     flags <- .combine_flags(missflags, mdlflags)
 
   #add sample names and make into data.frame (get index name)
-  res <- format_index(eemlist, region_name, vals, flags)
+  res <- format_index(eemlist, index_name, vals, flags)
     
   #return res
   return(res)
@@ -302,7 +302,7 @@ Lastly, we just need to return the results as a list. Since we don't have any ab
 Great, that all looks good, now we just need to combine all that code to a custom function.
 
 ```{r}
-chen2003 <- function(eemlist, abslist, cuvle=1, mdl_dir){
+zhang2025 <- function(eemlist, abslist, cuvle=1, mdl_dir){
   #making sure eemlist and abslist are correct objects
     stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
   
@@ -315,31 +315,27 @@ chen2003 <- function(eemlist, abslist, cuvle=1, mdl_dir){
     eem_mdl <- NULL
   }else{eem_mdl <- readRDS(file.path(mdl_dir, "eem-mdl.rds"))}
   
-  #specify regions
-    chen_regions <- list(r1 = list(ex=240:250, em=245:300),
-                     r2 = list(ex=240:250, em=330:380),
-                     r3 = list(ex=240:250, em=380:550),
-                     r4 = list(ex=250:800, em=245:380),
-                     r5 = list(ex=250:800, em=380:550))
+  #specify indices
+    zhang_indices <- list(USoI = list(ex=c(245,230), em=c(440,260)),
+                     ASoI = list(ex=c(245,260), em=c(325,430)),
+                     TSoI = list(ex=c(260,285), em=c(430,365)))
   
   #get results as a data.frame
-    results <- lapply(names(chen_regions), function(region_name){
-    #get values
-    region <- chen_regions[[region_name]]
-    vals <- get_fluorescence(eemlist, region$ex, region$em, stat = "max")
-  
-    #get flags
-    missflags <- flag_missing(eemlist, ex=region$ex, em=region$em, all=FALSE)
-    mdlflags <- check_eem_mdl(eemlist, eem_mdl, region$ex, region$em)
-    flags <- .combine_flags(missflags, mdlflags)
-  
-    #add sample names and make into data.frame (get index name)
-    res <- format_index(eemlist, region_name, vals, flags)
+   results <- lapply(names(zhang_indices), function(index_name){
+      index <- zhang_indices[[index_name]]
+      vals <- get_ratios(get_fluorescence(eemlist, index$ex[1], index$em[1]), 
+               get_fluorescence(eemlist, index$ex[2], index$em[2]))        
       
-    #return res
-    return(res)
-    })
-  
+      missflags <- flag_missing(eemlist, ex=index$ex, em=index$em, all=TRUE)
+      mdlflags <- .combine_flags(check_eem_mdl(eemlist, eem_mdl, index$ex[1], index$em[1]), 
+                                   check_eem_mdl(eemlist, eem_mdl, index$ex[2], index$em[2]), mdl=TRUE)
+      flags <- .combine_flags(missflags, mdlflags)
+    
+      res <- format_index(eemlist, index_name, vals, flags)
+        
+      return(res)
+      })
+
   #combine lists together
     results <- do.call(rbind, results)
 
@@ -351,7 +347,7 @@ chen2003 <- function(eemlist, abslist, cuvle=1, mdl_dir){
 Now let's test our custom function with the [get_indices](../html/get-indices.html) function. Note that we get a warning about the indices because the EEMs data hasn't gone through any processing steps.
 
 ```{r}
-indices <- get_indices(example_processed_eems, example_processed_abs, index_method = chen2003, return = "wide", 
+indices <- get_indices(example_processed_eems, example_processed_abs, index_method = zhang2025, return = "wide", 
                        mdl_dir = file.path(system.file("extdata", package = "eemanalyzeR")))
 
 indices$eem_index
@@ -611,6 +607,6 @@ indices$abs_index
 
 ## References
 
-Chen, W., Westerhoff, P., Leenheer, J. A., & Booksh, K. (2003). Fluorescence excitation-emission matrix regional integration to quantify spectra for dissolved organic matter. Environmental Science & Technology, 37(24), 5701–5710. <https://doi.org/10.1021/es034354c>
+Zhang, H., Hou, J., Nie, L., Hao, Y., Gao, H., & Yu, H. (2025). Developing new spectral indices for identifying DOM sources in Liaohe River in a large-scale river basin by fluorescence spectroscopy and random forest model. Process Safety and Environmental Protection, 201, 107553. <https://doi.org/10.1016/j.psep.2025.107553>
 
 Erlandsson, M., N. Futter, M., N. Kothawala, D., & J. Köhler, S. (2012). Variability in spectral absorbance metrics across boreal lake waters. Journal of Environmental Monitoring, 14(10), 2643-2652. <https://doi.org/10.1039/C2EM30266G>

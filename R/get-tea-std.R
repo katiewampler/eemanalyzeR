@@ -99,6 +99,9 @@ get_tea_std <- function(dir, meta_name=NULL, sheet=NULL, pattern="Tea",
     #raman normalize
     tea_eems <- raman_normalize(tea_eems)
 
+    #correct dilution
+    tea_eems <- correct_dilution(tea_eems)
+
     #get all the data matrices
     data <- lapply(tea_eems, function(eem){eem$x})
 
@@ -148,6 +151,10 @@ get_tea_std <- function(dir, meta_name=NULL, sheet=NULL, pattern="Tea",
         stop(paste0("Absorbance wavelengths are inconsistent across tea standards.",
                     "\nPlease interpolate across the missing wavlengths."))
       }
+
+    #correct for dilution
+      #correct dilution
+      tea <- correct_dilution(tea)
 
     #make a giant df
       tea_abs_df <- get_sample_info(tea, "data") %>% as.data.frame() %>%

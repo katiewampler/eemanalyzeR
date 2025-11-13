@@ -172,7 +172,7 @@ plot_eem <- function(eem, nbin=8, equal_scale=FALSE, pal=NULL, remove_lower = FA
       ggplot2::guides(fill = ggplot2::guide_legend(title.position = "right",direction = "vertical",
                                                    title.theme = ggplot2::element_text(angle = 90, colour = "black"),
                                                    barheight = .5, barwidth = .95,
-                                                   title.hjust = 0.5, raster = FALSE,
+                                                   title.hjust = 0.5,
                                                    reverse=TRUE)) +
       ggplot2::scale_fill_manual(labels=labs$label, values=pal, drop=FALSE)
 

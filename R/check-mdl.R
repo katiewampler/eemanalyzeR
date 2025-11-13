@@ -1,17 +1,17 @@
-#' Check if a EEM sample is above the MDL
+#' Check if an EEM or abs sample is above the MDL
 #'
-#' Given a set of excitation and emission wavelengths, will check if the values in the
-#' `eem` or `eemlist` are above the method detection limit (MDL)
-#' for all excitation-emission pairs.
+#' Given a set of wavelength range, will check if the values in the
+#' `abs` or `eem` are above the method detection limit (MDL)
+#' for all wavelengths or excitation-emission pairs.
 #'
 #' @param eem an object of class \code{eem} or \code{eemlist}
 #' @param abs an object of class \code{abs} or \code{abslist}
-#' @param mdl a `eem` object containing MDL data, if no MDL provided will return NA
+#' @param mdl a `eem` or `abs` object containing MDL data, if no MDL provided will return NA
 #' @param ex a vector of excitation wavelengths
 #' @param em a vector of emission wavelengths
 #' @param wl a vector of absorbance wavelengths
-#' @param vals logical, if FALSE will return a TRUE or FALSE, if TRUE will
-#' return a table with the eem and mdl values for the ex/em pair
+#' @param vals logical, if FALSE will return a flag, if TRUE will
+#' return a table with the observed and mdl values for the ex/em pair
 #' @md
 #' @rdname check-mdl
 #' @returns
@@ -21,11 +21,7 @@
 #'  - NA if all are above the MDL
 #'
 #' If `vals` is TRUE:
-#'  - a `data.frame` with four columns:
-#'    - ex: the excitation wavelengths
-#'    - em: the emission wavelengths
-#'    - eem: the EEM fluorescence value for the ex/em pair
-#'    - mdl: the MDL for the ex/em pair
+#'  - a `data.frame` with the wavelengths, observed values, and MDL values
 #' @export
 #'
 #' @examples

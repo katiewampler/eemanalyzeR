@@ -3,7 +3,7 @@
 \name{check_eem_mdl}
 \alias{check_eem_mdl}
 \alias{check_abs_mdl}
-\title{Check if a EEM sample is above the MDL}
+\title{Check if an EEM or abs sample is above the MDL}
 \usage{
 check_eem_mdl(eem, mdl = NULL, ex, em, vals = FALSE)
 
@@ -12,14 +12,14 @@ check_abs_mdl(abs, mdl = NULL, wl, vals = FALSE)
 \arguments{
 \item{eem}{an object of class \code{eem} or \code{eemlist}}
 
-\item{mdl}{a \code{eem} object containing MDL data, if no MDL provided will return NA}
+\item{mdl}{a \code{eem} or \code{abs} object containing MDL data, if no MDL provided will return NA}
 
 \item{ex}{a vector of excitation wavelengths}
 
 \item{em}{a vector of emission wavelengths}
 
-\item{vals}{logical, if FALSE will return a TRUE or FALSE, if TRUE will
-return a table with the eem and mdl values for the ex/em pair}
+\item{vals}{logical, if FALSE will return a flag, if TRUE will
+return a table with the observed and mdl values for the ex/em pair}
 
 \item{abs}{an object of class \code{abs} or \code{abslist}}
 
@@ -35,19 +35,13 @@ If \code{vals} is FALSE:
 
 If \code{vals} is TRUE:
 \itemize{
-\item a \code{data.frame} with four columns:
-\itemize{
-\item ex: the excitation wavelengths
-\item em: the emission wavelengths
-\item eem: the EEM fluorescence value for the ex/em pair
-\item mdl: the MDL for the ex/em pair
-}
+\item a \code{data.frame} with the wavelengths, observed values, and MDL values
 }
 }
 \description{
-Given a set of excitation and emission wavelengths, will check if the values in the
-\code{eem} or \code{eemlist} are above the method detection limit (MDL)
-for all excitation-emission pairs.
+Given a set of wavelength range, will check if the values in the
+\code{abs} or \code{eem} are above the method detection limit (MDL)
+for all wavelengths or excitation-emission pairs.
 }
 \examples{
 #get MDL data
