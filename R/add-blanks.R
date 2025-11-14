@@ -8,16 +8,18 @@
 #' name which should be the same between the sample and the blank, because of this,
 #' samples must have metadata already added to the samples using \link[eemanalyzeR]{add_metadata}.
 #'
+#' If a `blanklist` is not provided, one will be automatically generated based on the `eemlist` attribute `is_blank`,
+#' so blank must first be noted using the \link[eemanalyzeR]{mark_qaqc} function.
+#'
 #' Adding the blanks into the sample data can be done two ways:
 #' \enumerate{
 #'  \item Include an \code{eemlist} containing EEM's data for both sample and blank: Need to specify a \code{pattern} to identify blanks
 #'  \item Include an \code{eemlist} containing \strong{only} EEM's data for samples: Need to include an \code{eem} or \code{eemlist} as \code{blanklist} with EEM's data for blank(s)
 #' }
 #'
+#' @md
 #' @param eemlist an \code{eemlist} object containing EEM's data. See details for more info.
 #' @param blanklist optional. an \code{eem} or \code{eemlist} containing the EEM's data for the blank(s)
-#' @param pattern optional. a character string containing a \code{\link[base]{regular expression}}
-#' used to specify the names of the samples to be used for blanks.
 #' @param validate logical. If TRUE, will print out the blanks and ask user for validation.
 #' If FALSE, it will skip validation and just add the blanks
 #'
@@ -34,10 +36,9 @@
 #' augment_eemlist <- add_blanks(eemlist, validate=FALSE)
 #'
 
-add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$", validate=TRUE){
+add_blanks <- function(eemlist, blanklist=NULL, validate=TRUE){
   stopifnot(class(eemlist) %in% c("eemlist"),
-            class(blanklist) %in% c("NULL", "eem", "eemlist"),
-            is.character(pattern))
+            class(blanklist) %in% c("NULL", "eem", "eemlist"))
 
   #convert a single eem to eemlist for simplicity
   if(inherits(blanklist, "eem")){
@@ -48,8 +49,8 @@ add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$", validate=T
   #if no blanks are provided
   if(is.null(blanklist)){
       #separate into blanklist and eemlist based on pattern given
-      blanklist <- eem_get_blank(eemlist, pattern=pattern, info="sample")
-      eemlist <- eem_rm_blank(eemlist, pattern=pattern, info="sample")
+      blanklist <- subset_qaqc(eemlist, type="blank")
+      eemlist <- subset_qaqc(eemlist, type="blank", negate = TRUE)
   }
 
   if(length(blanklist) == 0 | length(eemlist) == 0){

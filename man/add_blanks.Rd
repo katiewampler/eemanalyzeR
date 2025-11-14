@@ -4,15 +4,12 @@
 \alias{add_blanks}
 \title{Check blanks and add to sample data}
 \usage{
-add_blanks(eemlist, blanklist = NULL, pattern = "BEM|Blank$", validate = TRUE)
+add_blanks(eemlist, blanklist = NULL, validate = TRUE)
 }
 \arguments{
 \item{eemlist}{an \code{eemlist} object containing EEM's data. See details for more info.}
 
 \item{blanklist}{optional. an \code{eem} or \code{eemlist} containing the EEM's data for the blank(s)}
-
-\item{pattern}{optional. a character string containing a \code{\link[base]{regular expression}}
-used to specify the names of the samples to be used for blanks.}
 
 \item{validate}{logical. If TRUE, will print out the blanks and ask user for validation.
 If FALSE, it will skip validation and just add the blanks}
@@ -33,10 +30,13 @@ If more than one blank is supplied, the function links the blank and sample by t
 name which should be the same between the sample and the blank, because of this,
 samples must have metadata already added to the samples using \link[eemanalyzeR]{add_metadata}.
 
+If a \code{blanklist} is not provided, one will be automatically generated based on the \code{eemlist} attribute \code{is_blank},
+so blank must first be noted using the \link[eemanalyzeR]{mark_qaqc} function.
+
 Adding the blanks into the sample data can be done two ways:
 \enumerate{
- \item Include an \code{eemlist} containing EEM's data for both sample and blank: Need to specify a \code{pattern} to identify blanks
- \item Include an \code{eemlist} containing \strong{only} EEM's data for samples: Need to include an \code{eem} or \code{eemlist} as \code{blanklist} with EEM's data for blank(s)
+\item Include an \code{eemlist} containing EEM's data for both sample and blank: Need to specify a \code{pattern} to identify blanks
+\item Include an \code{eemlist} containing \strong{only} EEM's data for samples: Need to include an \code{eem} or \code{eemlist} as \code{blanklist} with EEM's data for blank(s)
 }
 }
 \examples{

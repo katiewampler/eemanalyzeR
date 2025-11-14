@@ -45,38 +45,15 @@ check_tea_std <- function(x, eem_std, abs_std, tolerance=0.2, index_method="eema
 
     std_index <- index_function(eem_std, abs_std)
 
-  #calculate indices for tea
+  #calculate indices for tea (in progress)
+    #x_tea <- subset_qaqc(x, type="tea_std")
+   # x_index <- index_function(x_tea)
 
+  #determine how many are within threshold
 
+  #calculate percentage that are outside threshold (per sample??) -> mark tea only??? -> similar to blanks
 
-  #interpolate mdl to make sure it matches the sample and index requested
-  if(all(eem$ex %in% mdl$ex) & all(eem$em %in% mdl$em) &
-     all(ex %in% eem$ex) & all(em %in% eem$em)){
-    mdl_val <- eem_transform(mdl) %>% dplyr::rename("mdl" = "fluor") %>%
-      dplyr::filter(.data$ex %in% !!ex & .data$em %in% !!em)
-  }else{
-    ex_p <- rep(ex, length(em)) #gives values to interpolate between
-    em_p <- rep(em, length(ex)) #gives values to interpolate between
-    mdl_val <- data.frame(ex = ex_p, em = em_p,
-                          mdl = pracma::interp2(mdl$ex, mdl$em, mdl$x, ex_p, em_p))
-  }
-
-  #get same values in eem, interpolate if needed
-  if(all(ex %in% eem$ex) & all(em %in% eem$em)){
-    eem_val <- eem_transform(eem) %>% dplyr::filter(.data$ex %in% !!ex & .data$em %in% !!em)
-  }else{
-    ex_p <- rep(ex, length(em)) #gives values to interpolate between
-    em_p <- rep(em, length(ex)) #gives values to interpolate between
-    eem_val <- data.frame(ex = ex_p, em = em_p,
-                          fluor = pracma::interp2(eem$ex, eem$em, eem$x, ex_p, em_p))
-  }
-
-  #make into a table
-  mdl_table <- merge(eem_val, mdl_val, by=c("ex", "em"))
-  if(vals){return(mdl_table)} #return if this is requested
-
-  #otherwise return NA or MDL01 flag
-  if(all(na.omit(mdl_table$fluor > mdl_table$mdl))){return(NA)} #if all non NA above MDL -> no flag needed
-  if(all(na.omit(mdl_table$fluor < mdl_table$mdl))){return("MDL01")} #if all values below MDL -> flag with MDL01
-  if(any(na.omit(mdl_table$fluor < mdl_table$mdl))){return("MDL02")} #if any values are below MDL -> flag with MDL02
+  #in outer function ->
+    #print to readme (add a spot for tea check), if not checked mark that too
+    #note to flag indices if readme isn't NULL/not checked
 }

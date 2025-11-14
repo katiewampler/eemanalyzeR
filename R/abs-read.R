@@ -80,6 +80,7 @@ abs_read <- function(file){
 
       attr(obj, "is_dil_corrected") <- FALSE
       attr(obj, "is_doc_normalized") <- FALSE
+      attr(obj, "is_check_std") <- FALSE
     }else{
       obj <- NULL
     }

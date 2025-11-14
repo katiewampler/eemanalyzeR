@@ -27,6 +27,6 @@ samples must have metadata already added to the samples using \link[eemanalyzeR]
 }
 \examples{
 eemlist <- add_metadata(metadata,example_eems)
-eemlist <- eem_rm_blank(eemlist)
+eemlist <- subset_qaqc(eemlist)
 correct_eem <- raman_normalize(eemlist)
 }

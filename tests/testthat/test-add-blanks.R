@@ -32,8 +32,8 @@
     test_that("blanks are added when a list of blanks is supplied",{
       #gives error if names don't match
       eemlist <- add_metadata(metadata, example_eems)
-      samples <- eem_rm_blank(eemlist)
-      blanks <- eem_get_blank(eemlist)
+      samples <- subset_qaqc(eemlist, negate=TRUE)
+      blanks <- subset_qaqc(eemlist)
       augment_eemlist <- add_blanks(samples, blanks)
 
       expect_s3_class(augment_eemlist, "eemlist")
@@ -59,8 +59,8 @@
 #blanks are added when a single blank is supplied
     test_that("blanks are added when a single blank is supplied",{
       #gives error if names don't match
-      samples <- eem_rm_blank(example_eems)
-      blanks <- eem_get_blank(example_eems)
+      samples <- subset_qaqc(example_eems, negate = TRUE)
+      blanks <- subset_qaqc(example_eems)
       augment_eemlist <- add_blanks(samples, blanks[[1]])
 
       expect_s3_class(augment_eemlist, "eemlist")

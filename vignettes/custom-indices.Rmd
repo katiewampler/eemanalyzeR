@@ -253,7 +253,7 @@ results <- lapply(names(zhang_indices), function(index_name) {
 
 ```
 
-While we're calculating each index, let's also use the [flag_missing](../html/flag-missing.html) function to see if there's any data missing. Since we're finding the maximum value, we'll set `all` to `FALSE` so it will report a value if there's some data. We'll also check to see if any of the data is below the MDL, since we have two descrite values we can use [.combine_flags](../html/dot-combine-flags.html) to combine the returned MDL flags. Lastly, we'll use the [format_index](../html/format-index.html) function to make sure everything is correctly formatted.
+While we're calculating each index, let's also use the [flag_missing](../html/flag-missing.html) function to see if there's any data missing. Since we're finding the maximum value, we'll set `all` to `FALSE` so it will report a value if there's some data. We'll also check to see if any of the data is below the MDL, since we have two discrete values we can use [.combine_flags](../html/dot-combine-flags.html) to combine the returned MDL flags. Lastly, we'll use the [format_index](../html/format-index.html) function to make sure everything is correctly formatted.
 
 ```{r}
 results <- lapply(names(zhang_indices), function(index_name){

@@ -87,7 +87,7 @@ get_tea_std <- function(dir, meta_name=NULL, sheet=NULL, pattern="Tea",
     tea_abs <- add_metadata(tea_meta, tea_abs)
 
     #blank subtract
-    tea_eems <- add_blanks(tea, validate = FALSE, pattern="BEM")
+    tea_eems <- add_blanks(tea, validate = FALSE)
     tea_eems <- subtract_blank(tea_eems)
 
     #remove scattering

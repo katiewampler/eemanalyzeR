@@ -19,7 +19,7 @@
 #'
 #' @examples
 #' eemlist <- add_metadata(metadata,example_eems)
-#' eemlist <- eem_rm_blank(eemlist)
+#' eemlist <- subset_qaqc(eemlist)
 #' correct_eem <- raman_normalize(eemlist)
 
 raman_normalize <- function(eemlist){

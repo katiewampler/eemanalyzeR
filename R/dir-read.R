@@ -4,6 +4,10 @@
 #' in a directory into R, even when it contains other files.
 #'
 #' @param input_dir path to folder containing raw EEMs and/or absorbance files
+#' @param blk a character string containing a \code{\link[base]{regular expression}}
+#' used to specify the sample names of the blanks.
+#' @param std a character string containing a \code{\link[base]{regular expression}}
+#' used to specify the sample names of the tea check standards.
 #' @param pattern optional. a character string containing a \code{\link[base]{regular expression}}
 #' to be matched to the files in input_dir.
 #' only files matching the pattern will be loaded.
@@ -43,7 +47,7 @@
 #' #load samples by using skip to exclude EEM's and other samples -------------
 #' abs <- abs_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "SEM|BEM|waterfall")
 #'
-eem_dir_read <- function(input_dir, pattern = NULL, skip="(?i)abs", file_ext="dat",
+eem_dir_read <- function(input_dir, blk="BEM", std="Tea", pattern = NULL, skip="(?i)abs", file_ext="dat",
                          recursive = FALSE, import_function="aqualog"){
   stopifnot(dir.exists(input_dir))
 
@@ -62,6 +66,8 @@ eem_dir_read <- function(input_dir, pattern = NULL, skip="(?i)abs", file_ext="da
     #add additional attributes
     attr(eem[[1]], "is_doc_normalized") <- FALSE
     attr(eem[[1]], "is_dil_corrected") <- FALSE
+    attr(eem[[1]], "is_blank") <- FALSE
+    attr(eem[[1]], "is_check_std") <- FALSE
     return(eem)},
     error = function(e) {
       # Check if it's a specific error
@@ -116,12 +122,15 @@ eem_dir_read <- function(input_dir, pattern = NULL, skip="(?i)abs", file_ext="da
   eem_list <- eem_list %>% purrr::discard(is.null)
   class(eem_list) <- "eemlist"
 
+  #mark qaqc files
+    eem_list <- mark_qaqc(eem_list, blk_pattern = blk, tea_pattern = std)
+
   return(eem_list)
 }
 
 #' @rdname dir_read
 #' @export
-abs_dir_read <- function(input_dir, pattern = NULL, skip="SEM|BEM|Waterfall", file_ext="dat",
+abs_dir_read <- function(input_dir, std="Tea", pattern = NULL, skip="SEM|BEM|Waterfall", file_ext="dat",
                          recursive = FALSE){
 
   #TODO: change to package environment
@@ -164,6 +173,10 @@ abs_dir_read <- function(input_dir, pattern = NULL, skip="SEM|BEM|Waterfall", fi
 
   #make into abs_list
   class(abs_list) <- "abslist"
+
+  #mark qaqc files
+  abs_list <- mark_qaqc(abs_list, tea_pattern = std)
+
 
   # Combine all collected warnings into one [probably unnecessary, I don't think anything else should generate a warning]
   if (length(warnings_list) > 0) {

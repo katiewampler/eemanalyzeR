@@ -52,7 +52,9 @@ eem_transform <- function(eem, file=NULL, sample=NULL, location=NULL){
                                                             "is_ife_corrected"= FALSE,
                                                             "is_raman_normalized"= FALSE,
                                                             "is_doc_normalized"= FALSE,
-                                                            "is_dil_corrected"= FALSE))
+                                                            "is_dil_corrected"= FALSE,
+                                                            "is_blank" =FALSE,
+                                                            "is_check_std"=FALSE))
 
     return(eem_obj)
   }

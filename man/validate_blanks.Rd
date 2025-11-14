@@ -4,15 +4,10 @@
 \alias{validate_blanks}
 \title{Validate the blanks}
 \usage{
-validate_blanks(blanklist, plotting_info = NULL, blank_model = NULL)
+validate_blanks(blanklist)
 }
 \arguments{
 \item{blanklist}{an \code{eemlist} containing blank samples}
-
-\item{plotting_info}{TODO - plotting arguments for ggeem (not implemented yet)}
-
-\item{blank_model}{TODO - model of blank noise calculated from multiple runs averaged
-together for automated validation.}
 }
 \value{
 TRUE if blanks meet validation standards, FALSE if not
@@ -26,5 +21,6 @@ using ggeem. If run non-interactively (such as in a batch processing or in packa
 nothing will be plotted, but automatic checks will take place.
 }
 \examples{
-continue <- validate_blanks(eem_get_blank(example_eems))
+eems <- subset_qaqc(example_eems)
+continue <- validate_blanks(eems)
 }

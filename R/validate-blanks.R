@@ -8,21 +8,17 @@
 #' nothing will be plotted, but automatic checks will take place.
 #'
 #' @param blanklist an \code{eemlist} containing blank samples
-#' @param plotting_info TODO - plotting arguments for ggeem (not implemented yet)
-#' @param blank_model TODO - model of blank noise calculated from multiple runs averaged
-#'                    together for automated validation.
-
+#'
 #' @return TRUE if blanks meet validation standards, FALSE if not
 #' @export
 #' @importFrom rlang is_interactive
 #' @importFrom ggplot2 labs theme
 #'
 #' @examples
-#' continue <- validate_blanks(eem_get_blank(example_eems))
+#' eems <- subset_qaqc(example_eems)
+#' continue <- validate_blanks(eems)
 validate_blanks <- function(
-    blanklist,
-    plotting_info = NULL, # Placeholder for arguments to ggeem
-    blank_model = NULL) {
+    blanklist) {
 
   #cat("Plotting blanks for user validation \n")
 
@@ -35,11 +31,6 @@ validate_blanks <- function(
   blank_plot <- ggpubr::ggarrange(blank_plot1, blank_plot2, ncol = 1, align="h")
   print(blank_plot)
   #print("is_interactive didn't work")
-  }
-
-  # TODO Compare to Blank model
-  if (!is.null(blank_model)) {
-    # do some kind of blank signal comparison? dunno what kind yet
   }
 
   # TODO - write validation data to tracking file

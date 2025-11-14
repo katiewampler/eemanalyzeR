@@ -14,11 +14,10 @@
 #'
 #' @examples
 #' eemlist <- add_metadata(metadata,example_eems)
-#' eemlist <- eem_rm_blank(eemlist)
+#' eemlist <- subset_qaqc(eemlist)
 #' correct_eem <- correct_dilution(eemlist)
 #'
 #' abslist <- add_metadata(metadata,example_abs)
-#' abslist <- eem_rm_blank(abslist)
 #' correct_abs <- correct_dilution(abslist)
 
 correct_dilution <- function(x){
