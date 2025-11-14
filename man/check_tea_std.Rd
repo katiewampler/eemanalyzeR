@@ -5,7 +5,8 @@
 \title{Check if a tea standard is consistent with long-term standard}
 \usage{
 check_tea_std(
-  x,
+  eemlist,
+  abslist,
   eem_std,
   abs_std,
   tolerance = 0.2,
@@ -14,7 +15,9 @@ check_tea_std(
 )
 }
 \arguments{
-\item{x}{an object of class \code{eem}, \code{eemlist}, \code{abs}, or \code{abslist}, needs to be fully processed}
+\item{eemlist}{an object of class \code{eemlist}, needs to be fully processed}
+
+\item{abslist}{an object of class \code{abslist}, needs to be fully processed}
 
 \item{eem_std}{a \code{eem} object containing the long-term average tea standards for fluorescence}
 
@@ -43,4 +46,14 @@ If \code{vals} is TRUE:
 \description{
 Calculate the indices in a tea standard to ensure they are consistent
 with the long-term standard.
+}
+\examples{
+#get tea standards
+eem_std <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),
+"eem-tea-std.rds"))
+abs_std <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),
+"abs-tea-std.rds"))
+
+check_tea_std(example_processed_eems, example_processed_abs,
+              eem_std, abs_std)
 }
