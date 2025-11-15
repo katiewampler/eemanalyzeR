@@ -28,7 +28,7 @@ To maximum flexibility in calculating indices, we've enabled the [get_indices](.
     a.  `eemlist`: an eemlist object containing EEM's data.
     b.  `abslist`: an abslist object containing absorbance data.
     c.  `cuvle`: the cuvette (path) length in cm.
-    d.  `mdl_dir`: the file path to the mdl files generated with \link[eemanalyzeR]{get_mdl}
+    d.  `mdl_dir`: the file path to the mdl files generated with \link[eemanalyzeR]{create_mdl}
 2.  **The function must return a list with the following items:**
     a.  `abs_index`: the indices calculated from the absorbance data
     b.  `eem_index`: the indices calculated from the EEMs data

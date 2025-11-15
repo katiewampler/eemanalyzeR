@@ -3,7 +3,7 @@ test_that("eem mdl is calculated", {
   test_dir <- withr::local_tempfile()
 
   #ensure it returns warning with example data
-    expect_warning(eem_mdl <- get_mdl(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
+    expect_warning(eem_mdl <- create_mdl(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
                        meta_name="longtermblank-metadata.csv", pattern = "longtermblank",
                        type="eem", output_dir = test_dir))
 
@@ -25,7 +25,7 @@ test_that("abs mdl is calculated", {
   test_dir <- withr::local_tempfile()
 
   #ensure it returns warning with example data
-  expect_warning(eem_mdl <- get_mdl(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
+  expect_warning(eem_mdl <- create_mdl(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
                                     meta_name="longtermblank-metadata.csv", pattern = "longtermblank",
                                     type="abs", output_dir = test_dir))
 

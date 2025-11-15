@@ -25,7 +25,7 @@ get_indices(
 
 \item{cuvle}{cuvette (path) length in cm}
 
-\item{mdl_dir}{file path to the mdl files generated with \link[eemanalyzeR]{get_mdl},
+\item{mdl_dir}{file path to the mdl files generated with \link[eemanalyzeR]{create_mdl} and \link[eemanalyzeR]{create_tea_std},
 default is a user-specific data directory (\link[rappdirs]{user_data_dir})}
 
 \item{arg_names}{optional argument used to pass arguments from higher level functions for writing the readme.}

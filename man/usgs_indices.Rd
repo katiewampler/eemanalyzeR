@@ -19,7 +19,7 @@ usgs_indices(eemlist, abslist, cuvle = 1, mdl_dir = .qaqc_dir())
 
 \item{cuvle}{cuvette (path) length in cm}
 
-\item{mdl_dir}{file path to the mdl files generated with \link[eemanalyzeR]{get_mdl},
+\item{mdl_dir}{file path to the mdl files generated with \link[eemanalyzeR]{create_mdl},
 default is a user-specific data directory (\link[rappdirs]{user_data_dir})}
 }
 \value{

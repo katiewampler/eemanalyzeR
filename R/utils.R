@@ -32,7 +32,7 @@
                    eem_ife_corrected=NA, eem_raman_normalized=NA,
                    eem_doc_normalized=NA, eem_dil_corrected=NA,
                    abs_dil_corrected=NA, abs_doc_normalized=NA,
-                   eem_cut=NA,indices=NA, mdl=NA)
+                   eem_cut=NA,indices=NA, mdl=NA, check_std=NA)
     assign("readme", readme, envir = .GlobalEnv)
   }
 
@@ -305,7 +305,7 @@ check_processing <- function(eem){
 #' If they exist will load, if not will warn. Writes the appropriate message about
 #' MDL in the readme.
 #'
-#' @param mdl_dir file path to the mdl files generated with \link[eemanalyzeR]{get_mdl}
+#' @param mdl_dir file path to the mdl files generated with \link[eemanalyzeR]{create_mdl}
 #'
 #' @noRd
 #'

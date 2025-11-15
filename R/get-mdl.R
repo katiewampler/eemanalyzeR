@@ -40,14 +40,14 @@
 #' from dissolved organic matter (Vol. 2018-1096). Reston, VA: U.S. Geological Survey. \url{https://doi.org/10.3133/ofr20181096}
 #'
 #' @examples
-#' eem_mdl <- get_mdl(file.path(system.file("extdata", package = "eemanalyzeR"),
+#' eem_mdl <- create_mdl(file.path(system.file("extdata", package = "eemanalyzeR"),
 #' "long-term-blanks"),
 #' meta_name="longtermblank-metadata.csv", pattern = "longtermblank",
 #' type="eem", output_dir = FALSE)
 #'
 #' plot_eem(eem_mdl)
 #'
-get_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK",
+create_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK",
                     type = "eem", recursive=FALSE, output_dir=NULL){
   stopifnot(type %in% c("eem", "abs"), dir.exists(dir))
 

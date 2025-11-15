@@ -7,8 +7,7 @@
 check_tea_std(
   eemlist,
   abslist,
-  eem_std,
-  abs_std,
+  std_dir = .qaqc_dir(),
   tolerance = 0.2,
   index_method = "eemanalyzeR",
   vals = FALSE
@@ -19,9 +18,8 @@ check_tea_std(
 
 \item{abslist}{an object of class \code{abslist}, needs to be fully processed}
 
-\item{eem_std}{a \code{eem} object containing the long-term average tea standards for fluorescence}
-
-\item{abs_std}{an \code{abs} object containing the long-term average tea standards for absorbance}
+\item{std_dir}{file path to the QAQC files generated with \link[eemanalyzeR]{create_mdl} and \link[eemanalyzeR]{create_tea_std},
+default is a user-specific data directory (\link[rappdirs]{user_data_dir})}
 
 \item{tolerance}{what is the maximum percentage the tea standard can vary from the long-term values without being flagged?}
 
@@ -31,6 +29,7 @@ check_tea_std(
 return a table with the observed and mdl values for the ex/em pair}
 }
 \value{
+#TODO: update returns values
 If \code{vals} is FALSE:
 \itemize{
 \item STD01 if all values outside of the tolerance
@@ -48,12 +47,6 @@ Calculate the indices in a tea standard to ensure they are consistent
 with the long-term standard.
 }
 \examples{
-#get tea standards
-eem_std <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),
-"eem-tea-std.rds"))
-abs_std <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),
-"abs-tea-std.rds"))
-
 check_tea_std(example_processed_eems, example_processed_abs,
-              eem_std, abs_std)
+              std_dir = system.file("extdata", package = "eemanalyzeR"))
 }

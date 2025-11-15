@@ -9,8 +9,8 @@
   library(here)
 
   #get mdls
-    get_mdl("data-raw/long-term-standards/blanks", recursive = TRUE, type="eem")
-    get_mdl("data-raw/long-term-standards/blanks", recursive = TRUE, type="abs", pattern="Abs")
+    create_mdl("data-raw/long-term-standards/blanks", recursive = TRUE, type="eem")
+    create_mdl("data-raw/long-term-standards/blanks", recursive = TRUE, type="abs", pattern="Abs")
 
   #example 1: Hohner-Lab-2024-07-29
     input_dir <- here("dev/dev-examples/Hohner-Lab-2024-07-29")

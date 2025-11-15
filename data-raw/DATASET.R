@@ -147,11 +147,11 @@ for(x in files){
       write.csv(blk_meta, "inst/extdata/long-term-blanks/longtermblank-metadata.csv", row.names=FALSE, quote=FALSE)
 
   #make a test mdl file for functions
-    get_mdl(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
+    create_mdl(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
                       meta_name="longtermblank-metadata.csv", pattern = "longtermblank",
                       type="eem", output_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
 
-    get_mdl(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
+    create_mdl(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
             meta_name="longtermblank-metadata.csv", pattern = "longtermblank",
             type="abs", output_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
 
@@ -229,11 +229,11 @@ for(x in files){
     write.csv(blk_meta, "inst/extdata/long-term-tea/longtermteastd-metadata.csv", row.names=FALSE, quote=FALSE)
 
     #make a test tea file for functions
-    get_tea_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-tea"),
+    create_tea_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-tea"),
             meta_name="longtermteastd-metadata.csv", pattern = "longterm-teastd",
             type="eem", output_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
 
-    get_tea_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-tea"),
+    create_tea_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-tea"),
             meta_name="longtermteastd-metadata.csv", pattern = "longterm-teastd",
             type="abs", output_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
 

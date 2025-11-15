@@ -1,4 +1,4 @@
-#' Get Average Tea Standard
+#' Create Long Term Average Tea Standard
 #'
 #' To ensure optical measurements are consistent across days, Hansen et al. (2018) recommend using a standard reference material:
 #' Pure Leaf®, unsweetened black tea. The tea standard should be diluted to 1 % concentration before analysis. It is recommended to
@@ -40,7 +40,7 @@
 #' from dissolved organic matter (Vol. 2018-1096). Reston, VA: U.S. Geological Survey. \url{https://doi.org/10.3133/ofr20181096}
 #'
 #' @examples
-#' eem_teastd <- get_tea_std(
+#' eem_teastd <- create_tea_std(
 #' file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-tea"),
 #' meta_name="longtermteastd-metadata.csv", pattern = "longterm-teastd",
 #' type="eem", output_dir = FALSE)
@@ -48,7 +48,7 @@
 #' plot_eem(eem_teastd)
 #'
 
-get_tea_std <- function(dir, meta_name=NULL, sheet=NULL, pattern="Tea",
+create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, pattern="Tea",
                         type = "eem", recursive=FALSE, output_dir=NULL){
   stopifnot(type %in% c("eem", "abs"), dir.exists(dir))
 

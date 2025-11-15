@@ -8,7 +8,7 @@
 #' @param index_method currently supports "eemanalyzeR", "eemR", and "usgs". See details for more information.
 #' @param return either "long" or "wide" to specify the format of the indices data.frames
 #' @param cuvle cuvette (path) length in cm
-#' @param mdl_dir file path to the mdl files generated with \link[eemanalyzeR]{get_mdl},
+#' @param mdl_dir file path to the mdl files generated with \link[eemanalyzeR]{create_mdl} and \link[eemanalyzeR]{create_tea_std},
 #' default is a user-specific data directory (\link[rappdirs]{user_data_dir})
 #' @param arg_names optional argument used to pass arguments from higher level functions for writing the readme.
 #'
@@ -186,6 +186,8 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
 
       }
 
+    #check tea standards
+      std_check <- check_tea_std(eemlist, abslist, std_dir=mdl_dir)
 
   #make indices numeric
    indices <- lapply(indices, function(x){

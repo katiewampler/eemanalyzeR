@@ -10,7 +10,7 @@
 #' @param eemlist an \code{eemlist} object containing EEM's data. See details for more info.
 #' @param abslist an \code{abslist} object containing absorbance data.
 #' @param cuvle cuvette (path) length in cm
-#' @param mdl_dir file path to the mdl files generated with \link[eemanalyzeR]{get_mdl},
+#' @param mdl_dir file path to the mdl files generated with \link[eemanalyzeR]{create_mdl}
 #' default is a user-specific data directory (\link[rappdirs]{user_data_dir})
 #' @return a list with two objects:
 #' \itemize{
