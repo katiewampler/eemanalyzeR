@@ -71,7 +71,11 @@
     return_NA <- function(eemlist, abslist, cuvle=1, mdl_dir=NULL){
       return(list(abs_index=NA, eem_index=NA))}
 
-    expect_no_error(expect_warning(get_indices(example_eems, example_abs, index_method=return_NA)))
+    mdl_dir <- system.file("extdata", package = "eemanalyzeR")
+
+    expect_no_error(get_indices(example_processed_eems, example_processed_abs, index_method=return_NA))
+    expect_no_error(get_indices(example_processed_eems, example_processed_abs, index_method=return_NA, mdl_dir = mdl_dir))
+
   })
 
   test_that("steps are checked",{

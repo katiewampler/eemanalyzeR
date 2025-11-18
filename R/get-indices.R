@@ -55,6 +55,7 @@
 #'  \item NEG01: Value was negative
 #'  \item NOISE01: Value was below signal to noise ratio and therefore was not calculated
 #'  \item NOISE02: Value was not able to be checked for signal to noise ratio
+#'  \item STD01: The tea check standard values were outside of the tolerance threshold for this index
 #'  \item VAL01: Value was below expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
 #'  \item VAL02: Value was above expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
 #' }
@@ -99,13 +100,18 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
   #get indices
   indices <- index_function(eemlist, abslist, cuvle = cuvle, mdl_dir=mdl_dir)
 
+  #initialize QAQC flag
+    indices <- lapply(indices, function(x){if(inherits(x, "data.frame")){x$QAQC_flag <- NA}
+    return(x)})
+
   #flag if needed
     #helper functions to make flags
       missing_doc_flag <- function(index){
         #if index is NA, return NA
         if(!is.data.frame(index)){return(index)}
         doc_flag <- grepl("SUVA|SVA|DOC", index$index) & is.na(index$value) & is.na(index$QAQC_flag)
-        index$QAQC_flag[doc_flag] <- "DOC01"
+        doc_flag <- ifelse(doc_flag, "DOC01", NA)
+        index$QAQC_flag <- .combine_flags(index$QAQC_flag, doc_flag)
         return(index)
       }
       negative_flag <- function(index){
@@ -113,8 +119,9 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
         if(!is.data.frame(index)){return(index)}
         negative <- index$value < 0
         negative[is.na(negative)] <- FALSE
-        index$QAQC_flag[negative] <- "NEG01"
         index$value[negative] <- NA
+        negative <- ifelse(negative, "NEG01", NA)
+        index$QAQC_flag <- .combine_flags(index$QAQC_flag, negative)
         return(index)
       }
       move_flags <- function(index){
@@ -131,10 +138,9 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
             index$value[flagged] <- NA
 
             #move provisional values back to value
-            prov <- grepl("^\\d*\\.?\\d+_[^_]+_\\d+$", index$QAQC_flag)
+            prov <- grepl("^-?[0-9]{1,}\\.[0-9]{1,}\\_[A-Z]{2,}[0-9]{1,}$", index$QAQC_flag)
             index$value[prov] <- stringr::str_split_i(index$QAQC_flag[prov], "_", i=1)
-            index$QAQC_flag[prov] <- paste(stringr::str_split_i(index$QAQC_flag[prov], "_", i=2),
-                                        stringr::str_split_i(index$QAQC_flag[prov], "_", i=3), sep="_")
+            index$QAQC_flag[prov] <- gsub("^-?[0-9]{1,}\\.[0-9]{1,}\\_", "", index$QAQC_flag[prov])
 
           }
 
@@ -148,11 +154,13 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
         index <- plyr::join(index, ranges, by="index")
         low <- as.numeric(index$value) < index$low_val
         low[is.na(low)] <- FALSE
-        index$QAQC_flag[low] <- "VAL01"
+        low <- ifelse(low, "VAL01", NA)
+        index$QAQC_flag <- .combine_flags(index$QAQC_flag, low)
 
         high <- as.numeric(index$value) > index$high_val
         high[is.na(high)] <- FALSE
-        index$QAQC_flag[high] <- "VAL02"
+        high <- ifelse(high, "VAL02", NA)
+        index$QAQC_flag <- .combine_flags(index$QAQC_flag, high)
 
         index <- index %>% dplyr::select(-any_of(c("low_val", "high_val", "sources", "index_method")))
 
@@ -163,16 +171,24 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
         if(!is.data.frame(index)){return(index)}
         infinite <- index$value == Inf
         infinite[is.na(infinite)] <- FALSE
-        index$QAQC_flag[infinite] <- "DATA03"
         index$value[infinite] <- NA
+        infinite <- ifelse(infinite, "DATA03", NA)
+        index$QAQC_flag <- .combine_flags(index$QAQC_flag, infinite)
+        return(index)
+      }
+      tea_flag <- function(index){
+        if(!is.data.frame(index)){return(index)}
+        index <- merge(index, std_check, by=c("index", "meta_name"), all.x=TRUE)
+        index$QAQC_flag <- .combine_flags(index$QAQC_flag, index$tea_flag)
+        index <- index %>% select(-c("type", "tea_flag"))
         return(index)
       }
 
-    #inf values
-    indices <- lapply(indices, infinite_flag)
-
-    #missing data (no wavelengths)
+    #move flags from value to QAQC flag col
       indices <- lapply(indices, move_flags)
+
+    #inf values
+      indices <- lapply(indices, infinite_flag)
 
     #negative values
       indices <- lapply(indices, negative_flag)
@@ -187,7 +203,9 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
       }
 
     #check tea standards
-      std_check <- check_tea_std(eemlist, abslist, std_dir=mdl_dir)
+      std_check <- check_tea_std(eemlist, abslist, std_dir=mdl_dir,
+                                 index_method=index_method)
+      indices <- lapply(indices, tea_flag)
 
   #make indices numeric
    indices <- lapply(indices, function(x){

@@ -76,6 +76,7 @@ The index values will be checked for potential errors prior to reporting and fla
  \item NEG01: Value was negative
  \item NOISE01: Value was below signal to noise ratio and therefore was not calculated
  \item NOISE02: Value was not able to be checked for signal to noise ratio
+ \item STD01: The tea check standard values were outside of the tolerance threshold for this index
  \item VAL01: Value was below expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
  \item VAL02: Value was above expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
 }
