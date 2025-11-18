@@ -347,8 +347,7 @@ zhang2025 <- function(eemlist, abslist, cuvle=1, mdl_dir){
 Now let's test our custom function with the [get_indices](../html/get-indices.html) function. Note that we get a warning about the indices because the EEMs data hasn't gone through any processing steps.
 
 ```{r}
-indices <- get_indices(example_processed_eems, example_processed_abs, index_method = zhang2025, return = "wide", 
-                       mdl_dir = file.path(system.file("extdata", package = "eemanalyzeR")))
+indices <- get_indices(example_processed_eems, example_processed_abs, index_method = zhang2025, return = "wide", mdl_dir = file.path(system.file("extdata", package = "eemanalyzeR")))
 
 indices$eem_index
 ```
@@ -580,7 +579,8 @@ erlandsson2012 <- function(eemlist, abslist, cuvle=1, mdl_dir){
     S275_295 <- format_index(abslist, index, vals, flags)
     
     index <- "SR"
-    vals <- get_ratios(get_abs_slope(abslist, c(275,295)), get_abs_slope(example_processed_abs, c(350,400)))
+    vals <- get_ratios(get_abs_slope(abslist, c(275,295)), 
+                       get_abs_slope(abslist, c(350,400)))
     missflags <- flag_missing(abslist, wl=erlandsson_index[[index]])
     mdlflags <- .combine_flags(check_abs_mdl(abslist, mdl=abs_mdl, wl=275:295),
                                check_abs_mdl(abslist, mdl=abs_mdl, wl=350:400))

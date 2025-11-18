@@ -9,7 +9,7 @@ test_that("tea checks work", {
     check <- check_tea_std(example_processed_eems, abs, std_dir = system.file("extdata", package = "eemanalyzeR"))
 
     expect_s3_class(check, "data.frame")
-    expect_equal(check$tea_flag, c(rep(NA, 11), rep("STD01", 3)))
+    expect_equal(check$tea_flag, c(rep(NA, 11), rep("STD01", 4)))
 
   #check when it's partially out
     abs <- example_processed_abs

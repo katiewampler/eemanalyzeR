@@ -31,7 +31,7 @@ return a table with the observed and standard values for each index.}
 \value{
 A \code{data.frame} with four columns:
 \itemize{
-\item meta_name: the metdata name of the tea sample
+\item meta_name: the metadata name of the tea sample
 \item type: either abs or eem to specify the index type
 \item index: the name of the index
 \item tea_flag: a flag indicating if the index outside the tolerance (STD01 or NA).

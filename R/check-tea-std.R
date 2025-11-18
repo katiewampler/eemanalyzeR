@@ -14,7 +14,7 @@
 #' @md
 #' @returns
 #' A `data.frame` with four columns:
-#'  - meta_name: the metdata name of the tea sample
+#'  - meta_name: the metadata name of the tea sample
 #'  - type: either abs or eem to specify the index type
 #'  - index: the name of the index
 #'  - tea_flag: a flag indicating if the index outside the tolerance (STD01 or NA).
@@ -34,7 +34,7 @@ check_tea_std <- function(eemlist, abslist, std_dir=.qaqc_dir(), tolerance=0.2,
   #get eem_std and abs_std
     if(!file.exists(file.path(std_dir,"eem-tea-std.rds"))|!file.exists(file.path(std_dir, "abs-tea-std.rds"))){
       names <- get_sample_info(subset_qaqc(eemlist, type="tea_std"), "meta_name")
-       return(data.frame(meta_name=rep(names, each=2), type=c("abs", "eem"), tea_flag=NA))
+       return(data.frame(meta_name=rep(names, each=2), index=NA, type=c("abs", "eem"), tea_flag=NA))
 
       warning("tea check standard files are missing, check standards will not be checked against the long-term standard")
       .write_readme_line("Tea standards were non provided, thus the tea standards for this run were not checked", "check_std")
@@ -59,10 +59,12 @@ check_tea_std <- function(eemlist, abslist, std_dir=.qaqc_dir(), tolerance=0.2,
     abs_std <- list(abs_std)
     class(abs_std) <- "abslist"
 
-    std_index <- index_function(eem_std, abs_std)
+    std_index <- index_function(eem_std, abs_std, mdl_dir = std_dir)
 
   #calculate indices for tea
-    tea_index <- index_function(subset_qaqc(eemlist, type="tea_std"), subset_qaqc(abslist, type="tea_std"))
+    tea_index <- index_function(subset_qaqc(eemlist, type="tea_std"),
+                                subset_qaqc(abslist, type="tea_std"),
+                                mdl_dir = std_dir)
 
   #tidy and combine indices
     if(inherits(std_index[[1]], "data.frame") & inherits(tea_index[[1]], "data.frame")){
@@ -114,7 +116,7 @@ check_tea_std <- function(eemlist, abslist, std_dir=.qaqc_dir(), tolerance=0.2,
     return(as.data.frame(report))
   }else{
     names <- get_sample_info(subset_qaqc(eemlist, type="tea_std"), "meta_name")
-    return(data.frame(meta_name=rep(names, each=2), type=c("abs", "eem"), tea_flag=NA))
+    return(data.frame(meta_name=rep(names, each=2), index=NA, type=c("abs", "eem"), tea_flag=NA))
 
   }
 

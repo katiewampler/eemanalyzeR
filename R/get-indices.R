@@ -176,7 +176,7 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
         index$QAQC_flag <- .combine_flags(index$QAQC_flag, infinite)
         return(index)
       }
-      tea_flag <- function(index){
+      tea_flag <- function(index, std_check){
         if(!is.data.frame(index)){return(index)}
         index <- merge(index, std_check, by=c("index", "meta_name"), all.x=TRUE)
         index$QAQC_flag <- .combine_flags(index$QAQC_flag, index$tea_flag)
@@ -205,7 +205,7 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
     #check tea standards
       std_check <- check_tea_std(eemlist, abslist, std_dir=mdl_dir,
                                  index_method=index_method)
-      indices <- lapply(indices, tea_flag)
+      indices <- lapply(indices, tea_flag, std_check)
 
   #make indices numeric
    indices <- lapply(indices, function(x){
