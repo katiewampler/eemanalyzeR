@@ -49,6 +49,7 @@
 #'  \item DATA03: Unable to calculate ratio because denominator was zero
 #'  \item DATA04: Spectral slope was unable to be calculated
 #'  \item DOC01: Missing dissolved organic carbon data, so index was not able to be calculated
+#'  \item INF01: Calculated value was infinite
 #'  \item MDL01: All values were below the MDL for those wavelengths
 #'  \item MDL02: One of more of the values were below the MDL for those wavelengths, use data cautiously
 #'  \item MDL03: Index was a ratio, and either numerator or denominator was completely below the MDL
@@ -169,10 +170,10 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
       infinite_flag <- function(index){
         #if index is NA, return NA
         if(!is.data.frame(index)){return(index)}
-        infinite <- index$value == Inf
+        infinite <- is.infinite(index$value)
         infinite[is.na(infinite)] <- FALSE
         index$value[infinite] <- NA
-        infinite <- ifelse(infinite, "DATA03", NA)
+        infinite <- ifelse(infinite, "INF01", NA)
         index$QAQC_flag <- .combine_flags(index$QAQC_flag, infinite)
         return(index)
       }
@@ -184,11 +185,11 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
         return(index)
       }
 
+    #inf values (needs to go first before moving flags)
+      indices <- lapply(indices, infinite_flag)
+
     #move flags from value to QAQC flag col
       indices <- lapply(indices, move_flags)
-
-    #inf values
-      indices <- lapply(indices, infinite_flag)
 
     #negative values
       indices <- lapply(indices, negative_flag)

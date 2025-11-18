@@ -1,4 +1,3 @@
-#TODO: check that different methods work
 
   test_that("missing wavelengths don't break indices code", {
     abslist <- example_processed_abs
@@ -87,12 +86,9 @@
   })
 
   test_that("flags are correct", {
-    abslist <- add_metadata(metadata, example_abs)
-    eemlist <- add_metadata(metadata, example_eems)
-    eemlist <- add_blanks(eemlist, validate=FALSE)
-    expect_warning(eemlist <- process_eem(eemlist, abslist))
     mdl_dir <- system.file("extdata", package = "eemanalyzeR")
-    eemlist <- eemR::eem_cut(eemlist, ex=500:900, em=500:900, exact=F) #cut down so there's missing wavelengths
+    eemlist <- eemR::eem_cut(example_processed_eems, ex=500:900, em=500:900, exact=F) #cut down so there's missing wavelengths
+    abslist <- example_processed_abs
 
     indices <- get_indices(eemlist, abslist, mdl_dir=mdl_dir)
 
@@ -104,5 +100,49 @@
         }else{return(TRUE)}})
 
     expect_true(all(duplicated))
+
+  })
+
+  test_that("specific flags are applied", {
+    mdl_dir <- system.file("extdata", package = "eemanalyzeR")
+    eemlist <- example_processed_eems
+    abslist <- example_processed_abs
+
+    #check for flag on missing DOC
+      doc_index <- function(eemlist, abslist, cuvle=1, mdl_dir=tempdir()){
+        return(list(abs_index = data.frame(sample_name="test_samp",
+                                           meta_name="test_samp",
+                                           index="DOC_test",
+                                           value=NA), eem_index=NA))}
+      indices <- get_indices(eemlist, abslist, mdl_dir=mdl_dir, index_method = doc_index)
+      expect_equal(indices$abs_index$QAQC_flag, "DOC01")
+
+    #check for flag on negative values
+      neg_index <- function(eemlist, abslist, cuvle=1, mdl_dir=tempdir()){
+        return(list(abs_index = data.frame(sample_name="test_samp",
+                                           meta_name="test_samp",
+                                           index="test",
+                                           value=-1), eem_index=NA))}
+      indices <- get_indices(eemlist, abslist, mdl_dir=mdl_dir, index_method = neg_index)
+      expect_equal(indices$abs_index$QAQC_flag, "NEG01")
+
+    #check for flag on infinite
+      inf_index <- function(eemlist, abslist, cuvle=1, mdl_dir=tempdir()){
+        return(list(abs_index = data.frame(sample_name="test_samp",
+                                           meta_name="test_samp",
+                                           index="test",
+                                           value=Inf), eem_index=NA))}
+      indices <- get_indices(eemlist, abslist, mdl_dir=mdl_dir, index_method = inf_index)
+      expect_equal(indices$abs_index$QAQC_flag, "INF01")
+
+    #check for flag on tea standard
+      abslist[[2]]$data[,2] <- rep(1,  abslist[[1]]$n)
+      indices <- get_indices(eemlist, abslist, mdl_dir=mdl_dir)
+      expect_equal(sum(grepl("STD01", indices$abs_index$QAQC_flag)), 4)
+
+    #check for flagged values outside the normal range
+      expect_equal(sum(grepl("VAL01", indices$abs_index$QAQC_flag)), 2)
+      expect_equal(sum(grepl("VAL02", indices$abs_index$QAQC_flag)), 1)
+
 
   })

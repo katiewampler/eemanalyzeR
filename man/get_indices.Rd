@@ -70,6 +70,7 @@ The index values will be checked for potential errors prior to reporting and fla
  \item DATA03: Unable to calculate ratio because denominator was zero
  \item DATA04: Spectral slope was unable to be calculated
  \item DOC01: Missing dissolved organic carbon data, so index was not able to be calculated
+ \item INF01: Calculated value was infinite
  \item MDL01: All values were below the MDL for those wavelengths
  \item MDL02: One of more of the values were below the MDL for those wavelengths, use data cautiously
  \item MDL03: Index was a ratio, and either numerator or denominator was completely below the MDL
