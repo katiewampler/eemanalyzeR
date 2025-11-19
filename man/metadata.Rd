@@ -7,7 +7,7 @@
 \format{
 A data.frame with 3 rows and 11 columns:
 \describe{
-  \item{index}{Simply the numeric order of entry (e.g. 1, 2, 3, 4, etc…)}
+  \item{index}{Simply the numeric order of entry (e.g. 1, 2, 3, 4, etc...)}
   \item{analysis_date}{optional: Date samples were ran on instrument (not collected in the field)}
   \item{description}{optional: A brief description of the sample collected}
   \item{data_identifier}{REQUIRED. The file name from the aqualog, needs to match exactly}

@@ -25,7 +25,7 @@
 #' @param i the index for subsetting
 #'
 #' @export
-#' @S3method `[` eemlist
+#' @method `[` eemlist
 #'
 `[.eemlist` <- function(eemlist, i) {
   sublist <- NextMethod()
@@ -178,7 +178,7 @@
 #' @param i the index for subsetting
 #'
 #' @export
-#' @S3method `[` abslist
+#' @method `[` abslist
 #'
 `[.abslist` <- function(abslist, i) {
   sublist <- NextMethod()

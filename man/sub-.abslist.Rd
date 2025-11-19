@@ -4,10 +4,10 @@
 \alias{[.abslist}
 \title{Subsetting using `[` for an abslist}
 \usage{
-\method{[}{abslist}(abslist, i)
+\method{`[`}{abslist}(abslist, i)
 }
 \arguments{
-\item{abslist}{the eemlist to subset}
+\item{abslist}{the abslist to subset}
 
 \item{i}{the index for subsetting}
 }

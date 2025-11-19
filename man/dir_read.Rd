@@ -8,8 +8,6 @@
 \usage{
 eem_dir_read(
   input_dir,
-  blk = "BEM",
-  std = "Tea",
   pattern = NULL,
   skip = "(?i)abs",
   file_ext = "dat",
@@ -19,7 +17,6 @@ eem_dir_read(
 
 abs_dir_read(
   input_dir,
-  std = "Tea",
   pattern = NULL,
   skip = "SEM|BEM|Waterfall",
   file_ext = "dat",
@@ -28,12 +25,6 @@ abs_dir_read(
 }
 \arguments{
 \item{input_dir}{path to folder containing raw EEMs and/or absorbance files}
-
-\item{blk}{a character string containing a \code{\link[base]{regular expression}}
-used to specify the sample names of the blanks.}
-
-\item{std}{a character string containing a \code{\link[base]{regular expression}}
-used to specify the sample names of the tea check standards.}
 
 \item{pattern}{optional. a character string containing a \code{\link[base]{regular expression}}
 to be matched to the files in input_dir.
@@ -49,6 +40,12 @@ any files matching this string will be ignored.}
 
 \item{import_function}{character or a user-defined function to import an EEM.
 for more details see \link[eemR]{eem_read}}
+
+\item{blk}{a character string containing a \code{\link[base]{regular expression}}
+used to specify the sample names of the blanks.}
+
+\item{std}{a character string containing a \code{\link[base]{regular expression}}
+used to specify the sample names of the tea check standards.}
 }
 \value{
 \code{eem_dir_read} returns an object of class eemlist,  containing a list of \code{eem}.
