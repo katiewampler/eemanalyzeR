@@ -31,6 +31,7 @@ validate_blanks <- function(
   blank_plot <- ggpubr::ggarrange(blank_plot1, blank_plot2, ncol = 1, align="h")
   print(blank_plot)
   #print("is_interactive didn't work")
+
   }
 
   # TODO - write validation data to tracking file

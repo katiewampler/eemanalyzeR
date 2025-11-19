@@ -70,7 +70,6 @@ add_blanks <- function(eemlist, blanklist=NULL, validate=TRUE){
   }
 
   #makes sure blank has same wavelengths as sample then adds into eem as x_blK
-
   .add_x_blk <- function(eem, eem_blk){
     if(!identical(eem$ex, eem_blk$ex) | !identical(eem$em, eem_blk$em)){
       stop("excitation and/or emission wavelengths as mismatched between sample and blank")

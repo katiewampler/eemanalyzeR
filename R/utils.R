@@ -10,12 +10,28 @@
   return(val)
 }
 
+
 #' Returns eemanalyzeR package version loaded
 #'
 #' @return text string with eemanalyzeR package version
 #' @noRd
 .eemanalyzeR_ver <- function() {
   paste0("eemanalyzeR ", utils::packageVersion("eemanalyzeR"))
+}
+
+#' Checks if the eems or absorbance has had metadata added
+#' @noRd
+.meta_added <- function(x){
+  stopifnot(class(x) %in% c("eemlist", "eem", "abs", "abslist"))
+
+  if(inherits(x, c("eem","abs"))){
+    items <- names(x)
+    augment_names <- c("meta_name","dilution","analysis_date", "description","doc_mgL","notes")
+    augmented <- all(augment_names %in% items)
+  }else{
+    augmented <- unlist(lapply(x, .meta_added))
+  }
+  return(augmented)
 }
 
 # Overload the bracket operator for eemlist subsetting

@@ -1,0 +1,7 @@
+# prepare-data branch todos
+
+-[] check test coverage
+-[] remove processing data functions/tests (step 3 in flowchart)
+-[] rework the metadata adding and blank adding functions
+-[] double check the utils
+-[] 
