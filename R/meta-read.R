@@ -24,6 +24,7 @@ meta_read <- function(input,
 
   # Figure out whether the user input a directory (automatic metadata file choice)
   # or specified a file (manual file choice)
+  # TODO - do we want to have two input options or force a filename?
 
   # Do this if the input is a directory (default behavior for backwards compatibility)
   if (file_test("-d", input)) {
