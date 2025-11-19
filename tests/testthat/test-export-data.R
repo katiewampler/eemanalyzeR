@@ -44,7 +44,7 @@ test_that("data export works", {
     expect_true(all(!is.na(eem_index)))
     expect_equal(dim(eem_index), c(3, 27))
 
-    expect_equal(length(readLines(readme_file)), 42) #now 42 because here the indices have been written
+    expect_equal(length(readLines(readme_file)), 44) #now 44 because here the indices have been written
 
 
   #check writing to csv

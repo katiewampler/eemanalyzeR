@@ -54,7 +54,7 @@ add_blanks <- function(eemlist, blanklist=NULL, validate=TRUE){
   }
 
   if(length(blanklist) == 0 | length(eemlist) == 0){
-    stop("eemlist or blanklist had zero samples, please ensure 'pattern' argument is correct")
+    stop("eemlist or blanklist had zero samples, please check that the blk argument is correctly marking blanks in eemanalyzeR::eem_dir_read()")
   }
 
   #make sure there's metadata added to samples

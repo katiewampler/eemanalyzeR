@@ -160,6 +160,10 @@ for(x in files){
     dir <- "T:/Research/Aqualog_Data/2_PNNL_DOM"
     dates <- list.files(dir, "[0-9]{4}_[0-9]{2}_[0-9]{2}")
     output_dir <- "data-raw/long-term-standards/tea-standards"
+    #days with problems,
+    date_rm <- c("2022_11_12", "2023_12_15", "2024_05_08", "2022_11_14", "2023_09_17", "2022_08_09", "2023_12_15b", "2022_08_06")
+    dates <- dates[!(dates %in% date_rm)]
+
     get_tea_info <- function(file, output_dir){
       #get info about samples and metadata
       tea_files <- list.files(file.path(dir, file),"postTea.*\\.dat|preTea.*\\.dat", recursive = TRUE)
@@ -190,8 +194,8 @@ for(x in files){
           file.copy(file.path(dir, file, tea_files[eem]), paste(output_dir, "eem", tea_name[eem], sep="/"), overwrite = TRUE)
 
           #write metadata
-          meta_file <- meta_file %>%
-            dplyr::select(analysis_date, data_identifier, replicate_no, integration_time_s, dilution, RSU_area_1s, long_term_name)
+          meta_file <- meta_file %>% mutate(data_identifier = long_term_name) %>%
+            dplyr::select(analysis_date, data_identifier, replicate_no, integration_time_s, dilution, RSU_area_1s) %>%unique()
 
           write.csv(meta_file, file.path(output_dir, paste0("metadata/", file, "_metadata.csv")), row.names = FALSE, quote = FALSE)
 

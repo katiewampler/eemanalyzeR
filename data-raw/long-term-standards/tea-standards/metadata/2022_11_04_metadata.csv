@@ -1,3 +1,3 @@
-analysis_date,data_identifier,replicate_no,integration_time_s,dilution,RSU_area_1s,long_term_name
-2022-11-04,preTea221104,1,5,1,1502.57538,2022_11_04_preTea221104
-2022-11-04,postTea221104,1,5,1,1502.57538,2022_11_04_postTea221104
+analysis_date,data_identifier,replicate_no,integration_time_s,dilution,RSU_area_1s
+2022-11-04,2022_11_04_preTea221104,1,5,1,1502.57538
+2022-11-04,2022_11_04_postTea221104,1,5,1,1502.57538

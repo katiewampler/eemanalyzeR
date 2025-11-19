@@ -325,10 +325,10 @@ check_processing <- function(eem){
 
   if(!check_abs){
     warning("absorbance MDL is missing, indices will not be checked for MDLs")
-    .write_readme_line("Absorbance indices were not checked against method detection limits (MDL)", "mdl", append = TRUE)
+    .write_readme_line("Absorbance indices were not checked against method detection limits (MDL)\n", "mdl", append = TRUE)
     abs_mdl <- NULL
   }else{abs_mdl <- readRDS(file.path(mdl_dir, "abs-mdl.rds"))
-  .write_readme_line("Absorbance indices were checked against method detection limits (MDL)", "mdl", append=TRUE)
+  .write_readme_line("Absorbance indices were checked against method detection limits (MDL)\n", "mdl", append=TRUE)
   }
 
   return(list(eem_mdl = eem_mdl, abs_mdl=abs_mdl))

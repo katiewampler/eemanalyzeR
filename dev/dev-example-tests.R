@@ -12,8 +12,8 @@
     create_mdl("data-raw/long-term-standards/blanks", recursive = TRUE, type="eem")
     create_mdl("data-raw/long-term-standards/blanks", recursive = TRUE, type="abs", pattern="Abs")
 
-    create_tea_std("data-raw/long-term-standards/tea_standards", recursive = TRUE, type="eem")
-    create_tea_std("data-raw/long-term-standards/tea_standards", recursive = TRUE, type="abs", pattern="Abs")
+    create_tea_std("data-raw/long-term-standards/tea-standards", recursive = TRUE, type="eem") #gives warning about trying to load eem with abs
+    create_tea_std("data-raw/long-term-standards/tea-standards", recursive = TRUE, type="abs", pattern="Abs")
 
   #example 1: Hohner-Lab-2024-07-29
     input_dir <- here("dev/dev-examples/Hohner-Lab-2024-07-29")
@@ -72,12 +72,12 @@
     input_dir <- here("dev/dev-examples/PNNL-2022-11-10")
     #abs <- abs_dir_read(input_dir) # like this, we get warnings, but still loads
     abs <- abs_dir_read(input_dir, pattern="Abs") #like this we don't get warnings
-    eems <- eem_dir_read(input_dir)
+    eems <- eem_dir_read(input_dir, blk="blank$")
     meta <- meta_read(input_dir)
     abs <- add_metadata(meta, abs)
     eems <- add_metadata(meta, eems)
     #eems <- add_blanks(eems) #throws an error because pattern is different
-    eems <- add_blanks(eems, pattern="blank$", validate = F)
+    eems <- add_blanks(eems, validate = F)
       #processing steps
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
@@ -125,7 +125,7 @@
   #example 5: Bladon-Lab-2024-08-19
     input_dir <- here("dev/dev-examples/Bladon-Lab-2024-08-19")
     abs <- abs_dir_read(input_dir)
-    eems <- eem_dir_read(input_dir)
+    eems <- eem_dir_read(input_dir, std = "tea|Tea")
     meta <- meta_read(input_dir)
     abs <- add_metadata(meta, abs)
     eems <- add_metadata(meta, eems)

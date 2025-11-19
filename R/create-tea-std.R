@@ -12,6 +12,8 @@
 #' @param pattern optional. a character string containing a \code{\link[base]{regular expression}}
 #' to be matched to the files in input_dir.
 #' only files matching the pattern will be loaded.
+#' @param blk a character string containing a \code{\link[base]{regular expression}}
+#' used to specify the sample names of the blanks.
 #' @param type which MDL to calculate: either `eem` or `abs`
 #' @param recursive logical. should the function recurse into directories?
 #' @param output_dir the location to save the mdl file to, default is a user-specific data directory (\link[rappdirs]{user_data_dir}). If
@@ -48,7 +50,7 @@
 #' plot_eem(eem_teastd)
 #'
 
-create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, pattern="Tea",
+create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, pattern="Tea", blk="BEM|Blank|blank",
                         type = "eem", recursive=FALSE, output_dir=NULL){
   stopifnot(type %in% c("eem", "abs"), dir.exists(dir))
 
@@ -62,7 +64,7 @@ create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, pattern="Tea",
   #get all tea samples in directory with instrument blanks
     tea_abs <- abs_dir_read(dir, pattern=pattern, recursive=recursive)
 
-    if(type == "eem"){tea <- eem_dir_read(dir, pattern=pattern, recursive=recursive)}
+    if(type == "eem"){tea <- eem_dir_read(dir, pattern=pattern, blk=blk, recursive=recursive)}
     if(type == "abs"){tea <- tea_abs}
 
   #check number of samples

@@ -70,13 +70,6 @@ add_metadata <- function(meta, x){
     meta_order <- na.omit(meta_order)
   }
 
-  if(length(unique(meta_order)) < nrow(meta)){
-    warning("the following sample is in metadata but was missing in data:\n",
-            paste(meta$data_identifier[setdiff(1:nrow(meta), meta_order)], collapse="\n"),
-            "\nthese sample will be removed from further processing")
-    meta <- meta[-setdiff(1:nrow(meta), meta_order),]
-  }
-
   #add metadata info to object
   #get data from metadata, keeping as numeric/character
   meta_data <- list(
@@ -89,6 +82,15 @@ add_metadata <- function(meta, x){
     doc_mgL = if("DOC_mg_L" %in% colnames(meta)) meta$DOC_mg_L[meta_order] else NA,
     notes = if("Notes" %in% colnames(meta)) meta$Notes[meta_order] else NA
   )
+
+  #remove samples in metadata that don't have samples, do after because otherwise the meta_order doesn't match meta
+    if(length(unique(meta_order)) < nrow(meta)){
+      warning("the following sample is in metadata but was missing in data:\n",
+              paste(meta$data_identifier[setdiff(1:nrow(meta), meta_order)], collapse="\n"),
+              "\nthese sample will be removed from further processing")
+      meta <- meta[-setdiff(1:nrow(meta), meta_order),]
+    }
+
 
   # loop across the metadata
   x <- lapply(1:length(meta_order), function(y) {

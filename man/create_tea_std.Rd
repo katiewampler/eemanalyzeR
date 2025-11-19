@@ -15,6 +15,7 @@ create_tea_std(
   meta_name = NULL,
   sheet = NULL,
   pattern = "Tea",
+  blk = "BEM|Blank|blank",
   type = "eem",
   recursive = FALSE,
   output_dir = NULL
@@ -31,6 +32,9 @@ if not specified function will attempt to load any xlsx or csv file in directory
 \item{pattern}{optional. a character string containing a \code{\link[base]{regular expression}}
 to be matched to the files in input_dir.
 only files matching the pattern will be loaded.}
+
+\item{blk}{a character string containing a \code{\link[base]{regular expression}}
+used to specify the sample names of the blanks.}
 
 \item{type}{which MDL to calculate: either \code{eem} or \code{abs}}
 

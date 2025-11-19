@@ -31,13 +31,24 @@ check_tea_std <- function(eemlist, abslist, std_dir=.qaqc_dir(), tolerance=0.2,
 
   stopifnot(is.numeric(tolerance),.is_eemlist(eemlist)|.is_abslist(abslist))
 
+  #check if sample has any tea samples if not return empty table
+  if(length(subset_qaqc(eemlist, type="tea")) ==0 & length(subset_qaqc(abslist, type="tea"))==0){
+
+    warning("No tea check standard samples found")
+    .write_readme_line("No tea check standards were included in the sample data\n", "check_std")
+
+    return(data.frame(meta_name=rep("notea", each=2), index=NA, type=c("abs", "eem"), tea_flag=NA))
+
+  }
+
   #get eem_std and abs_std
     if(!file.exists(file.path(std_dir,"eem-tea-std.rds"))|!file.exists(file.path(std_dir, "abs-tea-std.rds"))){
-      names <- get_sample_info(subset_qaqc(eemlist, type="tea_std"), "meta_name")
-       return(data.frame(meta_name=rep(names, each=2), index=NA, type=c("abs", "eem"), tea_flag=NA))
-
       warning("tea check standard files are missing, check standards will not be checked against the long-term standard")
-      .write_readme_line("Tea standards were non provided, thus the tea standards for this run were not checked", "check_std")
+      .write_readme_line("Tea standards were not provided, thus the tea standards for this run were not checked\n", "check_std")
+
+      names <- get_sample_info(subset_qaqc(eemlist, type="tea_std"), "meta_name")
+      return(data.frame(meta_name=rep(names, each=2), index=NA, type=c("abs", "eem"), tea_flag=NA))
+
     }else{
       eem_std <- readRDS(file.path(std_dir,"eem-tea-std.rds"))
       abs_std <- readRDS(file.path(std_dir, "abs-tea-std.rds"))
@@ -104,8 +115,8 @@ check_tea_std <- function(eemlist, abslist, std_dir=.qaqc_dir(), tolerance=0.2,
       dplyr::group_by(.data$type) %>% dplyr::summarise(per_out = sum(.data$tea_flag)/ dplyr::n(), .groups="keep")
 
     #write to the readme
-    tea_msg <- paste(paste0(sum$per_out[1], "% (n=", sum(indices$type == "abs")  ,") of the absorbance indices were greater than ", tolerance*100, "% of the long-term check standard"),
-                     paste0(sum$per_out[2], "% (n=", sum(indices$type == "eem")  ,") of the fluorescence indices were greater than ", tolerance*100, "% of the long-term check standard"), sep="\n")
+    tea_msg <- paste(paste0(round(sum$per_out[1], 2)*100, "% (n=", sum(indices$type == "abs")  ,") of the absorbance indices were greater than ", tolerance*100, "% of the long-term check standard"),
+                     paste0(round(sum$per_out[2], 2)*100, "% (n=", sum(indices$type == "eem")  ,") of the fluorescence indices were greater than ", tolerance*100, "% of the long-term check standard\n"), sep="\n")
     .write_readme_line(tea_msg, "check_std")
 
     #return the things requested
