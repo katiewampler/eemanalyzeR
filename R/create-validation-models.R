@@ -1,5 +1,3 @@
-
-# TODO Function to calculate generic absorbance curve from a bunch of given "good" data
 # Calculate the mean and standard deviation for each wavelength
 
 #' Create a long term absorbance or EEM model (for tea stds and blanks)
@@ -46,7 +44,7 @@ create_absorbance_model <- function(abs_dir,
                      sd_abs_by_wavelength = sd(.data$absorbance)) %>%
     dplyr::mutate(sdmin_mult = .data$mean_abs_by_wavelength - sd_multiplier * .data$sd_abs_by_wavelength,
                   sdmax_mult = .data$mean_abs_by_wavelength + sd_multiplier * .data$sd_abs_by_wavelength)
-#
+
 #   # TODO Make this part interactive?
 #   # Plot good absorbance data with mean and SD ribbon
 #   good_abs_plot <- ggplot2::ggplot(data = good_data_long) +
@@ -68,6 +66,8 @@ create_absorbance_model <- function(abs_dir,
 #     ggplot2::theme(legend.position = "none")
 #
 #   plot(good_abs_plot)
+
+  # TODO could use above plotting code for absorbance plotting in final output?
 
   # Save the good model of tea absorbance as an rda file in data folder or a csv
   # in some generic folder

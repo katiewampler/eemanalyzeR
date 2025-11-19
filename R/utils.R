@@ -1,3 +1,5 @@
+# MAJOR TODO - clean up utils across the entire package!
+
 #Functions to check if the objects are the right class
 
   #' Checks if object is an eem

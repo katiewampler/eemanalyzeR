@@ -23,8 +23,11 @@
 #' @examples
 #' blanks <- eem_get_blank(example_eems, pattern = "BEM")
 #' samples <- eem_rm_blank(example_eems, pattern = "BEM")
-eem_get_blank <- function(eemlist, pattern = "BEM", info="sample"){
 
+# TODO these may need to be adjusted for other instruments in future
+# Pattern default might need to be changed
+
+eem_get_blank <- function(eemlist, pattern = "BEM", info="sample"){
   blank_names <- grep(pattern, get_sample_info(eemlist, info), value = T, ignore.case = TRUE)
   if(length(blank_names) > 0){
     eemlist <- subset_samples(eemlist, info, blank_names, keep = TRUE, ignore_case = TRUE,verbose = FALSE)

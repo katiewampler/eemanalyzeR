@@ -59,11 +59,11 @@ add_blanks <- function(eemlist, blanklist=NULL, pattern="BEM|Blank$"){
       stop("metadata must be added to link the samples and blanks, please run 'eemanalyzeR::add_metadata' first")
     }
 
+  # TODO figure out how interactive vs batch blank adding
   # Validate the instrument blank
   continue <- validate_blanks(unique(blanklist))
 
   #makes sure blank has same wavelengths as sample then adds into eem as x_blK
-
   .add_x_blk <- function(eem, eem_blk){
     if(!identical(eem$ex, eem_blk$ex) | !identical(eem$em, eem_blk$em)){
       stop("excitation and/or emission wavelengths as mismatched between sample and blank")

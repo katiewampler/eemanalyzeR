@@ -88,6 +88,8 @@ add_metadata <- function(meta, x,
   # New metadata version abslist: Use metadata flags for blanks standards
 
   # Checks
+  # New metadata version checks: use metadata flags for checks if available and
+  #                              if not then use pattern matching
 
 
   if (!("is_blank" %in% names(meta))) {
