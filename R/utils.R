@@ -123,14 +123,28 @@
   return(documentation)
 }
 
+#' Checks if the eems or absorbance has had metadata added
+#' @noRd
+.meta_added <- function(x){
+  stopifnot(class(x) %in% c("eemlist", "eem", "abs", "abslist"))
+
+  if(inherits(x, c("eem","abs"))){
+    items <- names(x)
+    augment_names <- c("meta_name","dilution","analysis_date", "description","doc_mgL","notes")
+    augmented <- all(augment_names %in% items)
+  }else{
+    augmented <- unlist(lapply(x, .meta_added))
+  }
+  return(augmented)
+}
+
 # Overload the bracket operator for eemlist subsetting
 #' Subsetting using `[` for eemlist
 #'
 #' @param eemlist the eemlist to subset
 #' @param i the index for subsetting
 #'
-#' @export
-#' @S3method `[` eemlist
+#' @exportS3Method `[` eemlist
 #'
 `[.eemlist` <- function(eemlist, i) {
   sublist <- NextMethod()
@@ -142,13 +156,12 @@
 # we want to always return an abslist
 
 #'Subsetting using `[` for an abslist
-#' 
+#'
 #' @param abslist the abslist to subset
 #' @param i the index for subsetting
-#' 
-#' @export
-#' @S3method `[` abslist
-#' 
+#'
+#' @exportS3Method `[` abslist
+#'
 `[.abslist` <- function(abslist, i) {
   sublist <- NextMethod()
   structure(sublist, class = "abslist")
