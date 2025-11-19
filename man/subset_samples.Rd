@@ -33,7 +33,8 @@ An object of class \code{eemlist} or \code{abslist} with the samples excluded or
 }
 \description{
 Helper function that build upon \link[eemR]{eem_extract} function. Used to select or remove samples based on the info extracted by
-\link[eemanalyzeR]{get_sample_info} allowing selection of samples based on components besides just the sample name.
+\link[eemanalyzeR]{get_sample_info} allowing selection of samples based on components besides just the sample name. This is usually
+used in concert with `get_sample_info`
 }
 \examples{
  #subset by name

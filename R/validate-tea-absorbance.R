@@ -35,6 +35,7 @@
 
 
 # TODO write tests for this function
+# TODO work this into overall QAQC plan. It might be superseded by the MDL checks
 validate_tea_absorbance <- function(abslist,
                                     pattern = "tea",
                                     model = "default",

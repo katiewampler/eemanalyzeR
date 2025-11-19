@@ -27,6 +27,7 @@ validate_blanks <- function(
     blank_model = NULL) {
 
   #cat("Plotting blanks for user validation \n")
+  # TODO - work this validation in with Katie's MDLs
 
   # Plot the instrument blank
   if (rlang::is_interactive()) {

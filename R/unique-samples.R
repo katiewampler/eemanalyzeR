@@ -21,6 +21,7 @@ unique.eemlist <- function(x, ...){
   flat_X <- lapply(lapply(x, `[[`, 3), as.vector)
 
   # Find unique matrices based on the flattened vectors
+  # TODO do we really want to do this only based on data or metadata as well?
   x <- x[!duplicated(lapply(flat_X, sort))]
 
   class(x) <- "eemlist"

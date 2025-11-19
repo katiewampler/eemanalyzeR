@@ -49,6 +49,7 @@
 get_sample_info <- function(x, info) {
   stopifnot(.is_eemlist(x) | .is_eem(x) | .is_abslist(x) | .is_abs(x))
 
+  # Make sure x is an eemlist or abslist
   if(inherits(x, "eemlist") | inherits(x, "abslist") ){
     res <- lapply(x, function(y) y[[info]])
 
