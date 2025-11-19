@@ -15,6 +15,7 @@ create_mdl(
   meta_name = NULL,
   sheet = NULL,
   pattern = "BLK",
+  blk = "BEM",
   type = "eem",
   recursive = FALSE,
   output_dir = NULL
@@ -29,8 +30,10 @@ if not specified function will attempt to load any xlsx or csv file in directory
 \item{sheet}{name of sheet containing metadata. only required if metadata isn't the first sheet}
 
 \item{pattern}{optional. a character string containing a \code{\link[base]{regular expression}}
-to be matched to the files in input_dir.
-only files matching the pattern will be loaded.}
+to be matched to the files in input_dir. Only files matching the pattern will be loaded.}
+
+\item{blk}{a character string containing a \code{\link[base]{regular expression}}
+used to specify the sample names of the instrument blanks.}
 
 \item{type}{which MDL to calculate: either \code{eem} or \code{abs}}
 

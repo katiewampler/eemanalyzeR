@@ -9,11 +9,12 @@
 #' @param meta_name name of metadata file. optional if metadata is only xlsx or csv file in input_dir
 #' if not specified function will attempt to load any xlsx or csv file in directory and return an error if there is more than one
 #' @param sheet name of sheet containing metadata. only required if metadata isn't the first sheet
-#' @param pattern optional. a character string containing a \code{\link[base]{regular expression}}
-#' to be matched to the files in input_dir.
-#' only files matching the pattern will be loaded.
+#' @param eem_pattern a character string containing a \code{\link[base]{regular expression}}
+#' used to specify the sample names of the fluorescence data.
+#' @param abs_pattern a character string containing a \code{\link[base]{regular expression}}
+#' used to specify the sample names of the absorbance data.
 #' @param blk a character string containing a \code{\link[base]{regular expression}}
-#' used to specify the sample names of the blanks.
+#' used to specify the sample names of the instrument blanks.
 #' @param type which MDL to calculate: either `eem` or `abs`
 #' @param recursive logical. should the function recurse into directories?
 #' @param output_dir the location to save the mdl file to, default is a user-specific data directory (\link[rappdirs]{user_data_dir}). If
@@ -44,13 +45,14 @@
 #' @examples
 #' eem_teastd <- create_tea_std(
 #' file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-tea"),
-#' meta_name="longtermteastd-metadata.csv", pattern = "longterm-teastd",
-#' type="eem", output_dir = FALSE)
+#' meta_name="longtermteastd-metadata.csv", eem_pattern = "BEM|SEM",
+#' abs_pattern="ABS",type="eem", output_dir = FALSE)
 #'
 #' plot_eem(eem_teastd)
 #'
 
-create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, pattern="Tea", blk="BEM|Blank|blank",
+create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, eem_pattern="Tea",
+                           abs_pattern="Abs", blk="BEM",
                         type = "eem", recursive=FALSE, output_dir=NULL){
   stopifnot(type %in% c("eem", "abs"), dir.exists(dir))
 
@@ -62,13 +64,18 @@ create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, pattern="Tea", blk="
     tea_meta <- meta_read(dir, name=meta_name, sheet=sheet, validate = FALSE)
 
   #get all tea samples in directory with instrument blanks
-    tea_abs <- abs_dir_read(dir, pattern=pattern, recursive=recursive)
+    tea_abs <- abs_dir_read(dir, recursive=recursive, pattern=abs_pattern)
 
-    if(type == "eem"){tea <- eem_dir_read(dir, pattern=pattern, blk=blk, recursive=recursive)}
+    if(type == "eem"){tea <- eem_dir_read(dir, pattern=eem_pattern, blk=blk, recursive=recursive)}
     if(type == "abs"){tea <- tea_abs}
 
   #check number of samples
     n_samps <- length(tea)
+
+    #error if samples are missing, likely a pattern issue
+    if(length(tea_abs) == 0){stop("No absorbance was found to load. Please check your abs_pattern arugment.")}
+    if(length(tea) == 0){stop("No fluoresence data was found to load. Please check your eem_pattern arugment.")}
+
     if(type == "eem"){n_samps <- n_samps/2}
     if(n_samps < 20){warning("Calculating average tea standard based on less than 20 samples, average may be unreliable")}
 

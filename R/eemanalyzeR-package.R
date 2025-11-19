@@ -18,6 +18,7 @@
 #' @importFrom eemR eem_humification_index
 #' @importFrom eemR eem_inner_filter_effect
 #' @importFrom eemR eem_read
+#' @importFrom ggplot2 annotate
 #' @importFrom ggplot2 ggsave
 #' @importFrom ggplot2 labs
 #' @importFrom ggplot2 theme

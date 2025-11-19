@@ -14,8 +14,9 @@ create_tea_std(
   dir,
   meta_name = NULL,
   sheet = NULL,
-  pattern = "Tea",
-  blk = "BEM|Blank|blank",
+  eem_pattern = "Tea",
+  abs_pattern = "Abs",
+  blk = "BEM",
   type = "eem",
   recursive = FALSE,
   output_dir = NULL
@@ -29,12 +30,14 @@ if not specified function will attempt to load any xlsx or csv file in directory
 
 \item{sheet}{name of sheet containing metadata. only required if metadata isn't the first sheet}
 
-\item{pattern}{optional. a character string containing a \code{\link[base]{regular expression}}
-to be matched to the files in input_dir.
-only files matching the pattern will be loaded.}
+\item{eem_pattern}{a character string containing a \code{\link[base]{regular expression}}
+used to specify the sample names of the fluorescence data.}
+
+\item{abs_pattern}{a character string containing a \code{\link[base]{regular expression}}
+used to specify the sample names of the absorbance data.}
 
 \item{blk}{a character string containing a \code{\link[base]{regular expression}}
-used to specify the sample names of the blanks.}
+used to specify the sample names of the instrument blanks.}
 
 \item{type}{which MDL to calculate: either \code{eem} or \code{abs}}
 
@@ -69,8 +72,8 @@ formatted as a metadata file (see \link[eemanalyzeR]{metadata})
 \examples{
 eem_teastd <- create_tea_std(
 file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-tea"),
-meta_name="longtermteastd-metadata.csv", pattern = "longterm-teastd",
-type="eem", output_dir = FALSE)
+meta_name="longtermteastd-metadata.csv", eem_pattern = "BEM|SEM",
+abs_pattern="ABS",type="eem", output_dir = FALSE)
 
 plot_eem(eem_teastd)
 

@@ -10,8 +10,9 @@
 #' if not specified function will attempt to load any xlsx or csv file in directory and return an error if there is more than one
 #' @param sheet name of sheet containing metadata. only required if metadata isn't the first sheet
 #' @param pattern optional. a character string containing a \code{\link[base]{regular expression}}
-#' to be matched to the files in input_dir.
-#' only files matching the pattern will be loaded.
+#' to be matched to the files in input_dir. Only files matching the pattern will be loaded.
+#' @param blk a character string containing a \code{\link[base]{regular expression}}
+#' used to specify the sample names of the instrument blanks.
 #' @param type which MDL to calculate: either `eem` or `abs`
 #' @param recursive logical. should the function recurse into directories?
 #' @param output_dir the location to save the mdl file to, default is a user-specific data directory (\link[rappdirs]{user_data_dir}). If
@@ -48,7 +49,7 @@
 #' plot_eem(eem_mdl)
 #'
 create_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK",
-                    type = "eem", recursive=FALSE, output_dir=NULL){
+                       blk="BEM", type = "eem", recursive=FALSE, output_dir=NULL){
   stopifnot(type %in% c("eem", "abs"), dir.exists(dir))
 
   #set up file structure for saving mdl data
@@ -59,7 +60,7 @@ create_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK",
     blank_meta <- meta_read(dir, name=meta_name, sheet=sheet, validate = FALSE)
 
   #get all blanks in directory with instrument blanks
-    if(type == "eem"){blank <- eem_dir_read(dir, pattern=pattern, recursive=recursive)}
+    if(type == "eem"){blank <- eem_dir_read(dir, pattern=pattern, recursive=recursive, blk=blk)}
     if(type == "abs"){blank <- abs_dir_read(dir, pattern=pattern, recursive=recursive)}
 
   #check number of samples
