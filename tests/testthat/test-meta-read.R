@@ -1,4 +1,4 @@
-#testing loading metadata
+#testing loading metadata via meta_read
 test_that("metadata loads", {
   # Test for loading with only directory as input
   expect_s3_class(suppressMessages(meta_read(system.file("extdata", package = "eemanalyzeR"))), "data.frame")
