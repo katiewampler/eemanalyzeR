@@ -4,6 +4,10 @@
 #' in a directory into R, even when it contains other files.
 #'
 #' @param input_dir path to folder containing raw EEMs and/or absorbance files
+#' @param blk a character string containing a \code{\link[base]{regular expression}}
+#' used to specify the sample names of the blanks.
+#' @param std a character string containing a \code{\link[base]{regular expression}}
+#' used to specify the sample names of the tea check standards.
 #' @param pattern optional. a character string containing a \code{\link[base]{regular expression}}
 #' to be matched to the files in input_dir.
 #' only files matching the pattern will be loaded.
@@ -51,6 +55,15 @@ eem_dir_read <- function(input_dir,
                          import_function="aqualog"){
   stopifnot(dir.exists(input_dir))
 
+  #TODO: change to package environment
+  #remove readme if it exists because new dataset
+  if(exists("readme")){rm("readme", envir = .GlobalEnv)
+    message("NOTE: removed previous 'readme' file")
+  }
+
+
+  warnings_list <- list()  # Initialize an empty list to store warnings
+
   #wrapper on eemR::eem_read to try and catch errors from absorbance data being included
   # It's not really an error in our package if absorbance data is included in the directory,
   # since we expect it all in one aqualog output directory. So maybe I can modify this function
@@ -66,6 +79,7 @@ eem_dir_read <- function(input_dir,
       attr(eem[[1]], "is_check") <- FALSE
 
       return(eem)},
+
     error = function(e) {
       # Check if it's a specific error
       if (grepl("argument of length 0", conditionMessage(e))) {
@@ -97,7 +111,7 @@ eem_dir_read <- function(input_dir,
 
   #read files
   eem_list <- withCallingHandlers(
-    lapply(load_files, .try_eem_read, import_function=import_function),
+    pbapply::pblapply(load_files, .try_eem_read, import_function=import_function),
     warning = function(w) {
       conditionMessage(w)
       #append_warning(conditionMessage(w))  # Add the warning message
@@ -109,6 +123,9 @@ eem_dir_read <- function(input_dir,
   eem_list <- eem_list %>% purrr::discard(is.null)
   class(eem_list) <- "eemlist"
 
+  #mark qaqc files
+    eem_list <- mark_qaqc(eem_list, blk_pattern = blk, tea_pattern = std)
+
   return(eem_list)
 }
 
@@ -119,6 +136,13 @@ abs_dir_read <- function(input_dir,
                          skip="SEM|BEM|Waterfall",
                          file_ext="dat",
                          recursive = FALSE) {
+
+  #TODO: change to package environment
+  #remove readme if it exists because new dataset
+  if(exists("readme")){rm("readme", envir = .GlobalEnv)
+    message("NOTE: removed previous 'readme' file")
+  }
+
   stopifnot(dir.exists(input_dir))
 
   files <- list.files(input_dir, full.names = T, recursive = recursive)
@@ -140,7 +164,7 @@ abs_dir_read <- function(input_dir,
   load_files <- files[which(pattern_choices & skip_choices & ext_choices)]
 
   #read files
-  abs_list <- withCallingHandlers(lapply(load_files, abs_read),
+  abs_list <- withCallingHandlers(pbapply::pblapply(load_files, abs_read),
                                   warning = function(w) {
                                     warning(w)
                                     #append_warning(conditionMessage(w))  # Add the warning message
@@ -152,7 +176,6 @@ abs_dir_read <- function(input_dir,
 
   #make into abs_list
   class(abs_list) <- "abslist"
-
 
   return(abs_list)
 }

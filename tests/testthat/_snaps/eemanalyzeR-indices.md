@@ -1,0 +1,82 @@
+# eems indices are correct
+
+    Code
+      indices$eem_index
+    Output
+                  sample_name     meta_name      index                    value
+      1   B1S1ExampleBlankSEM  ExampleBlank         pB                    MDL01
+      2  B1S2ExampleTeaStdSEM ExampleTeaStd         pB        0.599128991103171
+      3  B1S3ExampleSampleSEM ExampleSample         pB       0.0802191586443257
+      4   B1S1ExampleBlankSEM  ExampleBlank         pT                    MDL01
+      5  B1S2ExampleTeaStdSEM ExampleTeaStd         pT        0.662399446780526
+      6  B1S3ExampleSampleSEM ExampleSample         pT       0.0835964992592579
+      7   B1S1ExampleBlankSEM  ExampleBlank         pA             DATA02_MDL01
+      8  B1S2ExampleTeaStdSEM ExampleTeaStd         pA 0.280569719363854_DATA02
+      9  B1S3ExampleSampleSEM ExampleSample         pA 0.340345670357128_DATA02
+      10  B1S1ExampleBlankSEM  ExampleBlank         pM                    MDL01
+      11 B1S2ExampleTeaStdSEM ExampleTeaStd         pM        0.174668813762406
+      12 B1S3ExampleSampleSEM ExampleSample         pM        0.187462061308957
+      13  B1S1ExampleBlankSEM  ExampleBlank         pC                    MDL01
+      14 B1S2ExampleTeaStdSEM ExampleTeaStd         pC        0.145342280323529
+      15 B1S3ExampleSampleSEM ExampleSample         pC        0.196925330744749
+      16  B1S1ExampleBlankSEM  ExampleBlank         pD                    MDL01
+      17 B1S2ExampleTeaStdSEM ExampleTeaStd         pD       0.0199829245761789
+      18 B1S3ExampleSampleSEM ExampleSample         pD       0.0978435434033769
+      19  B1S1ExampleBlankSEM  ExampleBlank         pE                   DATA01
+      20 B1S2ExampleTeaStdSEM ExampleTeaStd         pE                   DATA01
+      21 B1S3ExampleSampleSEM ExampleSample         pE                   DATA01
+      22  B1S1ExampleBlankSEM  ExampleBlank         pN                    MDL01
+      23 B1S2ExampleTeaStdSEM ExampleTeaStd         pN        0.277691311898685
+      24 B1S3ExampleSampleSEM ExampleSample         pN       0.0901046901183591
+      25  B1S1ExampleBlankSEM  ExampleBlank        rAT            DATA01_DATA02
+      26 B1S2ExampleTeaStdSEM ExampleTeaStd        rAT 0.423565751341601_DATA02
+      27 B1S3ExampleSampleSEM ExampleSample        rAT  4.07129094367473_DATA02
+      28  B1S1ExampleBlankSEM  ExampleBlank        rCA            DATA01_DATA02
+      29 B1S2ExampleTeaStdSEM ExampleTeaStd        rCA 0.518025539794775_DATA02
+      30 B1S3ExampleSampleSEM ExampleSample        rCA 0.578603895674986_DATA02
+      31  B1S1ExampleBlankSEM  ExampleBlank        rCM                   DATA01
+      32 B1S2ExampleTeaStdSEM ExampleTeaStd        rCM        0.832102063286646
+      33 B1S3ExampleSampleSEM ExampleSample        rCM         1.05048098463078
+      34  B1S1ExampleBlankSEM  ExampleBlank        rCT                   DATA01
+      35 B1S2ExampleTeaStdSEM ExampleTeaStd        rCT        0.219417876977312
+      36 B1S3ExampleSampleSEM ExampleSample        rCT         2.35566480043649
+      37  B1S1ExampleBlankSEM  ExampleBlank pB_DOCnorm                    DOC01
+      38 B1S2ExampleTeaStdSEM ExampleTeaStd pB_DOCnorm                    DOC01
+      39 B1S3ExampleSampleSEM ExampleSample pB_DOCnorm       0.0413500817754256
+      40  B1S1ExampleBlankSEM  ExampleBlank pT_DOCnorm                    DOC01
+      41 B1S2ExampleTeaStdSEM ExampleTeaStd pT_DOCnorm                    DOC01
+      42 B1S3ExampleSampleSEM ExampleSample pT_DOCnorm       0.0430909789996175
+      43  B1S1ExampleBlankSEM  ExampleBlank pA_DOCnorm             DOC01_DATA02
+      44 B1S2ExampleTeaStdSEM ExampleTeaStd pA_DOCnorm             DOC01_DATA02
+      45 B1S3ExampleSampleSEM ExampleSample pA_DOCnorm 0.175435912555221_DATA02
+      46  B1S1ExampleBlankSEM  ExampleBlank pM_DOCnorm                    DOC01
+      47 B1S2ExampleTeaStdSEM ExampleTeaStd pM_DOCnorm                    DOC01
+      48 B1S3ExampleSampleSEM ExampleSample pM_DOCnorm       0.0966299285097717
+      49  B1S1ExampleBlankSEM  ExampleBlank pC_DOCnorm                    DOC01
+      50 B1S2ExampleTeaStdSEM ExampleTeaStd pC_DOCnorm                    DOC01
+      51 B1S3ExampleSampleSEM ExampleSample pC_DOCnorm        0.101507902445747
+      52  B1S1ExampleBlankSEM  ExampleBlank pD_DOCnorm                    DOC01
+      53 B1S2ExampleTeaStdSEM ExampleTeaStd pD_DOCnorm                    DOC01
+      54 B1S3ExampleSampleSEM ExampleSample pD_DOCnorm       0.0504348161873077
+      55  B1S1ExampleBlankSEM  ExampleBlank pE_DOCnorm                   DATA01
+      56 B1S2ExampleTeaStdSEM ExampleTeaStd pE_DOCnorm                   DATA01
+      57 B1S3ExampleSampleSEM ExampleSample pE_DOCnorm                   DATA01
+      58  B1S1ExampleBlankSEM  ExampleBlank pN_DOCnorm                    DOC01
+      59 B1S2ExampleTeaStdSEM ExampleTeaStd pN_DOCnorm                    DOC01
+      60 B1S3ExampleSampleSEM ExampleSample pN_DOCnorm       0.0464457165558552
+      61  B1S1ExampleBlankSEM  ExampleBlank         FI                    MDL01
+      62 B1S2ExampleTeaStdSEM ExampleTeaStd         FI         1.48108097143246
+      63 B1S3ExampleSampleSEM ExampleSample         FI          1.4354683339072
+      64  B1S1ExampleBlankSEM  ExampleBlank        HIX                   DATA01
+      65 B1S2ExampleTeaStdSEM ExampleTeaStd        HIX                   DATA01
+      66 B1S3ExampleSampleSEM ExampleSample        HIX                   DATA01
+      67  B1S1ExampleBlankSEM  ExampleBlank   HIX_ohno                   DATA01
+      68 B1S2ExampleTeaStdSEM ExampleTeaStd   HIX_ohno                   DATA01
+      69 B1S3ExampleSampleSEM ExampleSample   HIX_ohno                   DATA01
+      70  B1S1ExampleBlankSEM  ExampleBlank      fresh                    MDL01
+      71 B1S2ExampleTeaStdSEM ExampleTeaStd      fresh         0.60444154346824
+      72 B1S3ExampleSampleSEM ExampleSample      fresh        0.538549831223529
+      73  B1S1ExampleBlankSEM  ExampleBlank        BIX                    MDL01
+      74 B1S2ExampleTeaStdSEM ExampleTeaStd        BIX        0.610455409297569
+      75 B1S3ExampleSampleSEM ExampleSample        BIX        0.546642240644745
+

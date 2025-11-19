@@ -4,12 +4,12 @@
   })
 
   test_that("all eems are loaded", {
-    expect_length(eem_dir_read(system.file("extdata", package = "eemanalyzeR")), 6)
+    expect_length(eem_dir_read(system.file("extdata", package = "eemanalyzeR")), 8)
   })
 
   test_that("eems selection loading works", {
     expect_length(eem_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern = "SEM"), 3)
-    expect_length(eem_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "SEM|ABS|Abs"), 3)
+    expect_length(eem_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "SEM|ABS|Abs|Waterfall"), 3)
   })
 
 #testing loading absorbance data
@@ -21,5 +21,6 @@
   test_that("abs selection loading works", {
     expect_equal(length(abs_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern = "Abs")), 4)
     expect_equal(length(abs_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "BEM|SEM")), 4)
+
   })
 

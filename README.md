@@ -4,6 +4,7 @@
 # eemanalyzeR
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 This package provides tools for processing and analyzing raw
@@ -69,12 +70,3 @@ Data processing?
   - saving cleaned EEMS (where?)
   
     
-
-## Example
-
-This is a basic example which shows you how to solve a common problem:
-
-``` r
-library(eemanalyzeR)
-## basic example code
-```
