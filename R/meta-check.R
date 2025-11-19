@@ -12,7 +12,7 @@
 
 
 # TODO These might need to be more robust to weird inputs from the user. Worth checking
-# a few more edge cases?
+# a few more edge cases? Can do after we publish package
 meta_check <- function(meta){
   #check required columns are there
   req_cols <- c("data_identifier", "replicate_no", "integration_time_s","run_type", "RSU_area_1s",
