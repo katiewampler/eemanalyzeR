@@ -61,12 +61,13 @@ create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, eem_pattern="Tea",
     if(output_dir != FALSE){dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)}
 
   #get metadata
-    tea_meta <- meta_read(dir, name=meta_name, sheet=sheet, validate = FALSE)
+    if(!is.null(meta_name)){input <- file.path(dir, meta_name)}else{input <- dir}
+    tea_meta <- meta_read(input, sheet=sheet, validate = FALSE)
 
   #get all tea samples in directory with instrument blanks
     tea_abs <- abs_dir_read(dir, recursive=recursive, pattern=abs_pattern)
 
-    if(type == "eem"){tea <- eem_dir_read(dir, pattern=eem_pattern, blk=blk, recursive=recursive)}
+    if(type == "eem"){tea <- eem_dir_read(dir, pattern=eem_pattern, recursive=recursive)}
     if(type == "abs"){tea <- tea_abs}
 
   #check number of samples

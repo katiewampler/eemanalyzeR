@@ -57,10 +57,11 @@ create_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK",
     if(output_dir != FALSE){dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)}
 
   #get metadata
-    blank_meta <- meta_read(dir, name=meta_name, sheet=sheet, validate = FALSE)
+    if(!is.null(meta_name)){input <- file.path(dir, meta_name)}else{input <- dir}
+    blank_meta <- meta_read(input, sheet=sheet, validate = FALSE)
 
   #get all blanks in directory with instrument blanks
-    if(type == "eem"){blank <- eem_dir_read(dir, pattern=pattern, recursive=recursive, blk=blk)}
+    if(type == "eem"){blank <- eem_dir_read(dir, pattern=pattern, recursive=recursive)}
     if(type == "abs"){blank <- abs_dir_read(dir, pattern=pattern, recursive=recursive)}
 
   #check number of samples

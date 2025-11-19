@@ -4,10 +4,6 @@
 #' in a directory into R, even when it contains other files.
 #'
 #' @param input_dir path to folder containing raw EEMs and/or absorbance files
-#' @param blk a character string containing a \code{\link[base]{regular expression}}
-#' used to specify the sample names of the blanks.
-#' @param std a character string containing a \code{\link[base]{regular expression}}
-#' used to specify the sample names of the tea check standards.
 #' @param pattern optional. a character string containing a \code{\link[base]{regular expression}}
 #' to be matched to the files in input_dir.
 #' only files matching the pattern will be loaded.
@@ -122,9 +118,6 @@ eem_dir_read <- function(input_dir,
   eem_list <- lapply(eem_list, `[[`, 1)
   eem_list <- eem_list %>% purrr::discard(is.null)
   class(eem_list) <- "eemlist"
-
-  #mark qaqc files
-    eem_list <- mark_qaqc(eem_list, blk_pattern = blk, tea_pattern = std)
 
   return(eem_list)
 }
