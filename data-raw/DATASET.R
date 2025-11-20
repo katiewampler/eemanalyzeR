@@ -60,7 +60,7 @@ for(x in files){
     usethis::use_data(example_eems, overwrite = T)
     usethis::use_data(example_abs, overwrite = T)
 
-  metadata <- meta_read("data-raw", name="metadata_example")
+  metadata <- meta_read(input="data-raw/metadata_example.csv")
   usethis::use_data(metadata, overwrite = T)
 
 

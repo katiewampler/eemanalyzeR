@@ -61,7 +61,6 @@
 #' @importFrom utils file_test
 #' @importFrom tidyr pivot_wider
 #' @importFrom utils capture.output
-#' @importFrom utils modifyList
 #' @importFrom utils read.csv
 #' @importFrom utils write.csv
 #' @importFrom utils write.table

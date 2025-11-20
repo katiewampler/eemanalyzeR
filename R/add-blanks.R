@@ -49,8 +49,8 @@ add_blanks <- function(eemlist, blanklist=NULL, validate=TRUE){
   #if no blanks are provided
   if(is.null(blanklist)){
       #separate into blanklist and eemlist based on pattern given
-      blanklist <- subset_qaqc(eemlist, type="blank")
-      eemlist <- subset_qaqc(eemlist, type="blank", negate = TRUE)
+      blanklist <- subset_type(eemlist, type="iblank")
+      eemlist <- subset_type(eemlist, type="iblank", negate = TRUE)
   }
 
   if(length(blanklist) == 0 | length(eemlist) == 0){

@@ -3,8 +3,8 @@
 
 #test that gives error if metadata isn't added
     test_that("error is returned if samples don't have metadata added", {
-     expect_error(add_blanks(example_eems), "metadata must be added to link the samples and blanks") #fails if more than one blank
-     expect_no_error(add_blanks(example_eems, example_eems[[1]])) #runs if only one blank added
+     expect_error(add_blanks(example_eems), "eemlist or blanklist had zero samples") #fails if more than one blank
+     expect_no_error(add_blanks(example_eems, example_eems[[1]], validate=FALSE)) #runs if only one blank added
    })
 
 
@@ -32,9 +32,9 @@
     test_that("blanks are added when a list of blanks is supplied",{
       #gives error if names don't match
       eemlist <- add_metadata(metadata, example_eems)
-      samples <- subset_qaqc(eemlist, negate=TRUE)
-      blanks <- subset_qaqc(eemlist)
-      augment_eemlist <- add_blanks(samples, blanks)
+      samples <- subset_type(eemlist, type="iblank", negate = TRUE)
+      blanks <- subset_type(eemlist, type="iblank")
+      augment_eemlist <- add_blanks(samples, blanks, validate = FALSE)
 
       expect_s3_class(augment_eemlist, "eemlist")
       expect_equal(names(augment_eemlist[[1]]), c("file", "sample", "x", "ex", "em",
@@ -59,9 +59,11 @@
 #blanks are added when a single blank is supplied
     test_that("blanks are added when a single blank is supplied",{
       #gives error if names don't match
-      samples <- subset_qaqc(example_eems, negate = TRUE)
-      blanks <- subset_qaqc(example_eems)
-      augment_eemlist <- add_blanks(samples, blanks[[1]])
+      eemlist <- add_metadata(metadata, example_eems)
+
+      samples <- .make_base_eem(subset_type(eemlist, type="iblank", negate = TRUE))
+      blanks <- .make_base_eem(subset_type(eemlist, type="iblank"))
+      augment_eemlist <- add_blanks(samples, blanks[[1]], validate=FALSE)
 
       expect_s3_class(augment_eemlist, "eemlist")
       expect_equal(names(augment_eemlist[[1]]), c("file", "sample", "x", "ex", "em",

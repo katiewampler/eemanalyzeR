@@ -150,6 +150,12 @@
 #' Removes extra list items from eemlist, replaces sample with meta_name for matching
 #' @noRd
 .make_base_eem <- function(x){
+  if(.is_eemlist(x)){
+    x <- lapply(x, .make_base_eem)
+    class(x) <- "eemlist"
+    return(x)
+  }
+
   if(.meta_added(x)){
     x$sample <- x$meta_name
     x$meta_name <- NULL
@@ -318,4 +324,19 @@ check_processing <- function(eem){
   }
 
   return(list(eem_mdl = eem_mdl, abs_mdl=abs_mdl))
+}
+
+
+#' Nicely print the readme file with proper formatting
+#'
+.print_readme <- function(){
+  readme <- readme[!is.na(readme)]
+
+  #get stuff for the top
+  date <- strftime(Sys.time(), format="%Y-%m-%d %H:%M")
+  version <- paste0("Data processed using ", .eemanalyzeR_ver(), " package in R.")
+  link <- "For details on processing steps, indices, and QA/QC flags see the package website: https://github.com/katiewampler/eemanalyzeR"
+
+  cat(paste(date, version, link, "______________________________\n", paste(unlist(readme), collapse = "\n"), sep="\n"))
+
 }

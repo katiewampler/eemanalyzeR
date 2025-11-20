@@ -4,16 +4,19 @@
 \alias{add_metadata}
 \title{Add metadata to absorbance and EEM's data}
 \usage{
-add_metadata(meta, x, blank_pattern = "BEM|BLK|blank", check_pattern = "tea")
+add_metadata(
+  meta,
+  x,
+  sample_type_regex = list(iblank_pattern = "BEM$", sblank_pattern = "Blank",
+    check_pattern = "Tea|tea")
+)
 }
 \arguments{
 \item{meta}{a \code{data.frame} of metadata}
 
 \item{x}{an \code{abslist} or \code{eemlist} object}
 
-\item{blank_pattern}{a regex string to find blanks using pattern matching on filenames}
-
-\item{check_pattern}{a regex string to find check standards using pattern matching on filenames}
+\item{sample_type_regex}{a named list of regex strings to find instrument blanks, sample blanks, check standards, and samples using pattern matching.}
 }
 \value{
 returns an object of the same class as the object input into the function (\code{abslist} or \code{eemlist}) with metadata added in
@@ -23,8 +26,7 @@ The following items are added for each sample, if available in the metadata:
  \item dilution: the dilution factor for the sample.
  \item analysis_date: the date the sample was run.
  \item description: optional description of sample.
- \item is_blank: logical whether the sample is a blank (e.g. MilliQ water) #TODO: metadata -> T/F
- \item is_check: logical whether the sample is a check std (e.g SRM Tea)
+ \item sample_type: optional Flag for whether the data identifier is linked to a real sample (sample), sample blank (sblank), or check standard (check)
  \item doc_mgL: the concentration of dissolved organic carbon in the sample given in mg \ifelse{html}{\out{L<sup>-1</sup>}}{\eqn{L^{-1}}}
  \item notes: optional notes related to the sample or sample collection.
 }
