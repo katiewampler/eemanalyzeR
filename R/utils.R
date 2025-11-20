@@ -2,14 +2,14 @@
 #'
 #' @param obj an object
 #' @noRd
-.is_blank <- function(obj) {
-  # Get the attribute
-  val <- attr(obj, "is_blank$")
-  #stopifnot(is.logical(val))
-  if(is.null(val)){val <- FALSE}
-  return(val)
-}
-
+# TODO: Do we still want this now that we have 4 sample types
+# .is_blank <- function(obj) {
+#   # Get the attribute
+#   val <- attr(obj, "is_blank$")
+#   #stopifnot(is.logical(val))
+#   if(is.null(val)){val <- FALSE}
+#   return(val)
+# }
 
 #' Returns eemanalyzeR package version loaded
 #'
@@ -82,7 +82,8 @@
   }else{
     step <- paste0(time, ": ", text)
     readme[slot] <- paste(step, args, sep="\n")}
-
+  
+  # TODO change this to write to package environment when complete
   assign("readme", readme, envir = .GlobalEnv)
 
 }
