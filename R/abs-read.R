@@ -80,9 +80,8 @@ abs_read <- function(file){
 
       attr(obj, "is_dil_corrected") <- FALSE
       attr(obj, "is_doc_normalized") <- FALSE
-      # Default these to false and add them later
-      attr(obj, "is_blank") <- FALSE
-      attr(obj, "is_check") <- FALSE
+      # Default to none and add them later
+      attr(obj, "sample_type") <- "none"
 
     }else{
       obj <- NULL

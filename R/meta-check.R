@@ -58,16 +58,13 @@ meta_check <- function(meta){
   }
 
   #ensure run_type is either sampleQ or manual (might not matter anymore??)
-  if(any(grepl("sampleQ|manual", meta$run_type, ignore.case = T)==F)){
+  if(!all(grepl("sampleQ|manual", meta$run_type))){
     stop("'run_type' must be either 'sampleQ' or 'manual'")
   }
 
-  # Check samples are flagged as blanks or check standards
-  if(!is.logical(meta$is_blank) || any(is.na(meta$is_blank))) {
-    warning("is_blank column not properly specified. It should contain values TRUE or FALSE\neemanalyzeR will attempt to assign blanks from filenames")
-  }
-  if(!is.logical(meta$is_check) || any(is.na(meta$is_check))) {
-    warning("is_check column not properly specified. It should contain values TRUE or FALSE\neemanalyzeR will attempt to assign check standards from filenames")
+  # Check sample_type is properly flagged
+  if(!all(grepl("sample|sblank|check", meta$sample_type)) || any(is.na(meta$is_blank))) {
+    warning("sample_type column not properly specified. It should contain values 'sample', 'sblank', or 'check'.\neemanalyzeR will attempt to assign blanks from filenames")
   }
 
 

@@ -2,8 +2,7 @@
 #'
 #' @param meta a \code{data.frame} of metadata
 #' @param x an \code{abslist} or \code{eemlist} object
-#' @param blank_pattern a regex string to find blanks using pattern matching on filenames
-#' @param check_pattern a regex string to find check standards using pattern matching on filenames
+#' @param sample_type_regex a named list of regex strings to find instrument blanks, sample blanks, check standards, and samples using pattern matching.
 #'
 #' @note if \code{eemlist} contains blanks, the blanks will get the metadata of the corresponding sample.
 #'
@@ -14,8 +13,7 @@
 #'  \item dilution: the dilution factor for the sample.
 #'  \item analysis_date: the date the sample was run.
 #'  \item description: optional description of sample.
-#'  \item is_blank: logical whether the sample is a blank (e.g. MilliQ water) #TODO: metadata -> T/F
-#'  \item is_check: logical whether the sample is a check std (e.g SRM Tea)
+#'  \item sample_type: optional Flag for whether the data identifier is linked to a real sample (sample), sample blank (sblank), or check standard (check)
 #'  \item doc_mgL: the concentration of dissolved organic carbon in the sample given in mg \ifelse{html}{\out{L<sup>-1</sup>}}{\eqn{L^{-1}}}
 #'  \item notes: optional notes related to the sample or sample collection.
 #' }
@@ -35,8 +33,9 @@
 #' eem_augment <- add_metadata(metadata, example_eems)
 
 add_metadata <- function(meta, x,
-                         blank_pattern = "BEM|BLK|blank",
-                         check_pattern = "tea"){
+                         sample_type_regex = list(iblank_pattern = "BEM$",
+                                                  sblank_pattern = "Blank",
+                                                  check_pattern = "Tea|tea")) {
 
   class_type <- class(x)
 
@@ -89,80 +88,78 @@ add_metadata <- function(meta, x,
     meta <- meta[-setdiff(1:nrow(meta), meta_order),]
   }
 
-  # There's no good way to do this because the way aqualog outputs samples and their
-  # instrument blanks is stupid. Gotta come up with a hacky way
-
+  # Deal with sample_types ----
   # Plan:
-  # Old metadata version: Guess is_blank and is_check if they aren't specified
+  # Old metadata version: Guess sample_type if they aren't specified
 
-  # Blanks
-  # New metadata version eemlist: use the metadata flags to flag sample blanks and
-  #                               then pattern match the instrument blanks
-  # New metadata version abslist: Use metadata flags for blanks standards
+  # New metadata version: use sample_type to define samples, sample blanks, and check standards
+  #                       the rest of the eems/abs not in the metadata are instrument blanks
 
-  # Checks
-  # New metadata version checks: use metadata flags for checks if available and
-  #                              if not then use pattern matching
-
-
-  if (!("is_blank" %in% names(meta))) {
-    cat("Guessed Blank samples by pattern matching data_identifier using: ", blank_pattern)
-    blank_flags <- sapply(names,
+  if (!("sample_type" %in% names(meta))) {
+    # TODO should we warn the user if sample types are pattern matched?
+    warning("Guessing sample_types by pattern matching data_identifier")
+    # Guess instrument blanks
+    inst_blank_flags <- sapply(names,
                           \(s) grepl(
-                            pattern = blank_pattern,
+                            pattern = sample_type_regex$iblank_pattern,
                             x = s,
-                            ignore.case = TRUE
+                            ignore.case = FALSE
                           ),
                           USE.NAMES = FALSE)
-    #meta$is_blank <- blank_flags
-  } else if(class_type == "eemlist") {
-    # Apply metadata blank flags
-    meta_blank_flags <- meta$is_blank[meta_order]
-    # Then do the pattern matching
-    cat("Guessed Blank samples by pattern matching data_identifier using: ", blank_pattern)
-    pattern_blank_flags <- sapply(names,
-                          \(s) grepl(
-                            pattern = blank_pattern,
-                            x = s,
-                            ignore.case = TRUE
-                          ),
-                          USE.NAMES = FALSE)
-
-    blank_flags <- meta_blank_flags | pattern_blank_flags
-
-  } else if(class_type == "abslist") {
-    blank_flags <- meta$is_blank[meta_order]
-  }
-
-  if (!("is_check" %in% names(meta))) {
-    cat("Guessed Check samples by pattern matching data_identifier using: ", check_pattern)
+    # Guess checks
     check_flags <- sapply(names,
                           \(s) grepl(
-                            pattern = check_pattern,
+                            pattern = sample_type_regex$check_pattern,
                             x = s,
-                            ignore.case = TRUE
+                            ignore.case = FALSE
                           ),
                           USE.NAMES = FALSE)
+    # Guess sample blanks
+    sample_blank_flags <- sapply(names,
+                                 \(s) grepl(
+                                   pattern = sample_type_regex$sblank_pattern,
+                                   x = s,
+                                   ignore.case = FALSE
+                                 ),
+                                 USE.NAMES = FALSE)
+    # Put all these together to come up with one sample type per name
+    cat_flags <- paste0(
+      as.integer(inst_blank_flags),
+      as.integer(sample_blank_flags),
+      as.integer(check_flags))
+    # Use these flags to assign eems
+    convert_sample_flags <- function(x) {switch(
+      formatC(x, width = 3, flag = "0"),
+      "110" = "iblank",
+      "101" = "iblank",
+      "100" = "iblank",
+      "010" = "sblank",
+      "001" = "check",
+      "000" = "sample",
+      stop("Sample Type Not Guessed Successfully"))}
+    sample_types <- sapply(cat_flags, convert_sample_flags, USE.NAMES = FALSE)
+
+  # Sample type in metadata for eemslist
   } else if(class_type == "eemlist") {
-    # Apply metadata check flags
-    meta_check_flags <- meta$is_check[meta_order]
-    # Then do the pattern matching
-    cat("Guessed Check samples by pattern matching data_identifier using: ", check_pattern)
-    pattern_check_flags <- sapply(names,
-                                  \(s) grepl(
-                                    pattern = check_pattern,
-                                    x = s,
-                                    ignore.case = TRUE
-                                  ),
-                                  USE.NAMES = FALSE)
+    # starting guess
+    meta_sample_type <- meta$sample_type[meta_order]
+    # Pattern match the iblank pattern
+    inst_blank_flags <- sapply(names,
+                               \(s) grepl(
+                                 pattern = sample_type_regex$iblank_pattern,
+                                 x = s,
+                                 ignore.case = FALSE
+                               ),
+                               USE.NAMES = FALSE)
+    # Any that match the iblank pattern are iblanks
+    sample_types <- ifelse(inst_blank_flags,
+                           "iblank",
+                           meta_sample_type)
 
-    check_flags <- meta_check_flags | pattern_check_flags
-  } else if (class_type == "abslist") {
-    check_flags <- meta$is_check[meta_order]
+  # Different logic for abslists
+  } else if(class_type == "abslist") {
+    sample_types <- meta$sample_type
   }
-
-  # Make sure no blanks are check standards! TODO - we could change this
-  check_flags <- (check_flags & !blank_flags)
 
   # Add metadata info to object ----
   # Get data from metadata, keeping as numeric/character
@@ -172,8 +169,7 @@ add_metadata <- function(meta, x,
     dilution = meta$dilution[meta_order],
     integration_time_s = meta$integration_time_s[meta_order],
     raman_area_1s = meta$RSU_area_1s[meta_order],
-    is_blank = blank_flags[meta_order],
-    is_check = check_flags[meta_order],
+    sample_type = meta$sample_types, # No meta_order here to account for instrument blanks repeating
 
     #Optional
     analysis_date = if("analysis_date" %in% colnames(meta)) meta$analysis_date[meta_order] else NA,
@@ -189,7 +185,6 @@ add_metadata <- function(meta, x,
               "\nthese sample will be removed from further processing")
       meta <- meta[-setdiff(1:nrow(meta), meta_order),]
     }
-
 
   # loop across the metadata
   x <- lapply(1:length(meta_order), function(y) {
@@ -210,9 +205,8 @@ add_metadata <- function(meta, x,
     obj$doc_mgL <- meta_data$doc_mgL[y]
     obj$notes <- meta_data$notes[y]
 
-    # Assign attributes in metadata
-    attr(obj, "is_blank") <- meta_data$is_blank[y]
-    attr(obj, "is_check") <- meta_data$is_check[y]
+    # Assign sample_type attribute
+    attr(obj, "sample_type") <- sample_types[y]
 
     return(obj)
   })

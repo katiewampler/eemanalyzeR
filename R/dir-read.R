@@ -70,9 +70,8 @@ eem_dir_read <- function(input_dir,
       #add additional attributes
       attr(eem[[1]], "is_doc_normalized") <- FALSE
       attr(eem[[1]], "is_dil_corrected") <- FALSE
-      # Default these to false and add them later
-      attr(eem[[1]], "is_blank") <- FALSE
-      attr(eem[[1]], "is_check") <- FALSE
+      # Default these to none and add them later
+      attr(eem[[1]], "sample_type") <- "none"
 
       return(eem)},
 

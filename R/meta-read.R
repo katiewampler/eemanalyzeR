@@ -40,18 +40,15 @@ meta_read <- function(input,
     }
     message("No Meta file specified, using: ", meta_file)
   }
-
   # Do this if the User specifies a file
   else if (file_test("-f", input)) {
     # Assign metadata file
     meta_file <- input
   }
-
   # Fail if neither of these options work
   else {
     stop("unable to locate metadata")
   }
-
 
   #read in metadata
   if(tools::file_ext(meta_file) == "xlsx"){

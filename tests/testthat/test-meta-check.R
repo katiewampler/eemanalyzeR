@@ -80,16 +80,17 @@ test_that("replicate numbers get corrected",{
 
 })
 
-test_that("sample type gets flagged",{
+test_that("run type gets flagged",{
   meta <- suppressMessages(meta_read(system.file("extdata", package = "eemanalyzeR")))
   meta$run_type <- "wrong_type"
 
   expect_error(meta_check(meta), "'run_type' must be either")
 
+  # sampleQ and Manual must be case sensitive as of 2025-11-19
   meta$run_type <- "sampleq"
-  expect_no_error(meta_check(meta))
+  expect_error(meta_check(meta), "'run_type' must be either 'sampleQ' or 'manual'")
 
   meta$run_type <- "MANUAL"
-  expect_no_error(meta_check(meta))
+  expect_error(meta_check(meta), "'run_type' must be either 'sampleQ' or 'manual'")
 
 })
