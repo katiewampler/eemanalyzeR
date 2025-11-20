@@ -83,7 +83,8 @@ export_data <- function(eemlist, abslist, filename, output_dir=NULL,
                       plot = summary,
                       units = "cm",
                       height = height*13,
-                      width=17*width)
+                      width=17*width,
+                      limitsize = FALSE)
 
      lapply(names(plot), function(name) {
         file <- paste0(name, ".png")

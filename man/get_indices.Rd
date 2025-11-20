@@ -8,6 +8,7 @@ get_indices(
   eemlist,
   abslist,
   index_method = "eemanalyzeR",
+  tolerance = 0.2,
   return = "long",
   cuvle = 1,
   mdl_dir = .qaqc_dir(),
@@ -20,6 +21,8 @@ get_indices(
 \item{abslist}{an \code{abslist} object containing absorbance data.}
 
 \item{index_method}{currently supports "eemanalyzeR", "eemR", and "usgs". See details for more information.}
+
+\item{tolerance}{what is the maximum percentage the tea standard can vary from the long-term values without being flagged?}
 
 \item{return}{either "long" or "wide" to specify the format of the indices data.frames}
 

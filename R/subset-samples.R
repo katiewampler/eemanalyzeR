@@ -28,8 +28,8 @@
 #' eem_subset <- subset_samples(eemlist, "meta_name", names[1]) #default is to remove
 #'
 
-subset_samples <- function(x, info, sample, keep=F, ignore_case=F,
-                           verbose=T){
+subset_samples <- function(x, info, sample, keep=FALSE, ignore_case=FALSE,
+                           verbose=TRUE){
   stopifnot(inherits(x, "eemlist") | inherits(x, "abslist"), info %in% unlist(lapply(x,names)))
   values <- get_sample_info(x, info)
   sample <- gsub("([\\(\\)\\-])", "\\\\\\1", sample) #escape special characters
@@ -41,8 +41,8 @@ subset_samples <- function(x, info, sample, keep=F, ignore_case=F,
       message("Nothing to remove.")
     }
     else {
-      message(ifelse(keep, "Extracted sample(s):", "Removed sample(s):"),
-          values[to_remove], "\n")
+      message(ifelse(keep, "Extracted sample(s):\n", "Removed sample(s):\n"),
+          paste(values[to_remove], collapse="\n"), "\n")
     }
   }
   return(x)

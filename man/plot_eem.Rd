@@ -4,7 +4,15 @@
 \alias{plot_eem}
 \title{Plot excitation emission matrices with ggplot2}
 \usage{
-plot_eem(eem, nbin = 8, equal_scale = FALSE, pal = NULL, remove_lower = FALSE)
+plot_eem(
+  eem,
+  nbin = 8,
+  equal_scale = FALSE,
+  pal = NULL,
+  remove_lower = FALSE,
+  annotate = FALSE,
+  index_method = "eemanalyzeR"
+)
 }
 \arguments{
 \item{eem}{an \code{eem} or \code{eemlist} object containing EEM's data}
@@ -18,6 +26,10 @@ If less colors are provided than required, it will use \link[grDevices]{colorRam
 
 \item{remove_lower}{logical, should the area below the first order rayleigh line be set to NA values? This is helpful if there are artifacts in
 this region that are affecting the color scale.}
+
+\item{annotate}{logical, should plots show the index regions?}
+
+\item{index_method}{currently supports "eemanalyzeR", "eemR", and "usgs". See details for more information.}
 }
 \value{
 if eem is an \code{eem} it will return a single ggplot2 object. If eem is an \code{eemlist}, it will return a list of ggplot2 objects.
@@ -60,6 +72,9 @@ print(ggpubr::ggarrange(plotlist = plots))
 
 #remove lower area below rayleigh line
 plots <- plot_eem(eems, remove_lower=TRUE)
+
+#annotate the plot with the peaks
+plot_eem(eems[[3]], annotate=TRUE)
 }
 \seealso{
 \href{https://ggplot2.tidyverse.org}{ggplot2}

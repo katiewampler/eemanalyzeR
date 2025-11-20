@@ -6,6 +6,7 @@
 #' @param eemlist an \code{eemlist} object containing EEM's data.
 #' @param abslist an \code{abslist} object containing absorbance data.
 #' @param index_method currently supports "eemanalyzeR", "eemR", and "usgs". See details for more information.
+#' @param tolerance what is the maximum percentage the tea standard can vary from the long-term values without being flagged?
 #' @param return either "long" or "wide" to specify the format of the indices data.frames
 #' @param cuvle cuvette (path) length in cm
 #' @param mdl_dir file path to the mdl files generated with \link[eemanalyzeR]{create_mdl} and \link[eemanalyzeR]{create_tea_std},
@@ -64,7 +65,8 @@
 #' indices <- get_indices(example_processed_eems, example_processed_abs,
 #' mdl_dir = system.file("extdata", package = "eemanalyzeR"))
 
-get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="long",
+get_indices <- function(eemlist, abslist, index_method="eemanalyzeR",
+                        tolerance= 0.2, return ="long",
                         cuvle=1, mdl_dir= .qaqc_dir(), arg_names=NULL){
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist))
 
@@ -100,6 +102,7 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
 
   #get indices
   indices <- index_function(eemlist, abslist, cuvle = cuvle, mdl_dir=mdl_dir)
+
 
   #initialize QAQC flag
     indices <- lapply(indices, function(x){if(inherits(x, "data.frame")){x$QAQC_flag <- NA}
@@ -179,7 +182,7 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
       }
       tea_flag <- function(index, std_check){
         if(!is.data.frame(index)){return(index)}
-        index <- merge(index, std_check, by=c("index", "meta_name"), all.x=TRUE)
+        index <- index %>% dplyr::left_join(std_check, by = c("index", "meta_name"))
         index$QAQC_flag <- .combine_flags(index$QAQC_flag, index$tea_flag)
         index <- index %>% select(-c("type", "tea_flag"))
         return(index)
@@ -205,7 +208,7 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR", return ="l
 
     #check tea standards
       std_check <- check_tea_std(eemlist, abslist, std_dir=mdl_dir,
-                                 index_method=index_method)
+                                 index_method=index_method, tolerance=tolerance)
       indices <- lapply(indices, tea_flag, std_check)
 
   #make indices numeric
