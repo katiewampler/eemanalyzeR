@@ -19,7 +19,7 @@
   })
 
   test_that("abs selection loading works", {
-    expect_equal(length(abs_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern = "Abs")), 4)
+    expect_equal(length(abs_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern = "Abs")), 1)
     expect_equal(length(abs_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "BEM|SEM|Waterfall")), 4)
 
   })

@@ -93,13 +93,13 @@ eem_dir_read <- function(input_dir,
   if (is.null(pattern)) {
     pattern_choices <- rep(TRUE, length(files)) # We want NULL to select all files
   } else {
-    pattern_choices <- grepl(pattern, files, ignore.case = TRUE)
+    pattern_choices <- grepl(pattern, files, ignore.case = FALSE)
   }
 
   if(is.null(skip)){
     skip_choices <- rep(TRUE, length(files))
   } else{
-    skip_choices <- !grepl(skip, files, ignore.case = TRUE)
+    skip_choices <- !grepl(skip, files, ignore.case = FALSE)
   }
   ext_choices <- tools::file_ext(files) == file_ext
   load_files <- files[which(pattern_choices & skip_choices & ext_choices)]
@@ -144,13 +144,13 @@ abs_dir_read <- function(input_dir,
   if (is.null(pattern)) {
     pattern_choices <- rep(TRUE, length(files)) # We want NULL to select all files
   } else {
-    pattern_choices <- grepl(pattern, files, ignore.case = TRUE)
+    pattern_choices <- grepl(pattern, files, ignore.case = FALSE)
   }
 
   if(is.null(skip)){
     skip_choices <- rep(TRUE, length(files))
   } else{
-    skip_choices <- !grepl(skip, files, ignore.case = TRUE)
+    skip_choices <- !grepl(skip, files, ignore.case = FALSE)
   }
   ext_choices <- tools::file_ext(files) == file_ext
   load_files <- files[which(pattern_choices & skip_choices & ext_choices)]
