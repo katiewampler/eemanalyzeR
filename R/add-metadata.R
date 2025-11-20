@@ -13,7 +13,7 @@
 #'  \item dilution: the dilution factor for the sample.
 #'  \item analysis_date: the date the sample was run.
 #'  \item description: optional description of sample.
-#'  \item sample_type: optional Flag for whether the data identifier is linked to a real sample (sample), sample blank (sblank), or check standard (check)
+#'  \item sample_type: optional Flag for whether the data identifier is linked to a real sample (sample), sample blank (sblank), or check standard (check). Default values are for data exports for the Horiba Aqualog with Autosampler
 #'  \item doc_mgL: the concentration of dissolved organic carbon in the sample given in mg \ifelse{html}{\out{L<sup>-1</sup>}}{\eqn{L^{-1}}}
 #'  \item notes: optional notes related to the sample or sample collection.
 #' }
@@ -34,7 +34,7 @@
 
 add_metadata <- function(meta, x,
                          sample_type_regex = list(iblank_pattern = "BEM$",
-                                                  sblank_pattern = "Blank",
+                                                  sblank_pattern = "Blank|blank",
                                                   check_pattern = "Tea|tea")) {
 
   class_type <- class(x)
@@ -94,9 +94,11 @@ add_metadata <- function(meta, x,
 
   # New metadata version: use sample_type to define samples, sample blanks, and check standards
   #                       the rest of the eems/abs not in the metadata are instrument blanks
+  
+  # TODO manual sample pattern matching w/ metadata
 
   if (!("sample_type" %in% names(meta))) {
-    # TODO should we warn the user if sample types are pattern matched?
+    # Warn the user if sample types are pattern matched?
     warning("Guessing sample_types by pattern matching data_identifier")
     # Guess instrument blanks
     inst_blank_flags <- sapply(names,

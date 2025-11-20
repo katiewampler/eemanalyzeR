@@ -6,7 +6,7 @@ test_that("missing columns are caught",{
   expect_error(meta_check(meta[,-which(colnames(meta) == "data_identifier")]), "missing required column")
   expect_error(meta_check(meta[,-which(colnames(meta) == "replicate_no")]), "missing required column")
   expect_error(meta_check(meta[,-which(colnames(meta) == "integration_time_s")]), "missing required column")
-  expect_error(meta_check(meta[,-which(colnames(meta) == "run_type")]), "missing required column")
+#  expect_error(meta_check(meta[,-which(colnames(meta) == "run_type")]), "missing required column")
   expect_error(meta_check(meta[,-which(colnames(meta) == "RSU_area_1s")]), "missing required column")
   expect_error(meta_check(meta[,-which(colnames(meta) == "dilution")]), "missing required column")
 
@@ -80,17 +80,18 @@ test_that("replicate numbers get corrected",{
 
 })
 
-test_that("run type gets flagged",{
-  meta <- suppressMessages(meta_read(system.file("extdata", package = "eemanalyzeR")))
-  meta$run_type <- "wrong_type"
+# Removed this test now that run_type is optional
+# test_that("run type gets flagged",{
+#   meta <- suppressMessages(meta_read(system.file("extdata", package = "eemanalyzeR")))
+#   meta$run_type <- "wrong_type"
 
-  expect_error(meta_check(meta), "'run_type' must be either")
+#   expect_error(meta_check(meta), "'run_type' must be either")
 
-  # sampleQ and Manual must be case sensitive as of 2025-11-19
-  meta$run_type <- "sampleq"
-  expect_error(meta_check(meta), "'run_type' must be either 'sampleQ' or 'manual'")
+#   # sampleQ and Manual must be case sensitive as of 2025-11-19
+#   meta$run_type <- "sampleq"
+#   expect_error(meta_check(meta), "'run_type' must be either 'sampleQ' or 'manual'")
 
-  meta$run_type <- "MANUAL"
-  expect_error(meta_check(meta), "'run_type' must be either 'sampleQ' or 'manual'")
+#   meta$run_type <- "MANUAL"
+#   expect_error(meta_check(meta), "'run_type' must be either 'sampleQ' or 'manual'")
 
-})
+# })

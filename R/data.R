@@ -74,7 +74,7 @@
 #'   \item{dilution}{REQUIRED. Include dilution factor here as decimal format (e.g. a 2-fold dilution with 1 part sample and 1 part water will have a dilution factor of 0.5). If no dilution, put 1}
 #'   \item{RSU_area_1s}{REQUIRED: The RSU Adjust Area from the Raman Test, used to normalize the data from day to day}
 #'   \item{sample_type}{optional: Flag for whether the data identifier is linked to a real sample (sample), sample blank (sblank), or check standard (check)}
-#'   \item{run_type}{REQUIRED. How the samples were run (manual or sampleQ)}
+#'   \item{run_type}{optional: How the samples were run (manual or sampleQ)}
 #'   \item{collect_date}{optional: The date the water samples were collected}
 #'   \item{DOC_mg_L}{optional: DOC concentration in mg/L of the original sample (not the diluted sample)}
 #'   \item{Notes}{optional: Any notes from sample collection or sample running, will not be used in analysis}

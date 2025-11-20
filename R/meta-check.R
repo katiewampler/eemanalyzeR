@@ -15,7 +15,7 @@
 # a few more edge cases? Can do after we publish package
 meta_check <- function(meta){
   #check required columns are there
-  req_cols <- c("data_identifier", "replicate_no", "integration_time_s","run_type", "RSU_area_1s",
+  req_cols <- c("data_identifier", "replicate_no", "integration_time_s", "RSU_area_1s",
                 "dilution")
   missing_cols <- setdiff(req_cols, colnames(meta))
   if(length(missing_cols) > 0) {
@@ -58,9 +58,9 @@ meta_check <- function(meta){
   }
 
   #ensure run_type is either sampleQ or manual (might not matter anymore??)
-  if(!all(grepl("sampleQ|manual", meta$run_type))){
-    stop("'run_type' must be either 'sampleQ' or 'manual'")
-  }
+  # if(!all(grepl("sampleQ|manual", meta$run_type, ))){
+  #   stop("'run_type' must be either 'sampleQ' or 'manual'")
+  # }
 
   # Check sample_type is properly flagged
   if(!all(grepl("sample|sblank|check", meta$sample_type)) || any(is.na(meta$is_blank))) {

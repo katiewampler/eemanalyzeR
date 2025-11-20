@@ -1,16 +1,3 @@
-#' Checks if sample is a blank
-#'
-#' @param obj an object
-#' @noRd
-# TODO: Do we still want this now that we have 4 sample types
-# .is_blank <- function(obj) {
-#   # Get the attribute
-#   val <- attr(obj, "is_blank$")
-#   #stopifnot(is.logical(val))
-#   if(is.null(val)){val <- FALSE}
-#   return(val)
-# }
-
 #' Returns eemanalyzeR package version loaded
 #'
 #' @return text string with eemanalyzeR package version

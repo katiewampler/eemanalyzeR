@@ -7,7 +7,7 @@
 add_metadata(
   meta,
   x,
-  sample_type_regex = list(iblank_pattern = "BEM$", sblank_pattern = "Blank",
+  sample_type_regex = list(iblank_pattern = "BEM$", sblank_pattern = "Blank|blank",
     check_pattern = "Tea|tea")
 )
 }
@@ -26,7 +26,7 @@ The following items are added for each sample, if available in the metadata:
  \item dilution: the dilution factor for the sample.
  \item analysis_date: the date the sample was run.
  \item description: optional description of sample.
- \item sample_type: optional Flag for whether the data identifier is linked to a real sample (sample), sample blank (sblank), or check standard (check)
+ \item sample_type: optional Flag for whether the data identifier is linked to a real sample (sample), sample blank (sblank), or check standard (check). Default values are for data exports for the Horiba Aqualog with Autosampler
  \item doc_mgL: the concentration of dissolved organic carbon in the sample given in mg \ifelse{html}{\out{L<sup>-1</sup>}}{\eqn{L^{-1}}}
  \item notes: optional notes related to the sample or sample collection.
 }
