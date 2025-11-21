@@ -1,6 +1,6 @@
 test_that("we can get the mdl for eems data", {
   #set up testing data
-  mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),"eem-mdl.rds"))
+  mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),"eem-mdl.Rds"))
   abslist <- add_metadata(metadata, example_abs)
   eemlist <- add_metadata(metadata, example_eems)
   eemlist <- add_blanks(eemlist, validate=FALSE)
@@ -15,7 +15,7 @@ test_that("we can get the mdl for eems data", {
   expect_equal(check_eem_mdl(eemlist[[1]], mdl, ex = 270:280, em=300:320), "MDL01")
 
   #or an eemlist
-  expect_equal(check_eem_mdl(eemlist, mdl, ex = 270:280, em=300:320), c("MDL01", NA, NA))
+  expect_equal(check_eem_mdl(eemlist, mdl, ex = 270:280, em=300:320), c("MDL01", NA, NA, NA))
 
   #returns a table
   single_table <- check_eem_mdl(eemlist[[1]], mdl, ex = 270:280, em=300:320, vals=TRUE)
@@ -27,7 +27,7 @@ test_that("we can get the mdl for eems data", {
   expect_equal(colnames(table), c("ex", "em", "fluor", "mdl", "sample"))
 
   #ensure it return NA if no mdl provided
-  expect_equal(check_eem_mdl(eemlist, ex = 270:280, em=300:320), c(NA, NA, NA))
+  expect_equal(check_eem_mdl(eemlist, ex = 270:280, em=300:320), c(NA, NA, NA, NA))
 
   #check that a partial MDL is flagged
     eemlist[[2]]$x[1,4] <- 0.000001 #set a low value so it spans the MDL in the region
@@ -38,14 +38,14 @@ test_that("we can get the mdl for eems data", {
 
 test_that("we can get the mdl for abs data", {
   #set up testing data
-  mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),"abs-mdl.rds"))
+  mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),"abs-mdl.Rds"))
   abslist <- example_processed_abs
 
   #works with a single sample
   expect_equal(check_abs_mdl(abslist[[1]], mdl, wl=254:260), "MDL01")
 
   #or an eemlist
-  expect_equal(check_abs_mdl(abslist, mdl, wl=254:260), c("MDL01", NA, NA))
+  expect_equal(check_abs_mdl(abslist, mdl, wl=254:260), c("MDL01", NA, NA, NA))
 
   #returns a table
   single_table <- check_abs_mdl(abslist[[1]], mdl, wl=254:260, vals=TRUE)
@@ -57,7 +57,7 @@ test_that("we can get the mdl for abs data", {
   expect_equal(colnames(table), c("wl", "abs", "mdl", "sample"))
 
   #ensure it return NA if no mdl provided
-  expect_equal(check_abs_mdl(abslist, wl=254:260), c(NA, NA, NA))
+  expect_equal(check_abs_mdl(abslist, wl=254:260), c(NA, NA, NA, NA))
 
   #check that a partial MDL is flagged
   abslist[[2]]$data[32,2] <- 0.000001 #set a low value so it spans the MDL in the region

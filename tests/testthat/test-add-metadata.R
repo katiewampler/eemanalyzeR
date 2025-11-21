@@ -41,7 +41,7 @@
     abs_aug <- add_metadata(metadata, example_abs)
     eem_aug <- add_metadata(metadata, example_eems)
 
-    expect_equal(get_sample_info(eem_aug, "meta_name"), rep(c("ExampleBlank", "ExampleTeaStd", "ExampleSample", "QSSRM250319"), each=2))
+    expect_equal(get_sample_info(eem_aug, "meta_name"), rep(c("ExampleBlank", "ExampleTeaStd", "ExampleSample", "preTea220805"), each=2))
 
     expect_false(any(is.na(get_sample_info(eem_aug, "raman_area_1s")))) #make sure these aren't NA
     expect_false(any(is.na(get_sample_info(eem_aug, "integration_time_s")))) #make sure these aren't NA
@@ -61,15 +61,15 @@
     eems_w_meta_explicit <- add_metadata(meta_with_sample_type, example_eems)
     expect_warning(eems_w_meta_guessed <- add_metadata(meta_without_sample_type, example_eems),
                    "No sample_type in Metadata. Guessing sample_types by pattern matching data_identifier")
-    expect_equal(sapply(eems_w_meta_explicit, attr, "sample_type"), c("iblank", "sblank", "iblank", "check", "iblank", "sample", "iblank", "sample"))
-    expect_equal(sapply(eems_w_meta_guessed,  attr, "sample_type"), c("iblank", "sblank", "iblank", "check", "iblank", "sample", "iblank", "sample"))
+    expect_equal(sapply(eems_w_meta_explicit, attr, "sample_type"), c("iblank", "sblank", "iblank", "check", "iblank", "sample", "iblank", "check"))
+    expect_equal(sapply(eems_w_meta_guessed,  attr, "sample_type"), c("iblank", "sblank", "iblank", "check", "iblank", "sample", "iblank", "check"))
 
     # ABS
     abs_w_meta_explicit <- add_metadata(meta_with_sample_type, example_abs)
     expect_warning(abs_w_meta_guessed <- add_metadata(meta_without_sample_type, example_abs),
                    "No sample_type in Metadata. Guessing sample_types by pattern matching data_identifier")
-    expect_equal(sapply(abs_w_meta_explicit, attr, "sample_type"), c("sblank", "check", "sample", "sample"))
-    expect_equal(sapply(abs_w_meta_guessed,  attr, "sample_type"), c("sblank", "check", "sample", "sample"))
+    expect_equal(sapply(abs_w_meta_explicit, attr, "sample_type"), c("sblank", "check", "sample", "check"))
+    expect_equal(sapply(abs_w_meta_guessed,  attr, "sample_type"), c("sblank", "check", "sample", "check"))
 
   })
 
