@@ -133,7 +133,6 @@ add_metadata <- function(meta, x,
     # Use these flags to assign eems
     convert_sample_flags <- function(x) {switch(
       formatC(x, width = 3, flag = "0"),
-      "111" = "iblank",
       "110" = "iblank",
       "101" = "iblank",
       "100" = "iblank",

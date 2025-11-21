@@ -2,8 +2,8 @@ test_that("absorbance gets interpolated", {
 
   abslist <- abs_interp(example_abs)
 
-  expect_equal(get_sample_info(abslist, "n"), c(559, 559,559, 559))
-  expect_equal(dim(get_sample_info(abslist, "data")), c(559,5))
+  expect_equal(get_sample_info(abslist, "n"), c(559, 559,559))
+  expect_equal(dim(get_sample_info(abslist, "data")), c(559,4))
 
   expect_equal(class(abslist), "abslist")
 })
