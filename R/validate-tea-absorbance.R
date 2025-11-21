@@ -31,11 +31,11 @@
 #' @importFrom rlang .data
 #'
 #' @return returns a data.frame with pass/fail results of tea standard checks
-#' @export
 
 
 # TODO write tests for this function
 # TODO work this into overall QAQC plan. It might be superseded by the MDL checks
+
 validate_tea_absorbance <- function(abslist,
                                     pattern = "tea",
                                     model = "default",
@@ -134,20 +134,20 @@ validate_tea_absorbance <- function(abslist,
                                   " FAILED absorbance validation checks, but ok'd to continue"),
                            "Processing Aborted by user. Tea standard failed validation.")
       # Writing the response to processing_tracking.txt
-      if(response) {
-        .write_processing_tracking(
-          paste0("User warned sample",
-                 sample_id,
-                 " FAILED absorbance validation checks, but ok'd to continue"))
-      } else {
-        .write_processing_tracking(
-          "Processing Aborted by user. Tea standard failed validation.")
-
-        stop("Processing Aborted by user. Tea standard failed validation.")
-      }
-    } else {
+    #   if(response) {
+    #     .write_processing_tracking(
+    #       paste0("User warned sample",
+    #              sample_id,
+    #              " FAILED absorbance validation checks, but ok'd to continue"))
+    #   } else {
+    #     .write_processing_tracking(
+    #       "Processing Aborted by user. Tea standard failed validation.")
+    #
+    #     stop("Processing Aborted by user. Tea standard failed validation.")
+    #   }
+     } else {
       passfail <- "PASS"
-    }
+     }
 
 
     # Save the results of the test

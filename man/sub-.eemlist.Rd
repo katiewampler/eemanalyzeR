@@ -4,7 +4,7 @@
 \alias{[.eemlist}
 \title{Subsetting using `[` for eemlist}
 \usage{
-\method{`[`}{eemlist}(eemlist, i)
+\method{[}{eemlist}(x, i, ...)
 }
 \arguments{
 \item{eemlist}{the eemlist to subset}

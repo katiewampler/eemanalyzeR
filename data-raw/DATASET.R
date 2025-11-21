@@ -120,7 +120,8 @@ for(x in files){
 
   #combine metadata and save
     meta <- list.files(file.path(output_dir, "metadata"))
-    metadata <- lapply(meta, function(x){read.csv(file.path(output_dir, "metadata", x))}) %>% dplyr::bind_rows()
+    metadata <- lapply(meta, function(x){read.csv(file.path(output_dir, "metadata", x))}) %>% dplyr::bind_rows() %>%
+      mutate(sample_type="sblank")
     write.csv(metadata, file.path(output_dir, "merged-blk-metadata.csv"), row.names=FALSE)
 
   #load in to downscale for example data
@@ -143,7 +144,6 @@ for(x in files){
     #write metadata
       blk_meta <- meta[50:55,]
       blk_meta$data_identifier <- paste0("longtermblank", 1:length(example_dat))
-      blk_meta <- blk_meta[,-ncol(blk_meta)]
       write.csv(blk_meta, "inst/extdata/long-term-blanks/longtermblank-metadata.csv", row.names=FALSE, quote=FALSE)
 
   #make a test mdl file for functions
@@ -206,12 +206,14 @@ for(x in files){
 
     #combine metadata and save
     meta <- list.files(file.path(output_dir, "metadata"))
-    metadata <- lapply(meta, function(x){read.csv(file.path(output_dir, "metadata", x))}) %>% dplyr::bind_rows()
+    metadata <- lapply(meta, function(x){read.csv(file.path(output_dir, "metadata", x))}) %>% dplyr::bind_rows() %>%
+      mutate(sample_type="check")
+
     write.csv(metadata, file.path(output_dir, "merged-tea-metadata.csv"), row.names=FALSE)
 
   #load in to downscale for example data
     meta <- read.csv(file.path(output_dir, "merged-tea-metadata.csv"))
-    example_dat <- meta$long_term_name[50:55]
+    example_dat <- meta$data_identifier[50:55]
     dat_files <- list.files(output_dir, recursive = TRUE)
     for(x in 1:length(example_dat)){
       files <- grep(example_dat[x], dat_files, value=TRUE)
@@ -229,16 +231,15 @@ for(x in files){
     #write metadata
     blk_meta <- meta[50:55,]
     blk_meta$data_identifier <- paste0("longterm-teastd", 1:length(example_dat))
-    blk_meta <- blk_meta[,-ncol(blk_meta)]
     write.csv(blk_meta, "inst/extdata/long-term-tea/longtermteastd-metadata.csv", row.names=FALSE, quote=FALSE)
 
     #make a test tea file for functions
     create_tea_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-tea"),
-            meta_name="longtermteastd-metadata.csv", pattern = "longterm-teastd",
+            meta_name="longtermteastd-metadata.csv", eem_pattern = "longterm-teastd", abs_pattern="ABS",
             type="eem", output_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
 
     create_tea_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-tea"),
-            meta_name="longtermteastd-metadata.csv", pattern = "longterm-teastd",
+            meta_name="longtermteastd-metadata.csv", eem_pattern = "longterm-teastd", abs_pattern="ABS",
             type="abs", output_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
 
 #save index ranges as data.frame ------

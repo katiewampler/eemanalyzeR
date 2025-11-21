@@ -21,7 +21,6 @@ samples must have metadata already added to the samples using \link[eemanalyzeR]
 }
 \examples{
 eemlist <- add_metadata(metadata,example_eems)
-eemlist <- subset_qaqc(eemlist)
 correct_eem <- correct_dilution(eemlist)
 
 abslist <- add_metadata(metadata,example_abs)

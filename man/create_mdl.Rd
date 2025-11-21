@@ -14,25 +14,21 @@ create_mdl(
   dir,
   meta_name = NULL,
   sheet = NULL,
-  pattern = "BLK",
-  blk = "BEM",
+  iblank = "BEM",
   type = "eem",
   recursive = FALSE,
   output_dir = NULL
 )
 }
 \arguments{
-\item{dir}{path to folder containing long term EEMs and/or absorbance files}
+\item{dir}{path to folder containing long term EEMs and/or absorbance files, all files in this directory will be loaded}
 
 \item{meta_name}{name of metadata file. optional if metadata is only xlsx or csv file in input_dir
 if not specified function will attempt to load any xlsx or csv file in directory and return an error if there is more than one}
 
 \item{sheet}{name of sheet containing metadata. only required if metadata isn't the first sheet}
 
-\item{pattern}{optional. a character string containing a \code{\link[base]{regular expression}}
-to be matched to the files in input_dir. Only files matching the pattern will be loaded.}
-
-\item{blk}{a character string containing a \code{\link[base]{regular expression}}
+\item{iblank}{optional. a character string containing a \code{\link[base]{regular expression}}
 used to specify the sample names of the instrument blanks.}
 
 \item{type}{which MDL to calculate: either \code{eem} or \code{abs}}
@@ -67,9 +63,7 @@ formatted as a metadata file (see \link[eemanalyzeR]{metadata})
 }
 \examples{
 eem_mdl <- create_mdl(file.path(system.file("extdata", package = "eemanalyzeR"),
-"long-term-blanks"),
-meta_name="longtermblank-metadata.csv", pattern = "longtermblank",
-type="eem", output_dir = FALSE)
+"long-term-blanks"), type="eem", output_dir = FALSE)
 
 plot_eem(eem_mdl)
 

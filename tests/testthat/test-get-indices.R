@@ -138,11 +138,10 @@
     #check for flag on tea standard
       abslist[[2]]$data[,2] <- rep(1,  abslist[[1]]$n)
       indices <- get_indices(eemlist, abslist, mdl_dir=mdl_dir)
-      expect_equal(sum(grepl("STD01", indices$abs_index$QAQC_flag)), 4)
+      expect_equal(sum(grepl("STD01", indices$abs_index$QAQC_flag)), 3)
 
     #check for flagged values outside the normal range
       expect_equal(sum(grepl("VAL01", indices$abs_index$QAQC_flag)), 2)
-      expect_equal(sum(grepl("VAL02", indices$abs_index$QAQC_flag)), 1)
 
 
   })

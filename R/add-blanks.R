@@ -8,8 +8,8 @@
 #' name which should be the same between the sample and the blank, because of this,
 #' samples must have metadata already added to the samples using \link[eemanalyzeR]{add_metadata}.
 #'
-#' If a `blanklist` is not provided, one will be automatically generated based on the `eemlist` attribute `is_blank`,
-#' so blank must first be noted using the \link[eemanalyzeR]{mark_qaqc} function.
+#' If a `blanklist` is not provided, one will be automatically generated based on the `eemlist` attribute `sample_type`,
+#' from the samples marked as `iblank`.
 #'
 #' Adding the blanks into the sample data can be done two ways:
 #' \enumerate{

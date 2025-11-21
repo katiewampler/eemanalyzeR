@@ -28,7 +28,7 @@
 #' @param i the index for subsetting
 #'
 #' @export
-#' @method `[` eemlist
+#' @usage \method{[}{eemlist}(x, i, ...)
 #'
 `[.eemlist` <- function(eemlist, i) {
   sublist <- NextMethod()
@@ -69,7 +69,7 @@
   }else{
     step <- paste0(time, ": ", text)
     readme[slot] <- paste(step, args, sep="\n")}
-  
+
   # TODO change this to write to package environment when complete
   assign("readme", readme, envir = .GlobalEnv)
 
@@ -188,7 +188,7 @@
 #' @param i the index for subsetting
 #'
 #' @export
-#' @method `[` abslist
+#' @usage \method{[}{abslist}(x, i, ...)
 #'
 `[.abslist` <- function(abslist, i) {
   sublist <- NextMethod()

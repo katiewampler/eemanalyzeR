@@ -5,13 +5,11 @@
 #' is calculated based on the method proposed by Hansen et al. (2018); three times the standard
 #' deviation plus the mean of the long-term blank.
 #'
-#' @param dir path to folder containing long term EEMs and/or absorbance files
+#' @param dir path to folder containing long term EEMs and/or absorbance files, all files in this directory will be loaded
 #' @param meta_name name of metadata file. optional if metadata is only xlsx or csv file in input_dir
 #' if not specified function will attempt to load any xlsx or csv file in directory and return an error if there is more than one
 #' @param sheet name of sheet containing metadata. only required if metadata isn't the first sheet
-#' @param pattern optional. a character string containing a \code{\link[base]{regular expression}}
-#' to be matched to the files in input_dir. Only files matching the pattern will be loaded.
-#' @param blk a character string containing a \code{\link[base]{regular expression}}
+#' @param iblank optional. a character string containing a \code{\link[base]{regular expression}}
 #' used to specify the sample names of the instrument blanks.
 #' @param type which MDL to calculate: either `eem` or `abs`
 #' @param recursive logical. should the function recurse into directories?
@@ -42,14 +40,12 @@
 #'
 #' @examples
 #' eem_mdl <- create_mdl(file.path(system.file("extdata", package = "eemanalyzeR"),
-#' "long-term-blanks"),
-#' meta_name="longtermblank-metadata.csv", pattern = "longtermblank",
-#' type="eem", output_dir = FALSE)
+#' "long-term-blanks"), type="eem", output_dir = FALSE)
 #'
 #' plot_eem(eem_mdl)
 #'
-create_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK",
-                       blk="BEM", type = "eem", recursive=FALSE, output_dir=NULL){
+create_mdl <- function(dir, meta_name=NULL, sheet=NULL, iblank="BEM",
+                       type = "eem", recursive=FALSE, output_dir=NULL){
   stopifnot(type %in% c("eem", "abs"), dir.exists(dir))
 
   #set up file structure for saving mdl data
@@ -58,18 +54,20 @@ create_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK",
 
   #get metadata
     if(!is.null(meta_name)){input <- file.path(dir, meta_name)}else{input <- dir}
-    blank_meta <- meta_read(input, sheet=sheet, validate = FALSE)
+    blank_meta <- meta_read(input, sheet=sheet)
 
   #get all blanks in directory with instrument blanks
-    if(type == "eem"){blank <- eem_dir_read(dir, pattern=pattern, recursive=recursive)}
-    if(type == "abs"){blank <- abs_dir_read(dir, pattern=pattern, recursive=recursive)}
+    if(type == "eem"){blank <- eem_dir_read(dir, recursive=recursive)}
+    if(type == "abs"){blank <- abs_dir_read(dir, recursive=recursive)}
 
   #check number of samples
     n_samps <- length(blank)/2
     if(n_samps < 20){warning("Calculating MDL based on less than 20 samples, MDL may be unreliable")}
 
   #add metadata
-    blank <- add_metadata(blank_meta, blank)
+    blank <- add_metadata(blank_meta, blank, sample_type_regex = list(iblank_pattern = iblank,
+                                                                      sblank_pattern = "Blank|blank",
+                                                                      check_pattern = "Tea|tea"))
 
   if(type == "eem"){
     #check if the wavelengths are different across data if so, stop and provide info

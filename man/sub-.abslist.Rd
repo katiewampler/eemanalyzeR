@@ -4,7 +4,7 @@
 \alias{[.abslist}
 \title{Subsetting using `[` for an abslist}
 \usage{
-\method{`[`}{abslist}(abslist, i)
+\method{[}{abslist}(x, i, ...)
 }
 \arguments{
 \item{abslist}{the abslist to subset}
