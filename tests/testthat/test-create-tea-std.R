@@ -10,10 +10,10 @@ test_that("eem tea std is calculated", {
 
 
   #check it writes to tempdir
-  expect_true(file.exists(file.path(test_dir, "eem-tea-std.Rds")))
+  expect_true(file.exists(file.path(test_dir, "eem-tea-std.rds")))
 
   #read in and make sure it's what we expect
-  tea <- readRDS(file.path(test_dir, "eem-tea-std.Rds"))
+  tea <- readRDS(file.path(test_dir, "eem-tea-std.rds"))
   expect_equal(length(tea), 14)
   expect_equal(get_sample_info(tea, "sample"), "long-term-tea-std")
   expect_true(inherits(tea$x, "matrix"))
@@ -32,10 +32,10 @@ test_that("abs tea is calculated", {
 
 
   #check it writes to tempdir
-  expect_true(file.exists(file.path(test_dir, "abs-tea-std.Rds")))
+  expect_true(file.exists(file.path(test_dir, "abs-tea-std.rds")))
 
   #read in and make sure it's what we expect
-  tea <- readRDS(file.path(test_dir, "abs-tea-std.Rds"))
+  tea <- readRDS(file.path(test_dir, "abs-tea-std.rds"))
   expect_equal(length(tea), 11)
   expect_equal(get_sample_info(tea, "sample"), "long-term-tea-std")
   expect_true(inherits(tea$data, "matrix"))

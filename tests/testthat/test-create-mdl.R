@@ -9,10 +9,10 @@ test_that("eem mdl is calculated", {
 
 
   #check it writes to tempdir
-    expect_true(file.exists(file.path(test_dir, "eem-mdl.Rds")))
+    expect_true(file.exists(file.path(test_dir, "eem-mdl.rds")))
 
   #read in and make sure it's what we expect
-    mdl <- readRDS(file.path(test_dir, "eem-mdl.Rds"))
+    mdl <- readRDS(file.path(test_dir, "eem-mdl.rds"))
     expect_equal(length(mdl), 14)
     expect_equal(get_sample_info(mdl, "sample"), "long-term-mdl")
     expect_true(inherits(mdl$x, "matrix"))
@@ -31,10 +31,10 @@ test_that("abs mdl is calculated", {
 
 
   #check it writes to tempdir
-  expect_true(file.exists(file.path(test_dir, "abs-mdl.Rds")))
+  expect_true(file.exists(file.path(test_dir, "abs-mdl.rds")))
 
   #read in and make sure it's what we expect
-  mdl <- readRDS(file.path(test_dir, "abs-mdl.Rds"))
+  mdl <- readRDS(file.path(test_dir, "abs-mdl.rds"))
   expect_equal(length(mdl), 11)
   expect_equal(get_sample_info(mdl, "sample"), "long-term-mdl")
   expect_true(inherits(mdl$data, "matrix"))

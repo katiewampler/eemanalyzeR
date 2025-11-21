@@ -1,6 +1,6 @@
 test_that("we can get the mdl for eems data", {
   #set up testing data
-  mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),"eem-mdl.Rds"))
+  mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),"eem-mdl.rds"))
   abslist <- add_metadata(metadata, example_abs)
   eemlist <- add_metadata(metadata, example_eems)
   eemlist <- add_blanks(eemlist, validate=FALSE)
@@ -38,7 +38,7 @@ test_that("we can get the mdl for eems data", {
 
 test_that("we can get the mdl for abs data", {
   #set up testing data
-  mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),"abs-mdl.Rds"))
+  mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),"abs-mdl.rds"))
   abslist <- example_processed_abs
 
   #works with a single sample

@@ -97,7 +97,7 @@ create_mdl <- function(dir, meta_name=NULL, sheet=NULL, iblank="BEM",
 
     #turn into a eem object
       dates <- get_sample_info(blank_eems, "analysis_date")
-      mdl_eem <- list(file= file.path(output_dir, "eem-mdl.Rds"),
+      mdl_eem <- list(file= file.path(output_dir, "eem-mdl.rds"),
                       sample="long-term-mdl",
                       x = matrix(data=blank_df$mdl, nrow=length(unique(blank_df$em)), ncol=length(unique(blank_df$ex))),
                       ex = unique(blank_df$ex),
@@ -121,7 +121,7 @@ create_mdl <- function(dir, meta_name=NULL, sheet=NULL, iblank="BEM",
 
       #cache mdl data
       if(output_dir != FALSE){
-        saveRDS(mdl_eem, file.path(output_dir, "eem-mdl.Rds"))
+        saveRDS(mdl_eem, file.path(output_dir, "eem-mdl.rds"))
       }else{
         return(mdl_eem)
       }
@@ -164,7 +164,7 @@ create_mdl <- function(dir, meta_name=NULL, sheet=NULL, iblank="BEM",
 
     #turn into a abs object
       dates <- get_sample_info(blank, "analysis_date")
-      mdl_abs <- list(file= file.path(output_dir, "abs-mdl.Rds"),
+      mdl_abs <- list(file= file.path(output_dir, "abs-mdl.rds"),
                       sample="long-term-mdl",
                       n = length(unique(blank_abs_df$wavelength)),
                       data = unname(as.matrix(abs_mdls[order(abs_mdls$wavelength, decreasing=TRUE),])),
@@ -185,7 +185,7 @@ create_mdl <- function(dir, meta_name=NULL, sheet=NULL, iblank="BEM",
 
       #cache mdl data
       if(output_dir != FALSE){
-        saveRDS(mdl_abs, file.path(output_dir, "abs-mdl.Rds"))
+        saveRDS(mdl_abs, file.path(output_dir, "abs-mdl.rds"))
       }else{
         return(mdl_abs)
       }
