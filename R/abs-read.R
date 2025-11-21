@@ -39,7 +39,7 @@ abs_read <- function(file){
     }
 
     data <- readLines(file)
-    abs1 <- regmatches(data, gregexpr("-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?", data))
+    abs <- regmatches(data, gregexpr("-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?", data))
     abs <- lapply(abs, as.numeric)
 
     #if abs files was exported manually, remove header rows and extra columns in row 1
