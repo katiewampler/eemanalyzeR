@@ -8,10 +8,6 @@
 #' @param validate_metadata logical. should metadata structure be checked for potential issues that will cause issues during
 #' further processing? highly recommended to keep as TRUE.
 #'
-#' @importFrom readxl read_excel
-#' @importFrom dplyr mutate across any_of
-#' @importFrom utils read.csv
-#' @importFrom utils file_test
 #'
 #' @returns a data.frame containing metadata of samples
 #' @export
@@ -52,6 +48,10 @@ meta_read <- function(input,
 
   #read in metadata
   if(tools::file_ext(meta_file) == "xlsx"){
+    if (!requireNamespace("readxl", quietly = TRUE)) {
+      stop("Reading .xlsx files requires the 'readxl' package. ",
+           "Please install it with install.packages('readxl').", call. = FALSE)
+    }
     meta <- readxl::read_excel(meta_file, sheet=sheet)
   } else{
     meta <- read.csv(meta_file)

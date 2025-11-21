@@ -23,11 +23,11 @@ Suggests:
     rmarkdown,
     spelling, 
     testthat, 
-    withr
+    withr, 
+    readxl
 VignetteBuilder: knitr
 Language: en-US
 Imports: 
-    cowplot,
     dplyr,
     eemR,
     ggplot2,
@@ -42,15 +42,11 @@ Imports:
     pracma,
     purrr,
     rappdirs,
-    readxl,
     rlang,
     staRdom,
     stats,
-    stringr,
     tidyr,
-    tidyselect,
     tools,
-    usethis,
     utils,
     zoo
 Config/testthat/edition: 3
