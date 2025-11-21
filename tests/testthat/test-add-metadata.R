@@ -49,8 +49,26 @@
 
   })
 
+  # TODO update the ext data examples to test this
+  test_that("Metadata adds sample type with and without sample_type in metadata", {
+    meta_with_sample_type <- metadata
+    meta_without_sample_type <- subset(metadta, -sample_type)
 
- test_that("metadata add works with names contining each other", {
+    # EEMs
+    eems_w_meta_explicit <- add_metadata(meta_with_sample_type, example_eems)
+    eems_w_meta_guessed <- add_metadata(meta_without_sample_type, example_eems)
+    expect_equal(sapply(eems_w_meta_explicit, attr, "sample_type"), c("iblank", "sblank", "iblank", "check", "iblank", "sample", "iblank", "sample"))
+    expect_equal(sapply(eems_w_meta_guessed,  attr, "sample_type"), c("iblank", "sblank", "iblank", "check", "iblank", "sample", "iblank", "sample"))
+
+    # ABS
+    abs_w_meta_explicit <- add_metadata(meta_with_sample_type, example_abs)
+    abs_w_meta_guessed <- add_metadata(meta_without_sample_type, example_abs)
+    expect_equal(sapply(abs_w_meta_explicit, attr, "sample_type"), c("sblank", "check", "sample", "sample"))
+    expect_equal(sapply(abs_w_meta_guessed,  attr, "sample_type"), c("sblank", "check", "sample", "sample"))
+
+  })
+
+  test_that("metadata add works with names contining each other", {
    #make contained names
     meta <- eemanalyzeR::metadata
     meta$data_identifier[2] <- "ExampleSample1"
