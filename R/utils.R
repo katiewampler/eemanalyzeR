@@ -28,7 +28,7 @@
 #' @param i the index for subsetting
 #'
 #' @export
-#' @usage \method{[}{eemlist}(x, i, ...)
+#' @method [ eemlist
 #'
 `[.eemlist` <- function(eemlist, i) {
   sublist <- NextMethod()
@@ -188,7 +188,7 @@
 #' @param i the index for subsetting
 #'
 #' @export
-#' @usage \method{[}{abslist}(x, i, ...)
+#' @method [ abslist
 #'
 `[.abslist` <- function(abslist, i) {
   sublist <- NextMethod()

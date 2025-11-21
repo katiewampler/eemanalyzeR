@@ -21,6 +21,7 @@ using ggeem. If run non-interactively (such as in a batch processing or in packa
 nothing will be plotted, but automatic checks will take place.
 }
 \examples{
-eems <- subset_qaqc(example_eems)
+eems <- add_metadata(metadata, example_eems)
+eems <- subset_type(eems, type="iblank")
 continue <- validate_blanks(eems)
 }

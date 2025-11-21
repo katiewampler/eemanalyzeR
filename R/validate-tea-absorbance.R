@@ -46,9 +46,7 @@ validate_tea_absorbance <- function(abslist,
             is.character(pattern))
 
   # Pull tea standard samples - TODO should we make this more flexible?
-  tea_abs <- abs_get_tea(abslist,
-                         pattern = pattern,
-                         info = "sample")
+  tea_abs <- subset_type(abslist, "check")
 
   # Check there is a Tea standard somewhere in the absorbance data.frame
   if (length(tea_abs) == 0) stop("No tea standards found. - Please ensure 'pattern' argument is correct")
