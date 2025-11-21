@@ -4,8 +4,8 @@ test_that("eem mdl is calculated", {
 
   #ensure it returns warning with example data
     expect_warning(eem_mdl <- create_mdl(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
-                       meta_name="longtermblank-metadata.csv", pattern = "longtermblank",
-                       type="eem", output_dir = test_dir))
+                       meta_name="longtermblank-metadata.csv",
+                       type="eem", output_dir = test_dir), "Calculating MDL based on less than 20 samples")
 
 
   #check it writes to tempdir
@@ -26,7 +26,7 @@ test_that("abs mdl is calculated", {
 
   #ensure it returns warning with example data
   expect_warning(eem_mdl <- create_mdl(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
-                                    meta_name="longtermblank-metadata.csv", pattern = "longtermblank",
+                                    meta_name="longtermblank-metadata.csv",
                                     type="abs", output_dir = test_dir))
 
 

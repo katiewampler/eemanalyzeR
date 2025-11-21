@@ -1,7 +1,8 @@
 test_that("tea checks work", {
 
   #check that error is thrown if processing is different
-  expect_error(check_tea_std(example_eems, example_abs, std_dir = system.file("extdata", package = "eemanalyzeR")), "processing steps are different")
+    expect_warning(flags <- check_tea_std(example_eems, example_abs, std_dir = system.file("extdata", package = "eemanalyzeR")), "No tea check standard samples found")
+    expect_true(unique(flags$meta_name) == "notea")
 
   #check when tea is fully out
     abs <- example_processed_abs
@@ -9,7 +10,7 @@ test_that("tea checks work", {
     check <- check_tea_std(example_processed_eems, abs, std_dir = system.file("extdata", package = "eemanalyzeR"))
 
     expect_s3_class(check, "data.frame")
-    expect_equal(check$tea_flag, c(rep(NA, 11), rep("STD01", 4)))
+    expect_equal(check$tea_flag, c(rep(NA, 11), rep("STD01", 3)))
 
   #check when it's partially out
     abs <- example_processed_abs

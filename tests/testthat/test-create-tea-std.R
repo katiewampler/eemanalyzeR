@@ -4,8 +4,7 @@ test_that("eem tea std is calculated", {
 
   #ensure it returns warning with example data
   expect_warning(expect_warning(eem_tea <- create_tea_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-tea"),
-                                    meta_name="longtermteastd-metadata.csv", eem_pattern = "BEM|SEM",
-                                    abs_pattern = "ABS",
+                                    meta_name="longtermteastd-metadata.csv",abs_pattern = "ABS",
                                     type="eem", output_dir = test_dir),
                                 "average may be unreliable"), "trimmed EEM's to match absorbance data")
 
@@ -28,8 +27,7 @@ test_that("abs tea is calculated", {
 
   #ensure it returns warning with example data
   expect_warning(abs_tea <- create_tea_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-tea"),
-                                        meta_name="longtermteastd-metadata.csv",  eem_pattern = "BEM|SEM",
-                                        abs_pattern = "ABS",
+                                        meta_name="longtermteastd-metadata.csv", abs_pattern = "ABS",
                                         type="abs", output_dir = test_dir))
 
 

@@ -32,7 +32,7 @@ check_tea_std <- function(eemlist, abslist, std_dir=.qaqc_dir(), tolerance=0.2,
   stopifnot(is.numeric(tolerance),.is_eemlist(eemlist)|.is_abslist(abslist))
 
   #check if sample has any tea samples if not return empty table
-  if(length(subset_qaqc(eemlist, type="tea")) ==0 & length(subset_qaqc(abslist, type="tea"))==0){
+  if(length(subset_type(eemlist, type="check")) ==0 & length(subset_type(abslist, type="check"))==0){
 
     warning("No tea check standard samples found")
     .write_readme_line("No tea check standards were included in the sample data\n", "check_std")
@@ -46,7 +46,7 @@ check_tea_std <- function(eemlist, abslist, std_dir=.qaqc_dir(), tolerance=0.2,
       warning("tea check standard files are missing, check standards will not be checked against the long-term standard")
       .write_readme_line("Tea standards were not provided, thus the tea standards for this run were not checked\n", "check_std")
 
-      names <- get_sample_info(subset_qaqc(eemlist, type="tea_std"), "meta_name")
+      names <- get_sample_info(subset_type(eemlist, type="check"), "meta_name")
       return(data.frame(meta_name=rep(names, each=2), index=NA, type=c("abs", "eem"), tea_flag=NA))
 
     }else{
@@ -73,8 +73,8 @@ check_tea_std <- function(eemlist, abslist, std_dir=.qaqc_dir(), tolerance=0.2,
     std_index <- index_function(eem_std, abs_std, mdl_dir = std_dir)
 
   #calculate indices for tea
-    tea_index <- index_function(subset_qaqc(eemlist, type="tea_std"),
-                                subset_qaqc(abslist, type="tea_std"),
+    tea_index <- index_function(subset_type(eemlist, type="check"),
+                                subset_type(abslist, type="check"),
                                 mdl_dir = std_dir)
 
   #tidy and combine indices
@@ -126,7 +126,7 @@ check_tea_std <- function(eemlist, abslist, std_dir=.qaqc_dir(), tolerance=0.2,
 
     return(as.data.frame(report))
   }else{
-    names <- get_sample_info(subset_qaqc(eemlist, type="tea_std"), "meta_name")
+    names <- get_sample_info(subset_type(eemlist, type="check"), "meta_name")
     return(data.frame(meta_name=rep(names, each=2), index=NA, type=c("abs", "eem"), tea_flag=NA))
 
   }

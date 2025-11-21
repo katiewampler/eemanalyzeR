@@ -1,4 +1,4 @@
-#testing loading absorbance data
+# Test loading absorbance data
     test_that("single absorbance data loads", {
       expect_s3_class(abs_read(list.files(system.file("extdata", package = "eemanalyzeR"),full.names=TRUE, pattern="ABS")[1]),
                   "abs")

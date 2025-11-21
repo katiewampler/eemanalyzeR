@@ -38,7 +38,7 @@ test_that("absorbance indices are correct", {
 
   #spectral slopes
     expect_equal(index$value[index$index == "S275_295"], stardom_index$S275_295[2:3], tolerance=1e-5)
-    expect_equal(index$value[index$index == "S350_400"], stardom_index$S350_400, tolerance=1e-5)
+    expect_equal(index$value[index$index == "S350_400"], stardom_index$S350_400[2:3], tolerance=1e-5)
     expect_equal(index$value[index$index == "SR"], stardom_index$SR[2:3], tolerance=1e-5)
 
   #ratios

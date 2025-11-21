@@ -8,8 +8,8 @@
 #' name which should be the same between the sample and the blank, because of this,
 #' samples must have metadata already added to the samples using \link[eemanalyzeR]{add_metadata}.
 #'
-#' If a `blanklist` is not provided, one will be automatically generated based on the `eemlist` attribute `is_blank`,
-#' so blank must first be noted using the \link[eemanalyzeR]{mark_qaqc} function.
+#' If a `blanklist` is not provided, one will be automatically generated based on the `eemlist` attribute `sample_type`,
+#' from the samples marked as `iblank`.
 #'
 #' Adding the blanks into the sample data can be done two ways:
 #' \enumerate{
@@ -49,8 +49,8 @@ add_blanks <- function(eemlist, blanklist=NULL, validate=TRUE){
   #if no blanks are provided
   if(is.null(blanklist)){
       #separate into blanklist and eemlist based on pattern given
-      blanklist <- subset_qaqc(eemlist, type="blank")
-      eemlist <- subset_qaqc(eemlist, type="blank", negate = TRUE)
+      blanklist <- subset_type(eemlist, type="iblank")
+      eemlist <- subset_type(eemlist, type="iblank", negate = TRUE)
   }
 
   if(length(blanklist) == 0 | length(eemlist) == 0){
@@ -70,7 +70,6 @@ add_blanks <- function(eemlist, blanklist=NULL, validate=TRUE){
   }
 
   #makes sure blank has same wavelengths as sample then adds into eem as x_blK
-
   .add_x_blk <- function(eem, eem_blk){
     if(!identical(eem$ex, eem_blk$ex) | !identical(eem$em, eem_blk$em)){
       stop("excitation and/or emission wavelengths as mismatched between sample and blank")

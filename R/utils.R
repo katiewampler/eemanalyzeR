@@ -1,21 +1,38 @@
-#' Checks if sample is a blank
-#'
-#' @param obj an object
-#' @noRd
-.is_blank <- function(obj) {
-  # Get the attribute
-  val <- attr(obj, "is_blank$")
-  #stopifnot(is.logical(val))
-  if(is.null(val)){val <- FALSE}
-  return(val)
-}
-
 #' Returns eemanalyzeR package version loaded
 #'
 #' @return text string with eemanalyzeR package version
 #' @noRd
 .eemanalyzeR_ver <- function() {
   paste0("eemanalyzeR ", utils::packageVersion("eemanalyzeR"))
+}
+
+#' Checks if the eems or absorbance has had metadata added
+#' @noRd
+.meta_added <- function(x){
+  stopifnot(class(x) %in% c("eemlist", "eem", "abs", "abslist"))
+
+  if(inherits(x, c("eem","abs"))){
+    items <- names(x)
+    augment_names <- c("meta_name","dilution","analysis_date", "description","doc_mgL","notes")
+    augmented <- all(augment_names %in% items)
+  }else{
+    augmented <- unlist(lapply(x, .meta_added))
+  }
+  return(augmented)
+}
+
+# Overload the bracket operator for eemlist subsetting
+#' Subsetting using `[` for eemlist
+#'
+#' @param eemlist the eemlist to subset
+#' @param i the index for subsetting
+#'
+#' @export
+#' @method [ eemlist
+#'
+`[.eemlist` <- function(eemlist, i) {
+  sublist <- NextMethod()
+  structure(sublist, class = "eemlist")
 }
 
 #' Write a line of text to the readme object that tracks processing tracking
@@ -53,21 +70,11 @@
     step <- paste0(time, ": ", text)
     readme[slot] <- paste(step, args, sep="\n")}
 
+  # TODO change this to write to package environment when complete
   assign("readme", readme, envir = .GlobalEnv)
 
 }
 
-.print_readme <- function(){
-  readme <- readme[!is.na(readme)]
-
-  #get stuff for the top
-  date <- strftime(Sys.time(), format="%Y-%m-%d %H:%M")
-  version <- paste0("Data processed using ", .eemanalyzeR_ver(), " package in R.")
-  link <- "For details on processing steps, indices, and QA/QC flags see the package website: https://github.com/katiewampler/eemanalyzeR"
-
-  cat(paste(date, version, link, "______________________________\n", paste(unlist(readme), collapse = "\n"), sep="\n"))
-
-}
 #' Answer validation questions yes or no
 #'
 #' @importFrom rlang is_interactive
@@ -131,6 +138,12 @@
 #' Removes extra list items from eemlist, replaces sample with meta_name for matching
 #' @noRd
 .make_base_eem <- function(x){
+  if(.is_eemlist(x)){
+    x <- lapply(x, .make_base_eem)
+    class(x) <- "eemlist"
+    return(x)
+  }
+
   if(.meta_added(x)){
     x$sample <- x$meta_name
     x$meta_name <- NULL
@@ -166,53 +179,20 @@
 }
 
 
+# Overload the bracket operator for abslist subsetting
+# we want to always return an abslist
 
-#' Subtract one eem from another
+#'Subsetting using `[` for an abslist
 #'
-#' Useful for performing blank subtraction
+#' @param abslist the abslist to subset
+#' @param i the index for subsetting
 #'
-#' @param eem1 the eem that will be returned
-#' @param eem2 the eem that will be used for subtraction
+#' @export
+#' @method [ abslist
 #'
-#' @importFrom staRdom eem_extend2largest
-#' @importFrom staRdom eem_red2smallest
-#' @return an \code{eem}
-#' @noRd
-#' @examples
-#' eem_sub <- .eem_subtract(example_eems[[1]], longterm_blank)
-
-.eem_subtract <- function(eem1, eem2){
-  #scale subtraction eem to returned eem
-  if(any(dim(eem2$x) > dim(eem1$x))){
-    eem2 <- staRdom::eem_red2smallest(list(eem1, eem2))[[2]]
-  }
-
-  if(any(dim(eem2$x) < dim(eem1$x)) | length(setdiff(eem2$em, eem1$em)) > 0 | length(setdiff(eem2$ex, eem1$ex)) > 0){
-    eem2 <- staRdom::eem_extend2largest(list(eem1, eem2), interpolation = T)[[2]]
-  }
-
-  #ensure wavelengths match eem1
-  if(length(setdiff(eem2$em, eem1$em)) > 0 | length(setdiff(eem2$ex, eem1$ex)) > 0){
-    em_rm <- setdiff(eem2$em, eem1$em)
-    ex_rm <- setdiff(eem2$ex, eem1$ex)
-
-    if(length(em_rm) > 0){
-      eem2 <- staRdom::eem_exclude(list(eem2), exclude=list("em"=em_rm))[[1]]
-    }
-
-    if(length(ex_rm) > 0){
-      eem2 <- staRdom::eem_exclude(list(eem2), exclude=list("ex"=ex_rm))[[1]]
-    }
-  }
-
-  #check dimensions are equal
-  if(any(dim(eem2$x) != dim(eem1$x))){
-    stop("unable to make eem2 dimensions match eem1")
-  }
-
-  #subtract
-  eem1$x <- eem1$x - eem2$x
-  return(eem1)
+`[.abslist` <- function(abslist, i) {
+  sublist <- NextMethod()
+  structure(sublist, class = "abslist")
 }
 
 #' Check which processing steps have been completed on an eem or eemlist
@@ -332,4 +312,19 @@ check_processing <- function(eem){
   }
 
   return(list(eem_mdl = eem_mdl, abs_mdl=abs_mdl))
+}
+
+
+#' Nicely print the readme file with proper formatting
+#'
+.print_readme <- function(){
+  readme <- readme[!is.na(readme)]
+
+  #get stuff for the top
+  date <- strftime(Sys.time(), format="%Y-%m-%d %H:%M")
+  version <- paste0("Data processed using ", .eemanalyzeR_ver(), " package in R.")
+  link <- "For details on processing steps, indices, and QA/QC flags see the package website: https://github.com/katiewampler/eemanalyzeR"
+
+  cat(paste(date, version, link, "______________________________\n", paste(unlist(readme), collapse = "\n"), sep="\n"))
+
 }

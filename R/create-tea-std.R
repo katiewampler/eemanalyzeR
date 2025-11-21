@@ -9,11 +9,9 @@
 #' @param meta_name name of metadata file. optional if metadata is only xlsx or csv file in input_dir
 #' if not specified function will attempt to load any xlsx or csv file in directory and return an error if there is more than one
 #' @param sheet name of sheet containing metadata. only required if metadata isn't the first sheet
-#' @param eem_pattern a character string containing a \code{\link[base]{regular expression}}
-#' used to specify the sample names of the fluorescence data.
 #' @param abs_pattern a character string containing a \code{\link[base]{regular expression}}
 #' used to specify the sample names of the absorbance data.
-#' @param blk a character string containing a \code{\link[base]{regular expression}}
+#' @param iblank optional. a character string containing a \code{\link[base]{regular expression}}
 #' used to specify the sample names of the instrument blanks.
 #' @param type which MDL to calculate: either `eem` or `abs`
 #' @param recursive logical. should the function recurse into directories?
@@ -45,14 +43,12 @@
 #' @examples
 #' eem_teastd <- create_tea_std(
 #' file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-tea"),
-#' meta_name="longtermteastd-metadata.csv", eem_pattern = "BEM|SEM",
 #' abs_pattern="ABS",type="eem", output_dir = FALSE)
 #'
 #' plot(eem_teastd)
 #'
 
-create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, eem_pattern="Tea",
-                           abs_pattern="Abs", blk="BEM",
+create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblank="BEM",
                         type = "eem", recursive=FALSE, output_dir=NULL){
   stopifnot(type %in% c("eem", "abs"), dir.exists(dir))
 
@@ -61,12 +57,13 @@ create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, eem_pattern="Tea",
     if(output_dir != FALSE){dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)}
 
   #get metadata
-    tea_meta <- meta_read(dir, name=meta_name, sheet=sheet, validate = FALSE)
+    if(!is.null(meta_name)){input <- file.path(dir, meta_name)}else{input <- dir}
+    tea_meta <- meta_read(input, sheet=sheet)
 
   #get all tea samples in directory with instrument blanks
     tea_abs <- abs_dir_read(dir, recursive=recursive, pattern=abs_pattern)
 
-    if(type == "eem"){tea <- eem_dir_read(dir, pattern=eem_pattern, blk=blk, recursive=recursive)}
+    if(type == "eem"){tea <- eem_dir_read(dir, recursive=recursive)}
     if(type == "abs"){tea <- tea_abs}
 
   #check number of samples

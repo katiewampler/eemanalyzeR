@@ -4,10 +4,6 @@
 #' in a directory into R, even when it contains other files.
 #'
 #' @param input_dir path to folder containing raw EEMs and/or absorbance files
-#' @param blk a character string containing a \code{\link[base]{regular expression}}
-#' used to specify the sample names of the blanks.
-#' @param std a character string containing a \code{\link[base]{regular expression}}
-#' used to specify the sample names of the tea check standards.
 #' @param pattern optional. a character string containing a \code{\link[base]{regular expression}}
 #' to be matched to the files in input_dir.
 #' only files matching the pattern will be loaded.
@@ -47,35 +43,46 @@
 #' #load samples by using skip to exclude EEM's and other samples -------------
 #' abs <- abs_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "SEM|BEM|waterfall")
 #'
-eem_dir_read <- function(input_dir, blk="BEM", std="Tea", pattern = NULL, skip="(?i)abs", file_ext="dat",
-                         recursive = FALSE, import_function="aqualog"){
+eem_dir_read <- function(input_dir,
+                         pattern = NULL,
+                         skip="(?i)abs",
+                         file_ext="dat",
+                         recursive = FALSE,
+                         import_function="aqualog"){
   stopifnot(dir.exists(input_dir))
 
   #TODO: change to package environment
   #remove readme if it exists because new dataset
   if(exists("readme")){rm("readme", envir = .GlobalEnv)
     message("NOTE: removed previous 'readme' file")
-    }
+  }
 
 
   warnings_list <- list()  # Initialize an empty list to store warnings
 
-  #wrapper on eemR::read_eem to try and catch errors from absorbance data being included
+  #wrapper on eemR::eem_read to try and catch errors from absorbance data being included
+  # It's not really an error in our package if absorbance data is included in the directory,
+  # since we expect it all in one aqualog output directory. So maybe I can modify this function
+  # to not throw warnings for Absorbance data in the dir
   .try_eem_read <- function(file, recursive=F, import_function){
-    tryCatch({eem <- eemR::eem_read(file=file, recursive=recursive, import_function = import_function)
-    #add additional attributes
-    attr(eem[[1]], "is_doc_normalized") <- FALSE
-    attr(eem[[1]], "is_dil_corrected") <- FALSE
-    attr(eem[[1]], "is_blank") <- FALSE
-    attr(eem[[1]], "is_check_std") <- FALSE
-    return(eem)},
+    tryCatch(
+      {eem <- eemR::eem_read(file=file, recursive=recursive, import_function = import_function)
+      #add additional attributes
+      attr(eem[[1]], "is_doc_normalized") <- FALSE
+      attr(eem[[1]], "is_dil_corrected") <- FALSE
+      # Default these to none and add them later
+      attr(eem[[1]], "sample_type") <- "none"
+
+      return(eem)},
+
     error = function(e) {
       # Check if it's a specific error
       if (grepl("argument of length 0", conditionMessage(e))) {
         warning("Unable to import file: ", file, ".\nPlease use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.", call. = FALSE)
         return(NULL)
       } else {
-        stop("An unexpected error occurred: ", conditionMessage(e), call. = FALSE)}})
+        stop("An unexpected error occurred: ", conditionMessage(e), call. = FALSE)}}
+    )
   }
 
   #get files to read in
@@ -86,52 +93,41 @@ eem_dir_read <- function(input_dir, blk="BEM", std="Tea", pattern = NULL, skip="
   if (is.null(pattern)) {
     pattern_choices <- rep(TRUE, length(files)) # We want NULL to select all files
   } else {
-    pattern_choices <- grepl(pattern, files)
+    pattern_choices <- grepl(pattern, files, ignore.case = FALSE)
   }
 
   if(is.null(skip)){
     skip_choices <- rep(TRUE, length(files))
   } else{
-    skip_choices <- !grepl(skip, files)
+    skip_choices <- !grepl(skip, files, ignore.case = FALSE)
   }
   ext_choices <- tools::file_ext(files) == file_ext
   load_files <- files[which(pattern_choices & skip_choices & ext_choices)]
 
   #read files
-  eem_list <- withCallingHandlers(pbapply::pblapply(load_files, .try_eem_read, import_function=import_function),
-                                  warning = function(w) {
-                                    warnings_list <<- c(warnings_list, conditionMessage(w))  # Add the warning message
-                                    # TODO add warning list to base package environment if used by more functions.
-                                    # <<- can result in weird behavior
-                                    invokeRestart("muffleWarning")  # Prevent the warning from printing immediately
-                                  })
-
-  # Combine all collected warnings into one [probably unnecessary, I don't think anything else should generate a warning]
-  if (length(warnings_list) > 0) {
-    if(sum(grepl("Unable to import file: ", warnings_list))>0){
-      remove_warn <- grep("Unable to import file: |.\nPlease use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.", warnings_list)
-      error_files <- gsub("Unable to import file: |.\nPlease use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.", "", warnings_list)
-      abs_warning <- paste0("Unable to import file(s):\n", paste(error_files, collapse="\n"),"\nPlease use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.")
-    }
-    combined_warning <- paste(warnings_list[-remove_warn], abs_warning, collapse = "\n")
-    warning(combined_warning)
-  }
+  eem_list <- withCallingHandlers(
+    pbapply::pblapply(load_files, .try_eem_read, import_function=import_function),
+    warning = function(w) {
+      conditionMessage(w)
+      #append_warning(conditionMessage(w))  # Add the warning message
+      #invokeRestart("muffleWarning")  # Prevent the warning from printing immediately
+      })
 
   #combine eems
   eem_list <- lapply(eem_list, `[[`, 1)
   eem_list <- eem_list %>% purrr::discard(is.null)
   class(eem_list) <- "eemlist"
 
-  #mark qaqc files
-    eem_list <- mark_qaqc(eem_list, blk_pattern = blk, tea_pattern = std)
-
   return(eem_list)
 }
 
 #' @rdname dir_read
 #' @export
-abs_dir_read <- function(input_dir, std="Tea", pattern = NULL, skip="SEM|BEM|Waterfall", file_ext="dat",
-                         recursive = FALSE){
+abs_dir_read <- function(input_dir,
+                         pattern = NULL,
+                         skip="SEM|BEM|Waterfall",
+                         file_ext="dat",
+                         recursive = FALSE) {
 
   #TODO: change to package environment
   #remove readme if it exists because new dataset
@@ -140,8 +136,6 @@ abs_dir_read <- function(input_dir, std="Tea", pattern = NULL, skip="SEM|BEM|Wat
   }
 
   stopifnot(dir.exists(input_dir))
-  warnings_list <- list()  # Initialize an empty list to store warnings
-
 
   files <- list.files(input_dir, full.names = T, recursive = recursive)
 
@@ -150,13 +144,13 @@ abs_dir_read <- function(input_dir, std="Tea", pattern = NULL, skip="SEM|BEM|Wat
   if (is.null(pattern)) {
     pattern_choices <- rep(TRUE, length(files)) # We want NULL to select all files
   } else {
-    pattern_choices <- grepl(pattern, files)
+    pattern_choices <- grepl(pattern, files, ignore.case = FALSE)
   }
 
   if(is.null(skip)){
     skip_choices <- rep(TRUE, length(files))
   } else{
-    skip_choices <- !grepl(skip, files)
+    skip_choices <- !grepl(skip, files, ignore.case = FALSE)
   }
   ext_choices <- tools::file_ext(files) == file_ext
   load_files <- files[which(pattern_choices & skip_choices & ext_choices)]
@@ -164,8 +158,9 @@ abs_dir_read <- function(input_dir, std="Tea", pattern = NULL, skip="SEM|BEM|Wat
   #read files
   abs_list <- withCallingHandlers(pbapply::pblapply(load_files, abs_read),
                                   warning = function(w) {
-                                    warnings_list <<- c(warnings_list, conditionMessage(w))  # Add the warning message
-                                    invokeRestart("muffleWarning")  # Prevent the warning from printing immediately
+                                    warning(w)
+                                    #append_warning(conditionMessage(w))  # Add the warning message
+                                    #invokeRestart("muffleWarning")  # Prevent the warning from printing immediately
                                   })
 
   #remove nulls from trying to load eems
@@ -173,21 +168,6 @@ abs_dir_read <- function(input_dir, std="Tea", pattern = NULL, skip="SEM|BEM|Wat
 
   #make into abs_list
   class(abs_list) <- "abslist"
-
-  #mark qaqc files
-  abs_list <- mark_qaqc(abs_list, tea_pattern = std)
-
-
-  # Combine all collected warnings into one [probably unnecessary, I don't think anything else should generate a warning]
-  if (length(warnings_list) > 0) {
-    if(sum(grepl("Unable to import file: ", warnings_list))>0){
-      remove_warn <- grep("Unable to import file: |.\nPlease use the 'pattern' and 'skip' arguments to ensure only absorbance files are selected.", warnings_list)
-      error_files <- gsub("Unable to import file: |.\nPlease use the 'pattern' and 'skip' arguments to ensure only absorbance files are selected.", "", warnings_list)
-      abs_warning <- paste0("Unable to import file(s):\n", paste(error_files, collapse="\n"),"\nPlease use the 'pattern' and 'skip' arguments to ensure only absorbance files are selected.")
-    }
-    combined_warning <- paste(warnings_list[-remove_warn], abs_warning, collapse = "\n")
-    warning(combined_warning)
-  }
 
   return(abs_list)
 }

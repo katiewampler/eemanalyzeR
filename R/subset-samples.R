@@ -1,7 +1,8 @@
 #' Subset eemlist or abslist using components
 #'
 #' Helper function that build upon \link[eemR]{eem_extract} function. Used to select or remove samples based on the info extracted by
-#' \link[eemanalyzeR]{get_sample_info} allowing selection of samples based on components besides just the sample name.
+#' \link[eemanalyzeR]{get_sample_info} allowing selection of samples based on components besides just the sample name. This is usually
+#' used in concert with `get_sample_info`
 #'
 #' @param x an object of class \code{eemlist} or \code{abslist}
 #' @param sample a vector of the names or other info to use to select EEM's from \code{eemlist} or absorbance from \code{abslist}
@@ -30,6 +31,7 @@
 
 subset_samples <- function(x, info, sample, keep=FALSE, ignore_case=FALSE,
                            verbose=TRUE){
+
   stopifnot(inherits(x, "eemlist") | inherits(x, "abslist"), info %in% unlist(lapply(x,names)))
   values <- get_sample_info(x, info)
   sample <- gsub("([\\(\\)\\-])", "\\\\\\1", sample) #escape special characters

@@ -46,9 +46,11 @@
 #' #get absorbance data
 #' get_sample_info(example_abs, "data")
 
+
 get_sample_info <- function(x, info) {
   stopifnot(.is_eemlist(x) | .is_eem(x) | .is_abslist(x) | .is_abs(x))
 
+  # Make sure x is an eemlist or abslist
   if(inherits(x, "eemlist") | inherits(x, "abslist") ){
     res <- lapply(x, function(y) y[[info]])
 
@@ -57,6 +59,8 @@ get_sample_info <- function(x, info) {
     }
     #if matrix, treat differently than a vector
     if(all(sapply(res, is.matrix))){
+
+      # Add excitation and emission wavelengths to matrix
       res_form <- res #currently just return a list of extract matrices
     }
 
@@ -64,6 +68,9 @@ get_sample_info <- function(x, info) {
     if(all(sapply(res, is.matrix)) & .is_abslist(x)) {
       sample_names <- get_sample_info(x, "sample")
 
+
+      # TODO We might have to check that all wavelengths are the same before merging into data.frame
+        #confirm this works with test
       #convert to df
       res <- lapply(res, as.data.frame)
       res <- mapply(function(df, name) {
@@ -86,6 +93,7 @@ get_sample_info <- function(x, info) {
   }
   if(inherits(x, "eem") | inherits(x, "abs")){
     res_form <- x[[info]]
+
     if(is.null(res_form)){stop(paste0("component '", info, "' not found in dataset"))}
   }
 

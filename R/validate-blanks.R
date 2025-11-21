@@ -15,7 +15,8 @@
 #' @importFrom ggplot2 labs theme
 #'
 #' @examples
-#' eems <- subset_qaqc(example_eems)
+#' eems <- add_metadata(metadata, example_eems)
+#' eems <- subset_type(eems, type="iblank")
 #' continue <- validate_blanks(eems)
 validate_blanks <- function(
     blanklist) {
@@ -31,6 +32,7 @@ validate_blanks <- function(
   blank_plot <- ggpubr::ggarrange(blank_plot1, blank_plot2, ncol = 1, align="h")
   print(blank_plot)
   #print("is_interactive didn't work")
+
   }
 
   # TODO - write validation data to tracking file

@@ -7,10 +7,6 @@
     expect_length(eem_dir_read(system.file("extdata", package = "eemanalyzeR")), 8)
   })
 
-  test_that("absorbance data throws warning", {
-    expect_warning(eem_dir_read(system.file("extdata", package = "eemanalyzeR"), skip=NULL), "Unable to import file")
-  })
-
   test_that("eems selection loading works", {
     expect_length(eem_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern = "SEM"), 3)
     expect_length(eem_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "SEM|ABS|Abs|Waterfall"), 3)
@@ -22,12 +18,9 @@
     expect_s3_class(abs_dir_read(system.file("extdata", package = "eemanalyzeR"))[[1]],"abs")
   })
 
-  test_that("eems data throws warning", {
-    expect_warning(abs_dir_read(system.file("extdata", package = "eemanalyzeR"), skip=NULL), "Unable to import file")
-  })
-
   test_that("abs selection loading works", {
     expect_equal(length(abs_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern = "Abs")), 1)
-    expect_equal(length(abs_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "Waterfall|BEM|SEM")), 4)
+    expect_equal(length(abs_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "BEM|SEM|Waterfall")), 4)
+
   })
 

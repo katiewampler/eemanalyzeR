@@ -39,7 +39,7 @@ abs_read <- function(file){
     }
 
     data <- readLines(file)
-    abs <- stringr::str_extract_all(data, "-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?")
+    abs1 <- regmatches(data, gregexpr("-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?", data))
     abs <- lapply(abs, as.numeric)
 
     #if abs files was exported manually, remove header rows and extra columns in row 1
@@ -62,7 +62,7 @@ abs_read <- function(file){
     if(is.null(abs) == F){
       #thrown an error if the wavelength isn't continuous, suggesting transmittance data was added
       if(sum(diff(abs[1,]) > 0) > 0){
-        stop("wavelengths aren't continuous, please ensure transmitance data wasn't included in absorbance file:\n", file)
+        stop("wavelengths aren't continuous, please ensure transmittance data wasn't included in absorbance file:\n", file)
       }
 
       #if there's an NA value, it'll get the value of the wavelength, replace with NA
@@ -80,7 +80,9 @@ abs_read <- function(file){
 
       attr(obj, "is_dil_corrected") <- FALSE
       attr(obj, "is_doc_normalized") <- FALSE
-      attr(obj, "is_check_std") <- FALSE
+      # Default to none and add them later
+      attr(obj, "sample_type") <- "none"
+
     }else{
       obj <- NULL
     }

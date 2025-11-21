@@ -30,8 +30,8 @@ If more than one blank is supplied, the function links the blank and sample by t
 name which should be the same between the sample and the blank, because of this,
 samples must have metadata already added to the samples using \link[eemanalyzeR]{add_metadata}.
 
-If a \code{blanklist} is not provided, one will be automatically generated based on the \code{eemlist} attribute \code{is_blank},
-so blank must first be noted using the \link[eemanalyzeR]{mark_qaqc} function.
+If a \code{blanklist} is not provided, one will be automatically generated based on the \code{eemlist} attribute \code{sample_type},
+from the samples marked as \code{iblank}.
 
 Adding the blanks into the sample data can be done two ways:
 \enumerate{

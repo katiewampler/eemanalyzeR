@@ -10,9 +10,12 @@
 #' metadata <- meta_read(system.file("extdata", package = "eemanalyzeR"))
 #' metadata <- eemanalyzeR:::meta_check(metadata)
 
+
+# TODO These might need to be more robust to weird inputs from the user. Worth checking
+# a few more edge cases? Can do after we publish package
 meta_check <- function(meta){
   #check required columns are there
-  req_cols <- c("data_identifier", "replicate_no", "integration_time_s","run_type", "RSU_area_1s",
+  req_cols <- c("data_identifier", "replicate_no", "integration_time_s", "RSU_area_1s",
                 "dilution")
   missing_cols <- setdiff(req_cols, colnames(meta))
   if(length(missing_cols) > 0) {
@@ -22,7 +25,7 @@ meta_check <- function(meta){
   #ensure integration time and RSU adjust area (and DOC/dilution are numeric)
   meta <- meta %>% dplyr::mutate(dplyr::across(dplyr::any_of(c("integration_time_s","RSU_area_1s", "dilution", "DOC_mg_L")), as.numeric))
 
-  #ensure datas are dates
+  #ensure dates are dates
   conv_dates <- unlist(lapply(meta, class))
   meta <- meta %>% dplyr::mutate(dplyr::across(dplyr::any_of(c("analysis_date", "collect_date")), \(x) lubridate::parse_date_time(x, tz=Sys.timezone(), orders=c("ymd", "mdy"))))
 
@@ -55,9 +58,15 @@ meta_check <- function(meta){
   }
 
   #ensure run_type is either sampleQ or manual (might not matter anymore??)
-  if(any(grepl("sampleQ|manual", meta$run_type, ignore.case = T)==F)){
-    stop("'run_type' must be either 'sampleQ' or 'manual'")
+  # if(!all(grepl("sampleQ|manual", meta$run_type, ))){
+  #   stop("'run_type' must be either 'sampleQ' or 'manual'")
+  # }
+
+  # Check sample_type is properly flagged
+  if(!all(grepl("sample|sblank|check", meta$sample_type)) || any(is.na(meta$is_blank))) {
+    warning("sample_type column not properly specified. It should contain values 'sample', 'sblank', or 'check'.\neemanalyzeR will attempt to assign blanks from filenames")
   }
+
 
   return(meta)
 }

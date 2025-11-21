@@ -34,7 +34,8 @@ downscale_eems <- function(file, factor=6){
 
     #check for manual format, if so deal with differently
     if(grepl("nm\tuA", data[2])){
-      end_abs <- grep("Wavelength\t", data)[2]
+      colnames <- strsplit(data[1], "\t")[[1]]
+      end_abs <- length(data)
       data <- c(data[1:3],data[seq(4, end_abs, 6)])
     }else{
       data <- data[seq(1, length(data), 6)]
@@ -43,7 +44,7 @@ downscale_eems <- function(file, factor=6){
 
   }}
 
-files <- list.files("data-raw/fullsize data", pattern=".dat", full.names = TRUE)
+files <- list.files("data-raw/fullsize-data", pattern=".dat", full.names = TRUE)
 
 #downscale and save
 for(x in files){
@@ -52,15 +53,15 @@ for(x in files){
 
 #read into R environment
   #read in samples and blanks
-  example_eems <- eem_dir_read("data-raw", pattern="SEM|BEM")
+  example_eems <- eem_dir_read("data-raw", pattern="SEM|BEM|Waterfall")
 
   #read in absorbance
-  example_abs <- abs_dir_read("data-raw", pattern="ABS[.]dat")
+  example_abs <- abs_dir_read("data-raw", pattern="ABS[.]dat|Abs")
 
     usethis::use_data(example_eems, overwrite = T)
     usethis::use_data(example_abs, overwrite = T)
 
-  metadata <- meta_read("data-raw", name="metadata_example")
+  metadata <- meta_read(input="data-raw/metadata_example.csv")
   usethis::use_data(metadata, overwrite = T)
 
 
@@ -120,7 +121,8 @@ for(x in files){
 
   #combine metadata and save
     meta <- list.files(file.path(output_dir, "metadata"))
-    metadata <- lapply(meta, function(x){read.csv(file.path(output_dir, "metadata", x))}) %>% dplyr::bind_rows()
+    metadata <- lapply(meta, function(x){read.csv(file.path(output_dir, "metadata", x))}) %>% dplyr::bind_rows() %>%
+      mutate(sample_type="sblank")
     write.csv(metadata, file.path(output_dir, "merged-blk-metadata.csv"), row.names=FALSE)
 
   #load in to downscale for example data
@@ -143,7 +145,6 @@ for(x in files){
     #write metadata
       blk_meta <- meta[50:55,]
       blk_meta$data_identifier <- paste0("longtermblank", 1:length(example_dat))
-      blk_meta <- blk_meta[,-ncol(blk_meta)]
       write.csv(blk_meta, "inst/extdata/long-term-blanks/longtermblank-metadata.csv", row.names=FALSE, quote=FALSE)
 
   #make a test mdl file for functions
@@ -206,12 +207,14 @@ for(x in files){
 
     #combine metadata and save
     meta <- list.files(file.path(output_dir, "metadata"))
-    metadata <- lapply(meta, function(x){read.csv(file.path(output_dir, "metadata", x))}) %>% dplyr::bind_rows()
+    metadata <- lapply(meta, function(x){read.csv(file.path(output_dir, "metadata", x))}) %>% dplyr::bind_rows() %>%
+      mutate(sample_type="check")
+
     write.csv(metadata, file.path(output_dir, "merged-tea-metadata.csv"), row.names=FALSE)
 
   #load in to downscale for example data
     meta <- read.csv(file.path(output_dir, "merged-tea-metadata.csv"))
-    example_dat <- meta$long_term_name[50:55]
+    example_dat <- meta$data_identifier[50:55]
     dat_files <- list.files(output_dir, recursive = TRUE)
     for(x in 1:length(example_dat)){
       files <- grep(example_dat[x], dat_files, value=TRUE)
@@ -229,16 +232,15 @@ for(x in files){
     #write metadata
     blk_meta <- meta[50:55,]
     blk_meta$data_identifier <- paste0("longterm-teastd", 1:length(example_dat))
-    blk_meta <- blk_meta[,-ncol(blk_meta)]
     write.csv(blk_meta, "inst/extdata/long-term-tea/longtermteastd-metadata.csv", row.names=FALSE, quote=FALSE)
 
     #make a test tea file for functions
     create_tea_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-tea"),
-            meta_name="longtermteastd-metadata.csv", pattern = "longterm-teastd",
+            meta_name="longtermteastd-metadata.csv", eem_pattern = "longterm-teastd", abs_pattern="ABS",
             type="eem", output_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
 
     create_tea_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-tea"),
-            meta_name="longtermteastd-metadata.csv", pattern = "longterm-teastd",
+            meta_name="longtermteastd-metadata.csv", eem_pattern = "longterm-teastd", abs_pattern="ABS",
             type="abs", output_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
 
 #save index ranges as data.frame ------
