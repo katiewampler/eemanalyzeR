@@ -5,8 +5,6 @@
 #' to load an EEM's file it will return a warning and a NULL value for absorbance.
 #'
 #' @param file file path to the absorbance file to load
-#' @importFrom stringr str_extract_all
-#' @importFrom tools file_ext
 #'
 #' @return An object of class \code{abs} containing:
 #' \itemize{
@@ -39,7 +37,7 @@ abs_read <- function(file){
     }
 
     data <- readLines(file)
-    abs1 <- regmatches(data, gregexpr("-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?", data))
+    abs <- regmatches(data, gregexpr("-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?", data))
     abs <- lapply(abs, as.numeric)
 
     #if abs files was exported manually, remove header rows and extra columns in row 1

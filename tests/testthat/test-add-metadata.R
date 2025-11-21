@@ -52,19 +52,19 @@
   # TODO update the ext data examples to test this
   test_that("Metadata adds sample type with and without sample_type in metadata", {
     meta_with_sample_type <- metadata
-    meta_without_sample_type <- subset(metadta, -sample_type)
+    meta_without_sample_type <- metadata %>% select(-"sample_type")
 
     # EEMs
     eems_w_meta_explicit <- add_metadata(meta_with_sample_type, example_eems)
-    eems_w_meta_guessed <- add_metadata(meta_without_sample_type, example_eems)
-    expect_equal(sapply(eems_w_meta_explicit, attr, "sample_type"), c("iblank", "sblank", "iblank", "check", "iblank", "sample", "iblank", "sample"))
-    expect_equal(sapply(eems_w_meta_guessed,  attr, "sample_type"), c("iblank", "sblank", "iblank", "check", "iblank", "sample", "iblank", "sample"))
+    expect_warning(eems_w_meta_guessed <- add_metadata(meta_without_sample_type, example_eems), "Guessing sample_types by pattern matching data_identifier")
+    expect_equal(sapply(eems_w_meta_explicit, attr, "sample_type"), c("iblank", "sblank", "iblank", "check", "iblank", "sample"))
+    expect_equal(sapply(eems_w_meta_guessed,  attr, "sample_type"), c("iblank", "sblank", "iblank", "check", "iblank", "sample"))
 
     # ABS
     abs_w_meta_explicit <- add_metadata(meta_with_sample_type, example_abs)
-    abs_w_meta_guessed <- add_metadata(meta_without_sample_type, example_abs)
-    expect_equal(sapply(abs_w_meta_explicit, attr, "sample_type"), c("sblank", "check", "sample", "sample"))
-    expect_equal(sapply(abs_w_meta_guessed,  attr, "sample_type"), c("sblank", "check", "sample", "sample"))
+    expect_warning(abs_w_meta_guessed <- add_metadata(meta_without_sample_type, example_abs), "Guessing sample_types by pattern matching data_identifier")
+    expect_equal(sapply(abs_w_meta_explicit, attr, "sample_type"), c("sblank", "check", "sample"))
+    expect_equal(sapply(abs_w_meta_guessed,  attr, "sample_type"), c("sblank", "check", "sample"))
 
   })
 
