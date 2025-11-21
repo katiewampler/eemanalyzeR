@@ -33,7 +33,7 @@
 #' eem_augment <- add_metadata(metadata, example_eems)
 
 add_metadata <- function(meta, x,
-                         sample_type_regex = list(iblank_pattern = "BEM$",
+                         sample_type_regex = list(iblank_pattern = "BEM$|Waterfall Plot Blank",
                                                   sblank_pattern = "Blank|blank",
                                                   check_pattern = "Tea|tea")) {
 
@@ -94,7 +94,7 @@ add_metadata <- function(meta, x,
 
   # New metadata version: use sample_type to define samples, sample blanks, and check standards
   #                       the rest of the eems/abs not in the metadata are instrument blanks
-  
+
   # TODO manual sample pattern matching w/ metadata
 
   if (!("sample_type" %in% names(meta))) {
@@ -124,6 +124,7 @@ add_metadata <- function(meta, x,
                                    ignore.case = FALSE
                                  ),
                                  USE.NAMES = FALSE)
+
     # Put all these together to come up with one sample type per name
     cat_flags <- paste0(
       as.integer(inst_blank_flags),
