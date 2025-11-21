@@ -99,7 +99,7 @@ add_metadata <- function(meta, x,
 
   if (!("sample_type" %in% names(meta))) {
     # Warn the user if sample types are pattern matched?
-    warning("Guessing sample_types by pattern matching data_identifier")
+    warning("No sample_type in Metadata. Guessing sample_types by pattern matching data_identifier")
     # Guess instrument blanks
     inst_blank_flags <- sapply(names,
                           \(s) grepl(
