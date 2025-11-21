@@ -24,8 +24,8 @@ validate_blanks <- function(
 
   # Plot the instrument blank
   if (rlang::is_interactive()) {
-  blank_plot1 <- ggpubr::ggarrange(plotlist=plot_eem(unique(blanklist)), common.legend = T, legend="right")
-  blank_plot2 <- ggpubr::ggarrange(plotlist=plot_eem(remove_scattering(unique(blanklist), type=c(T,T,T,T), interpolate=c(F,F,F,F))),
+  blank_plot1 <- ggpubr::ggarrange(plotlist=plot(unique(blanklist)), common.legend = T, legend="right")
+  blank_plot2 <- ggpubr::ggarrange(plotlist=plot(remove_scattering(unique(blanklist), type=c(T,T,T,T), interpolate=c(F,F,F,F))),
                                    common.legend = T, legend="right")
 
   blank_plot <- ggpubr::ggarrange(blank_plot1, blank_plot2, ncol = 1, align="h")

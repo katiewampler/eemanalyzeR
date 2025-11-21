@@ -2,7 +2,7 @@
 #'
 #' Used to make a nice plot of one or multiple excitation emission matrices (EEMs) using ggplot2
 #'
-#' @param eem an \code{eem} or \code{eemlist} object containing EEM's data
+#' @param x an \code{eem} or \code{eemlist} object containing EEM's data
 #' @param nbin the number of bins used in the contour plot
 #' @param equal_scale logical, should the scale be the same for all the plots in the eemlist?
 #' @param pal the colors used for the fill scale, if not specified it will use the \link[pals]{parula} palette.
@@ -11,9 +11,13 @@
 #' this region that are affecting the color scale.
 #' @param annotate logical, should plots show the index regions?
 #' @param index_method currently supports "eemanalyzeR", "eemR", and "usgs". See details for more information.
+#' @param ... extra arguments for `plot`
+
 
 #' @return if eem is an \code{eem} it will return a single ggplot2 object. If eem is an \code{eemlist}, it will return a list of ggplot2 objects.
-#'
+#' @method plot eem
+#' @rdname plot-eem
+
 #' @importFrom ggplot2 labs ggplot aes geom_contour_filled coord_cartesian geom_contour guides element_text scale_fill_manual theme
 #' @importFrom ggpubr ggarrange
 #' @importFrom pals parula
@@ -32,42 +36,53 @@
 #' eems <- example_processed_eems
 #'
 #' #plot just one EEM
-#' plot_eem(eems[[3]])
+#' plot(eems[[3]])
 #'
 #' #plot all EEMs in an eemlist
-#' plots <- plot_eem(eems)
+#' plots <- plot(eems)
 #'
 #' #change color scale
-#' plot_eem(eems, pal=c("darkblue", "lightblue"))
+#' plot(eems, pal=c("darkblue", "lightblue"))
 #'
 #' #make color bar consistent across all plots
-#' plot_eem(eems, equal_scale=TRUE)
+#' plot(eems, equal_scale=TRUE)
 #'
 #' #customize using ggplot2 commands
-#' plot_eem(eems[[2]]) + ggplot2::labs(title="Test EEM")
-#' plot_eem(eems)[[3]] + ggplot2::labs(title="Test EEM")
+#' plot(eems[[2]]) + ggplot2::labs(title="Test EEM")
+#' plot(eems)[[3]] + ggplot2::labs(title="Test EEM")
 #'
 #' #modify then arrange together
-#' plots <- plot_eem(eems)
+#' plots <- plot(eems)
 #' plots[[3]] <- plots[[3]] + ggplot2::labs(title="Test EEM")
 #' print(ggpubr::ggarrange(plotlist = plots))
 #'
 #'#remove lower area below rayleigh line
-#' plots <- plot_eem(eems, remove_lower=TRUE)
+#' plots <- plot(eems, remove_lower=TRUE)
 #'
 #' #annotate the plot with the peaks
-#' plot_eem(eems[[3]], annotate=TRUE)
+#' plot(eems[[3]], annotate=TRUE)
 
 
-plot_eem <- function(eem, nbin=8, equal_scale=FALSE, pal=NULL, remove_lower = FALSE,
-                     annotate=FALSE, index_method="eemanalyzeR"){
-  stopifnot(.is_eem(eem) | .is_eemlist(eem))
-  #if eemlist, apply plotting function to list
-  if(.is_eemlist(eem)){
+plot.eem <- function(x, nbin=8, equal_scale=FALSE, pal=NULL, remove_lower = FALSE,
+                     annotate=FALSE, index_method="eemanalyzeR", ...){
+  stopifnot(.is_eem(x))
+
+  plot <- .plot_eem(x, nbin=nbin, z_min=NULL, z_max=NULL, pal=pal, lower=remove_lower, annotate = annotate, index_method=index_method)
+  return(plot)
+
+}
+
+#' @method plot eemlist
+#' @export
+#' @rdname plot-eem
+plot.eemlist <- function(x, nbin=8, equal_scale=FALSE, pal=NULL, remove_lower = FALSE,
+                         annotate=FALSE, index_method="eemanalyzeR", ...){
+  stopifnot(.is_eemlist(x))
+
     #if equal_scale == TRUE, get limits
     if(equal_scale){
-      z_max <- max(sapply(eem, function(x){max(x$x, na.rm=T)}))
-      z_min <- min(sapply(eem, function(x){min(x$x, na.rm=T)}))
+      z_max <- max(sapply(x, function(x){max(x$x, na.rm=T)}))
+      z_min <- min(sapply(x, function(x){min(x$x, na.rm=T)}))
       scale <- TRUE
     }else{
       z_max <- NULL
@@ -76,9 +91,9 @@ plot_eem <- function(eem, nbin=8, equal_scale=FALSE, pal=NULL, remove_lower = FA
     }
 
     if(annotate){
-      plot <- lapply(eem, .plot_eem, nbin, z_min, z_max, pal, remove_lower, title=TRUE, annotate=TRUE, index_method=index_method)
-    }else{plot <- lapply(eem, .plot_eem, nbin, z_min, z_max, pal, remove_lower, title=TRUE)}
-    names(plot) <- get_sample_info(eem, "sample")
+      plot <- lapply(x, .plot_eem, nbin, z_min, z_max, pal, remove_lower, title=TRUE, annotate=TRUE, index_method=index_method)
+    }else{plot <- lapply(x, .plot_eem, nbin, z_min, z_max, pal, remove_lower, title=TRUE)}
+    names(plot) <- get_sample_info(x, "sample")
 
     #only show if interactive to prevent a pdf from being written
     if(is_interactive()){
@@ -88,16 +103,13 @@ plot_eem <- function(eem, nbin=8, equal_scale=FALSE, pal=NULL, remove_lower = FA
     }
 
     return(invisible(plot))
-  }
 
-  plot <- .plot_eem(eem, nbin=nbin, z_min=NULL, z_max=NULL, pal=pal, lower=remove_lower, annotate = annotate, index_method=index_method)
-  return(plot)
 
 }
 
 #' Plot an EEMs nicely with ggplot2
 #'
-#' @param eem an \code{eem} object containing EEM's data.
+#' @param eem an \code{eem} or object containing EEM's data.
 #' @param nbin the number of bins used in the contour plot
 #' @param z_min the minimum intensity value to plot, if NULL uses the maximum value from the EEM
 #' @param z_max the maximum intensity value to plot, if NULL uses the minimum value from the EEM
@@ -211,7 +223,7 @@ plot_eem <- function(eem, nbin=8, equal_scale=FALSE, pal=NULL, remove_lower = FA
 #' @export
 #'
 #' @examples
-#' plot <- plot_eem(example_processed_eems[[3]])
+#' plot <- plot(example_processed_eems[[3]])
 #' annotate_plot(plot)
 annotate_plot <- function(plot, index_method="eemanalyzeR"){
   stopifnot(inherits(plot, "ggplot"), index_method %in% c("eemanalyzeR", "eemR", "USGS"))

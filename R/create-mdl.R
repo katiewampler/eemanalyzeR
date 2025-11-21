@@ -46,7 +46,7 @@
 #' meta_name="longtermblank-metadata.csv", pattern = "longtermblank",
 #' type="eem", output_dir = FALSE)
 #'
-#' plot_eem(eem_mdl)
+#' plot(eem_mdl)
 #'
 create_mdl <- function(dir, meta_name=NULL, sheet=NULL, pattern="BLK",
                        blk="BEM", type = "eem", recursive=FALSE, output_dir=NULL){

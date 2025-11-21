@@ -33,19 +33,19 @@
 #' @examples
 #' #default settings (remove all, interpolate only raman lines)
 #' eemlist <- remove_scattering(example_eems)
-#' plot_eem(eemlist[[6]])
+#' plot(eemlist[[6]])
 #'
 #' #interpolate all
 #' eemlist <- remove_scattering(example_eems, interpolate=c(TRUE,TRUE,TRUE,TRUE))
-#' plot_eem(eemlist[[6]])
+#' plot(eemlist[[6]])
 #'
 #' #only remove only rayleigh lines
 #' eemlist <- remove_scattering(example_eems, type=c(FALSE,FALSE,TRUE,TRUE))
-#' plot_eem(eemlist[[6]])
+#' plot(eemlist[[6]])
 #'
 #' #change the width of the lines
 #' eemlist <- remove_scattering(example_eems, width=c(16,3,100,40))
-#' plot_eem(eemlist[[6]])
+#' plot(eemlist[[6]])
 
 remove_scattering <- function(eemlist, type = c(TRUE,TRUE,TRUE,TRUE), width=c(16,3,30,10),
                               interpolate=c(TRUE,TRUE,FALSE,FALSE), method=1,

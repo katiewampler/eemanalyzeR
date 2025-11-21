@@ -68,6 +68,6 @@ eemlist <- add_metadata(metadata, example_eems)
 abslist <- add_metadata(metadata, example_abs)
 eemlist <- add_blanks(eemlist, validate=FALSE)
 corrected_eem <- process_eem(eemlist, abslist)
-plot_eem(corrected_eem)
+plot(corrected_eem)
 
 }

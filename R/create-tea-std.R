@@ -48,7 +48,7 @@
 #' meta_name="longtermteastd-metadata.csv", eem_pattern = "BEM|SEM",
 #' abs_pattern="ABS",type="eem", output_dir = FALSE)
 #'
-#' plot_eem(eem_teastd)
+#' plot(eem_teastd)
 #'
 
 create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, eem_pattern="Tea",

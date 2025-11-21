@@ -19,6 +19,6 @@ Adds labels showing the regions within an EEM that are used to calculate
 the indices, customized to the specific index method used.
 }
 \examples{
-plot <- plot_eem(example_processed_eems[[3]])
+plot <- plot(example_processed_eems[[3]])
 annotate_plot(plot)
 }

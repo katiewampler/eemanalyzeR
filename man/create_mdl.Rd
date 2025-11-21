@@ -71,6 +71,6 @@ eem_mdl <- create_mdl(file.path(system.file("extdata", package = "eemanalyzeR"),
 meta_name="longtermblank-metadata.csv", pattern = "longtermblank",
 type="eem", output_dir = FALSE)
 
-plot_eem(eem_mdl)
+plot(eem_mdl)
 
 }

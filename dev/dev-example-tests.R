@@ -28,7 +28,7 @@
       #processing steps
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
-      plots <- plot_eem(eems, remove_lower = T)
+      plots <- plot(eems, remove_lower = T)
       indices <- get_indices(eems, abs, return="wide",  mdl_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
@@ -55,7 +55,7 @@
       #processing steps
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
-      plots <- plot_eem(eems, remove_lower = T)
+      plots <- plot(eems, remove_lower = T)
       indices <- get_indices(eems, abs, return="wide", mdl_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
@@ -83,7 +83,7 @@
       #processing steps
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
-      plots <- plot_eem(eems, remove_lower = T)
+      plots <- plot(eems, remove_lower = T)
       indices <- get_indices(eems, abs, return="wide", mdl_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
@@ -109,7 +109,7 @@
       #processing steps
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
-      plots <- plot_eem(eems, remove_lower = T)
+      plots <- plot(eems, remove_lower = T)
       indices <- get_indices(eems, abs, return="wide", mdl_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
@@ -135,7 +135,7 @@
       #processing steps
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
-      plots <- plot_eem(eems, remove_lower = T)
+      plots <- plot(eems, remove_lower = T)
       indices <- get_indices(eems, abs, return="wide")
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
@@ -161,7 +161,7 @@
       #processing steps
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
-      plots <- plot_eem(eems, remove_lower = T)
+      plots <- plot(eems, remove_lower = T)
       indices <- get_indices(eems, abs, return="wide")
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
@@ -187,7 +187,7 @@
       #processing steps
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
-      plots <- plot_eem(eems, remove_lower = T)
+      plots <- plot(eems, remove_lower = T)
       indices <- get_indices(eems, abs, return = "wide")
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index

@@ -75,6 +75,6 @@ file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-tea"),
 meta_name="longtermteastd-metadata.csv", eem_pattern = "BEM|SEM",
 abs_pattern="ABS",type="eem", output_dir = FALSE)
 
-plot_eem(eem_teastd)
+plot(eem_teastd)
 
 }

@@ -27,7 +27,7 @@
 #' }
 #'
 #' @examples
-#' plots <- plot_eem(example_processed_eems)
+#' plots <- plot(example_processed_eems)
 #' indices <- get_indices(example_processed_eems, example_processed_abs)
 #' data <- export_data(example_processed_eems, example_processed_abs,
 #'     filename="eemanalyzeR_example",

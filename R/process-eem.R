@@ -41,7 +41,7 @@
 #' abslist <- add_metadata(metadata, example_abs)
 #' eemlist <- add_blanks(eemlist, validate=FALSE)
 #' corrected_eem <- process_eem(eemlist, abslist)
-#' plot_eem(corrected_eem)
+#' plot(corrected_eem)
 #'
 process_eem <- function(eemlist, abslist, ex_clip = c(247,450),
                         em_clip = c(247,600), type = c(TRUE,TRUE,TRUE,TRUE), width=c(16,3,30,10),

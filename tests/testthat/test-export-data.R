@@ -27,7 +27,7 @@ test_that("data export works", {
     expect_s3_class(data$metadata, "data.frame")
 
   #check indices, and plots
-    plots <- plot_eem(eemlist, remove_lower = T)
+    plots <- plot(eemlist, remove_lower = T)
     indices <- get_indices(eemlist, abslist, return="wide",  mdl_dir = system.file("extdata", package = "eemanalyzeR"))
 
     export_data(eemlist, abslist,prjname, dir, metadata, indices, plots)
