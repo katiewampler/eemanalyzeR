@@ -1,43 +1,46 @@
 #' Export Processed Optics Data
 #'
-#' @param eemlist an \code{eemlist} object containing EEM's data.
-#' @param abslist an \code{abslist} object containing absorbance data.
-#' @param filename a character, creates a folder with this name within the \code{output_dir} and uses this name for saving file names
+#' @param eemlist an `eemlist` object containing EEM's data.
+#' @param abslist an `abslist` object containing absorbance data.
+#' @param filename a character, creates a folder with this name within the `output_dir` and uses this name for saving file names
 #' @param output_dir the location to save the data to. if no location is specified it will save to the temporary directory
-#' @param meta optional, a \code{data.frame} of metadata
-#' @param plot optional, if \code{NULL} plots will not be exported. If a list of plots are included
-#' these will be exported as .png files
-#' @param indices optional, if \code{NULL} indices will not be exported. If a list of indices are included
+#' @param meta optional, a `data.frame` of metadata
+#' @param eem_plot optional, if `NULL` EEM's plots will not be exported. If a list of plots are included
+#' these will be exported as .png files. See [plot.eemlist][plot.eemlist()] for plotting.
+#' @param abs_plot optional, if `NULL` absorbance plots will not be exported. If a plot is included
+#' these will be exported as a .png file. See [plot.abslist][plot.abslist()] for plotting.
+#' @param indices optional, if `NULL` indices will not be exported. If a list of indices are included
 #' these will be exported
-#' @param csv logical, if TRUE processed EEMs and absorbance data will be written to the \code{output_dir} as .csv files
+#' @param csv logical, if TRUE processed EEMs and absorbance data will be written to the `output_dir` as .csv files
 #'
 #' @importFrom ggplot2 ggsave
 #' @importFrom utils write.table
 #' @export
-#'
+#' @md
 #' @return A list of the processed data which is also saved to the output directory specified.
 #' The list contains the following items:
-#' \itemize{
-#' \item{eemlist: the \code{eemlist}}
-#' \item{abslist: the \code{abslist}}
-#' \item{readme: a character vector containing information about the data processing steps}
-#' \item{meta: the metadata associated with the samples, may be \code{NULL} if not provided}
-#' \item{indices: a list of EEMs and absorbance indices, may be \code{NULL} if not provided}
-#' \item{plots: a list of EEMs plots, may be \code{NULL} if not provided}
-#' }
+#'  - **eemlist:** the `eemlist`
+#'  - **abslist:** the `abslist`
+#'  - **readme:** a character vector containing information about the data processing steps
+#'  - **meta:** the metadata associated with the samples, may be `NULL` if not provided
+#'  - **indices:** a list of EEMs and absorbance indices, may be `NULL` if not provided
+#'  - **eem_plot:** a list of EEMs plots, may be `NULL` if not provided
+#'  - **abs_plot:** a ggplot2 object of the absorbance data, may be `NULL` if not provided
 #'
 #' @examples
-#' plots <- plot(example_processed_eems)
+#' eem_plots <- plot(example_processed_eems)
+#' abs_plot <- plot(example_processed_abs)
+#'
 #' indices <- get_indices(example_processed_eems, example_processed_abs)
 #' data <- export_data(example_processed_eems, example_processed_abs,
-#'     filename="eemanalyzeR_example",
-#'     indices = indices, plot=plots, meta=metadata)
+#'     filename="eemanalyzeR_example",indices = indices,
+#'     eem_plot=eem_plots, abs_plot = abs_plot, meta=metadata)
 export_data <- function(eemlist, abslist, filename, output_dir=NULL,
                         meta=NULL, indices=NULL,
-                        plot=NULL, csv=FALSE){
+                        eem_plot=NULL, abs_plot=NULL, csv=FALSE){
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.data.frame(meta) | is.null(meta),
-            is.list(indices) | is.null(indices), is.list(plot) | is.null(plot),
-            is.logical(csv), is.character(filename))
+            is.list(indices) | is.null(indices), is.list(eem_plot) | is.null(eem_plot),
+            is.logical(csv), is.character(filename), inherits(abs_plot, "ggplot") | is.null(abs_plot))
 
   #check if processing has been done, not warn that indices may be unreliable
     steps <- check_processing(eemlist)
@@ -63,7 +66,8 @@ export_data <- function(eemlist, abslist, filename, output_dir=NULL,
   #convert everything to list and save
     output <- list(eemlist=eemlist, abslist=abslist,
                    readme=readme, metadata=meta,
-                   indices=indices, plots=plot)
+                   indices=indices, eem_plot=eem_plot,
+                   abs_plot=abs_plot)
 
     saveRDS(output, file.path(output_dir, filename, paste0("processed_data_", filename,".RDS")))
 
@@ -71,13 +75,13 @@ export_data <- function(eemlist, abslist, filename, output_dir=NULL,
     write.table(capture.output(.print_readme()), file.path(output_dir, filename, paste0("readme_", filename,".txt")),
                 quote=FALSE, col.names = FALSE, row.names = FALSE)
 
-  #save plots as png (default is yes)
-    if(!is.null(plot)){
+  #save eem plots as png
+    if(!is.null(eem_plot)){
       #figure out dim for summary plot
-        height <- ceiling(length(plot)/4)
-        width <- ceiling(length(plot)/height)
+        height <- ceiling(length(eem_plot)/4)
+        width <- ceiling(length(eem_plot)/height)
 
-      summary <- ggpubr::ggarrange(plotlist = plot, nrow=height, ncol=width)
+      summary <- ggpubr::ggarrange(plotlist = eem_plot, nrow=height, ncol=width)
       ggplot2::ggsave(filename = paste0("summary_plots_", filename, ".png"),
                       path = file.path(output_dir, filename),
                       plot = summary,
@@ -86,17 +90,27 @@ export_data <- function(eemlist, abslist, filename, output_dir=NULL,
                       width=17*width,
                       limitsize = FALSE)
 
-     lapply(names(plot), function(name) {
+     lapply(names(eem_plot), function(name) {
         file <- paste0(name, ".png")
         ggplot2::ggsave(filename = file,
                         path = file.path(output_dir, filename),
-                        plot = plot[[name]],
+                        plot = eem_plot[[name]],
                         units = "cm",
                         height = 13,
                         width=17)})
 
     }
 
+  #save absorbance plots
+    if(!is.null(abs_plot)){
+      ggplot2::ggsave(filename = paste0("absorbance_plot_", filename, ".png"),
+                      path = file.path(output_dir, filename),
+                      plot = abs_plot,
+                      units = "cm",
+                      height = 13,
+                      width=17,
+                      limitsize = FALSE)
+    }
   #save indices as .csv
     if(!is.null(indices)){
       write.csv(indices$abs_index, file.path(output_dir,filename, paste0("absindices_", filename, ".csv")),

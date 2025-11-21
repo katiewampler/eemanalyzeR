@@ -11,7 +11,8 @@ export_data(
   output_dir = NULL,
   meta = NULL,
   indices = NULL,
-  plot = NULL,
+  eem_plot = NULL,
+  abs_plot = NULL,
   csv = FALSE
 )
 }
@@ -29,8 +30,11 @@ export_data(
 \item{indices}{optional, if \code{NULL} indices will not be exported. If a list of indices are included
 these will be exported}
 
-\item{plot}{optional, if \code{NULL} plots will not be exported. If a list of plots are included
-these will be exported as .png files}
+\item{eem_plot}{optional, if \code{NULL} EEM's plots will not be exported. If a list of plots are included
+these will be exported as .png files. See \link[=plot.eemlist]{plot.eemlist} for plotting.}
+
+\item{abs_plot}{optional, if \code{NULL} absorbance plots will not be exported. If a plot is included
+these will be exported as a .png file. See \link[=plot.abslist]{plot.abslist} for plotting.}
 
 \item{csv}{logical, if TRUE processed EEMs and absorbance data will be written to the \code{output_dir} as .csv files}
 }
@@ -38,21 +42,24 @@ these will be exported as .png files}
 A list of the processed data which is also saved to the output directory specified.
 The list contains the following items:
 \itemize{
-\item{eemlist: the \code{eemlist}}
-\item{abslist: the \code{abslist}}
-\item{readme: a character vector containing information about the data processing steps}
-\item{meta: the metadata associated with the samples, may be \code{NULL} if not provided}
-\item{indices: a list of EEMs and absorbance indices, may be \code{NULL} if not provided}
-\item{plots: a list of EEMs plots, may be \code{NULL} if not provided}
+\item \strong{eemlist:} the \code{eemlist}
+\item \strong{abslist:} the \code{abslist}
+\item \strong{readme:} a character vector containing information about the data processing steps
+\item \strong{meta:} the metadata associated with the samples, may be \code{NULL} if not provided
+\item \strong{indices:} a list of EEMs and absorbance indices, may be \code{NULL} if not provided
+\item \strong{eem_plot:} a list of EEMs plots, may be \code{NULL} if not provided
+\item \strong{abs_plot:} a ggplot2 object of the absorbance data, may be \code{NULL} if not provided
 }
 }
 \description{
 Export Processed Optics Data
 }
 \examples{
-plots <- plot(example_processed_eems)
+eem_plots <- plot(example_processed_eems)
+abs_plot <- plot(example_processed_abs)
+
 indices <- get_indices(example_processed_eems, example_processed_abs)
 data <- export_data(example_processed_eems, example_processed_abs,
-    filename="eemanalyzeR_example",
-    indices = indices, plot=plots, meta=metadata)
+    filename="eemanalyzeR_example",indices = indices,
+    eem_plot=eem_plots, abs_plot = abs_plot, meta=metadata)
 }

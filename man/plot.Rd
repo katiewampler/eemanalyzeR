@@ -3,7 +3,9 @@
 \name{plot.eem}
 \alias{plot.eem}
 \alias{plot.eemlist}
-\title{Plot excitation emission matrices with ggplot2}
+\alias{plot.abs}
+\alias{plot.abslist}
+\title{Default plot methods for optical data with ggplot2}
 \usage{
 \method{plot}{eem}(
   x,
@@ -26,9 +28,13 @@
   index_method = "eemanalyzeR",
   ...
 )
+
+\method{plot}{abs}(x, pal = NULL, ...)
+
+\method{plot}{abslist}(x, pal = NULL, ...)
 }
 \arguments{
-\item{x}{an \code{eem} or \code{eemlist} object containing EEM's data}
+\item{x}{an \code{eem}, \code{eemlist}, \code{abs}, or \code{abslist} object containing EEM's or absorbance data}
 
 \item{nbin}{the number of bins used in the contour plot}
 
@@ -40,17 +46,18 @@ If less colors are provided than required, it will use \link[grDevices]{colorRam
 \item{remove_lower}{logical, should the area below the first order rayleigh line be set to NA values? This is helpful if there are artifacts in
 this region that are affecting the color scale.}
 
-\item{annotate}{logical, should plots show the index regions?}
+\item{annotate}{logical, should plots show the index regions on EEM's plot?}
 
 \item{index_method}{currently supports "eemanalyzeR", "eemR", and "usgs". See details for more information.}
 
-\item{...}{extra arguments for `plot`}
+\item{...}{extra arguments for \code{plot}}
 }
 \value{
-if eem is an \code{eem} it will return a single ggplot2 object. If eem is an \code{eemlist}, it will return a list of ggplot2 objects.
+if \code{x} is an \code{eem}, \code{abs}, or \code{abslist} it will return a single ggplot2 object. If \code{x} is an \code{eemlist} it will return a list of ggplot2 objects.
 }
 \description{
-Used to make a nice plot of one or multiple excitation emission matrices (EEMs) using ggplot2
+Used to make a nice plot of one or multiple excitation emission matrices (EEMs) or absorbance spectra
+using ggplot2.
 }
 \details{
 If you're plotting a single EEM, the object returned is a \code{ggplot2} object, so it is compatible with other ggplot2 functions to
@@ -63,33 +70,38 @@ If you find that plotting is taking more than a few seconds, it could be due to 
 \examples{
 
 eems <- example_processed_eems
+abs <- example_processed_abs
 
-#plot just one EEM
-plot(eems[[3]])
+#plot just one eem/abs
+  plot(eems[[3]])
+  plot(abs[[3]])
 
-#plot all EEMs in an eemlist
-plots <- plot(eems)
+#plot all in an eemlist or abslist
+  plots <- plot(eems)
+  plots <- plot(abs)
 
 #change color scale
-plot(eems, pal=c("darkblue", "lightblue"))
+  plot(eems, pal=c("darkblue", "lightblue"))
+  plot(abs, pal=c("darkblue", "lightblue"))
 
 #make color bar consistent across all plots
-plot(eems, equal_scale=TRUE)
+  plot(eems, equal_scale=TRUE)
 
 #customize using ggplot2 commands
-plot(eems[[2]]) + ggplot2::labs(title="Test EEM")
-plot(eems)[[3]] + ggplot2::labs(title="Test EEM")
+  plot(eems[[2]]) + ggplot2::labs(title="Test EEM")
+  plot(eems)[[3]] + ggplot2::labs(title="Test EEM")
 
 #modify then arrange together
-plots <- plot(eems)
-plots[[3]] <- plots[[3]] + ggplot2::labs(title="Test EEM")
-print(ggpubr::ggarrange(plotlist = plots))
+  plots <- plot(eems)
+  plots[[3]] <- plots[[3]] + ggplot2::labs(title="Test EEM")
+  print(ggpubr::ggarrange(plotlist = plots))
 
 #remove lower area below rayleigh line
-plots <- plot(eems, remove_lower=TRUE)
+  plots <- plot(eems, remove_lower=TRUE)
 
 #annotate the plot with the peaks
-plot(eems[[3]], annotate=TRUE)
+  plot(eems[[3]], annotate=TRUE)
+
 }
 \seealso{
 \href{https://ggplot2.tidyverse.org}{ggplot2}
