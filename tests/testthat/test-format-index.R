@@ -16,7 +16,7 @@ test_that("output is correct", {
   flags <- flag_missing(example_eems, ex=ex, em=em, all=FALSE)
   index <- format_index(example_eems, "test_index", vals, flags)
 
-  expect_equal(dim(index), c(6,4))
+  expect_equal(dim(index), c(8,4))
   expect_true(class(index) == "data.frame")
   expect_equal(colnames(index), c("sample_name", "meta_name", "index", "value"))
 
