@@ -22,7 +22,7 @@
                                                   "notes", "blk_file", "blk_x"))
       expect_equal(get_sample_info(augment_eemlist, "blk_file"),
                    c("data-raw/B1S1ExampleBlankBEM.dat","data-raw/B1S2ExampleTeaStdBEM.dat",
-                     "data-raw/B1S3ExampleSampleBEM.dat", "data-raw/preTea220805 (01) - Waterfall Plot Blank.dat"))
+                     "data-raw/B1S3ExampleSampleBEM.dat", "data-raw/ManualExampleTeaWaterfallPlotBlank.dat"))
       expect_equal(as.vector(augment_eemlist[[1]]$blk_x),as.vector(example_eems[[1]]$x))
 
     })
@@ -44,7 +44,7 @@
                                                   "notes", "blk_file", "blk_x"))
       expect_equal(get_sample_info(augment_eemlist, "blk_file"),
                    c("data-raw/B1S1ExampleBlankBEM.dat","data-raw/B1S2ExampleTeaStdBEM.dat",
-                     "data-raw/B1S3ExampleSampleBEM.dat", "data-raw/preTea220805 (01) - Waterfall Plot Blank.dat"))
+                     "data-raw/B1S3ExampleSampleBEM.dat", "data-raw/ManualExampleTeaWaterfallPlotBlank.dat"))
       expect_equal(as.vector(augment_eemlist[[1]]$blk_x),as.vector(example_eems[[1]]$x))
 
       #matching is correct regardless of order
@@ -53,7 +53,7 @@
       augment_eemlist <- add_blanks(samples, blanks, validate = FALSE)
       expect_equal(get_sample_info(augment_eemlist, "blk_file"),
                    c("data-raw/B1S1ExampleBlankBEM.dat","data-raw/B1S2ExampleTeaStdBEM.dat",
-                     "data-raw/B1S3ExampleSampleBEM.dat", "data-raw/preTea220805 (01) - Waterfall Plot Blank.dat"))
+                     "data-raw/B1S3ExampleSampleBEM.dat", "data-raw/ManualExampleTeaWaterfallPlotBlank.dat"))
     })
 
 #blanks are added when a single blank is supplied

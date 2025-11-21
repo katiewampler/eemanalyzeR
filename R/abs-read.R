@@ -20,7 +20,7 @@
 #'
 #' @examples
 #' abs_files <- list.files(system.file("extdata", package = "eemanalyzeR"),
-#' full.names=TRUE, pattern="ABS")
+#' full.names=TRUE, pattern="ABS|Abs ?Spectra ?Graphs")
 #' abs <- abs_read(abs_files[1])
 
 abs_read <- function(file){
@@ -90,6 +90,6 @@ abs_read <- function(file){
 
 
     return(obj)
-  }
+}
 
 

@@ -41,14 +41,13 @@
     abs_aug <- add_metadata(metadata, example_abs)
     eem_aug <- add_metadata(metadata, example_eems)
 
-    expect_equal(get_sample_info(eem_aug, "meta_name"), rep(c("ExampleBlank", "ExampleTeaStd", "ExampleSample", "preTea220805"), each=2))
+    expect_equal(get_sample_info(eem_aug, "meta_name"), rep(c("ExampleBlank", "ExampleTeaStd", "ExampleSample", "ManualExampleTea"), each=2))
 
     expect_false(any(is.na(get_sample_info(eem_aug, "raman_area_1s")))) #make sure these aren't NA
     expect_false(any(is.na(get_sample_info(eem_aug, "integration_time_s")))) #make sure these aren't NA
 
   })
 
-  # TODO update the ext data examples to test this
   test_that("Metadata adds sample type with and without sample_type in metadata", {
     meta_with_sample_type <- metadata
     meta_without_sample_type <- subset(metadata, select = -sample_type)
