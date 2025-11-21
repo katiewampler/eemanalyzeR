@@ -7,8 +7,8 @@
 add_metadata(
   meta,
   x,
-  sample_type_regex = list(iblank_pattern = "BEM$|Waterfall Plot Blank", sblank_pattern =
-    "Blank|blank", check_pattern = "Tea|tea")
+  sample_type_regex = list(iblank_pattern = "BEM$", sblank_pattern = "Blank|blank",
+    check_pattern = "Tea|tea")
 )
 }
 \arguments{

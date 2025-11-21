@@ -34,8 +34,7 @@ downscale_eems <- function(file, factor=6){
 
     #check for manual format, if so deal with differently
     if(grepl("nm\tuA", data[2])){
-      colnames <- strsplit(data[1], "\t")[[1]]
-      end_abs <- length(data)
+      end_abs <- grep("Wavelength\t", data)[2]
       data <- c(data[1:3],data[seq(4, end_abs, 6)])
     }else{
       data <- data[seq(1, length(data), 6)]
@@ -44,7 +43,7 @@ downscale_eems <- function(file, factor=6){
 
   }}
 
-files <- list.files("data-raw/fullsize-data", pattern=".dat", full.names = TRUE)
+files <- list.files("data-raw/fullsize data", pattern=".dat", full.names = TRUE)
 
 #downscale and save
 for(x in files){
@@ -53,10 +52,10 @@ for(x in files){
 
 #read into R environment
   #read in samples and blanks
-  example_eems <- eem_dir_read("data-raw", pattern="SEM|BEM|Waterfall")
+  example_eems <- eem_dir_read("data-raw", pattern="SEM|BEM")
 
   #read in absorbance
-  example_abs <- abs_dir_read("data-raw", pattern="ABS[.]dat|Abs")
+  example_abs <- abs_dir_read("data-raw", pattern="ABS[.]dat")
 
     usethis::use_data(example_eems, overwrite = T)
     usethis::use_data(example_abs, overwrite = T)
