@@ -37,13 +37,13 @@ test_that("absorbance indices are correct", {
     expect_equal(index$value[index$index == "SVA412"], (stardom_index$a412/doc_abs/log(10))[3], tolerance=1e-5)
 
   #spectral slopes
-    expect_equal(index$value[index$index == "S275_295"], stardom_index$S275_295[2:3], tolerance=1e-5)
-    expect_equal(index$value[index$index == "S350_400"], stardom_index$S350_400[2:3], tolerance=1e-5)
-    expect_equal(index$value[index$index == "SR"], stardom_index$SR[2:3], tolerance=1e-5)
+    expect_equal(index$value[index$index == "S275_295"], stardom_index$S275_295[2:4], tolerance=1e-5)
+    expect_equal(index$value[index$index == "S350_400"], stardom_index$S350_400[2:4], tolerance=1e-5)
+    expect_equal(index$value[index$index == "SR"], stardom_index$SR[2:4], tolerance=1e-5)
 
   #ratios
-    expect_equal(index$value[index$index == "E2_E3"], stardom_index$E2_E3[2:3], tolerance=1e-5)
-    expect_equal(index$value[index$index == "E4_E6"], stardom_index$E4_E6[2:3], tolerance=1e-5)
+    expect_equal(index$value[index$index == "E2_E3"], stardom_index$E2_E3[2:4], tolerance=1e-5)
+    expect_equal(index$value[index$index == "E4_E6"], stardom_index$E4_E6[2:4], tolerance=1e-5)
 })
 
 test_that("eems indices are correct", {

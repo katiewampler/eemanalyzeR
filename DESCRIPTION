@@ -45,6 +45,7 @@ Imports:
     rlang,
     staRdom,
     stats,
+    stringr,
     tidyr,
     tools,
     utils,
