@@ -99,7 +99,7 @@ add_metadata <- function(meta, x,
 
   if (!("sample_type" %in% names(meta))) {
     # Warn the user if sample types are pattern matched?
-    warning("Guessing sample_types by pattern matching data_identifier")
+    warning("No sample_type in Metadata. Guessing sample_types by pattern matching data_identifier")
     # Guess instrument blanks
     inst_blank_flags <- sapply(names,
                           \(s) grepl(
@@ -133,6 +133,7 @@ add_metadata <- function(meta, x,
     # Use these flags to assign eems
     convert_sample_flags <- function(x) {switch(
       formatC(x, width = 3, flag = "0"),
+      "111" = "iblank",
       "110" = "iblank",
       "101" = "iblank",
       "100" = "iblank",
