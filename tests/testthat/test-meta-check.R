@@ -63,11 +63,11 @@ test_that("dilutions get corrected",{
 
   meta$dilution <- 0
   expect_warning(col <- meta_check(meta)$dilution, "dilutions were missing or set to 0")
-  expect_equal(col, c(1,1,1))
+  expect_equal(col, c(1,1,1,1))
 
   meta$dilution <- NA
   expect_warning(col <- meta_check(meta)$dilution, "dilutions were missing or set to 0")
-  expect_equal(col, c(1,1,1))
+  expect_equal(col, c(1,1,1,1))
 
 })
 
@@ -76,7 +76,7 @@ test_that("replicate numbers get corrected",{
 
   meta$replicate_no <- NA
   expect_warning(col <- meta_check(meta)$replicate_no, "replicate numbers were missing")
-  expect_equal(col, c(1,1,1))
+  expect_equal(col, c(1,1,1,1))
 
 })
 

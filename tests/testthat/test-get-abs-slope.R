@@ -7,5 +7,5 @@ test_that("errors are returned", {
 
 test_that("correct values are returned", {
   abslist <- add_metadata(metadata, example_abs)
-  expect_equal(get_abs_slope(abslist, lim=c(250,350)), c(0.04412657, 0.01325616, 0.01361086), tolerance = 1e-4)
+  expect_equal(get_abs_slope(abslist, lim=c(250,350)), c(0.04412657, 0.01325616, 0.01361086, 0.0130602), tolerance = 1e-4)
 })

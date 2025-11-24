@@ -37,13 +37,13 @@ test_that("absorbance indices are correct", {
     expect_equal(index$value[index$index == "SVA412"], (stardom_index$a412/doc_abs/log(10))[3], tolerance=1e-5)
 
   #spectral slopes
-    expect_equal(index$value[index$index == "S275_295"], stardom_index$S275_295[2:3], tolerance=1e-5)
-    expect_equal(index$value[index$index == "S350_400"], stardom_index$S350_400[2:3], tolerance=1e-5)
-    expect_equal(index$value[index$index == "SR"], stardom_index$SR[2:3], tolerance=1e-5)
+    expect_equal(index$value[index$index == "S275_295"], stardom_index$S275_295[2:4], tolerance=1e-5)
+    expect_equal(index$value[index$index == "S350_400"], stardom_index$S350_400[2:4], tolerance=1e-5)
+    expect_equal(index$value[index$index == "SR"], stardom_index$SR[2:4], tolerance=1e-5)
 
   #ratios
-    expect_equal(index$value[index$index == "E2_E3"], stardom_index$E2_E3[2:3], tolerance=1e-5)
-    expect_equal(index$value[index$index == "E4_E6"], stardom_index$E4_E6[2:3], tolerance=1e-5)
+    expect_equal(index$value[index$index == "E2_E3"], stardom_index$E2_E3[2:4], tolerance=1e-5)
+    expect_equal(index$value[index$index == "E4_E6"], stardom_index$E4_E6[2:4], tolerance=1e-5)
 })
 
 test_that("eems indices are correct", {
@@ -55,7 +55,29 @@ test_that("eems indices are correct", {
   indices <- eemanalyzeR_indices(eemlist, abslist, mdl_dir = mdl_dir)
 
   #compare values to see if anything changed
-  expect_snapshot(indices$eem_index)
+    #round values so they're consistent across computers
+    round_indices <- function(index){
+      #get flags
+      flag <- regmatches(index$value, gregexpr("[A-Z]+[A-Z0-9_]*\\d[A-Z0-9_]*", index$value))
+      flag <- sapply(flag, function(v) if (length(v)==0) NA else v)
+
+      #get vals
+      value <- regmatches(index$value, gregexpr("-?\\d+\\.\\d+", index$value))
+      value <- sapply(value, function(v) if (length(v)==0) NA else as.numeric(v))
+      value <- round(value, 4)
+
+      #put back together
+      merge <- !is.na(value) & !is.na(flag) & value != flag
+      value[is.na(value)] <- flag[is.na(value)]
+      value[merge] <- paste0(value[merge], "_", flag[merge])
+
+      index$value <- value
+
+      return(index)
+    }
+    indices <- lapply(indices, round_indices)
+
+    expect_snapshot(indices$eem_index)
 
 })
 

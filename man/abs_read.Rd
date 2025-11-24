@@ -25,6 +25,6 @@ to load an EEM's file it will return a warning and a NULL value for absorbance.
 }
 \examples{
 abs_files <- list.files(system.file("extdata", package = "eemanalyzeR"),
-full.names=TRUE, pattern="ABS")
+full.names=TRUE, pattern="ABS|Abs ?Spectra ?Graphs")
 abs <- abs_read(abs_files[1])
 }

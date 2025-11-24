@@ -23,35 +23,33 @@ test_that("data export works", {
     readme_file <- file.path(dir, prjname, files[1])
     expect_equal(length(readLines(readme_file)), 30) #not 40 because here the indices haven't been written
     data <- readRDS(file.path(dir, prjname, files[2]))
-    expect_equal(names(data), c("eemlist","abslist","readme","metadata","indices","eem_plot", "abs_plot"))
+    expect_equal(names(data), c("eemlist","abslist","readme","metadata","indices","plots"))
     expect_s3_class(data$metadata, "data.frame")
 
   #check indices, and plots
-    eem_plots <- plot(eemlist, remove_lower = T)
-    abs_plots <- plot(abslist)
+    plots <- plot_eem(eemlist, remove_lower = T)
     indices <- get_indices(eemlist, abslist, return="wide",  mdl_dir = system.file("extdata", package = "eemanalyzeR"))
 
-    export_data(eemlist, abslist,prjname, dir, metadata, indices, eem_plots, abs_plots)
+    export_data(eemlist, abslist,prjname, dir, metadata, indices, plots)
 
-    files <- paste0(c(paste0(c("absindices_", "fluorindices_", "summary_plots_", "absorbance_plot_"), prjname),
-                      c("B1S1ExampleBlankSEM", "B1S2ExampleTeaStdSEM", "B1S3ExampleSampleSEM")), c(rep(".csv",2), rep(".png", 5)))
-
+    files <- paste0(c(paste0(c("absindices_", "fluorindices_", "summary_plots_"), prjname),
+                      c("B1S1ExampleBlankSEM", "B1S2ExampleTeaStdSEM", "B1S3ExampleSampleSEM", "ManualExampleTeaWaterfallPlotSample")), c(rep(".csv",2), rep(".png", 5)))
     expect_true(all(file.exists(file.path(dir, prjname, files))))
 
     abs_index <- read.csv(file.path(dir, prjname, files[1]))
     expect_true(all(!is.na(abs_index)))
-    expect_equal(dim(abs_index), c(3, 10))
+    expect_equal(dim(abs_index), c(4, 10))
 
     eem_index <- read.csv(file.path(dir, prjname, files[2]))
     expect_true(all(!is.na(eem_index)))
-    expect_equal(dim(eem_index), c(3, 27))
+    expect_equal(dim(eem_index), c(4, 27))
 
     expect_equal(length(readLines(readme_file)), 44) #now 44 because here the indices have been written
 
 
   #check writing to csv
-    export_data(eemlist, abslist, prjname, dir, metadata, indices, eem_plots, abs_plots, csv = TRUE)
-    files <- c(paste0(c("B1S1ExampleBlankSEM", "B1S2ExampleTeaStdSEM", "B1S3ExampleSampleSEM"), "_processed.csv"),
+    export_data(eemlist, abslist, prjname, dir, metadata, indices, plots, csv = TRUE)
+    files <- c(paste0(c("B1S1ExampleBlankSEM", "B1S2ExampleTeaStdSEM", "B1S3ExampleSampleSEM", "ManualExampleTeaWaterfallPlotSample"), "_processed.csv"),
                 paste0("absorbance_processed_", prjname, ".csv"))
 
     expect_true(all(file.exists(file.path(dir, prjname, files))))
@@ -59,10 +57,12 @@ test_that("data export works", {
     abs_data <- read.csv(file.path(dir, prjname, paste0("absorbance_processed_", prjname, ".csv")))
     eem_data <- read.csv(file.path(dir, prjname, "B1S2ExampleTeaStdSEM_processed.csv"))
 
-    expect_equal(dim(abs_data), c(32,4))
+    expect_equal(dim(abs_data), c(32,5))
     expect_equal(dim(eem_data), c(26,12))
 
     expect_equal(colnames(abs_data), c("wavelength", get_sample_info(abslist, "sample")))
     expect_equal(as.vector(as.matrix(eem_data[-1])), as.vector(eemlist[[2]]$x))
+  
+  
 
 })

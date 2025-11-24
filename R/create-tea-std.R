@@ -116,7 +116,7 @@ create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", i
 
     #turn into a eem object
     dates <- get_sample_info(tea_eems, "analysis_date")
-    tea_eem <- list(file= file.path(output_dir, "eem-tea-std.Rds"),
+    tea_eem <- list(file= file.path(output_dir, "eem-tea-std.rds"),
                     sample="long-term-tea-std",
                     x = mean,
                     ex = get_sample_info(tea_eems, "ex")[1,],
@@ -140,7 +140,7 @@ create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", i
 
     #cache tea data
     if(output_dir != FALSE){
-      saveRDS(tea_eem, file.path(output_dir, "eem-tea-std.Rds"))
+      saveRDS(tea_eem, file.path(output_dir, "eem-tea-std.rds"))
     }else{
       return(tea_eem)
     }
@@ -174,7 +174,7 @@ create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", i
 
     #turn into a abs object
     dates <- get_sample_info(tea, "analysis_date")
-    tea_abs <- list(file= file.path(output_dir, "abs-tea-std.Rds"),
+    tea_abs <- list(file= file.path(output_dir, "abs-tea-std.rds"),
                     sample="long-term-tea-std",
                     n = length(unique(tea_abs_df$wavelength)),
                     data = unname(as.matrix(abs_tea[order(abs_tea$wavelength, decreasing=TRUE),])),
@@ -195,7 +195,7 @@ create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", i
 
     #cache tea data
     if(output_dir != FALSE){
-      saveRDS(tea_abs, file.path(output_dir, "abs-tea-std.Rds"))
+      saveRDS(tea_abs, file.path(output_dir, "abs-tea-std.rds"))
     }else{
       return(tea_abs)
     }

@@ -52,16 +52,16 @@
 
     #for wide
     indices <- get_indices(eemlist, abslist, mdl_dir=mdl_dir, return="wide")
-    expect_equal(nrow(indices$abs_index), 3)
-    expect_equal(nrow(indices$eem_index), 3)
+    expect_equal(nrow(indices$abs_index), 4)
+    expect_equal(nrow(indices$eem_index), 4)
     expect_true(all(apply(indices$abs_index, 1, class) == "character"))
     expect_true(all(apply(indices$eem_index, 1, class) == "character"))
 
-    expect_length(unique(indices$eem_index$meta_name), 3)
-    expect_length(unique(indices$abs_index$meta_name), 3)
+    expect_length(unique(indices$eem_index$meta_name), 4)
+    expect_length(unique(indices$abs_index$meta_name), 4)
 
-    expect_length(unique(indices$abs_index$sample_name), 3)
-    expect_length(unique(indices$eem_index$sample_name), 3)
+    expect_length(unique(indices$abs_index$sample_name), 4)
+    expect_length(unique(indices$eem_index$sample_name), 4)
 
 
   })

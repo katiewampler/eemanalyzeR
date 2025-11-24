@@ -33,7 +33,7 @@
 #' eem_augment <- add_metadata(metadata, example_eems)
 
 add_metadata <- function(meta, x,
-                         sample_type_regex = list(iblank_pattern = "BEM$|Waterfall Plot Blank",
+                         sample_type_regex = list(iblank_pattern = "BEM$|Waterfall ?Plot ?Blank",
                                                   sblank_pattern = "Blank|blank",
                                                   check_pattern = "Tea|tea")) {
 
