@@ -3,8 +3,8 @@
 #' Visually inspect plots of the tea check standards compared to the [long-term standard][create_tea_std()].
 #'
 #' @param abslist an object of class `abslist`
-#' @param file path to the QAQC files generated with [`create_mdl`][create_mdl()] and [`create_tea_std`][create_tea_std()],
-#' default is a user-specific data directory ([`user_data_dir`][rappdirs::user_data_dir])
+#' @param std_dir file path to the QAQC files generated with \link[eemanalyzeR]{create_mdl} and \link[eemanalyzeR]{create_tea_std},
+#' default is a user-specific data directory (\link[rappdirs]{user_data_dir})
 #' @param tolerance what is the maximum percentage the tea standard can vary from the long-term values without being flagged?
 #' @md
 #'
@@ -33,7 +33,7 @@ validate_check_std <- function(abslist, std_dir=.qaqc_dir(), tolerance=0.2){
     }
 
   #prepare data for plotting
-    std_plot <- as.data.frame(abs_std$data) %>% mutate(min = V2*(1-tolerance), max=V2*(1+tolerance))
+    std_plot <- as.data.frame(abs_std$data) %>% mutate(min = .data$V2*(1-tolerance), max=.data$V2*(1+tolerance))
     check_plot <- get_sample_info(check, "data") %>% pivot_longer(-"wavelength", names_to = "sample", values_to="abs")
 
   #plot tea with tea standard

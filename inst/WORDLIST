@@ -3,6 +3,7 @@ Acta
 Amiotti
 Analytica
 Aqualog
+Autosampler
 BIX
 Babic
 Baigar
@@ -19,6 +20,7 @@ Donati
 Doran
 EEM
 EEM's
+EEMS
 EEMs
 Ecohydrology
 Emblanch
@@ -132,7 +134,6 @@ boreal
 chromophoric
 csv
 cuvette
-descrite
 diagenetically
 doi
 eem
@@ -151,6 +152,7 @@ hix
 https
 humic
 humification
+iblank
 lapply
 mdl
 mgL
@@ -186,6 +188,7 @@ readme
 recurse
 sagepub
 sampleQ
+sblank
 sd
 sdmax
 sdmin
