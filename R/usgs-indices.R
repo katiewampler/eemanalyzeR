@@ -11,7 +11,7 @@
 #' @param eemlist an \code{eemlist} object containing EEM's data. See details for more info.
 #' @param abslist an \code{abslist} object containing absorbance data.
 #' @param cuvle cuvette (path) length in cm
-#' @param mdl_dir file path to the mdl files generated with \link[eemanalyzeR]{create_mdl},
+#' @param qaqc_dir file path to the mdl files generated with \link[eemanalyzeR]{create_mdl},
 #' default is a user-specific data directory (\link[rappdirs]{user_data_dir})
 #'
 #' @note If absorbance is not at a 1 nanometer interval, absorbance will be interpolated using
@@ -44,12 +44,12 @@
 #'
 #' @examples
 #' indices <- usgs_indices(example_processed_eems, example_processed_abs,
-#' mdl_dir = system.file("extdata", package = "eemanalyzeR"))
-usgs_indices <- function(eemlist, abslist, cuvle=1, mdl_dir=.qaqc_dir()){
+#' qaqc_dir = system.file("extdata", package = "eemanalyzeR"))
+usgs_indices <- function(eemlist, abslist, cuvle=1, qaqc_dir=.qaqc_dir()){
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
 
   #get mdl data
-   mdls <- .check_mdl_file(mdl_dir)
+   mdls <- .check_mdl_file(qaqc_dir)
    eem_mdl <- mdls$eem_mdl
    abs_mdl <- mdls$abs_mdl
 

@@ -7,7 +7,7 @@
 check_std(
   eemlist,
   abslist,
-  std_dir = .qaqc_dir(),
+  qaqc_dir = .qaqc_dir(),
   tolerance = 0.2,
   index_method = "eemanalyzeR",
   vals = FALSE
@@ -18,7 +18,7 @@ check_std(
 
 \item{abslist}{An object of class \code{abslist}; must be fully processed.}
 
-\item{std_dir}{File path to the QAQC files generated with
+\item{qaqc_dir}{File path to the QAQC files generated with
 \code{\link[=create_std]{create_std()}}.The default is a user-specific data directory via
 \link[rappdirs:user_data_dir]{rappdirs::user_data_dir}.}
 
@@ -55,6 +55,6 @@ with the long-term standard values.
 check_std(
   example_processed_eems,
   example_processed_abs,
-  std_dir = system.file("extdata", package = "eemanalyzeR")
+  qaqc_dir = system.file("extdata", package = "eemanalyzeR")
 )
 }

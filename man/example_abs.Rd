@@ -5,22 +5,21 @@
 \alias{example_abs}
 \title{Down-scaled absorbance data}
 \format{
-An \code{abslist} with three samples
-\itemize{
-  \item{\strong{B1S1ExampleBlankABS}: Absorbance measured for a sample of Type 1 water}
-  \item{\strong{B1S2ExampleTeaStdABS}: Absorbance measured for a sample of dilute unsweetened tea}
-  \item{\strong{B1S3ExampleSampleABS}: Absorbance measured for a sample of stream water from Oregon, USA}
-}
+An `abslist` with four samples:
+- **B1S1ExampleBlankABS**: Absorbance measured for a sample of Type 1 water
+- **B1S2ExampleTeaStdABS**: Absorbance measured for a sample of dilute unsweetened tea
+- **B1S3ExampleSampleABS**: Absorbance measured for a sample of stream water from Oregon, USA
+- **ManualExampleTeaAbsSpectraGraphs**: Absorbance measured for a sample of dilute unsweetened tea
 }
 \source{
-Oregon State University Forest Ecohydrology and Watershed Sciences Lab (2022-11-14)
+Oregon State University Forest Ecohydrology and Watershed Sciences Lab (2022-11-14 and 2022-08-05).
 }
 \usage{
 example_abs
 }
 \description{
 A subset of water samples run on a Horiba Aqualog for absorbance. This data only includes
-the absorbance data associated with the samples in \link{example_eems}. Data was loaded using the
-\link[eemanalyzeR]{abs_dir_read} function. For more details on the format of an eemlist, see \link[eemanalyzeR]{abs_read}.
+the absorbance data associated with the samples in [example_eems()]. Data was loaded using [abs_dir_read()].
+For more details on the format of an abslist, see [abs_read()].
 }
 \keyword{datasets}

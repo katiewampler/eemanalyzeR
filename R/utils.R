@@ -285,21 +285,21 @@ check_processing <- function(eem){
 #' If they exist will load, if not will warn. Writes the appropriate message about
 #' MDL in the readme.
 #'
-#' @param mdl_dir file path to the mdl files generated with \link[eemanalyzeR]{create_mdl}
+#' @param qaqc_dir file path to the mdl files generated with \link[eemanalyzeR]{create_mdl}
 #'
 #' @noRd
 #'
-.check_mdl_file <- function(mdl_dir){
+.check_mdl_file <- function(qaqc_dir){
   #get mdl data
-  check_eem <- file.exists(file.path(mdl_dir, "eem-mdl.rds"))
-  check_abs <- file.exists(file.path(mdl_dir, "abs-mdl.rds"))
+  check_eem <- file.exists(file.path(qaqc_dir, "eem-mdl.rds"))
+  check_abs <- file.exists(file.path(qaqc_dir, "abs-mdl.rds"))
 
   #load mdl data or warn
   if(!check_eem){
     warning("fluorescence MDL is missing, indices will not be checked for MDLs")
     .write_readme_line("Fluorescence indices were not checked against method detection limits (MDL)", "mdl")
     eem_mdl <- NULL
-  }else{eem_mdl <- readRDS(file.path(mdl_dir, "eem-mdl.rds"))
+  }else{eem_mdl <- readRDS(file.path(qaqc_dir, "eem-mdl.rds"))
   .write_readme_line("Fluorescence indices were checked against method detection limits (MDL)", "mdl")
   }
 
@@ -307,7 +307,7 @@ check_processing <- function(eem){
     warning("absorbance MDL is missing, indices will not be checked for MDLs")
     .write_readme_line("Absorbance indices were not checked against method detection limits (MDL)\n", "mdl", append = TRUE)
     abs_mdl <- NULL
-  }else{abs_mdl <- readRDS(file.path(mdl_dir, "abs-mdl.rds"))
+  }else{abs_mdl <- readRDS(file.path(qaqc_dir, "abs-mdl.rds"))
   .write_readme_line("Absorbance indices were checked against method detection limits (MDL)\n", "mdl", append=TRUE)
   }
 

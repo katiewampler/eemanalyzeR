@@ -1,42 +1,53 @@
-#' Add metadata to absorbance and EEM's data
+#' Add metadata to absorbance and EEM data
 #'
-#' @param meta a \code{data.frame} of metadata
-#' @param x an \code{abslist} or \code{eemlist} object
-#' @param sample_type_regex a named list of regex strings to find instrument blanks, sample blanks, check standards, and samples using pattern matching.
+#' Adds metadata from a data frame to an `abslist` or `eemlist` object as additional
+#' list items.
 #'
-#' @note if \code{eemlist} contains blanks, the blanks will get the metadata of the corresponding sample.
+#' @md
 #'
-#' @returns returns an object of the same class as the object input into the function (\code{abslist} or \code{eemlist}) with metadata added in
-#' The following items are added for each sample, if available in the metadata:
-#' \itemize{
-#'  \item meta_name: the data identifier of the sample.
-#'  \item dilution: the dilution factor for the sample.
-#'  \item analysis_date: the date the sample was run.
-#'  \item description: optional description of sample.
-#'  \item sample_type: optional Flag for whether the data identifier is linked to a real sample (sample), sample blank (sblank), or check standard (check). Default values are for data exports for the Horiba Aqualog with Autosampler
-#'  \item doc_mgL: the concentration of dissolved organic carbon in the sample given in mg \ifelse{html}{\out{L<sup>-1</sup>}}{\eqn{L^{-1}}}
-#'  \item notes: optional notes related to the sample or sample collection.
-#' }
-#' if \code{x} is a \code{eemlist} an additional two items are added to each sample:
-#' \itemize{
-#'  \item integration_time_s: the integration time for the sample.
-#'  \item raman_area_1s: the area under the raman water peak with a 1 second integration time.
-#' }
+#' @param meta A `data.frame` containing metadata.
+#' @param x An `abslist` or `eemlist` object.
+#' @param sample_type_regex A **named list** of regular expressions used to identify
+#' instrument blanks, sample blanks, check standards, and samples via pattern matching.
+#'
+#' @note
+#' If an `eemlist` contains blanks, the blanks automatically inherit metadata from their
+#' corresponding sample.
+#'
+#' @return
+#' An object of the same class as the input (`abslist` or `eemlist`), with metadata added.
+#'
+#' For each sample, the following fields may be added (if present in the metadata):
+#'
+#' - **meta_name**: identifier for the sample
+#' - **dilution**: sample dilution factor
+#' - **analysis_date**: date the sample was run
+#' - **description**: optional description
+#' - **sample_type**: optional flag (e.g., `sample` for a sample,
+#'    `sblank` for an analytical blank, `check` for a check standard).
+#'   Default values match Horiba Aqualog exports.
+#' - **doc_mgL**: dissolved organic carbon concentration in mg L⁻¹
+#' - **notes**: optional notes on sample or sampling conditions
+#'
+#' If `x` is an `eemlist`, two additional items are added:
+#'
+#' - **integration_time_s**: integration time of the sample
+#' - **raman_area_1s**: Raman water peak area normalized to 1-second integration time.
+#'
 #' @export
 #'
 #' @examples
-#'
-#' #add metadata to absorbance data
+#' # Add metadata to absorbance data
 #' abs_augment <- add_metadata(metadata, example_abs)
 #'
-#' #add metadata to EEM's data
+#' # Add metadata to EEM data
 #' eem_augment <- add_metadata(metadata, example_eems)
-
 add_metadata <- function(meta, x,
-                         sample_type_regex = list(iblank_pattern = "BEM$|Waterfall ?Plot ?Blank",
-                                                  sblank_pattern = "Blank|blank",
-                                                  check_pattern = "Tea|tea")) {
-
+                         sample_type_regex = list(
+                           iblank_pattern = "BEM$|Waterfall ?Plot ?Blank",
+                           sblank_pattern = "Blank|blank",
+                           check_pattern = "Tea|tea"
+                         )) {
   class_type <- class(x)
 
   stopifnot("data.frame" %in% class(meta), class_type %in% c("abslist", "eemlist"))
@@ -44,48 +55,54 @@ add_metadata <- function(meta, x,
   names <- get_sample_info(x, "sample")
 
   # Reorganize EEMlist or ABSlist to match metadata ----
-  meta_order <- data.frame(eem_pos = 1:length(names), meta_row=NA)
+  meta_order <- data.frame(eem_pos = 1:length(names), meta_row = NA)
 
-  .get_row_meta <- function(name, meta){
-    name <- gsub("([\\(\\)\\-])", "\\\\\\1", name) #escape special characters
+  .get_row_meta <- function(name, meta) {
+    name <- gsub("([\\(\\)\\-])", "\\\\\\1", name) # escape special characters
     meta$data_identifier <- gsub("([\\(\\)\\-])", "\\\\\\1", meta$data_identifier)
 
-    row <- which(sapply(meta$data_identifier, grep, name, fixed=T) == 1)
+    row <- which(sapply(meta$data_identifier, grep, name, fixed = T) == 1)
 
-    if(length(row) > 1){
+    if (length(row) > 1) {
       row <- row[which.max(nchar(meta$data_identifier)[row])]
     }
 
-    if(length(row) == 0){row <- NA}
+    if (length(row) == 0) {
+      row <- NA
+    }
     return(row)
   }
 
-  meta_order <- sapply(names, .get_row_meta, meta) #get order of eems in metadata
+  meta_order <- sapply(names, .get_row_meta, meta) # get order of eems in metadata
 
-  #return error if more than one row
-  if(inherits(meta_order, "list")){
+  # return error if more than one row
+  if (inherits(meta_order, "list")) {
     stop("samples matched more than one row in the metadata, please correct and rerun")
   }
   names(meta_order) <- names
-  #meta_order is the order of the eems where the number is the corresponding row of the metadata
+  # meta_order is the order of the eems where the number is the corresponding row of the metadata
 
-  #check for missing samples either in metadata or in abs
+  # check for missing samples either in metadata or in abs
 
-  if(any(is.na(meta_order))){
-    #give warning about samples not in metadata
+  if (any(is.na(meta_order))) {
+    # give warning about samples not in metadata
     missing_meta <- names[is.na(meta_order)]
-    warning("the following data are missing from metadata:\n", paste(missing_meta, collapse="\n"),
-            "\nthese sample will be removed from further processing")
+    warning(
+      "the following data are missing from metadata:\n", paste(missing_meta, collapse = "\n"),
+      "\nthese sample will be removed from further processing"
+    )
     x <- x[!is.na(meta_order)]
     meta_order <- na.omit(meta_order)
   }
 
   # Check that metadata and Aqualog files have the same number ----
-  if(length(unique(meta_order)) < nrow(meta)){
-    warning("the following sample is in metadata but was missing in data:\n",
-            paste(meta$data_identifier[setdiff(1:nrow(meta), meta_order)], collapse="\n"),
-            "\nthese sample will be removed from further processing")
-    meta <- meta[-setdiff(1:nrow(meta), meta_order),]
+  if (length(unique(meta_order)) < nrow(meta)) {
+    warning(
+      "the following sample is in metadata but was missing in data:\n",
+      paste(meta$data_identifier[setdiff(1:nrow(meta), meta_order)], collapse = "\n"),
+      "\nthese sample will be removed from further processing"
+    )
+    meta <- meta[-setdiff(1:nrow(meta), meta_order), ]
   }
 
   # Deal with sample_types ----
@@ -102,66 +119,74 @@ add_metadata <- function(meta, x,
     warning("No sample_type in Metadata. Guessing sample_types by pattern matching data_identifier")
     # Guess instrument blanks
     inst_blank_flags <- sapply(names,
-                          \(s) grepl(
-                            pattern = sample_type_regex$iblank_pattern,
-                            x = s,
-                            ignore.case = FALSE
-                          ),
-                          USE.NAMES = FALSE)
+      \(s) grepl(
+        pattern = sample_type_regex$iblank_pattern,
+        x = s,
+        ignore.case = FALSE
+      ),
+      USE.NAMES = FALSE
+    )
     # Guess checks
     check_flags <- sapply(names,
-                          \(s) grepl(
-                            pattern = sample_type_regex$check_pattern,
-                            x = s,
-                            ignore.case = FALSE
-                          ),
-                          USE.NAMES = FALSE)
+      \(s) grepl(
+        pattern = sample_type_regex$check_pattern,
+        x = s,
+        ignore.case = FALSE
+      ),
+      USE.NAMES = FALSE
+    )
     # Guess sample blanks
     sample_blank_flags <- sapply(names,
-                                 \(s) grepl(
-                                   pattern = sample_type_regex$sblank_pattern,
-                                   x = s,
-                                   ignore.case = FALSE
-                                 ),
-                                 USE.NAMES = FALSE)
+      \(s) grepl(
+        pattern = sample_type_regex$sblank_pattern,
+        x = s,
+        ignore.case = FALSE
+      ),
+      USE.NAMES = FALSE
+    )
 
     # Put all these together to come up with one sample type per name
     cat_flags <- paste0(
       as.integer(inst_blank_flags),
       as.integer(sample_blank_flags),
-      as.integer(check_flags))
+      as.integer(check_flags)
+    )
     # Use these flags to assign eems
-    convert_sample_flags <- function(x) {switch(
-      formatC(x, width = 3, flag = "0"),
-      "111" = "iblank",
-      "110" = "iblank",
-      "101" = "iblank",
-      "100" = "iblank",
-      "010" = "sblank",
-      "001" = "check",
-      "000" = "sample",
-      stop("Sample Type Not Guessed Successfully"))}
+    convert_sample_flags <- function(x) {
+      switch(formatC(x, width = 3, flag = "0"),
+        "111" = "iblank",
+        "110" = "iblank",
+        "101" = "iblank",
+        "100" = "iblank",
+        "010" = "sblank",
+        "001" = "check",
+        "000" = "sample",
+        stop("Sample Type Not Guessed Successfully")
+      )
+    }
     sample_types <- sapply(cat_flags, convert_sample_flags, USE.NAMES = FALSE)
 
-  # Sample type in metadata for eemslist
-  } else if(class_type == "eemlist") {
+    # Sample type in metadata for eemslist
+  } else if (class_type == "eemlist") {
     # starting guess
     meta_sample_type <- meta$sample_type[meta_order]
     # Pattern match the iblank pattern
     inst_blank_flags <- sapply(names,
-                               \(s) grepl(
-                                 pattern = sample_type_regex$iblank_pattern,
-                                 x = s,
-                                 ignore.case = FALSE
-                               ),
-                               USE.NAMES = FALSE)
+      \(s) grepl(
+        pattern = sample_type_regex$iblank_pattern,
+        x = s,
+        ignore.case = FALSE
+      ),
+      USE.NAMES = FALSE
+    )
     # Any that match the iblank pattern are iblanks
     sample_types <- ifelse(inst_blank_flags,
-                           "iblank",
-                           meta_sample_type)
+      "iblank",
+      meta_sample_type
+    )
 
-  # Different logic for abslists
-  } else if(class_type == "abslist") {
+    # Different logic for abslists
+  } else if (class_type == "abslist") {
     sample_types <- meta$sample_type
   }
 
@@ -175,20 +200,22 @@ add_metadata <- function(meta, x,
     raman_area_1s = meta$RSU_area_1s[meta_order],
     sample_type = meta$sample_types, # No meta_order here to account for instrument blanks repeating
 
-    #Optional
-    analysis_date = if("analysis_date" %in% colnames(meta)) meta$analysis_date[meta_order] else NA,
-    description = if("description" %in% colnames(meta)) meta$description[meta_order] else NA,
-    doc_mgL = if("DOC_mg_L" %in% colnames(meta)) meta$DOC_mg_L[meta_order] else NA,
-    notes = if("Notes" %in% colnames(meta)) meta$Notes[meta_order] else NA
+    # Optional
+    analysis_date = if ("analysis_date" %in% colnames(meta)) meta$analysis_date[meta_order] else NA,
+    description = if ("description" %in% colnames(meta)) meta$description[meta_order] else NA,
+    doc_mgL = if ("DOC_mg_L" %in% colnames(meta)) meta$DOC_mg_L[meta_order] else NA,
+    notes = if ("Notes" %in% colnames(meta)) meta$Notes[meta_order] else NA
   )
 
-  #remove samples in metadata that don't have samples, do after because otherwise the meta_order doesn't match meta
-    if(length(unique(meta_order)) < nrow(meta)){
-      warning("the following sample is in metadata but was missing in data:\n",
-              paste(meta$data_identifier[setdiff(1:nrow(meta), meta_order)], collapse="\n"),
-              "\nthese sample will be removed from further processing")
-      meta <- meta[-setdiff(1:nrow(meta), meta_order),]
-    }
+  # remove samples in metadata that don't have samples, do after because otherwise the meta_order doesn't match meta
+  if (length(unique(meta_order)) < nrow(meta)) {
+    warning(
+      "the following sample is in metadata but was missing in data:\n",
+      paste(meta$data_identifier[setdiff(1:nrow(meta), meta_order)], collapse = "\n"),
+      "\nthese sample will be removed from further processing"
+    )
+    meta <- meta[-setdiff(1:nrow(meta), meta_order), ]
+  }
 
   # loop across the metadata
   x <- lapply(1:length(meta_order), function(y) {
@@ -198,9 +225,9 @@ add_metadata <- function(meta, x,
     obj$meta_name <- meta_data$meta_name[y]
     obj$dilution <- meta_data$dilution[y]
 
-    if(.is_eemlist(x)){
-      obj$integration_time_s = meta_data$integration_time_s[y]
-      obj$raman_area_1s = meta_data$raman_area_1s[y]
+    if (.is_eemlist(x)) {
+      obj$integration_time_s <- meta_data$integration_time_s[y]
+      obj$raman_area_1s <- meta_data$raman_area_1s[y]
     }
 
     # assign values if they are in metadata
@@ -215,21 +242,20 @@ add_metadata <- function(meta, x,
     return(obj)
   })
 
-  #reorder to metadata
+  # reorder to metadata
   x <- x[order(meta_order)]
 
   # ensure object returned is same type as input
-  if(class_type == "abslist"){
+  if (class_type == "abslist") {
     class(x) <- "abslist"
     stopifnot(.is_abslist(x))
   }
 
-  if(class_type == "eemlist"){
+  if (class_type == "eemlist") {
     class(x) <- "eemlist"
     stopifnot(.is_eemlist(x))
   }
 
 
-  return(x)}
-
-
+  return(x)
+}

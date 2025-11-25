@@ -9,7 +9,7 @@
 #' @param tolerance what is the maximum percentage the tea standard can vary from the long-term values without being flagged?
 #' @param return either "long" or "wide" to specify the format of the indices data.frames
 #' @param cuvle cuvette (path) length in cm
-#' @param mdl_dir file path to the mdl files generated with \link[eemanalyzeR]{create_mdl} and \link[eemanalyzeR]{create_std},
+#' @param qaqc_dir file path to the mdl files generated with \link[eemanalyzeR]{create_mdl} and \link[eemanalyzeR]{create_std},
 #' default is a user-specific data directory (\link[rappdirs]{user_data_dir})
 #' @param arg_names optional argument used to pass arguments from higher level functions for writing the readme.
 #'
@@ -63,11 +63,11 @@
 #' }
 #' @examples
 #' indices <- get_indices(example_processed_eems, example_processed_abs,
-#' mdl_dir = system.file("extdata", package = "eemanalyzeR"))
+#' qaqc_dir = system.file("extdata", package = "eemanalyzeR"))
 
 get_indices <- function(eemlist, abslist, index_method="eemanalyzeR",
                         tolerance= 0.2, return ="long",
-                        cuvle=1, mdl_dir= .qaqc_dir(), arg_names=NULL){
+                        cuvle=1, qaqc_dir= .qaqc_dir(), arg_names=NULL){
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist))
 
   #check if processing has been done, not warn that indices may be unreliable
@@ -83,8 +83,8 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR",
 
   #collect arguments for readme, and to put into the following functions
     if(is.null(arg_names)){
-      args <- rlang::enquos(index_method, return, cuvle, mdl_dir)
-      names(args) <- c("index_method", "return", "cuvle", "mdl_dir")
+      args <- rlang::enquos(index_method, return, cuvle, qaqc_dir)
+      names(args) <- c("index_method", "return", "cuvle", "qaqc_dir")
     }else{args <- arg_names}
 
   #if DOC normalized, make not normalized to not normalize twice for indices
@@ -101,7 +101,7 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR",
   index_function <- get_indices_function(index_method)
 
   #get indices
-  indices <- index_function(eemlist, abslist, cuvle = cuvle, mdl_dir=mdl_dir)
+  indices <- index_function(eemlist, abslist, cuvle = cuvle, qaqc_dir=qaqc_dir)
 
 
   #initialize QAQC flag
@@ -207,7 +207,7 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR",
       }
 
     #check check standards
-      std_check <- check_std(eemlist, abslist, std_dir=mdl_dir,
+      std_check <- check_std(eemlist, abslist, qaqc_dir=qaqc_dir,
                                  index_method=index_method, tolerance=tolerance)
       indices <- lapply(indices, std_flag, std_check)
 

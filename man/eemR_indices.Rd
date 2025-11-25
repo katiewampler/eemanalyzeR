@@ -4,17 +4,17 @@
 \alias{eemR_indices}
 \title{eemR and staRdom methods for fluorescence and absorbance indices}
 \usage{
-eemR_indices(eemlist, abslist, cuvle = 1, mdl_dir = .qaqc_dir())
+eemR_indices(eemlist, abslist, cuvle = 1, qaqc_dir = .qaqc_dir())
 }
 \arguments{
-\item{eemlist}{an \code{eemlist} object containing EEM's data. See details for more info.}
+\item{eemlist}{An \code{eemlist} object containing EEM data.}
 
-\item{abslist}{an \code{abslist} object containing absorbance data.}
+\item{abslist}{An \code{abslist} object containing absorbance data.}
 
-\item{cuvle}{cuvette (path) length in cm}
+\item{cuvle}{Cuvette (path) length in cm.}
 
-\item{mdl_dir}{file path to the mdl files generated with \link[eemanalyzeR]{create_mdl}
-default is a user-specific data directory (\link[rappdirs]{user_data_dir})}
+\item{qaqc_dir}{File path to the QAQC files generated with \code{\link[=create_mdl]{create_mdl()}} and \code{\link[=create_std]{create_std()}}.
+Default is a user-specific data directory \code{\link[rappdirs:user_data_dir]{rappdirs::user_data_dir()}}.}
 }
 \value{
 a list with two objects:
@@ -48,5 +48,5 @@ are generated using the staRdom function \link[staRdom]{abs_parms}.
 }
 \examples{
 indices <- eemR_indices(example_processed_eems, example_processed_abs,
-mdl_dir = system.file("extdata", package = "eemanalyzeR"))
+qaqc_dir = system.file("extdata", package = "eemanalyzeR"))
 }

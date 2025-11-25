@@ -3,8 +3,8 @@
 test_that("output is correct",{
   abslist <- example_processed_abs
   eemlist <- example_processed_eems
-  mdl_dir <- system.file("extdata", package = "eemanalyzeR")
-  indices <- usgs_indices(eemlist, abslist, mdl_dir = mdl_dir)
+  qaqc_dir <- system.file("extdata", package = "eemanalyzeR")
+  indices <- usgs_indices(eemlist, abslist, qaqc_dir = qaqc_dir)
 
   expect_equal(class(indices), "list")
   expect_length(indices, 2)

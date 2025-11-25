@@ -2,9 +2,10 @@
 #'
 #' Utility functions to test class of objects, returning a logical.
 #'
-#' @rdname class-testing
-#' @name class-testing
-#' @param eem an object
+#' @name class_testing
+#' @param x An object to test.
+#'
+#' @md
 #'
 #' @examples
 #' .is_eem(example_eems)
@@ -13,33 +14,29 @@
 #' .is_abslist(example_abs)
 #' .is_eem(example_abs)
 #' @export
-#' @returns a logical, \code{TRUE} or \code{FALSE} of if the object is that class
-#' @source \code{.is_eem} and \code{.is_eemlist} functions were directly pulled from
-#' \href{https://cran.r-project.org/web/packages/staRdom/index.html}{staRdom}.
-  .is_eem <- function(eem) {
-    ifelse(class(eem) == "eem", TRUE, FALSE)
-  }
+#' @returns A logical value (`TRUE` or `FALSE`) indicating whether the object
+#'   is of the expected class.
+#'
+#' @source `.is_eem` and `.is_eemlist` were directly pulled from
+#'   [staRdom](https://cran.r-project.org/package=staRdom).
+.is_eem <- function(x) {
+  ifelse(class(x) == "eem", TRUE, FALSE)
+}
 
-  #' @param eem an object
-  #' @rdname class-testing
-  #' @name class-testing
-  #' @export
-  .is_eemlist <- function(eem) {
-    ifelse(class(eem) == "eemlist", TRUE, FALSE)
-  }
+#' @name class_testing
+#' @export
+.is_eemlist <- function(x) {
+  ifelse(class(x) == "eemlist", TRUE, FALSE)
+}
 
-  #' @param abs an object
-  #' @rdname class-testing
-  #' @name class-testing
-  #' @export
-  .is_abs <- function(abs) {
-    ifelse(class(abs) == "abs", TRUE, FALSE)
-  }
+#' @name class_testing
+#' @export
+.is_abs <- function(x) {
+  ifelse(class(x) == "abs", TRUE, FALSE)
+}
 
-  #' @param abs an object
-  #' @rdname class-testing
-  #' @name class-testing
-  #' @export
-  .is_abslist <- function(abs) {
-    ifelse(class(abs) == "abslist", TRUE, FALSE)
-  }
+#' @name class_testing
+#' @export
+.is_abslist <- function(x) {
+  ifelse(class(x) == "abslist", TRUE, FALSE)
+}

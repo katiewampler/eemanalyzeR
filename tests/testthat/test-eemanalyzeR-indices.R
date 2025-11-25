@@ -3,12 +3,12 @@ test_that("absorbance indices are correct", {
   #get indices
     abslist <- example_processed_abs
     eemlist <- example_processed_eems
-    mdl_dir <- system.file("extdata", package = "eemanalyzeR")
+    qaqc_dir <- system.file("extdata", package = "eemanalyzeR")
 
     #should give warnings about not using mdl
-    expect_warning(expect_warning(indices <- eemanalyzeR_indices(eemlist, abslist, mdl_dir = tempdir()), "fluorescence"), "absorbance")
+    expect_warning(expect_warning(indices <- eemanalyzeR_indices(eemlist, abslist, qaqc_dir = tempdir()), "fluorescence"), "absorbance")
 
-    indices <- eemanalyzeR_indices(eemlist, abslist, mdl_dir = mdl_dir)
+    indices <- eemanalyzeR_indices(eemlist, abslist, qaqc_dir = qaqc_dir)
     index <- indices$abs_index #get abs indices
     index$value <- gsub("_MDL02", "", index$value)
     index$value[grep("DOC|DATA|MDL", index$value)] <- NA
@@ -50,9 +50,9 @@ test_that("eems indices are correct", {
   #get indices
   abslist <- example_processed_abs
   eemlist <- example_processed_eems
-  mdl_dir <- system.file("extdata", package = "eemanalyzeR")
+  qaqc_dir <- system.file("extdata", package = "eemanalyzeR")
 
-  indices <- eemanalyzeR_indices(eemlist, abslist, mdl_dir = mdl_dir)
+  indices <- eemanalyzeR_indices(eemlist, abslist, qaqc_dir = qaqc_dir)
 
   #compare values to see if anything changed
     #round values so they're consistent across computers
@@ -84,8 +84,8 @@ test_that("eems indices are correct", {
 test_that("output is correct",{
   abslist <- example_processed_abs
   eemlist <- example_processed_eems
-  mdl_dir <- system.file("extdata", package = "eemanalyzeR")
-  indices <- eemanalyzeR_indices(eemlist, abslist, mdl_dir = mdl_dir)
+  qaqc_dir <- system.file("extdata", package = "eemanalyzeR")
+  indices <- eemanalyzeR_indices(eemlist, abslist, qaqc_dir = qaqc_dir)
 
   expect_equal(class(indices), "list")
   expect_length(indices, 2)

@@ -4,46 +4,48 @@
 \alias{eemanalyzeR_indices}
 \title{Default package methods for fluorescence and absorbance indices}
 \usage{
-eemanalyzeR_indices(eemlist, abslist, cuvle = 1, mdl_dir = .qaqc_dir())
+eemanalyzeR_indices(eemlist, abslist, cuvle = 1, qaqc_dir = .qaqc_dir())
 }
 \arguments{
-\item{eemlist}{an \code{eemlist} object containing EEM's data. See details for more info.}
+\item{eemlist}{An \code{eemlist} object containing EEM data.}
 
-\item{abslist}{an \code{abslist} object containing absorbance data.}
+\item{abslist}{An \code{abslist} object containing absorbance data.}
 
-\item{cuvle}{cuvette (path) length in cm}
+\item{cuvle}{Cuvette (path) length in cm.}
 
-\item{mdl_dir}{file path to the mdl files generated with \link[eemanalyzeR]{create_mdl},
-default is a user-specific data directory (\link[rappdirs]{user_data_dir})}
+\item{qaqc_dir}{File path to the QAQC files generated with \code{\link[=create_mdl]{create_mdl()}} and \code{\link[=create_std]{create_std()}}.
+Default is a user-specific data directory \code{\link[rappdirs:user_data_dir]{rappdirs::user_data_dir()}}.}
 }
 \value{
-a list with two objects:
+A list with two objects:
 \itemize{
-  \item eem_index: a data.frame of all the fluorescence indices
-  \item abs_index: a data.frame of all the absorbance indices
+\item \code{eem_index}: a \code{data.frame} of all the fluorescence indices
+\item \code{abs_index}: a \code{data.frame} of all the absorbance indices
 }
-Each data.frame will have four columns:
+
+Each \code{data.frame} will have four columns:
 \itemize{
- \item sample_name: the name of the sample
- \item meta_name: the name of the sample in the metadata if metadata has been added, otherwise the sample name again
- \item index: the name of the index being reported, see \href{../doc/eemanalyzeR-indices.html}{vignette}for more information.
- \item value: the value of the index
+\item \code{sample_name}: the name of the sample
+\item \code{meta_name}: the name of the sample in the metadata if metadata has been added, otherwise the sample name again
+\item \code{index}: the name of the index being reported (see \href{../doc/eemanalyzeR-indices.html}{vignette} for more information)
+\item \code{value}: the value of the index
 }
 }
 \description{
-Calculates commonly used absorbance and fluorescence optical indices from eemlist and abslist.
+Calculates commonly used absorbance and fluorescence optical indices from \code{eemlist} and \code{abslist}.
 For detailed descriptions and references for indices, see the vignette
-\href{../doc/eemanalyzeR-indices.html}{\code{eemanalyzeR-indices}}.
+\href{../doc/eemanalyzeR-indices.html}{eemanalyzeR-indices}.
 }
 \note{
-If absorbance is not at a 1 nanometer interval, absorbance will be interpolated using
-\link[zoo]{na.approx} which fills in missing values
-using linear interpolation.
-
-If EEMs data is not a 1 nanometer interval, fluorescence will be interpolated
-using \link[pracma]{interp2}.
+\itemize{
+\item If absorbance is not at a 1 nm interval, it will be interpolated using \code{\link[zoo:na.approx]{zoo::na.approx()}}, which fills in missing values using linear interpolation.
+\item If EEM data is not at a 1 nm interval, fluorescence will be interpolated using \code{\link[pracma:interp2]{pracma::interp2()}}.
+}
 }
 \examples{
-indices <- eemanalyzeR_indices(example_processed_eems, example_processed_abs,
-mdl_dir = system.file("extdata", package = "eemanalyzeR"))
+indices <- eemanalyzeR_indices(
+  example_processed_eems,
+  example_processed_abs,
+  qaqc_dir = system.file("extdata", package = "eemanalyzeR")
+)
 }

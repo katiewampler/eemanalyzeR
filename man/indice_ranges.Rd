@@ -3,16 +3,14 @@
 \docType{data}
 \name{indice_ranges}
 \alias{indice_ranges}
-\title{Standard Ranges for Absorbance and EEMs Indices}
+\title{Standard ranges for absorbance and EEMs indices}
 \format{
 A data.frame with 62 rows and 5 columns:
-\describe{
-  \item{index_method}{the index method used to calculate the index}
-  \item{index}{the name of the index metric calculated}
-  \item{low_val}{the minimum value expected for the index based on literature sources}
-  \item{high_val}{the maximum value expected for the index based on literature sources}
-  \item{source}{The sources used to determine the minimum and maximum values}
-}
+- **index_method**: The index method used to calculate the index
+- **index**: Name of the index metric calculated
+- **low_val**: Minimum value expected based on literature sources
+- **high_val**: Maximum value expected based on literature sources
+- **source**: Sources used to determine minimum and maximum values
 }
 \source{
 Fischer, S. J., Fegel, T. S., Wilkerson, P. J., Rivera, L., Rhoades, C. C., & Rosario-Ortiz, F. L. (2023). Fluorescence and Absorbance Indices for Dissolved Organic Matter from Wildfire Ash and Burned Watersheds. ACS ES&T Water, 3(8), 2199-2209. \url{https://doi.org/10.1021/acsestwater.3c00017}
@@ -43,8 +41,7 @@ Zsolnay, A., Baigar, E., Jimenez, M., Steinweg, B., & Saccomandi, F. (1999). Dif
 indice_ranges
 }
 \description{
-A data.frame containing the minimum and maximum range expected for index values generated using
-\link[eemanalyzeR]{get_indices}. Used to flag indices that warrant further examination to ensure they
-are accurate.
+A data.frame containing the minimum and maximum range expected for index values generated using [get_indices()].
+Used to flag indices that warrant further examination to ensure accuracy.
 }
 \keyword{datasets}

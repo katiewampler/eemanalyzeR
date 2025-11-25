@@ -2,23 +2,26 @@
 % Please edit documentation in R/eem-normalize.R
 \name{eem_normalize}
 \alias{eem_normalize}
-\title{Normalize an eem or eemlist based on a normalization factor}
+\title{Normalize an \code{eem} or \code{eemlist} based on a normalization factor}
 \usage{
 eem_normalize(eem, factor = NULL)
 }
 \arguments{
-\item{eem}{the \code{eem} or \code{eemlist} to normalize}
+\item{eem}{The \code{eem} or \code{eemlist} to normalize.}
 
-\item{factor}{the normalization factor, either a single value or vector of factors, if NULL it will normalize to the maximum value for each eem}
+\item{factor}{The normalization factor, either a single value or a vector
+of factors. If \code{NULL}, it will normalize to the maximum value for each \code{eem}.}
 }
 \value{
-an \code{eem} or \code{eemlist} where \code{x} has been normalized
+An \code{eem} or \code{eemlist} where \code{x} has been normalized.
 }
 \description{
-Useful for raman normalization or normalizing to a max of one for blank comparisons.
+Useful for Raman normalization or normalizing to a maximum of one for blank comparisons.
 }
 \examples{
+# Normalize a single EEM
 eem_normal <- eem_normalize(example_eems[1])
-eems_normal <- eem_normalize(example_eems)
 
+# Normalize an entire EEM list
+eems_normal <- eem_normalize(example_eems)
 }

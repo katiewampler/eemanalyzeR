@@ -18,57 +18,68 @@ create_std(
   iblank = "BEM",
   type = "eem",
   recursive = FALSE,
-  output_dir = NULL
+  qaqc_dir = NULL
 )
 }
 \arguments{
-\item{dir}{path to folder containing long term EEMs and/or absorbance files}
+\item{dir}{Path to a folder containing long-term EEMs and/or absorbance files.
+All files in this directory will be loaded.}
 
-\item{meta_name}{name of metadata file. optional if metadata is only xlsx or csv file in input_dir
-if not specified function will attempt to load any xlsx or csv file in directory and return an error if there is more than one}
+\item{meta_name}{Name of the metadata file. Optional if the metadata file is the
+only \code{.xlsx} or \code{.csv} file in \code{dir}. If not specified, the function attempts to find
+a single metadata file and errors if multiple files are present.}
 
-\item{sheet}{name of sheet containing metadata. only required if metadata isn't the first sheet}
+\item{sheet}{Name of the sheet containing metadata (only required if metadata
+is not on the first sheet).}
 
-\item{abs_pattern}{a character string containing a \code{\link[base]{regular expression}}
-used to specify the sample names of the absorbance data.}
+\item{abs_pattern}{A character string containing a
+\link[base:regex]{base::regular expression} used to identify absorbance files.}
 
-\item{iblank}{optional. a character string containing a \code{\link[base]{regular expression}}
-used to specify the sample names of the instrument blanks.}
+\item{iblank}{Optional. A character string containing a
+\link[base:regex]{base::regular expression} used to identify instrument blanks.}
 
-\item{type}{which MDL to calculate: either \code{eem} or \code{abs}}
+\item{type}{Which MDL to calculate: either "eem" or "abs".}
 
-\item{recursive}{logical. should the function recurse into directories?}
+\item{recursive}{Logical. Should the function recursively search directories?}
 
-\item{output_dir}{the location to save the mdl file to, default is a user-specific data directory (\link[rappdirs]{user_data_dir}). If
-FALSE will return the averaged tea standard instead of saving.}
+\item{qaqc_dir}{Directory in which to save the MDL \code{.rds} file.
+Default: a user-specific data directory via \code{\link[rappdirs:user_data_dir]{rappdirs::user_data_dir()}}.
+If \code{FALSE}, the function returns the MDL object instead of saving it.}
 }
 \value{
 \itemize{
-\item If output_dir is FALSE, returns an \code{eem} or \code{abs} object containing the average tea values.
-\item Otherwise it saves a .RDS file containing the average tea data formatted as either an \code{eem} or \code{abs} object to the specified output_dir.
+\item If \code{dir = FALSE}: an \code{eem} or \code{abs} object containing the averaged check standard values.
+\item Otherwise: saves an \code{.rds} file containing the averaged check standard and
+invisibly returns the file path.
 }
 }
 \description{
-To ensure optical measurements are consistent across days, Hansen et al. (2018) recommend using a standard reference material:
-Pure Leaf®, unsweetened black tea. The tea standard should be diluted to 1 \% concentration before analysis. It is recommended to
-run the tea standard at the start and end of an analysis run. According to USGS standards, the indices for the tea standards run on
-a given day should be within 20 \% of the long-term average (Hansen et al. 2018).
+Calculates the average absorbance and fluorescence values given multiple check
+standards to create a long-term standard that the daily check standard can be
+checked against for consistency.
 }
 \details{
-To calculate the average tea standard you need:
+To ensure optical measurements are consistent across days, Hansen et al. (2018)
+recommend using a standard reference material: Pure Leaf® unsweetened black tea.
+The tea standard should be diluted to 1\% concentration before analysis. It is
+recommended to run the tea standard at the start and end of each analysis run.
+According to USGS standards, tea standard indices measured on a given day should
+fall within 20\% of the long-term average (Hansen et al. 2018).
+
+To calculate the average check standard you need:
 \itemize{
-\item A directory containing tea standards with their associated instrument blanks (less than 20 will prompt a warning)
+\item A directory containing check standards with their associated instrument blanks (less than 20 will prompt a warning)
 \itemize{
 \item Note: sample names must be unique
 }
-\item Metadata for the tea samples including (at a minimum) the integration time and raman area in a single file,
-formatted as a metadata file (see \link[eemanalyzeR]{metadata})
+\item Metadata for the check samples including (at a minimum) the integration time and raman area in a single file,
+formatted as a metadata file (see \link{metadata})
 }
 }
 \examples{
 eem_std <- create_std(file.path(system.file("extdata", package = "eemanalyzeR"),"long-term-std"),
 meta_name="longterm-checkstd-metadata.csv", abs_pattern = "ABS",
-type="eem", output_dir = FALSE)
+type="eem", qaqc_dir = FALSE)
 
 plot(eem_std)
 

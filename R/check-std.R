@@ -7,7 +7,7 @@
 #'
 #' @param eemlist An object of class `eemlist`; must be fully processed.
 #' @param abslist An object of class `abslist`; must be fully processed.
-#' @param std_dir File path to the QAQC files generated with
+#' @param qaqc_dir File path to the QAQC files generated with
 #'   [create_std()].The default is a user-specific data directory via
 #'   [rappdirs::user_data_dir].
 #' @param tolerance Maximum percent deviation that the tea standard can vary
@@ -37,9 +37,9 @@
 #' check_std(
 #'   example_processed_eems,
 #'   example_processed_abs,
-#'   std_dir = system.file("extdata", package = "eemanalyzeR")
+#'   qaqc_dir = system.file("extdata", package = "eemanalyzeR")
 #' )
-check_std <- function(eemlist, abslist, std_dir = .qaqc_dir(), tolerance = 0.2,
+check_std <- function(eemlist, abslist, qaqc_dir = .qaqc_dir(), tolerance = 0.2,
                       index_method = "eemanalyzeR", vals = FALSE) {
   stopifnot(is.numeric(tolerance), .is_eemlist(eemlist) | .is_abslist(abslist))
 
@@ -52,15 +52,15 @@ check_std <- function(eemlist, abslist, std_dir = .qaqc_dir(), tolerance = 0.2,
   }
 
   # get eem_std and abs_std
-  if (!file.exists(file.path(std_dir, "eem-check-std.rds")) | !file.exists(file.path(std_dir, "abs-check-std.rds"))) {
+  if (!file.exists(file.path(qaqc_dir, "eem-check-std.rds")) | !file.exists(file.path(qaqc_dir, "abs-check-std.rds"))) {
     warning("tea check standard files are missing, check standards will not be checked against the long-term standard")
     .write_readme_line("Long-term standards were not provided, thus the check standards for this run were not checked\n", "check_std")
 
     names <- get_sample_info(subset_type(eemlist, type = "check"), "meta_name")
     return(data.frame(meta_name = rep(names, each = 2), index = NA, type = c("abs", "eem"), flag = NA))
   } else {
-    eem_std <- readRDS(file.path(std_dir, "eem-check-std.rds"))
-    abs_std <- readRDS(file.path(std_dir, "abs-check-std.rds"))
+    eem_std <- readRDS(file.path(qaqc_dir, "eem-check-std.rds"))
+    abs_std <- readRDS(file.path(qaqc_dir, "abs-check-std.rds"))
   }
 
   # get attributes to make sure they're processed the same as the standard
@@ -79,12 +79,12 @@ check_std <- function(eemlist, abslist, std_dir = .qaqc_dir(), tolerance = 0.2,
   abs_std <- list(abs_std)
   class(abs_std) <- "abslist"
 
-  std_index <- index_function(eem_std, abs_std, mdl_dir = std_dir)
+  std_index <- index_function(eem_std, abs_std, qaqc_dir = qaqc_dir)
 
   # calculate indices for tea
   tea_index <- index_function(subset_type(eemlist, type = "check"),
     subset_type(abslist, type = "check"),
-    mdl_dir = std_dir
+    qaqc_dir = qaqc_dir
   )
 
   # tidy and combine indices

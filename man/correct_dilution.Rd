@@ -2,27 +2,29 @@
 % Please edit documentation in R/correct-dilution.R
 \name{correct_dilution}
 \alias{correct_dilution}
-\title{Perform Dilution Corrections}
+\title{Perform dilution corrections}
 \usage{
 correct_dilution(x)
 }
 \arguments{
-\item{x}{an \code{eemlist} or \code{abslist} object. See details for more info.}
+\item{x}{An \code{eemlist} or \code{abslist} object. See \strong{Details} for more information.}
 }
 \value{
-an object of class \code{eemlist} or \code{abslist}
+An object of the same class as \code{x} (\code{eemlist} or \code{abslist}) with
+dilution corrections applied.
 }
 \description{
 Adjusts the EEM's and absorbance data fluorescence to account for dilutions performed prior to measurement.
 }
 \details{
-The function uses the dilution factor provided by the metadata to dilution correct the EEMs and absorbance, because of this,
-samples must have metadata already added to the samples using \link[eemanalyzeR]{add_metadata}.
+The function uses the dilution factor provided in the metadata to correct the EEMs and
+absorbance values. Because of this, samples must already have metadata added using
+\code{\link[=add_metadata]{add_metadata()}}.
 }
 \examples{
-eemlist <- add_metadata(metadata,example_eems)
+eemlist <- add_metadata(metadata, example_eems)
 correct_eem <- correct_dilution(eemlist)
 
-abslist <- add_metadata(metadata,example_abs)
+abslist <- add_metadata(metadata, example_abs)
 correct_abs <- correct_dilution(abslist)
 }

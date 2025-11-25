@@ -4,7 +4,7 @@
 \alias{dir_read}
 \alias{eem_dir_read}
 \alias{abs_dir_read}
-\title{Read optics data from directory}
+\title{Read absorbance and fluorescence data from directory}
 \usage{
 eem_dir_read(
   input_dir,
@@ -24,47 +24,41 @@ abs_dir_read(
 )
 }
 \arguments{
-\item{input_dir}{path to folder containing raw EEMs and/or absorbance files}
+\item{input_dir}{Path to folder containing raw EEMs and/or absorbance files.}
 
-\item{pattern}{optional. a character string containing a \code{\link[base]{regular expression}}
-to be matched to the files in input_dir.
-only files matching the pattern will be loaded.}
+\item{pattern}{Optional. A character string containing a \code{\link[base:regex]{base::regular expression()}}
+to match files in \code{input_dir}. Only files matching the pattern will be loaded.}
 
-\item{skip}{a character string containing a \code{\link[base]{regular expression}} to be
-matched to the files in input_dir.
-any files matching this string will be ignored.}
+\item{skip}{Optional. A character string containing a \code{\link[base:regex]{base::regular expression()}}
+to match files in \code{input_dir} that should be ignored.}
 
-\item{file_ext}{character. the file extension of the EEMs or absorbance}
+\item{file_ext}{The file extension of the EEMs or absorbance files.}
 
-\item{recursive}{logical. should the function recurse into directories?}
+\item{recursive}{Logical. Should the function recurse into directories?}
 
-\item{import_function}{character or a user-defined function to import an EEM.
-for more details see \link[eemR]{eem_read}}
+\item{import_function}{Character or a user-defined function to import an EEM.
+For more details, see \href{../doc/custom-indices.html}{\code{vignette("custom-indices")}}.}
 }
 \value{
-\code{eem_dir_read} returns an object of class eemlist,  containing a list of \code{eem}.
-For more details see \link[eemR]{eem}
-
-\code{abs_dir_read} returns an object of class abslist, containing a list of \code{abs}.
-For more details see \link[eemanalyzeR]{abs_read}
+\itemize{
+\item \code{eem_dir_read()} returns an object of class \code{eemlist}, containing a list of \code{eem}. For more details see \code{\link[eemR:eem_read]{eemR::eem_read()}}.
+\item \code{abs_dir_read()} returns an object of class \code{abslist}, containing a list of \code{abs}. For more details see \code{\link[=abs_read]{abs_read()}}.
+}
 }
 \description{
-Wrappers for \link[eemR]{eem_read} and \link[eemanalyzeR]{abs_read} to read all EEMs or absorbance
-in a directory into R, even when it contains other files.
+Wrappers for \code{\link[eemR:eem_read]{eemR::eem_read()}} and \code{\link[=abs_read]{abs_read()}} to read all EEMs or absorbance
+files in a directory into R, even when the directory contains other files.
 }
 \examples{
-#load EEM's data
-# Load all data from directory --------------
+# Load all EEMs from directory
 eem_list <- eem_dir_read(system.file("extdata", package = "eemanalyzeR"))
 
-# Load all data that matches a pattern from directory -------------
-eem_list <- eem_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern="SEM")
+# Load all EEMs matching a pattern from directory
+eem_list <- eem_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern = "SEM")
 
-#load absorbance data
-#load samples by using pattern to identify absorbance samples -------------
+# Load absorbance samples using a pattern
 abs <- abs_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern = "abs|ABS")
 
-#load samples by using skip to exclude EEM's and other samples -------------
+# Load absorbance samples while skipping EEMs and other files
 abs <- abs_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "SEM|BEM|waterfall")
-
 }

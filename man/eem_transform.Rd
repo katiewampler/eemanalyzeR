@@ -2,39 +2,42 @@
 % Please edit documentation in R/eem-transform.R
 \name{eem_transform}
 \alias{eem_transform}
-\title{Convert between an eem object and a data.frame}
+\title{Convert between an \code{eem} object and a \code{data.frame}}
 \usage{
 eem_transform(eem, file = NULL, sample = NULL, location = NULL)
 }
 \arguments{
-\item{eem}{an object of class \code{eem} or a data.frame with three columns: ex, em, and flour}
+\item{eem}{An object of class \code{eem} or a \code{data.frame} with three columns: \code{ex}, \code{em}, and \code{fluor}.}
 
-\item{file}{optional, file path to the eem data including the data file name, only used if \code{eem} is a data.frame}
+\item{file}{Optional. File path to the EEM data including the data file name;
+only used if \code{eem} is a \code{data.frame}.}
 
-\item{sample}{optional, the name of the eem sample, only used if \code{eem} is a data.frame}
+\item{sample}{Optional. The name of the EEM sample; only used if \code{eem} is a \code{data.frame}.}
 
-\item{location}{optional, the path to the directory where the file is located, only used if \code{eem} is a data.frame}
+\item{location}{Optional. The path to the directory where the file is located; only used if \code{eem} is a \code{data.frame}.}
 }
 \value{
-Converts between an object of class \code{eem} and
-a \code{data.frame} with three columns:
+Converts between an object of class \code{eem} and a \code{data.frame} with three columns:
 \itemize{
-\item ex: the excitation wavelengths
-\item em: the emission wavelengths
-\item fluor: the fluorescence value
+\item \code{ex}: the excitation wavelengths
+\item \code{em}: the emission wavelengths
+\item \code{fluor}: the fluorescence values
 }
 }
 \description{
-Sometimes it is easier to subset an EEMs matrix if it is in a long format,
-this will take an EEM matrix and turn it into a data.frame or if it is a data.frame
-it will convert it to an \code{eem} object.
+Sometimes it is easier to subset an EEM matrix if it is in a long format.
+This function will take an EEM matrix and turn it into a \code{data.frame} or,
+if it is a \code{data.frame}, convert it to an \code{eem} object.
 }
 \details{
-If you're loading in sample that have been partially processed, its recommended that you set the correct processing
-attributes to TRUE to note that these step have already been performed. To see attributes use \code{attributes(eem)}, to
-set attributes use \code{attr(eem, "attribute_name") <- TRUE}.
+If you're loading samples that have been partially processed, it's recommended to set the correct processing
+attributes to \code{TRUE} to indicate these steps have already been performed. Use \code{attributes(eem)} to see attributes,
+and \code{attr(eem, "attribute_name") <- TRUE} to set them.
 }
 \examples{
+# Convert an EEM to a long data.frame
 flat_eem <- eem_transform(example_eems[[1]])
+
+# Convert back to an EEM object
 eem_obj <- eem_transform(flat_eem)
 }

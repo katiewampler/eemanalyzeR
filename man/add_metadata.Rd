@@ -2,7 +2,7 @@
 % Please edit documentation in R/add-metadata.R
 \name{add_metadata}
 \alias{add_metadata}
-\title{Add metadata to absorbance and EEM's data}
+\title{Add metadata to absorbance and EEM data}
 \usage{
 add_metadata(
   meta,
@@ -12,41 +12,47 @@ add_metadata(
 )
 }
 \arguments{
-\item{meta}{a \code{data.frame} of metadata}
+\item{meta}{A \code{data.frame} containing metadata.}
 
-\item{x}{an \code{abslist} or \code{eemlist} object}
+\item{x}{An \code{abslist} or \code{eemlist} object.}
 
-\item{sample_type_regex}{a named list of regex strings to find instrument blanks, sample blanks, check standards, and samples using pattern matching.}
+\item{sample_type_regex}{A \strong{named list} of regular expressions used to identify
+instrument blanks, sample blanks, check standards, and samples via pattern matching.}
 }
 \value{
-returns an object of the same class as the object input into the function (\code{abslist} or \code{eemlist}) with metadata added in
-The following items are added for each sample, if available in the metadata:
+An object of the same class as the input (\code{abslist} or \code{eemlist}), with metadata added.
+
+For each sample, the following fields may be added (if present in the metadata):
 \itemize{
- \item meta_name: the data identifier of the sample.
- \item dilution: the dilution factor for the sample.
- \item analysis_date: the date the sample was run.
- \item description: optional description of sample.
- \item sample_type: optional Flag for whether the data identifier is linked to a real sample (sample), sample blank (sblank), or check standard (check). Default values are for data exports for the Horiba Aqualog with Autosampler
- \item doc_mgL: the concentration of dissolved organic carbon in the sample given in mg \ifelse{html}{\out{L<sup>-1</sup>}}{\eqn{L^{-1}}}
- \item notes: optional notes related to the sample or sample collection.
+\item \strong{meta_name}: identifier for the sample
+\item \strong{dilution}: sample dilution factor
+\item \strong{analysis_date}: date the sample was run
+\item \strong{description}: optional description
+\item \strong{sample_type}: optional flag (e.g., \code{sample} for a sample,
+\code{sblank} for an analytical blank, \code{check} for a check standard).
+Default values match Horiba Aqualog exports.
+\item \strong{doc_mgL}: dissolved organic carbon concentration in mg L⁻¹
+\item \strong{notes}: optional notes on sample or sampling conditions
 }
-if \code{x} is a \code{eemlist} an additional two items are added to each sample:
+
+If \code{x} is an \code{eemlist}, two additional items are added:
 \itemize{
- \item integration_time_s: the integration time for the sample.
- \item raman_area_1s: the area under the raman water peak with a 1 second integration time.
+\item \strong{integration_time_s}: integration time of the sample
+\item \strong{raman_area_1s}: Raman water peak area normalized to 1-second integration time.
 }
 }
 \description{
-Add metadata to absorbance and EEM's data
+Adds metadata from a data frame to an \code{abslist} or \code{eemlist} object as additional
+list items.
 }
 \note{
-if \code{eemlist} contains blanks, the blanks will get the metadata of the corresponding sample.
+If an \code{eemlist} contains blanks, the blanks automatically inherit metadata from their
+corresponding sample.
 }
 \examples{
-
-#add metadata to absorbance data
+# Add metadata to absorbance data
 abs_augment <- add_metadata(metadata, example_abs)
 
-#add metadata to EEM's data
+# Add metadata to EEM data
 eem_augment <- add_metadata(metadata, example_eems)
 }

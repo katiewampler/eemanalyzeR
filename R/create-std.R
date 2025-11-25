@@ -1,37 +1,49 @@
 #' Create long term average check standard
 #'
-#' To ensure optical measurements are consistent across days, Hansen et al. (2018) recommend using a standard reference material:
-#' Pure Leaf®, unsweetened black tea. The tea standard should be diluted to 1 % concentration before analysis. It is recommended to
-#' run the tea standard at the start and end of an analysis run. According to USGS standards, the indices for the tea standards run on
-#' a given day should be within 20 % of the long-term average (Hansen et al. 2018).
+#' Calculates the average absorbance and fluorescence values given multiple check
+#' standards to create a long-term standard that the daily check standard can be
+#' checked against for consistency.
 #'
-#' @param dir path to folder containing long term EEMs and/or absorbance files
-#' @param meta_name name of metadata file. optional if metadata is only xlsx or csv file in input_dir
-#' if not specified function will attempt to load any xlsx or csv file in directory and return an error if there is more than one
-#' @param sheet name of sheet containing metadata. only required if metadata isn't the first sheet
-#' @param abs_pattern a character string containing a \code{\link[base]{regular expression}}
-#' used to specify the sample names of the absorbance data.
-#' @param iblank optional. a character string containing a \code{\link[base]{regular expression}}
-#' used to specify the sample names of the instrument blanks.
-#' @param type which MDL to calculate: either `eem` or `abs`
-#' @param recursive logical. should the function recurse into directories?
-#' @param output_dir the location to save the mdl file to, default is a user-specific data directory (\link[rappdirs]{user_data_dir}). If
-#' FALSE will return the averaged tea standard instead of saving.
+#' @param dir Path to a folder containing long-term EEMs and/or absorbance files.
+#'   All files in this directory will be loaded.
+#' @param meta_name Name of the metadata file. Optional if the metadata file is the
+#'   only `.xlsx` or `.csv` file in `dir`. If not specified, the function attempts to find
+#'   a single metadata file and errors if multiple files are present.
+#' @param sheet Name of the sheet containing metadata (only required if metadata
+#'   is not on the first sheet).
+#' @param abs_pattern A character string containing a
+#'   [base::regular expression] used to identify absorbance files.
+#' @param iblank Optional. A character string containing a
+#'   [base::regular expression] used to identify instrument blanks.
+#' @param type Which MDL to calculate: either "eem" or "abs".
+#' @param recursive Logical. Should the function recursively search directories?
+#' @param qaqc_dir Directory in which to save the MDL `.rds` file.
+#'   Default: a user-specific data directory via [rappdirs::user_data_dir()].
+#'   If `FALSE`, the function returns the MDL object instead of saving it.
 #'
 #' @returns
-#' - If output_dir is FALSE, returns an `eem` or `abs` object containing the average tea values.
-#' - Otherwise it saves a .RDS file containing the average tea data formatted as either an `eem` or `abs` object to the specified output_dir.
+#' - If `dir = FALSE`: an `eem` or `abs` object containing the averaged check standard values.
+#' - Otherwise: saves an `.rds` file containing the averaged check standard and
+#'   invisibly returns the file path.
+#'
 #' @md
 #' @export
 #'
 #' @details
-#' To calculate the average tea standard you need:
+#' To ensure optical measurements are consistent across days, Hansen et al. (2018)
+#' recommend using a standard reference material: Pure Leaf® unsweetened black tea.
+#' The tea standard should be diluted to 1% concentration before analysis. It is
+#' recommended to run the tea standard at the start and end of each analysis run.
+#' According to USGS standards, tea standard indices measured on a given day should
+#' fall within 20% of the long-term average (Hansen et al. 2018).
 #'
-#' - A directory containing tea standards with their associated instrument blanks (less than 20 will prompt a warning)
+#' To calculate the average check standard you need:
+#'
+#' - A directory containing check standards with their associated instrument blanks (less than 20 will prompt a warning)
 #'    - Note: sample names must be unique
 #'
-#' - Metadata for the tea samples including (at a minimum) the integration time and raman area in a single file,
-#' formatted as a metadata file (see \link[eemanalyzeR]{metadata})
+#' - Metadata for the check samples including (at a minimum) the integration time and raman area in a single file,
+#' formatted as a metadata file (see [eemanalyzeR::metadata])
 #'
 #'
 #' @source
@@ -43,18 +55,18 @@
 #' @examples
 #' eem_std <- create_std(file.path(system.file("extdata", package = "eemanalyzeR"),"long-term-std"),
 #' meta_name="longterm-checkstd-metadata.csv", abs_pattern = "ABS",
-#' type="eem", output_dir = FALSE)
+#' type="eem", qaqc_dir = FALSE)
 #'
 #' plot(eem_std)
 #'
 
 create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblank="BEM",
-                        type = "eem", recursive=FALSE, output_dir=NULL){
+                        type = "eem", recursive=FALSE, qaqc_dir=NULL){
   stopifnot(type %in% c("eem", "abs"), dir.exists(dir))
 
   #set up file structure for saving mdl data
-    if(is.null(output_dir)){output_dir <- file.path(rappdirs::user_data_dir(appname = "eemanalyzeR"), "qaqc-stds")}
-    if(output_dir != FALSE){dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)}
+    if(is.null(qaqc_dir)){qaqc_dir <- file.path(rappdirs::user_data_dir(appname = "eemanalyzeR"), "qaqc-stds")}
+    if(qaqc_dir != FALSE){dir.create(qaqc_dir, showWarnings = FALSE, recursive = TRUE)}
 
   #get metadata
     if(!is.null(meta_name)){input <- file.path(dir, meta_name)}else{input <- dir}
@@ -116,7 +128,7 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
 
     #turn into a eem object
     dates <- get_sample_info(tea_eems, "analysis_date")
-    tea_eem <- list(file= file.path(output_dir, "eem-check-std.rds"),
+    tea_eem <- list(file= file.path(qaqc_dir, "eem-check-std.rds"),
                     sample="long-term-check-std",
                     x = mean,
                     ex = get_sample_info(tea_eems, "ex")[1,],
@@ -139,8 +151,8 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
     names(tea_eem) <- names(tea_eems[[1]])[-c(15:16)]
 
     #cache tea data
-    if(output_dir != FALSE){
-      saveRDS(tea_eem, file.path(output_dir, "eem-check-std.rds"))
+    if(qaqc_dir != FALSE){
+      saveRDS(tea_eem, file.path(qaqc_dir, "eem-check-std.rds"))
     }else{
       return(tea_eem)
     }
@@ -174,7 +186,7 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
 
     #turn into a abs object
     dates <- get_sample_info(tea, "analysis_date")
-    tea_abs <- list(file= file.path(output_dir, "abs-check-std.rds"),
+    tea_abs <- list(file= file.path(qaqc_dir, "abs-check-std.rds"),
                     sample="long-term-check-std",
                     n = length(unique(tea_abs_df$wavelength)),
                     data = unname(as.matrix(abs_tea[order(abs_tea$wavelength, decreasing=TRUE),])),
@@ -194,8 +206,8 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
     names(tea_abs) <- names(tea[[1]])
 
     #cache tea data
-    if(output_dir != FALSE){
-      saveRDS(tea_abs, file.path(output_dir, "abs-check-std.rds"))
+    if(qaqc_dir != FALSE){
+      saveRDS(tea_abs, file.path(qaqc_dir, "abs-check-std.rds"))
     }else{
       return(tea_abs)
     }

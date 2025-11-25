@@ -7,11 +7,7 @@
 #' @importFrom staRdom abs_parms
 #' @importFrom purrr list_transpose
 #'
-#' @param eemlist an \code{eemlist} object containing EEM's data. See details for more info.
-#' @param abslist an \code{abslist} object containing absorbance data.
-#' @param cuvle cuvette (path) length in cm
-#' @param mdl_dir file path to the mdl files generated with \link[eemanalyzeR]{create_mdl}
-#' default is a user-specific data directory (\link[rappdirs]{user_data_dir})
+#' @inheritParams eemanalyzeR_indices
 #' @return a list with two objects:
 #' \itemize{
 #'   \item eem_index: a data.frame of all the fluorescence indices
@@ -42,12 +38,12 @@
 #'
 #' @examples
 #' indices <- eemR_indices(example_processed_eems, example_processed_abs,
-#' mdl_dir = system.file("extdata", package = "eemanalyzeR"))
-eemR_indices <- function(eemlist, abslist, cuvle=1, mdl_dir=.qaqc_dir()){
+#' qaqc_dir = system.file("extdata", package = "eemanalyzeR"))
+eemR_indices <- function(eemlist, abslist, cuvle=1, qaqc_dir=.qaqc_dir()){
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
 
   #get mdl data
-    mdls <- .check_mdl_file(mdl_dir)
+    mdls <- .check_mdl_file(qaqc_dir)
     eem_mdl <- mdls$eem_mdl
     abs_mdl <- mdls$abs_mdl
 

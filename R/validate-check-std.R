@@ -3,7 +3,7 @@
 #' Visually inspect plots of the tea check standards compared to the [long-term standard][create_std()].
 #'
 #' @param abslist an object of class `abslist`
-#' @param std_dir file path to the QAQC files generated with [`create_mdl`][create_mdl()] and [`create_std`][create_std()],
+#' @param qaqc_dir file path to the QAQC files generated with [`create_mdl`][create_mdl()] and [`create_std`][create_std()],
 #' default is a user-specific data directory ([`user_data_dir`][rappdirs::user_data_dir])
 #' @param tolerance what is the maximum percentage the tea standard can vary from the long-term values without being flagged?
 #' @md
@@ -15,7 +15,7 @@
 #' @examples
 #' abslist <- add_metadata(metadata, example_abs)
 #' validate_check_std(abslist, system.file("extdata", package = "eemanalyzeR"))
-validate_check_std <- function(abslist, std_dir=.qaqc_dir(), tolerance=0.2){
+validate_check_std <- function(abslist, qaqc_dir=.qaqc_dir(), tolerance=0.2){
   stopifnot(.is_abslist(abslist))
 
   #check if sample has any tea samples if not warning
@@ -26,10 +26,10 @@ validate_check_std <- function(abslist, std_dir=.qaqc_dir(), tolerance=0.2){
     }
 
   #get long-term tea standard
-    if(!file.exists(file.path(std_dir, "abs-tea-std.rds"))){
+    if(!file.exists(file.path(qaqc_dir, "abs-tea-std.rds"))){
       warning("tea check standard files are missing, check standards will not be checked against the long-term standard")
     }else{
-      abs_std <- readRDS(file.path(std_dir, "abs-tea-std.rds"))
+      abs_std <- readRDS(file.path(qaqc_dir, "abs-tea-std.rds"))
     }
 
   #prepare data for plotting

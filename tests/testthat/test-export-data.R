@@ -29,7 +29,7 @@ test_that("data export works", {
   #check indices, and plots
     eem_plots <- plot(eemlist, remove_lower = T)
     abs_plots <- plot(abslist)
-    indices <- get_indices(eemlist, abslist, return="wide",  mdl_dir = system.file("extdata", package = "eemanalyzeR"))
+    indices <- get_indices(eemlist, abslist, return="wide",  qaqc_dir = system.file("extdata", package = "eemanalyzeR"))
 
     export_data(eemlist, abslist,prjname, dir, metadata, indices, eem_plots, abs_plots)
 

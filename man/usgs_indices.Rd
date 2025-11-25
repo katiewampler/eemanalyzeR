@@ -10,7 +10,7 @@ Procedures for using the Horiba Scientific Aqualog® fluorometer to measure abso
 from dissolved organic matter (Vol. 2018-1096). Reston, VA: U.S. Geological Survey. \url{https://doi.org/10.3133/ofr20181096}
 }
 \usage{
-usgs_indices(eemlist, abslist, cuvle = 1, mdl_dir = .qaqc_dir())
+usgs_indices(eemlist, abslist, cuvle = 1, qaqc_dir = .qaqc_dir())
 }
 \arguments{
 \item{eemlist}{an \code{eemlist} object containing EEM's data. See details for more info.}
@@ -19,7 +19,7 @@ usgs_indices(eemlist, abslist, cuvle = 1, mdl_dir = .qaqc_dir())
 
 \item{cuvle}{cuvette (path) length in cm}
 
-\item{mdl_dir}{file path to the mdl files generated with \link[eemanalyzeR]{create_mdl},
+\item{qaqc_dir}{file path to the mdl files generated with \link[eemanalyzeR]{create_mdl},
 default is a user-specific data directory (\link[rappdirs]{user_data_dir})}
 }
 \value{
@@ -51,5 +51,5 @@ using \link[pracma]{interp2}.
 }
 \examples{
 indices <- usgs_indices(example_processed_eems, example_processed_abs,
-mdl_dir = system.file("extdata", package = "eemanalyzeR"))
+qaqc_dir = system.file("extdata", package = "eemanalyzeR"))
 }

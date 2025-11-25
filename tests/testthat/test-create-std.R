@@ -3,9 +3,9 @@ test_that("eem std is calculated", {
   test_dir <- withr::local_tempfile()
 
   #ensure it returns warning with example data
-  expect_warning(expect_warning(eem_tea <- create_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-std"),
+  expect_warning(expect_warning(eem_tea <- create_std(dir = file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-std"),
                                     meta_name="longterm-checkstd-metadata.csv",abs_pattern = "ABS",
-                                    type="eem", output_dir = test_dir),
+                                    type="eem", qaqc_dir = test_dir),
                                 "average may be unreliable"), "trimmed EEM's to match absorbance data")
 
 
@@ -26,9 +26,9 @@ test_that("abs std is calculated", {
   test_dir <- withr::local_tempfile()
 
   #ensure it returns warning with example data
-  expect_warning(abs_tea <- create_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-std"),
+  expect_warning(abs_tea <- create_std(file.path(dir=system.file("extdata", package = "eemanalyzeR"), "long-term-std"),
                                         meta_name="longterm-checkstd-metadata.csv", abs_pattern = "ABS",
-                                        type="abs", output_dir = test_dir))
+                                        type="abs", qaqc_dir = test_dir))
 
 
   #check it writes to tempdir

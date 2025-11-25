@@ -29,15 +29,15 @@
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
       plots <- plot(eems, remove_lower = T)
-      indices <- get_indices(eems, abs, return="wide",  mdl_dir = tempdir())
+      indices <- get_indices(eems, abs, return="wide",  qaqc_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      indices <- get_indices(eems, abs, return="wide", index_method = "usgs",  mdl_dir = tempdir())
+      indices <- get_indices(eems, abs, return="wide", index_method = "usgs",  qaqc_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      indices <- get_indices(eems, abs, return="wide", index_method = "eemR",  mdl_dir = tempdir())
+      indices <- get_indices(eems, abs, return="wide", index_method = "eemR",  qaqc_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
@@ -56,15 +56,15 @@
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
       plots <- plot(eems, remove_lower = T)
-      indices <- get_indices(eems, abs, return="wide", mdl_dir = tempdir())
+      indices <- get_indices(eems, abs, return="wide", qaqc_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      indices <- get_indices(eems, abs, return="wide", index_method = "usgs", mdl_dir = tempdir())
+      indices <- get_indices(eems, abs, return="wide", index_method = "usgs", qaqc_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      indices <- get_indices(eems, abs, return="wide", index_method = "eemR", mdl_dir = tempdir())
+      indices <- get_indices(eems, abs, return="wide", index_method = "eemR", qaqc_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
@@ -84,15 +84,15 @@
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
       plots <- plot(eems, remove_lower = T)
-      indices <- get_indices(eems, abs, return="wide", mdl_dir = tempdir())
+      indices <- get_indices(eems, abs, return="wide", qaqc_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      indices <- get_indices(eems, abs, return="wide", index_method = "usgs", mdl_dir = tempdir())
+      indices <- get_indices(eems, abs, return="wide", index_method = "usgs", qaqc_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      indices <- get_indices(eems, abs, return="wide", index_method = "eemR", mdl_dir = tempdir())
+      indices <- get_indices(eems, abs, return="wide", index_method = "eemR", qaqc_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
@@ -110,15 +110,15 @@
       abs <- correct_dilution(abs)
       eems <- process_eem(eems, abs, width=c(16,3,20,15))
       plots <- plot(eems, remove_lower = T)
-      indices <- get_indices(eems, abs, return="wide", mdl_dir = tempdir())
+      indices <- get_indices(eems, abs, return="wide", qaqc_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      indices <- get_indices(eems, abs, return="wide", index_method = "usgs", mdl_dir = tempdir())
+      indices <- get_indices(eems, abs, return="wide", index_method = "usgs", qaqc_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      indices <- get_indices(eems, abs, return="wide", index_method = "eemR", mdl_dir = tempdir())
+      indices <- get_indices(eems, abs, return="wide", index_method = "eemR", qaqc_dir = tempdir())
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 

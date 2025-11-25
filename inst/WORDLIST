@@ -3,7 +3,6 @@ Acta
 Amiotti
 Analytica
 Aqualog
-Autosampler
 BIX
 Babic
 Baigar
@@ -14,6 +13,7 @@ Chemosphere
 Chimica
 Chromophoric
 Coble
+Cuvette
 DOM
 Dessonneck
 Donati
@@ -70,6 +70,9 @@ Liaohe
 Limnology
 Loiselle
 MDL
+ManualExampleTeaAbsSpectraGraphs
+ManualExampleTeaWaterfallPlotBlank
+ManualExampleTeaWaterfallPlotSample
 Marcarelli
 Markager
 Massicotte
@@ -100,7 +103,6 @@ Rhoades
 Ritchie
 Rossi
 Rostad
-SRMtea
 SVA
 Saccomandi
 Saubusse
@@ -142,7 +144,6 @@ eemlist
 eems
 et
 fi
-fluor
 fluorometer
 frac
 fulvic
@@ -189,12 +190,8 @@ recurse
 sagepub
 sampleQ
 sblank
-sd
-sdmax
-sdmin
 snowmelt
 staRdom
-tibble
 tyrosine
 unreplicated
 usgs

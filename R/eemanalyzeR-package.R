@@ -75,5 +75,7 @@
 #' @importFrom utils write.csv
 #' @importFrom utils write.table
 #' @importFrom zoo na.spline
+#' @importFrom zoo na.approx
+
 ## usethis namespace: end
 NULL

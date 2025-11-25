@@ -2,12 +2,13 @@
 % Please edit documentation in R/create-mdl.R
 \name{create_mdl}
 \alias{create_mdl}
-\title{Calculate method detection limits}
+\title{Calculate method detection limits (MDL)}
 \source{
 Hansen, A. M., Fleck, J., Kraus, T. E. C., Downing, B. D., von Dessonneck, T., & Bergamaschi, B. (2018).
-Procedures for using the Horiba Scientific Aqualog® fluorometer to measure absorbance and fluorescence from dissolved organic matter
-(USGS Numbered Series No. 2018-1096). Procedures for using the Horiba Scientific Aqualog® fluorometer to measure absorbance and fluorescence
-from dissolved organic matter (Vol. 2018-1096). Reston, VA: U.S. Geological Survey. \url{https://doi.org/10.3133/ofr20181096}
+\emph{Procedures for using the Horiba Scientific Aqualog® fluorometer to measure absorbance
+and fluorescence from dissolved organic matter} (USGS Numbered Series No. 2018-1096).
+U.S. Geological Survey.
+\url{https://doi.org/10.3133/ofr20181096}
 }
 \usage{
 create_mdl(
@@ -17,54 +18,59 @@ create_mdl(
   iblank = "BEM",
   type = "eem",
   recursive = FALSE,
-  output_dir = NULL
+  qaqc_dir = NULL
 )
 }
 \arguments{
-\item{dir}{path to folder containing long term EEMs and/or absorbance files, all files in this directory will be loaded}
+\item{dir}{Path to a folder containing long-term EEMs and/or absorbance files.
+All files in this directory will be loaded.}
 
-\item{meta_name}{name of metadata file. optional if metadata is only xlsx or csv file in input_dir
-if not specified function will attempt to load any xlsx or csv file in directory and return an error if there is more than one}
+\item{meta_name}{Name of the metadata file. Optional if the metadata file is the
+only \code{.xlsx} or \code{.csv} file in \code{dir}. If not specified, the function attempts to find
+a single metadata file and errors if multiple files are present.}
 
-\item{sheet}{name of sheet containing metadata. only required if metadata isn't the first sheet}
+\item{sheet}{Name of the sheet containing metadata (only required if metadata
+is not on the first sheet).}
 
-\item{iblank}{optional. a character string containing a \code{\link[base]{regular expression}}
-used to specify the sample names of the instrument blanks.}
+\item{iblank}{Optional. A character string containing a
+\link[base:regex]{base::regular expression} used to identify instrument blanks.}
 
-\item{type}{which MDL to calculate: either \code{eem} or \code{abs}}
+\item{type}{Which MDL to calculate: either "eem" or "abs".}
 
-\item{recursive}{logical. should the function recurse into directories?}
+\item{recursive}{Logical. Should the function recursively search directories?}
 
-\item{output_dir}{the location to save the mdl file to, default is a user-specific data directory (\link[rappdirs]{user_data_dir}). If
-FALSE will return the MDL instead of saving.}
+\item{qaqc_dir}{Directory in which to save the MDL \code{.rds} file.
+Default: a user-specific data directory via \code{\link[rappdirs:user_data_dir]{rappdirs::user_data_dir()}}.
+If \code{FALSE}, the function returns the MDL object instead of saving it.}
 }
 \value{
 \itemize{
-\item If output_dir is FALSE, returns an \code{eem} or \code{abs} object containing the MDL values.
-\item Otherwise it saves a .RDS file containing the MDL data formatted as either an \code{eem} or \code{abs} object to the specified output_dir.
+\item If \code{qaqc_dir = FALSE}: returns an \code{eem} or \code{abs} object containing MDL values.
+\item Otherwise: saves an \code{.rds} file containing the MDL object and invisibly returns the file path.
 }
 }
 \description{
-The method detection limit (MDL) is the signal limit that we can reliably have confidence
-that the result is greater than zero and distinguishable from blanks. In this case the MDL
-is calculated based on the method proposed by Hansen et al. (2018); three times the standard
-deviation plus the mean of the long-term blank.
+The method detection limit (MDL) is the minimum signal at which we can confidently
+distinguish a measurement from zero and from analytical blanks. Here, the MDL is
+calculated using the approach proposed by Hansen et al. (2018):
+\strong{MDL = mean(long-term blank) + 3 × SD(long-term blank)}.
 }
 \details{
-To calculate the MDL you need:
+To calculate the MDL, you need:
 \itemize{
-\item A directory containing analytical blanks with their associated instrument blanks (less than 20 will prompt a warning)
-\itemize{
-\item Note: sample names must be unique
-}
-\item Metadata for the blanks including (at a minimum) the integration time and raman area in a single file,
-formatted as a metadata file (see \link[eemanalyzeR]{metadata})
+\item A directory containing analytical blanks and instrument blanks
+(fewer than 20 blanks triggers a warning).
+\emph{Note: sample names must be unique.}
+\item A metadata file for the blanks containing, at minimum, integration time
+and Raman area, formatted as a metadata file described in \link{metadata}.
 }
 }
 \examples{
-eem_mdl <- create_mdl(file.path(system.file("extdata", package = "eemanalyzeR"),
-"long-term-blanks"), type="eem", output_dir = FALSE)
+eem_mdl <- create_mdl(
+  file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
+  type = "eem",
+  qaqc_dir = FALSE
+)
 
 plot(eem_mdl)
-
 }

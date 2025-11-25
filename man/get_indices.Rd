@@ -11,7 +11,7 @@ get_indices(
   tolerance = 0.2,
   return = "long",
   cuvle = 1,
-  mdl_dir = .qaqc_dir(),
+  qaqc_dir = .qaqc_dir(),
   arg_names = NULL
 )
 }
@@ -28,7 +28,7 @@ get_indices(
 
 \item{cuvle}{cuvette (path) length in cm}
 
-\item{mdl_dir}{file path to the mdl files generated with \link[eemanalyzeR]{create_mdl} and \link[eemanalyzeR]{create_std},
+\item{qaqc_dir}{file path to the mdl files generated with \link[eemanalyzeR]{create_mdl} and \link[eemanalyzeR]{create_std},
 default is a user-specific data directory (\link[rappdirs]{user_data_dir})}
 
 \item{arg_names}{optional argument used to pass arguments from higher level functions for writing the readme.}
@@ -87,5 +87,5 @@ The index values will be checked for potential errors prior to reporting and fla
 }
 \examples{
 indices <- get_indices(example_processed_eems, example_processed_abs,
-mdl_dir = system.file("extdata", package = "eemanalyzeR"))
+qaqc_dir = system.file("extdata", package = "eemanalyzeR"))
 }

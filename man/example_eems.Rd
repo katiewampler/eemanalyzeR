@@ -5,25 +5,25 @@
 \alias{example_eems}
 \title{Down-scaled excitation emission matrices}
 \format{
-An \code{eemlist} with six samples:
-\itemize{
-  \item{\strong{B1S1ExampleBlankBEM}: Fluorescence measured for a blank of Type 1 water}
-  \item{\strong{B1S1ExampleBlankSEM}: Fluorescence measured for a sample of Type 1 water}
-  \item{\strong{B1S2ExampleTeaStdBEM}: Fluorescence measured for a blank of Type 1 water}
-  \item{\strong{B1S2ExampleTeaStdSEM}: Fluorescence measured for a sample of dilute unsweetened tea}
-  \item{\strong{B1S3ExampleSampleBEM}: Fluorescence measured for a blank of Type 1 water}
-  \item{\strong{B1S3ExampleSampleSEM}: Fluorescence measured for a sample of stream water from Oregon, USA}
-}
+An `eemlist` with eight samples:
+- **B1S1ExampleBlankBEM**: Fluorescence measured for a blank of Type 1 water
+- **B1S1ExampleBlankSEM**: Fluorescence measured for a sample of Type 1 water
+- **B1S2ExampleTeaStdBEM**: Fluorescence measured for a blank of Type 1 water
+- **B1S2ExampleTeaStdSEM**: Fluorescence measured for a sample of dilute unsweetened tea
+- **B1S3ExampleSampleBEM**: Fluorescence measured for a blank of Type 1 water
+- **B1S3ExampleSampleSEM**: Fluorescence measured for a sample of stream water from Oregon, USA
+- **ManualExampleTeaWaterfallPlotBlank**: Fluorescence measured for a blank of Type 1 water
+- **ManualExampleTeaWaterfallPlotSample**: Fluorescence measured for a sample of dilute unsweetened tea
 }
 \source{
-Oregon State University Forest Ecohydrology and Watershed Sciences Lab (2022-11-14)
+Oregon State University Forest Ecohydrology and Watershed Sciences Lab (2022-11-14 and 2022-08-05).
 }
 \usage{
 example_eems
 }
 \description{
 A subset of water samples run on a Horiba Aqualog for excitation emission matrices (EEMs). This data includes
-both the samples and blanks. Data was loaded using \link[eemanalyzeR]{eem_dir_read}.
-For more details on the format of an eemlist, see the \link[eemR]{eemR} package.
+both the samples and blanks. Data was loaded using [eem_dir_read()].
+For more details on the format of an eemlist, see the [eemR] package.
 }
 \keyword{datasets}

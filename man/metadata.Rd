@@ -6,21 +6,19 @@
 \title{Example metadata}
 \format{
 A data.frame with 3 rows and 11 columns:
-\describe{
-  \item{index}{Simply the numeric order of entry (e.g. 1, 2, 3, 4, etc...)}
-  \item{analysis_date}{optional: Date samples were ran on instrument (not collected in the field)}
-  \item{description}{optional: A brief description of the sample collected}
-  \item{data_identifier}{REQUIRED. The file name from the aqualog, needs to match exactly}
-  \item{replicate_no}{REQUIRED. A number indicating if the sample was replicated, an unreplicated sample should get a 1. Analytical replicates must have identical sample names.}
-  \item{integration_time_s}{REQUIRED. Integration time of sample (e.g. 1, 2, etc…)}
-  \item{dilution}{REQUIRED. Include dilution factor here as decimal format (e.g. a 2-fold dilution with 1 part sample and 1 part water will have a dilution factor of 0.5). If no dilution, put 1}
-  \item{RSU_area_1s}{REQUIRED: The RSU Adjust Area from the Raman Test, used to normalize the data from day to day}
-  \item{sample_type}{optional: Flag for whether the data identifier is linked to a real sample (sample), sample blank (sblank), or check standard (check)}
-  \item{run_type}{optional: How the samples were run (manual or sampleQ)}
-  \item{collect_date}{optional: The date the water samples were collected}
-  \item{DOC_mg_L}{optional: DOC concentration in mg/L of the original sample (not the diluted sample)}
-  \item{Notes}{optional: Any notes from sample collection or sample running, will not be used in analysis}
-}
+- **index**: Numeric order of entry (e.g., 1, 2, 3, etc.)
+- **analysis_date**: Optional, date samples were run on instrument (not collected in the field)
+- **description**: Optional, brief description of the sample collected
+- **data_identifier**: REQUIRED, file name from the aqualog, must match exactly
+- **replicate_no**: REQUIRED, number indicating if the sample was replicated; unreplicated = 1
+- **integration_time_s**: REQUIRED, integration time of sample (e.g., 1, 2, etc.)
+- **dilution**: REQUIRED, dilution factor as decimal (e.g., 0.5 for 2-fold dilution); 1 if no dilution
+- **RSU_area_1s**: REQUIRED, RSU Adjust Area from the Raman test for normalization
+- **sample_type**: Optional, flag (sample, sblank, or check)
+- **run_type**: Optional, how the samples were run (manual or sampleQ)
+- **collect_date**: Optional, date the water samples were collected
+- **DOC_mg_L**: Optional, DOC concentration in mg/L of original sample
+- **Notes**: Optional, any notes from collection or running
 }
 \source{
 Oregon State University Forest Ecohydrology and Watershed Sciences Lab (2022-11-14)
@@ -29,7 +27,7 @@ Oregon State University Forest Ecohydrology and Watershed Sciences Lab (2022-11-
 metadata
 }
 \description{
-Metadata associated with the samples in \link{example_eems}. Provides an example of the structure
+Metadata associated with the samples in [example_eems()] and [example_abs()]. Provides an example of the structure
 and requirements for metadata needed to run samples.
 }
 \keyword{datasets}

@@ -28,7 +28,7 @@ To maximum flexibility in calculating indices, we've enabled the [get_indices](.
     a.  `eemlist`: an eemlist object containing EEM's data.
     b.  `abslist`: an abslist object containing absorbance data.
     c.  `cuvle`: the cuvette (path) length in cm.
-    d.  `mdl_dir`: the file path to the mdl files generated with \link[eemanalyzeR]{create_mdl}
+    d.  `qaqc_dir`: the file path to the mdl files generated with \link[eemanalyzeR]{create_mdl}
 2.  **The function must return a list with the following items:**
     a.  `abs_index`: the indices calculated from the absorbance data
     b.  `eem_index`: the indices calculated from the EEMs data
@@ -151,7 +151,7 @@ There's also a function that will flag indices that can't be calculated because 
   #some data exists, still calculate
   flag_missing(eemlist, ex=100:350, em=300:320, all=FALSE) 
 ```
-You may also want to flag values below the method detection limit (MDL) this can be done with: [check_*_mdl](../html/check-mdl.html). This is useful to ensure that the blanks are actually blank and ratio values that are returned are based on "real" data. 
+You may also want to flag values below the method detection limit (MDL) this can be done with: [check_*_mdl](../html/check_mdl.html). This is useful to ensure that the blanks are actually blank and ratio values that are returned are based on "real" data. 
 
 ```{r}
 #checking absorbance data
@@ -280,15 +280,15 @@ results <- do.call(rbind, results)
 
 Now we need to make sure to add in the MDL data so we can use it to check our values. If the MDL is NULL, we want to have a warning, but still run. 
 ```{r}
- mdl_dir <- file.path(system.file("extdata", package = "eemanalyzeR"))
+ qaqc_dir <- file.path(system.file("extdata", package = "eemanalyzeR"))
  #get mdl data
-  check_eem <- file.exists(file.path(mdl_dir, "eem-mdl.rds"))
+  check_eem <- file.exists(file.path(qaqc_dir, "eem-mdl.rds"))
 
   #load mdl data or warn
   if(!check_eem){
     warning("fluorescence MDL is missing, indices will not be checked for MDLs")
     eem_mdl <- NULL
-    }else{eem_mdl <- readRDS(file.path(mdl_dir, "eem-mdl.rds"))}
+    }else{eem_mdl <- readRDS(file.path(qaqc_dir, "eem-mdl.rds"))}
 ```
 
 
@@ -302,18 +302,18 @@ Lastly, we just need to return the results as a list. Since we don't have any ab
 Great, that all looks good, now we just need to combine all that code to a custom function.
 
 ```{r}
-zhang2025 <- function(eemlist, abslist, cuvle=1, mdl_dir){
+zhang2025 <- function(eemlist, abslist, cuvle=1, qaqc_dir){
   #making sure eemlist and abslist are correct objects
     stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
   
   #get mdl data
-  check_eem <- file.exists(file.path(mdl_dir, "eem-mdl.rds"))
+  check_eem <- file.exists(file.path(qaqc_dir, "eem-mdl.rds"))
 
   #load mdl data or warn
   if(!check_eem){
     warning("fluorescence MDL is missing, indices will not be checked for MDLs")
     eem_mdl <- NULL
-  }else{eem_mdl <- readRDS(file.path(mdl_dir, "eem-mdl.rds"))}
+  }else{eem_mdl <- readRDS(file.path(qaqc_dir, "eem-mdl.rds"))}
   
   #specify indices
     zhang_indices <- list(USoI = list(ex=c(245,230), em=c(440,260)),
@@ -347,7 +347,7 @@ zhang2025 <- function(eemlist, abslist, cuvle=1, mdl_dir){
 Now let's test our custom function with the [get_indices](../html/get-indices.html) function. Note that we get a warning about the indices because the EEMs data hasn't gone through any processing steps.
 
 ```{r}
-indices <- get_indices(example_processed_eems, example_processed_abs, index_method = zhang2025, return = "wide", mdl_dir = file.path(system.file("extdata", package = "eemanalyzeR")))
+indices <- get_indices(example_processed_eems, example_processed_abs, index_method = zhang2025, return = "wide", qaqc_dir = file.path(system.file("extdata", package = "eemanalyzeR")))
 
 indices$eem_index
 ```
@@ -484,15 +484,15 @@ SR <- format_index(abslist, index, vals, flags)
 
 Now we need to make sure to add in the MDL data so we can use it to check our values. If the MDL is NULL, we want to have a warning, but still run. 
 ```{r}
- mdl_dir <- file.path(system.file("extdata", package = "eemanalyzeR"))
+ qaqc_dir <- file.path(system.file("extdata", package = "eemanalyzeR"))
  #get mdl data
-  check_abs <- file.exists(file.path(mdl_dir, "abs-mdl.rds"))
+  check_abs <- file.exists(file.path(qaqc_dir, "abs-mdl.rds"))
 
   #load mdl data or warn
   if(!check_abs){
     warning("absorbance MDL is missing, indices will not be checked for MDLs")
     abs_mdl <- NULL
-    }else{abs_mdl <- readRDS(file.path(mdl_dir, "abs-mdl.rds"))}
+    }else{abs_mdl <- readRDS(file.path(qaqc_dir, "abs-mdl.rds"))}
 ```
 
 
@@ -508,18 +508,18 @@ Lastly, we just need to combine all the indices into a data.frame and return the
 Great, that all looks good, now we just need to combine all that code to a custom function.
 
 ```{r}
-erlandsson2012 <- function(eemlist, abslist, cuvle=1, mdl_dir){
+erlandsson2012 <- function(eemlist, abslist, cuvle=1, qaqc_dir){
   #making sure eemlist and abslist are correct objects
     stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
   
   #get mdl 
-  check_abs <- file.exists(file.path(mdl_dir, "abs-mdl.rds"))
+  check_abs <- file.exists(file.path(qaqc_dir, "abs-mdl.rds"))
 
   #load mdl data or warn
   if(!check_abs){
     warning("absorbance MDL is missing, indices will not be checked for MDLs")
     abs_mdl <- NULL
-  }else{abs_mdl <- readRDS(file.path(mdl_dir, "abs-mdl.rds"))}
+  }else{abs_mdl <- readRDS(file.path(qaqc_dir, "abs-mdl.rds"))}
   
   #specify wavelengths
     erlandsson_index <- list(a254=254,
@@ -600,7 +600,7 @@ Now let's test our custom function with the [get_indices](../html/get-indices.ht
 
 ```{r}
 indices <- get_indices(example_processed_eems, example_processed_abs, index_method = erlandsson2012, 
-                       mdl_dir = file.path(system.file("extdata", package = "eemanalyzeR")), return="wide")
+                       qaqc_dir = file.path(system.file("extdata", package = "eemanalyzeR")), return="wide")
 
 indices$abs_index
 ```
