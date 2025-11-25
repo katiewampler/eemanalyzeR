@@ -9,7 +9,7 @@ validate_check_std(abslist, std_dir = .qaqc_dir(), tolerance = 0.2)
 \arguments{
 \item{abslist}{an object of class \code{abslist}}
 
-\item{std_dir}{file path to the QAQC files generated with \code{\link[=create_mdl]{create_mdl}} and \code{\link[=create_tea_std]{create_tea_std}},
+\item{std_dir}{file path to the QAQC files generated with \code{\link[=create_mdl]{create_mdl}} and \code{\link[=create_std]{create_std}},
 default is a user-specific data directory (\code{\link[rappdirs:user_data_dir]{user_data_dir}})}
 
 \item{tolerance}{what is the maximum percentage the tea standard can vary from the long-term values without being flagged?}
@@ -19,7 +19,7 @@ a \code{ggplot} object with the absorbance of the check standards plotted with t
 tolerance thresholds (gray ribbon).
 }
 \description{
-Visually inspect plots of the tea check standards compared to the \link[=create_tea_std]{long-term standard}.
+Visually inspect plots of the tea check standards compared to the \link[=create_std]{long-term standard}.
 }
 \examples{
 abslist <- add_metadata(metadata, example_abs)

@@ -12,9 +12,9 @@
     create_mdl("data-raw/long-term-standards/blanks", recursive = TRUE, type="eem", blk="_blank")
     create_mdl("data-raw/long-term-standards/blanks", recursive = TRUE, type="abs", pattern="Abs")
 
-    create_tea_std("data-raw/long-term-standards/tea-standards", recursive = TRUE,
+    create_std("data-raw/long-term-standards/tea-standards", recursive = TRUE,
                    type="eem", blk="_blank", abs_pattern="Abs") #gives warning about trying to load eem with abs
-    create_tea_std("data-raw/long-term-standards/tea-standards", recursive = TRUE,
+    create_std("data-raw/long-term-standards/tea-standards", recursive = TRUE,
                    type="abs", abs_pattern="Abs")
 
   #example 1: Hohner-Lab-2024-07-29

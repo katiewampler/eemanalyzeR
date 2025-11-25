@@ -224,22 +224,22 @@ for(x in files){
         #rename
         end <- ifelse(grepl("_blank", f), "BEM", ifelse(grepl("abs/", f), "ABS", "SEM"))
         file.rename(file.path("data-raw", basename(f)),
-                    file.path("inst/extdata/long-term-tea", paste0("longterm-teastd", x, end, ".dat")))
+                    file.path("inst/extdata/long-term-std", paste0("longterm-checkstd", x, end, ".dat")))
       }
     }
 
     #write metadata
     blk_meta <- meta[50:55,]
-    blk_meta$data_identifier <- paste0("longterm-teastd", 1:length(example_dat))
-    write.csv(blk_meta, "inst/extdata/long-term-tea/longtermteastd-metadata.csv", row.names=FALSE, quote=FALSE)
+    blk_meta$data_identifier <- paste0("longterm-checkstd", 1:length(example_dat))
+    write.csv(blk_meta, "inst/extdata/long-term-std/longterm-checkstd-metadata.csv", row.names=FALSE, quote=FALSE)
 
     #make a test tea file for functions
-    create_tea_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-tea"),
-            meta_name="longtermteastd-metadata.csv", eem_pattern = "longterm-teastd", abs_pattern="ABS",
+    create_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-std"),
+            meta_name="longterm-checkstd-metadata.csv", abs_pattern="ABS",
             type="eem", output_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
 
-    create_tea_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-tea"),
-            meta_name="longtermteastd-metadata.csv", eem_pattern = "longterm-teastd", abs_pattern="ABS",
+    create_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-std"),
+            meta_name="longterm-checkstd-metadata.csv", abs_pattern="ABS",
             type="abs", output_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
 
 #save index ranges as data.frame ------

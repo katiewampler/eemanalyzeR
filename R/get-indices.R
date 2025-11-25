@@ -9,7 +9,7 @@
 #' @param tolerance what is the maximum percentage the tea standard can vary from the long-term values without being flagged?
 #' @param return either "long" or "wide" to specify the format of the indices data.frames
 #' @param cuvle cuvette (path) length in cm
-#' @param mdl_dir file path to the mdl files generated with \link[eemanalyzeR]{create_mdl} and \link[eemanalyzeR]{create_tea_std},
+#' @param mdl_dir file path to the mdl files generated with \link[eemanalyzeR]{create_mdl} and \link[eemanalyzeR]{create_std},
 #' default is a user-specific data directory (\link[rappdirs]{user_data_dir})
 #' @param arg_names optional argument used to pass arguments from higher level functions for writing the readme.
 #'
@@ -180,11 +180,11 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR",
         index$QAQC_flag <- .combine_flags(index$QAQC_flag, infinite)
         return(index)
       }
-      tea_flag <- function(index, std_check){
+      std_flag <- function(index, std_check){
         if(!is.data.frame(index)){return(index)}
         index <- index %>% dplyr::left_join(std_check, by = c("index", "meta_name"))
-        index$QAQC_flag <- .combine_flags(index$QAQC_flag, index$tea_flag)
-        index <- index %>% select(-c("type", "tea_flag"))
+        index$QAQC_flag <- .combine_flags(index$QAQC_flag, index$flag)
+        index <- index %>% select(-c("type", "flag"))
         return(index)
       }
 
@@ -206,10 +206,10 @@ get_indices <- function(eemlist, abslist, index_method="eemanalyzeR",
 
       }
 
-    #check tea standards
-      std_check <- check_tea_std(eemlist, abslist, std_dir=mdl_dir,
+    #check check standards
+      std_check <- check_std(eemlist, abslist, std_dir=mdl_dir,
                                  index_method=index_method, tolerance=tolerance)
-      indices <- lapply(indices, tea_flag, std_check)
+      indices <- lapply(indices, std_flag, std_check)
 
   #make indices numeric
    indices <- lapply(indices, function(x){

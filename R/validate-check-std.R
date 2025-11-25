@@ -1,9 +1,9 @@
 #' Visually Validate the Check Standard
 #'
-#' Visually inspect plots of the tea check standards compared to the [long-term standard][create_tea_std()].
+#' Visually inspect plots of the tea check standards compared to the [long-term standard][create_std()].
 #'
 #' @param abslist an object of class `abslist`
-#' @param std_dir file path to the QAQC files generated with [`create_mdl`][create_mdl()] and [`create_tea_std`][create_tea_std()],
+#' @param std_dir file path to the QAQC files generated with [`create_mdl`][create_mdl()] and [`create_std`][create_std()],
 #' default is a user-specific data directory ([`user_data_dir`][rappdirs::user_data_dir])
 #' @param tolerance what is the maximum percentage the tea standard can vary from the long-term values without being flagged?
 #' @md

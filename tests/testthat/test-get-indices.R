@@ -72,7 +72,7 @@
 
     mdl_dir <- system.file("extdata", package = "eemanalyzeR")
 
-    expect_no_error(get_indices(example_processed_eems, example_processed_abs, index_method=return_NA))
+    expect_no_error(get_indices(example_processed_eems, example_processed_abs, index_method=return_NA, mdl_dir = mdl_dir))
     expect_no_error(get_indices(example_processed_eems, example_processed_abs, index_method=return_NA, mdl_dir = mdl_dir))
 
   })

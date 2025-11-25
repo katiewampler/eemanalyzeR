@@ -1,4 +1,4 @@
-#' Create Long Term Average Tea Standard
+#' Create long term average check standard
 #'
 #' To ensure optical measurements are consistent across days, Hansen et al. (2018) recommend using a standard reference material:
 #' Pure Leaf®, unsweetened black tea. The tea standard should be diluted to 1 % concentration before analysis. It is recommended to
@@ -41,14 +41,14 @@
 #' from dissolved organic matter (Vol. 2018-1096). Reston, VA: U.S. Geological Survey. \url{https://doi.org/10.3133/ofr20181096}
 #'
 #' @examples
-#' eem_teastd <- create_tea_std(
-#' file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-tea"),
-#' abs_pattern="ABS",type="eem", output_dir = FALSE)
+#' eem_std <- create_std(file.path(system.file("extdata", package = "eemanalyzeR"),"long-term-std"),
+#' meta_name="longterm-checkstd-metadata.csv", abs_pattern = "ABS",
+#' type="eem", output_dir = FALSE)
 #'
-#' plot(eem_teastd)
+#' plot(eem_std)
 #'
 
-create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblank="BEM",
+create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblank="BEM",
                         type = "eem", recursive=FALSE, output_dir=NULL){
   stopifnot(type %in% c("eem", "abs"), dir.exists(dir))
 
@@ -74,7 +74,7 @@ create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", i
     if(length(tea) == 0){stop("No fluoresence data was found to load. Please check your eem_pattern arugment.")}
 
     if(type == "eem"){n_samps <- n_samps/2}
-    if(n_samps < 20){warning("Calculating average tea standard based on less than 20 samples, average may be unreliable")}
+    if(n_samps < 20){warning("Calculating average check standard based on less than 20 samples, average may be unreliable")}
 
   #add metadata
     tea <- add_metadata(tea_meta, tea)
@@ -116,22 +116,22 @@ create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", i
 
     #turn into a eem object
     dates <- get_sample_info(tea_eems, "analysis_date")
-    tea_eem <- list(file= file.path(output_dir, "eem-tea-std.rds"),
-                    sample="long-term-tea-std",
+    tea_eem <- list(file= file.path(output_dir, "eem-check-std.rds"),
+                    sample="long-term-check-std",
                     x = mean,
                     ex = get_sample_info(tea_eems, "ex")[1,],
                     em = get_sample_info(tea_eems, "em")[1,],
                     location=dir,
-                    meta_name="long-term-tea-std",
+                    meta_name="long-term-check-std",
                     dilution=NA,
                     integration_time_s = NA,
                     raman_area_1s = NA,
                     analysis_date = paste(min(dates, na.rm=TRUE), max(dates, na.rm=TRUE), sep=":"),
-                    description = "long-term average of tea standard for EEMs",
+                    description = "long-term average of check standard for EEMs",
                     doc_mgL = NA,
-                    notes=paste0("long-term average of tea standard for EEMs based on ", length(tea_eems), " samples collected from ",
+                    notes=paste0("long-term average of check standard for EEMs based on ", length(tea_eems), " samples collected from ",
                                  min(dates, na.rm=TRUE), " to ", max(dates, na.rm=TRUE),
-                                 ". Tea standards have been blank-corrected and raman-normalized.",
+                                 ". Check standards have been blank-corrected and raman-normalized.",
                                  "the location description is the directory where the long-term blanks came from."))
 
     #ensure correct attributes
@@ -140,7 +140,7 @@ create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", i
 
     #cache tea data
     if(output_dir != FALSE){
-      saveRDS(tea_eem, file.path(output_dir, "eem-tea-std.rds"))
+      saveRDS(tea_eem, file.path(output_dir, "eem-check-std.rds"))
     }else{
       return(tea_eem)
     }
@@ -154,7 +154,7 @@ create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", i
       missing <- sum(sapply(data, is.na))
 
       if(missing > 0){
-        stop(paste0("Absorbance wavelengths are inconsistent across tea standards.",
+        stop(paste0("Absorbance wavelengths are inconsistent across check standards.",
                     "\nPlease interpolate across the missing wavlengths."))
       }
 
@@ -174,17 +174,17 @@ create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", i
 
     #turn into a abs object
     dates <- get_sample_info(tea, "analysis_date")
-    tea_abs <- list(file= file.path(output_dir, "abs-tea-std.rds"),
-                    sample="long-term-tea-std",
+    tea_abs <- list(file= file.path(output_dir, "abs-check-std.rds"),
+                    sample="long-term-check-std",
                     n = length(unique(tea_abs_df$wavelength)),
                     data = unname(as.matrix(abs_tea[order(abs_tea$wavelength, decreasing=TRUE),])),
                     location=dir,
-                    meta_name="long-term-tea-std",
+                    meta_name="long-term-check-std",
                     dilution=NA,
                     analysis_date = paste(min(dates, na.rm=TRUE), max(dates, na.rm=TRUE), sep=":"),
-                    description = "long-term tea standard for absorbance",
+                    description = "long-term check standard for absorbance",
                     doc_mgL = NA,
-                    notes=paste0("long-term average of tea standard absorbance based on ", length(tea), " samples collected from ",
+                    notes=paste0("long-term average of check standard absorbance based on ", length(tea), " samples collected from ",
                                  min(dates, na.rm=TRUE), " to ", max(dates, na.rm=TRUE),
                                  ".",
                                  "the location description is the directory where the long-term blanks came from."))
@@ -195,7 +195,7 @@ create_tea_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", i
 
     #cache tea data
     if(output_dir != FALSE){
-      saveRDS(tea_abs, file.path(output_dir, "abs-tea-std.rds"))
+      saveRDS(tea_abs, file.path(output_dir, "abs-check-std.rds"))
     }else{
       return(tea_abs)
     }
