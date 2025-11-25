@@ -7,24 +7,27 @@
 abs_read(file)
 }
 \arguments{
-\item{file}{file path to the absorbance file to load}
+\item{file}{File path to the absorbance file to load.}
 }
 \value{
 An object of class \code{abs} containing:
 \itemize{
- \item file The filename of the absorbance data.
- \item sample The sample name of the absorbance data.
- \item n The number of wavelengths absorbance was measured at.
- \item data A matrix where the first column is the wavelengths in nm and the second column is the absorbance.
- \item location Directory of the absorbance data.
+\item \strong{file}: The filename of the absorbance data
+\item \strong{sample}: The sample name
+\item \strong{n}: The number of wavelengths measured
+\item \strong{data}: A matrix where the first column is wavelength (nm) and the second column is absorbance
+\item \strong{location}: Directory where the absorbance file is stored
 }
 }
 \description{
-Will accept absorbance files run via Aqualog exported using the sample Q or manually. If the function tries
-to load an EEM's file it will return a warning and a NULL value for absorbance.
+Will accept absorbance files run via Aqualog exported using the sample Q or manually.
+If the function tries to load an EEM file, it will return a warning and a \code{NULL} value for absorbance.
 }
 \examples{
-abs_files <- list.files(system.file("extdata", package = "eemanalyzeR"),
-full.names=TRUE, pattern="ABS|Abs ?Spectra ?Graphs")
+abs_files <- list.files(
+  system.file("extdata", package = "eemanalyzeR"),
+  full.names = TRUE,
+  pattern = "ABS|Abs ?Spectra ?Graphs")
+
 abs <- abs_read(abs_files[1])
 }

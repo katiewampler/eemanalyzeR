@@ -7,40 +7,34 @@
 add_blanks(eemlist, blanklist = NULL, validate = TRUE)
 }
 \arguments{
-\item{eemlist}{an \code{eemlist} object containing EEM's data. See details for more info.}
+\item{eemlist}{An \code{eemlist} object containing EEM data. See \strong{Details} for more information.}
 
-\item{blanklist}{optional. an \code{eem} or \code{eemlist} containing the EEM's data for the blank(s)}
+\item{blanklist}{Optional. An \code{eem} or \code{eemlist} containing the blank EEM(s).}
 
-\item{validate}{logical. If TRUE, will print out the blanks and ask user for validation.
-If FALSE, it will skip validation and just add the blanks}
+\item{validate}{If \code{TRUE}, the function prints the blanks and requests user validation,
+otherwise validation is skipped and blanks are added automatically.}
 }
 \value{
-an \code{eemlist} where each \code{eem} object has two additional items:
+An \code{eemlist} where each \code{eem} object has two added components:
 \itemize{
-\item \code{blk_file}: the file location for the blank associated with the sample
+\item \code{blk_file}: file path of the blank associated with the sample
 \item \code{blk_x}: the blank EEM associated with the sample
 }
 }
 \description{
-Allows user to visually check excitation emissions matrix plots of the blanks, and then, if approved, the blanks will
-be added to the \code{eem} objects for use in further processing.
+Allows the user to visually check excitation–emission matrix (EEM) plots of the blanks,
+and then, if approved, the blanks will be added to the \code{eem} objects for further processing.
 }
 \details{
-If more than one blank is supplied, the function links the blank and sample by the metadata
-name which should be the same between the sample and the blank, because of this,
-samples must have metadata already added to the samples using \link[eemanalyzeR]{add_metadata}.
+If more than one blank is supplied, the function links each blank to its sample using the
+metadata name. These names must match between the sample and its corresponding blank.
+Because of this, samples must already have metadata assigned using
+\code{\link[=add_metadata]{add_metadata()}}.
 
-If a \code{blanklist} is not provided, one will be automatically generated based on the \code{eemlist} attribute \code{sample_type},
-from the samples marked as \code{iblank}.
-
-Adding the blanks into the sample data can be done two ways:
-\enumerate{
-\item Include an \code{eemlist} containing EEM's data for both sample and blank: Need to specify a \code{pattern} to identify blanks
-\item Include an \code{eemlist} containing \strong{only} EEM's data for samples: Need to include an \code{eem} or \code{eemlist} as \code{blanklist} with EEM's data for blank(s)
-}
+If a \code{blanklist} is not provided, one is automatically generated from the \code{eemlist} attribute
+"sample_type", using the samples marked as "iblank".
 }
 \examples{
 eemlist <- add_metadata(metadata, example_eems)
-augment_eemlist <- add_blanks(eemlist, validate=FALSE)
-
+augment_eemlist <- add_blanks(eemlist, validate = FALSE)
 }
