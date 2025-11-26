@@ -86,7 +86,6 @@ process_eem <- function(eemlist,
   eemlist <- raman_normalize(eemlist = eemlist)
   eemlist <- correct_dilution(x = eemlist)
 
-  # TODO: (make new wrapper to incorporate readme)
   # clip to just the region you care about
   ex_rm <- unique(get_sample_info(eemlist, "ex")[get_sample_info(eemlist, "ex") < ex_clip[1] | get_sample_info(eemlist, "ex") > ex_clip[2]])
   em_rm <- unique(get_sample_info(eemlist, "em")[get_sample_info(eemlist, "em") < em_clip[1] | get_sample_info(eemlist, "em") > em_clip[2]])
