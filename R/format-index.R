@@ -61,3 +61,54 @@ format_index <- function(x, index, value, flag){
 
   return(res)
 }
+
+
+
+#' Nicely combine data QAQC flags
+#'
+#' If the previous flags were `NA`, replaces with the new flagged value, otherwise combines
+#' the flags with a "_" between.
+#'
+#' @param x existing flags
+#' @param x1 flags to add
+#' @param mdl logical, combing two MDL flags?
+#'
+#' @export
+#' @examples
+#' .combine_flags("DATA01", NA)
+#' .combine_flags(NA, "MDL01")
+#' .combine_flags(NA, NA)
+#' .combine_flags("DATAO1", "MDL01")
+#' .combine_flags("DATA01", "DATA01")
+.combine_flags <- function(x, x1, mdl=FALSE){
+  stopifnot(length(x) == length(x1))
+
+  if(length(x) > 1){
+    flags <- sapply(1:length(x), function(n){.combine_flags(x[n], x1[n], mdl=mdl)})
+    return(flags)
+  }
+
+  if(is.na(x) & is.na(x1)){return(NA)}
+
+  if(mdl & !is.na(x) & !is.na(x1)){
+    #if one is full mdl, but another is partial, return MDL03 indicating that one set was totally below
+    if(x1 == "MDL01" & x == "MDL02"){x1 <- x <-  "MDL03"}
+    if(x == "MDL01" & x1 == "MDL02"){x <- x1 <- "MDL03"}
+  }
+
+  #if combining two mdl columns, (should always be a ratio, so if one is NA and the other is MDL01, don't report -> MDL03)
+  if(mdl){
+    if(is.na(x) & x1 == "MDL01"){x1 <- "MDL03"}
+    if(is.na(x1) & x == "MDL01"){x <- "MDL03"}}
+
+
+  if(is.na(x) & !is.na(x1)){return(x1)}
+
+  if(!is.na(x) & is.na(x1)){return(x)}
+
+  if(!is.na(x) & !is.na(x1)){
+    if(x == x1){return(x)
+    }else{
+      return(paste(x,x1, sep="_"))
+    }}
+}

@@ -1,0 +1,66 @@
+#' Returns eemanalyzeR package version loaded
+#'
+#' @return text string with eemanalyzeR package version
+#' @noRd
+.eemanalyzeR_ver <- function() {
+  paste0("eemanalyzeR ", utils::packageVersion("eemanalyzeR"))
+}
+
+#' Write a line of text to the readme object that tracks processing tracking
+#'
+#' @param text line of text to write to the process file
+#' @param slot the spot to write the readme lines into
+#' @param args the argument values from upper functions as character
+#' @param append append text to existing text in slot?
+#' @noRd
+.write_readme_line <- function(text, slot, args=NULL, append=FALSE){
+  #if this is the first thing getting written to readme, create
+  if(!exists("readme")){
+    readme <- list(eem_blank_corrected=NA, eem_scatter_corrected=NA,
+                   eem_ife_corrected=NA, eem_raman_normalized=NA,
+                   eem_doc_normalized=NA, eem_dil_corrected=NA,
+                   abs_dil_corrected=NA, abs_doc_normalized=NA,
+                   eem_cut=NA,indices=NA, mdl=NA, check_std=NA)
+    assign("readme", readme, envir = .GlobalEnv)
+  }
+
+  #write processing to readme
+  time <- Sys.time()
+  time <- strftime(time, format="%Y-%m-%d %H:%M:%S")
+
+  if(!is.null(args)){
+    args <- paste("\t",paste0(names(args), ": ", args), collapse="\n")
+    args <- paste0(paste("   function parameters:", args, sep="\n"), "\n")
+    args <- gsub("~", "", args)
+
+  }else{args <- ""}
+
+  if(append){
+    readme[slot] <- paste(readme[slot], text, args, sep="")
+  }else{
+    step <- paste0(time, ": ", text)
+    readme[slot] <- paste(step, args, sep="\n")}
+
+  # TODO change this to write to package environment when complete
+  assign("readme", readme, envir = .GlobalEnv)
+
+}
+
+#' Print `readme`
+#'
+#' Nicely print the processing documentation readme file with proper formatting.
+#' The readme tracks the processing steps applied to the dataset and is stored
+#' as an object called `readme` in the package environment.
+#'
+#' @export
+print_readme <- function(){
+  readme <- readme[!is.na(readme)]
+
+  #get stuff for the top
+  date <- strftime(Sys.time(), format="%Y-%m-%d %H:%M")
+  version <- paste0("Data processed using ", .eemanalyzeR_ver(), " package in R.")
+  link <- "For details on processing steps, indices, and QA/QC flags see the package website: https://github.com/katiewampler/eemanalyzeR"
+
+  cat(paste(date, version, link, "______________________________\n", paste(unlist(readme), collapse = "\n"), sep="\n"))
+
+}

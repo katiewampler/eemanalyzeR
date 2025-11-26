@@ -39,3 +39,31 @@ validate_blanks <- function(blanklist) {
 
   return(continue)
 }
+
+
+#' Answer validation questions yes or no
+#'
+#' @importFrom rlang is_interactive
+#' @noRd
+.yesorno <- function(question,
+                     y_response,
+                     n_response) {
+  # Return TRUE (ie "yes") if run non-interactively (tests, batch processing)
+  if (!rlang::is_interactive()) return(TRUE)
+  stopifnot(  is.character(question) |
+                is.character(y_response) |
+                is.character(n_response))
+  cont <- readline(paste0(question, " [y/n]: "))
+  if(grepl("^y$", cont, ignore.case = TRUE)) {
+    message(y_response, "\n")
+    return(TRUE)
+  } else if(grepl("^n$", cont, ignore.case = TRUE)){
+    message(n_response, "\n")
+    return(FALSE)
+  } else {
+    warning("Improper response, please respond 'y' or 'n'", "\n")
+    .yesorno(question,
+             y_response,
+             n_response)
+  }
+}
