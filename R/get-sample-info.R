@@ -14,10 +14,10 @@
 #' @return
 #' If `x` is an `eemlist` or `abslist`, the returned structure depends on the
 #' type of the requested component (`info`):
-#TODO: check this is right
 #' - **vector of length 1**: returns a vector with one value per sample
-#' - **vector of length >1**: returns a data.frame (samples in columns)
+#' - **vector of length >1**: returns a matrix (samples in columns)
 #' - **matrix**: returns a list of matrices (one per sample)
+#' - **matrix** and `x` is an `abslist`: returns a matrix (samples in columns)
 #'
 #' If `x` is a single `eem` or `abs` object, the corresponding component is
 #' returned as-is, preserving its class and structure.
@@ -62,24 +62,22 @@ get_sample_info <- function(x, info) {
     if (all(sapply(res, is.matrix)) & .is_abslist(x)) {
       sample_names <- get_sample_info(x, "sample")
 
-
-      # TODO We might have to check that all wavelengths are the same before merging into data.frame
-      # confirm this works with test
-      # convert to df (do we want a data.frame for a matrix to be consistent)
       res <- lapply(res, as.data.frame)
       res <- mapply(function(df, name) {
         colnames(df) <- c("wavelength", name)
         return(df)
       }, res, sample_names, SIMPLIFY = FALSE)
-      res_form <- Reduce(
-        \(df1, df2) merge(df1, df2, by = "wavelength", all.x = TRUE),
-        res
-      )
+
+      res_form <-  res %>% purrr::reduce(dplyr::full_join, by = "wavelength") %>%
+                    dplyr::arrange(- .data$wavelength) %>% as.matrix()
+
     }
 
     # if vector with multiple items
     if (all(sapply(res, is.vector)) & all(sapply(res, length) > 1)) {
-      res_form <- do.call(rbind, res)
+      sample_names <- get_sample_info(x, "sample")
+      res_form <- do.call(cbind, res)
+      colnames(res_form) <- sample_names
     }
 
     # if vector with one item

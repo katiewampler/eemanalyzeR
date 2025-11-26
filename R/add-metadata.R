@@ -198,7 +198,6 @@ add_metadata <- function(meta, x,
     dilution = meta$dilution[meta_order],
     integration_time_s = meta$integration_time_s[meta_order],
     raman_area_1s = meta$RSU_area_1s[meta_order],
-    sample_type = meta$sample_types, # No meta_order here to account for instrument blanks repeating
 
     # Optional
     analysis_date = if ("analysis_date" %in% colnames(meta)) meta$analysis_date[meta_order] else NA,

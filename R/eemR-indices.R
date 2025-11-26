@@ -119,6 +119,7 @@ eemR_indices <- function(eemlist, abslist, cuvle = 1, qaqc_dir = NULL) {
   # absorbance peaks
   abslist <- abs_interp(abslist)
   raw_abs <- get_sample_info(abslist, "data")
+  raw_abs <- as.data.frame(raw_abs)
   abs_vals <- staRdom::abs_parms(raw_abs, cuvle = 1, unit = "absorbance", cores = 1)
   abs_vals$SR[is.infinite(abs_vals$SR) | is.na(abs_vals$SR)] <- "DATA04"
   abs_vals <- as.list(abs_vals[, -1])

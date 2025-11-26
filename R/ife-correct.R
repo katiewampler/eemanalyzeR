@@ -50,11 +50,12 @@ ife_correct <- function(eemlist, abslist, cuvle=1, arg_names=NULL){
 
   abs_table <- get_sample_info(abslist,"data")
   colnames(abs_table)[-1] <- get_sample_info(abslist, "meta_name")
+  abs_table <- as.data.frame(abs_table)
 
   #clip eems if necessary
     ex <- unique(as.vector(get_sample_info(eemlist, "ex")))
     em <- unique(as.vector(get_sample_info(eemlist, "em")))
-    abs <- abs_table$wavelength
+    abs <- abs_table[["wavelength"]]
     ex_rm <- ex[!(ex  >= min(abs) & ex <= max(abs))]
     em_rm <- em[!(em >= min(abs) & em <= max(abs))]
 

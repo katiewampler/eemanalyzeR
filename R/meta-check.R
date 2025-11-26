@@ -72,9 +72,12 @@ meta_check <- function(meta){
   # }
 
   # Check sample_type is properly flagged
-  if(!all(grepl("sample|sblank|check", meta$sample_type)) || any(is.na(meta$is_blank))) {
-    warning("sample_type column not properly specified. It should contain values 'sample', 'sblank', or 'check'.\neemanalyzeR will attempt to assign blanks from filenames")
+  if("sample_type" %in% colnames(meta)){
+    if(!all(grepl("sample|sblank|check", meta$sample_type))) {
+      warning("sample_type column not properly specified. It should contain values 'sample', 'sblank', or 'check'.\neemanalyzeR will attempt to assign blanks from filenames")
+    }
   }
+
 
 
   return(meta)

@@ -2,8 +2,10 @@
 "_PACKAGE"
 
 ## usethis namespace: start
+
 #' @importFrom dplyr across
 #' @importFrom dplyr any_of
+#' @importFrom dplyr arrange
 #' @importFrom dplyr group_by
 #' @importFrom dplyr join_by
 #' @importFrom dplyr left_join
@@ -26,8 +28,8 @@
 #' @importFrom ggplot2 geom_contour
 #' @importFrom ggplot2 geom_contour_filled
 #' @importFrom ggplot2 geom_line
-#' @importFrom ggplot2 ggplot
 #' @importFrom ggplot2 geom_ribbon
+#' @importFrom ggplot2 ggplot
 #' @importFrom ggplot2 ggsave
 #' @importFrom ggplot2 guides
 #' @importFrom ggplot2 labs
@@ -46,6 +48,7 @@
 #' @importFrom pracma interp2
 #' @importFrom purrr discard
 #' @importFrom purrr list_transpose
+#' @importFrom purrr reduce
 #' @importFrom rappdirs user_data_dir
 #' @importFrom rlang .data
 #' @importFrom rlang as_string
@@ -64,8 +67,8 @@
 #' @importFrom staRdom ggeem
 #' @importFrom stats na.omit
 #' @importFrom stats sd
-#' @importFrom stringr str_split_i
 #' @importFrom stringr str_split
+#' @importFrom stringr str_split_i
 #' @importFrom tidyr pivot_longer
 #' @importFrom tidyr pivot_wider
 #' @importFrom tools file_ext
@@ -74,8 +77,7 @@
 #' @importFrom utils read.csv
 #' @importFrom utils write.csv
 #' @importFrom utils write.table
-#' @importFrom zoo na.spline
 #' @importFrom zoo na.approx
-
+#' @importFrom zoo na.spline
 ## usethis namespace: end
 NULL

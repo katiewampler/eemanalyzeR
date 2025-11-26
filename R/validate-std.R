@@ -41,7 +41,7 @@ validate_std <- function(abslist, qaqc_dir=NULL, tolerance=0.2){
 
   #prepare data for plotting
     std_plot <- as.data.frame(abs_std$data) %>% mutate(min = .data$V2*(1-tolerance), max=.data$V2*(1+tolerance))
-    check_plot <- get_sample_info(check, "data") %>% pivot_longer(-"wavelength", names_to = "sample", values_to="abs")
+    check_plot <- get_sample_info(check, "data") %>% as.data.frame() %>% pivot_longer(-"wavelength", names_to = "sample", values_to="abs")
 
   #plot tea with tea standard
     plot <- ggplot() + geom_ribbon(data=std_plot, aes(x=.data$V1, ymin=.data$min, ymax=.data$max), alpha=0.4) +

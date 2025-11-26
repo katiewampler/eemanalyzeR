@@ -70,6 +70,9 @@
     expect_equal(sapply(abs_w_meta_explicit, attr, "sample_type"), c("sblank", "check", "sample", "check"))
     expect_equal(sapply(abs_w_meta_guessed,  attr, "sample_type"), c("sblank", "check", "sample", "check"))
 
+    #missing column entirely doesn't create a bunch of warnings
+
+
   })
 
   test_that("metadata add works with names contining each other", {

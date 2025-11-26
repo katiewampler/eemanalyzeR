@@ -25,6 +25,7 @@ test_that("absorbance indices are correct", {
     })
     class(abs_interp) <- "abslist"
     raw_abs <- get_sample_info(abs_interp, "data")
+    raw_abs <- as.data.frame(raw_abs)
     stardom_index <- staRdom::abs_parms(raw_abs, cuvle=1, unit = "absorbance", add_as=c(280,412), cores=1)
 
   #remove NA values

@@ -21,8 +21,9 @@ If \code{x} is an \code{eemlist} or \code{abslist}, the returned structure depen
 type of the requested component (\code{info}):
 \itemize{
 \item \strong{vector of length 1}: returns a vector with one value per sample
-\item \strong{vector of length >1}: returns a data.frame (samples in columns)
+\item \strong{vector of length >1}: returns a matrix (samples in columns)
 \item \strong{matrix}: returns a list of matrices (one per sample)
+\item \strong{matrix} and \code{x} is an \code{abslist}: returns a matrix (samples in columns)
 }
 
 If \code{x} is a single \code{eem} or \code{abs} object, the corresponding component is

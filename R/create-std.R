@@ -94,10 +94,10 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
 
   if(type == "eem"){
     #check if the wavelengths are different across data if so, stop and provide info
-    ex <- unique(get_sample_info(tea, "ex"))
-    em <- unique(get_sample_info(tea, "em"))
+    ex <- unique(get_sample_info(tea, "ex"), MARGIN = 2)
+    em <- unique(get_sample_info(tea, "em"), MARGIN = 2)
 
-    if(nrow(ex) > 1 | nrow(em) > 1){
+    if(ncol(ex) > 1 | ncol(em) > 1){
       stop(paste0("Excitation and/or emission wavelengths are inconsistent across tea standards.",
       "\nUse staRdom::eem_checksize to identify samples with larger ranges and staRdom::eem_extend2largest to fill in missing wavlengths."))
     }
@@ -132,8 +132,8 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
     tea_eem <- list(file= file.path(qaqc_dir, "eem-check-std.rds"),
                     sample="long-term-check-std",
                     x = mean,
-                    ex = get_sample_info(tea_eems, "ex")[1,],
-                    em = get_sample_info(tea_eems, "em")[1,],
+                    ex = get_sample_info(tea_eems, "ex")[,1],
+                    em = get_sample_info(tea_eems, "em")[,1],
                     location=dir,
                     meta_name="long-term-check-std",
                     dilution=NA,
@@ -181,7 +181,7 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
         dplyr::select(-"sample")
 
     #get mean and sd across all wavelengths
-    abs_tea <- tea_abs_df %>% dplyr::group_by(.data$wavelength) %>% dplyr::filter(abs < 5) %>%
+    abs_tea <- tea_abs_df %>% dplyr::group_by(.data$wavelength) %>%
       dplyr::summarise(mean = mean(abs, na.rm = TRUE)) %>%
       dplyr::select("wavelength", "mean")
 

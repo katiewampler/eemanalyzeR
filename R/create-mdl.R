@@ -96,10 +96,10 @@ create_mdl <- function(dir, meta_name = NULL, sheet = NULL, iblank = "BEM",
 
   if (type == "eem") {
     # check if the wavelengths are different across data if so, stop and provide info
-    ex <- unique(get_sample_info(blank, "ex"))
-    em <- unique(get_sample_info(blank, "em"))
+    ex <- unique(get_sample_info(blank, "ex"), MARGIN=2)
+    em <- unique(get_sample_info(blank, "em"), MARGIN=2)
 
-    if (nrow(ex) > 1 | nrow(em) > 1) {
+    if (ncol(ex) > 1 | ncol(em) > 1) {
       stop(paste0(
         "Excitation and/or emission wavelengths are inconsistent across analytical blanks.",
         "\nUse staRdom::eem_checksize to identify samples with larger ranges and staRdom::eem_extend2largest to fill in missing wavlengths."
@@ -129,8 +129,8 @@ create_mdl <- function(dir, meta_name = NULL, sheet = NULL, iblank = "BEM",
       file = file.path(qaqc_dir, "eem-mdl.rds"),
       sample = "long-term-mdl",
       x = matrix(data = blank_df$mdl, nrow = length(unique(blank_df$em)), ncol = length(unique(blank_df$ex))),
-      ex = unique(blank_df$ex),
-      em = unique(blank_df$em),
+      ex = unique(blank_df$ex, MARGIN=2),
+      em = unique(blank_df$em, MARGIN=2),
       location = dir,
       meta_name = "long-term-mdl",
       dilution = NA,

@@ -153,6 +153,7 @@ plot.abslist <- function(x, pal = NULL, ...) {
   stopifnot(.is_abslist(x))
 
   abs <- get_sample_info(x, "data")
+  abs <- as.data.frame(abs)
   abs <- abs %>% pivot_longer(-"wavelength", names_to = "sample", values_to = "abs")
 
   plot <- ggplot2::ggplot(data = abs, aes(x = .data$wavelength, y = .data$abs, color = .data$sample)) +
