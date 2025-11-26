@@ -2,7 +2,7 @@
 % Please edit documentation in R/subset-samples.R
 \name{subset_samples}
 \alias{subset_samples}
-\title{Subset eemlist or abslist using components}
+\title{Subset \code{eemlist} or \code{abslist} based on components}
 \usage{
 subset_samples(
   x,
@@ -14,38 +14,38 @@ subset_samples(
 )
 }
 \arguments{
-\item{x}{an object of class \code{eemlist} or \code{abslist}}
+\item{x}{An \code{eemlist} or \code{abslist} object.}
 
-\item{info}{the name of the component within the \code{eem} or \code{abs} to extract.
-see \link[eemR]{eem} for base \code{eem} component names and \link[eemanalyzeR]{abs_read} for base \code{abs} names.
-see \link[eemanalyzeR]{add_metadata} for extended \code{eem} component names.}
+\item{info}{Name of the component within the \code{eem} or \code{abs} to extract. See
+\link[eemR:eem]{eemR::eem} for base \code{eem} components and \code{\link[=abs_read]{abs_read()}}
+for base \code{abs} components. Extended components may be added with \code{\link[=add_metadata]{add_metadata()}}.}
 
-\item{sample}{a vector of the names or other info to use to select EEM's from \code{eemlist} or absorbance from \code{abslist}}
+\item{sample}{A vector of names or other component values to select/exclude from \code{x}.}
 
-\item{keep}{logical. If TRUE, the specified sample will be returned. If FALSE, they will be removed.}
+\item{keep}{Logical. If \code{TRUE}, returns the specified samples; if \code{FALSE}, removes them. Default is \code{FALSE}.}
 
-\item{ignore_case}{logical, should sample name case should be ignored (TRUE) or not (FALSE). Default is FALSE.}
+\item{ignore_case}{Logical. Should case be ignored when matching? Default is \code{FALSE}.}
 
-\item{verbose}{logical determining if removed/extracted eems should be printed on screen.}
+\item{verbose}{Logical. If \code{TRUE}, prints removed or extracted samples to the console.}
 }
 \value{
-An object of class \code{eemlist} or \code{abslist} with the samples excluded or selected based on the 'sample' vector.
+An object of class \code{eemlist} or \code{abslist} with samples selected or removed based on \code{sample}.
 }
 \description{
-Helper function that build upon \link[eemR]{eem_extract} function. Used to select or remove samples based on the info extracted by
-\link[eemanalyzeR]{get_sample_info} allowing selection of samples based on components besides just the sample name. This is usually
-used in concert with `get_sample_info`
+Helper function to select or remove samples from an \code{eemlist} or \code{abslist} using components
+beyond just the sample name. Builds on \code{\link[eemR:eem_extract]{eemR::eem_extract()}}.
 }
 \examples{
- #subset by name
+# Subset by sample name
 names <- get_sample_info(example_eems, "sample")
-eem_subset <- subset_samples(example_eems, "sample", names[1]) #default is to remove
-#but use keep=T to keep instead
-eem_subset <- subset_samples(example_eems,"sample", names[1], keep=TRUE)
+eem_subset <- subset_samples(example_eems, "sample", names[1]) # removes by default
+eem_subset <- subset_samples(example_eems, "sample", names[1], keep = TRUE) # keeps instead
 
-#subset by file_name
+# Subset by metadata name
 eemlist <- add_metadata(metadata, example_eems)
 names <- get_sample_info(eemlist, "meta_name")
-eem_subset <- subset_samples(eemlist, "meta_name", names[1]) #default is to remove
-
+eem_subset <- subset_samples(eemlist, "meta_name", names[1]) # removes by default
+}
+\seealso{
+\code{\link[=get_sample_info]{get_sample_info()}}
 }

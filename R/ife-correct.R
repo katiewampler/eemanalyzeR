@@ -1,45 +1,48 @@
-#' Perform Inner-Filter Corrections
+#' Perform inner-filter correction on EEM data
 #'
-#' A wrapper for eemR function \link[eemR]{eem_inner_filter_effect},
-#' modified to work with the augmented eemlist structure and automatically
-#' cut EEM's wavelengths down to match absorbance data instead of returning an error.
+#' Wrapper around [eemR::eem_inner_filter_effect()] that supports the
+#' augmented `eemlist` structure used in this package.
+#' Unlike the base function, this version automatically trims EEM
+#' wavelengths to match the available absorbance data instead of returning
+#' an error.
 #'
 #' @details
-#' The function links the absorbance and EEM's data by the metadata
-#' name which should be the same between the two datasets, because of this,
-#' samples must have metadata already added to the samples using \link[eemanalyzeR]{add_metadata}.
+#' Inner-filter correction requires linking each EEM to its corresponding
+#' absorbance spectrum. This function uses the metadata `name` field to pair
+#' samples, so **metadata must be added** beforehand using
+#' [add_metadata()].
 #'
-#' @param eemlist an \code{eemlist} object containing EEM's data. See details for more info.
-#' @param abslist an \code{abslist} object containing absorbance data.
-#' @param pathlength a numeric value indicating the pathlength (in cm) of the
-#'   cuvette used for absorbance measurement. Default is 1 (1 cm).
-#' @param arg_names Optional argument used to pass arguments from higher level functions for writing the readme.
-
+#' @param eemlist An `eemlist` object.
+#' @param abslist An `abslist` object.
+#' @param cuvle Cuvette (path) length in cm.
+#' @param arg_names Optional list of arguments passed from
+#'   higher-level functions for README generation.
 #'
-#' @returns an object of class \code{eemlist}
+#' @return
+#' An `eemlist` with inner-filter–corrected EEMs.
+#'
+#' @md
 #' @export
 #'
-#' @importFrom eemR eem_inner_filter_effect eem_cut
-#'
 #' @source
-#' Massicotte P (2019). eemR: Tools for Pre-Processing
-#' Emission-Excitation-Matrix (EEM) Fluorescence Data. R package
-#' version 1.0.1, \href{https://CRAN.R-project.org/package=eemR}{https://CRAN.R-project.org/package=eemR}
+#' Massicotte P. (2019). *eemR: Tools for Pre-Processing
+#' Emission-Excitation-Matrix (EEM) Fluorescence Data.* R package version
+#' 1.0.1. <https://CRAN.R-project.org/package=eemR>
 #'
 #' @examples
 #' eemlist <- add_metadata(metadata, example_eems)
 #' abslist <- add_metadata(metadata, example_abs)
 #' correct_eem <- ife_correct(eemlist, abslist)
 
-ife_correct <- function(eemlist, abslist, pathlength=1, arg_names=NULL){
+ife_correct <- function(eemlist, abslist, cuvle=1, arg_names=NULL){
   if(!any(.meta_added(eemlist), .meta_added(abslist))){
     stop("metadata must be added to eemlist and abslist to link samples. \nPlease add metadata using 'add_metadata' function")
   }
 
   #collect arguments for readme, and to put into the following functions
   if(is.null(arg_names)){
-    args <- rlang::enquos(pathlength)
-    names(args) <- c("pathlength")
+    args <- rlang::enquos(cuvle)
+    names(args) <- c("cuvle")
   }else{args <- arg_names}
 
   #internal function from eemR, added here to maintain stability
@@ -62,12 +65,12 @@ ife_correct <- function(eemlist, abslist, pathlength=1, arg_names=NULL){
 
 
     #modify eemR ife function to return warning and not print otherwise, also works now with modified eem format
-    ife_eemR <- function(eem, absorbance, pathlength = 1){
+    ife_eemR <- function(eem, absorbance, cuvle = 1){
       stopifnot(.is_eemlist(eem) | .is_eem(eem), is.data.frame(absorbance),
-                is.numeric(pathlength))
+                is.numeric(cuvle))
       if (.is_eemlist(eem)) {
         res <- lapply(eem, ife_eemR, absorbance = absorbance,
-                      pathlength = pathlength)
+                      cuvle = cuvle)
         class(res) <- class(eem)
         return(res)
       }
@@ -99,7 +102,7 @@ ife_correct <- function(eemlist, abslist, pathlength=1, arg_names=NULL){
       em <- sf(eem$em)
       total_absorbance <- sapply(ex, function(x) {
         x + em
-      })/pathlength
+      })/cuvle
       max_abs <- max(total_absorbance)
       if (max_abs > 1.5) {
         warning(eem$sample, ": Total absorbance is > 1.5 (Atotal = ", max_abs,
@@ -112,7 +115,7 @@ ife_correct <- function(eemlist, abslist, pathlength=1, arg_names=NULL){
       attr(eem, "is_ife_corrected") <- TRUE
       return(eem)
     }
-    res <- ife_eemR(eemlist, abs_table, pathlength = pathlength)
+    res <- ife_eemR(eemlist, abs_table, cuvle = cuvle)
 
     #put inner filter effect corrected eems back into augmented eemlist
     res <- lapply(1:length(eemlist), function(i){

@@ -7,18 +7,21 @@
 get_abs_slope(abs, lim, cuvle = 1)
 }
 \arguments{
-\item{abs}{an object of class \code{abs} or \code{abslist}}
+\item{abs}{An \code{abs} or \code{abslist} object.}
 
-\item{lim}{a vector of length two containing lower and upper limits for wavelengths to use for calculating slope}
+\item{lim}{A numeric vector of length two giving the lower and upper wavelength
+limits used to calculate the slope.}
 
-\item{cuvle}{cuvette (path) length in cm}
+\item{cuvle}{Cuvette (path) length in cm.}
 }
 \value{
-A vector of spectral slope values, one for each sample in abslist. If a value cannot be extracted, DATA04 will be returned.
+A vector of spectral slope values, one per sample in the \code{abslist}.
+If the slope cannot be calculated, the function returns \code{"DATA04"}.
 }
 \description{
-A wrapper for \link[staRdom]{abs_fit_slope} which interpolates the data as needed, calculates absorption, calculates the slope, and flags any missing values.
+Computes spectral slope values using \code{\link[staRdom:abs_fit_slope]{staRdom::abs_fit_slope()}}, including interpolation,
+absorption calculation, and QA/QC flagging for missing wavelengths.
 }
 \examples{
-S275_295 <- get_abs_slope(example_abs, lim=c(275,295))
+S275_295 <- get_abs_slope(example_abs, lim = c(275, 295))
 }

@@ -7,14 +7,14 @@
 abs_interp(abs, type = "linear")
 }
 \arguments{
-\item{abs}{An object of class \code{abs} or \code{abslist}.}
+\item{abs}{An \code{abs} or \code{abslist} object.}
 
 \item{type}{The interpolation method, either "linear" for linear interpolation
 using \code{\link[zoo:na.approx]{zoo::na.approx()}}, or "spline" for spline interpolation using
 \code{\link[zoo:na.approx]{zoo::na.spline()}}.}
 }
 \value{
-An object of class \code{abs} or \code{abslist}.
+An \code{abs} or \code{abslist} object.
 }
 \description{
 Interpolates absorbance data to 1 nm resolution so indices can be calculated

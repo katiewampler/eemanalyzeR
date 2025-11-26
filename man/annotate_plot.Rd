@@ -2,21 +2,22 @@
 % Please edit documentation in R/plot-utils.R
 \name{annotate_plot}
 \alias{annotate_plot}
-\title{Annotate EEMs plot with location of indices}
+\title{Annotate EEM plot with location of indices}
 \usage{
 annotate_plot(plot, index_method = "eemanalyzeR")
 }
 \arguments{
-\item{plot}{a plot of an \code{eem}}
+\item{plot}{A \code{ggplot2} object of an \code{eem}.}
 
-\item{index_method}{currently supports "eemanalyzeR", "eemR", and "usgs". See details for more information.}
+\item{index_method}{Either "eemanalyzeR", "eemR", "usgs".}
 }
 \value{
-an ggplot2 object
+A \code{ggplot2} object.
 }
 \description{
-Adds labels showing the regions within an EEM that are used to calculate
-the indices, customized to the specific index method used.
+Adds labels indicating the regions of an excitation–emission matrix (EEM)
+that are used to calculate fluorescence indices. The annotation is
+customized according to the selected index method.
 }
 \examples{
 plot <- plot(example_processed_eems[[3]])

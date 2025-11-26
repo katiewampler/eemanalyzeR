@@ -11,81 +11,103 @@ get_indices(
   tolerance = 0.2,
   return = "long",
   cuvle = 1,
-  qaqc_dir = .qaqc_dir(),
+  qaqc_dir = NULL,
   arg_names = NULL
 )
 }
 \arguments{
-\item{eemlist}{an \code{eemlist} object containing EEM's data.}
+\item{eemlist}{An \code{eemlist} object.}
 
-\item{abslist}{an \code{abslist} object containing absorbance data.}
+\item{abslist}{An \code{abslist} object.}
 
-\item{index_method}{currently supports "eemanalyzeR", "eemR", and "usgs". See details for more information.}
+\item{index_method}{Either "eemanalyzeR", "eemR", "usgs", or a custom
+function. See \strong{Details}.}
 
-\item{tolerance}{what is the maximum percentage the tea standard can vary from the long-term values without being flagged?}
+\item{tolerance}{Maximum percent deviation that the check standard can vary
+from the long-term values without being flagged.}
 
-\item{return}{either "long" or "wide" to specify the format of the indices data.frames}
+\item{return}{Output format: "long" or "wide".}
 
-\item{cuvle}{cuvette (path) length in cm}
+\item{cuvle}{Cuvette (path) length in cm.}
 
-\item{qaqc_dir}{file path to the mdl files generated with \link[eemanalyzeR]{create_mdl} and \link[eemanalyzeR]{create_std},
-default is a user-specific data directory (\link[rappdirs]{user_data_dir})}
+\item{qaqc_dir}{File path to the QAQC files generated with \code{\link[=create_mdl]{create_mdl()}}
+and \code{\link[=create_std]{create_std()}}. Default is a user-specific data directory
+\code{\link[rappdirs:user_data_dir]{rappdirs::user_data_dir()}}.}
 
-\item{arg_names}{optional argument used to pass arguments from higher level functions for writing the readme.}
+\item{arg_names}{Optional list of arguments passed from higher-level
+functions for README generation.}
 }
 \value{
-a list with two objects:
+A list with two data frames:
 \itemize{
-  \item eem_index: a data.frame of all the fluorescence indices
-  \item abs_index: a data.frame of all the absorbance indices
+\item \strong{eem_index}: fluorescence indices
+\item \strong{abs_index}: absorbance indices
 }
-If \code{return} is 'long' each data.frame will have four columns:
+\subsection{Long format}{
+
+If \code{return = "long"}, each data frame includes:
 \itemize{
- \item sample_name: the name of the sample
- \item meta_name: the name of the sample in the metadata if metadata has been added, otherwise the sample name again
- \item index: the name of the index being reported, see details for more information.
- \item value: the value of the index
- \item QAQC_flag: any flags associated with the sample, see details for more information.
+\item \code{sample_name}: sample ID
+\item \code{meta_name}: sample name in metadata (or \code{sample_name} if missing)
+\item \code{index}: index name
+\item \code{value}: index value
+\item \code{QAQC_flag}: any associated flags
+}
 }
 
-If \code{return} is 'wide' each data.frame will have a row for each sample, where the columns are the different indices. In this format QAQC flags
-are indicated in the individuals cells, either by itself if no value was able to be reported, or combined with the value where applicable to have the form
-'value_flag'.
+\subsection{Wide format}{
+
+If \code{return = "wide"}, each row corresponds to a sample, and columns represent
+indices. Flags appear:
+\itemize{
+\item \emph{alone}, if no numeric value could be returned
+\item in the form VALUE_FLAG when a value exists
+}
+}
 }
 \description{
-Calculates commonly use indices from absorbance and excitation emission matrix (EEM) data. Also
-checks and flags the indices for potential errors or issues.
+Calculates commonly used indices from absorbance and excitation–emission
+matrix (EEM) data. Also checks and flags index values for potential issues.
 }
 \details{
-\strong{Index Methods}
+\subsection{Index methods}{
 
-This function allows for three different sets of indices:
-\href{../doc/eemanalyzeR-indices.html}{\code{eemanalyzeR}} (default),
-eemR and usgs. See the links for more information on the indices in each method and how they're calculated.
-Custom functions can also be used to calculate indices, see vignette for more information on how to do this.
-
-\strong{QA/QC Flags}
-
-The index values will be checked for potential errors prior to reporting and flagged if necessary:
+Three preset index sets are available:
 \itemize{
- \item DATA01: Missing data required to calculate the index
- \item DATA02: Missing some wavelengths required to calculate the index, value may be inaccurate
- \item DATA03: Unable to calculate ratio because denominator was zero
- \item DATA04: Spectral slope was unable to be calculated
- \item DOC01: Missing dissolved organic carbon data, so index was not able to be calculated
- \item INF01: Calculated value was infinite
- \item MDL01: All values were below the MDL for those wavelengths
- \item MDL02: One of more of the values were below the MDL for those wavelengths, use data cautiously
- \item MDL03: Index was a ratio, and either numerator or denominator was completely below the MDL
- \item NEG01: Value was negative
- \item NOISE01: Value was below signal to noise ratio and therefore was not calculated
- \item NOISE02: Value was not able to be checked for signal to noise ratio
- \item STD01: The tea check standard values were outside of the tolerance threshold for this index
- \item VAL01: Value was below expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
- \item VAL02: Value was above expected values for this index, normal ranges can vary by sample matrix, but please check value for accuracy
+\item \strong{eemanalyzeR}: \code{\link[=eemanalyzeR_indices]{eemanalyzeR_indices()}}
+\item \strong{eemR}: \code{\link[=eemR_indices]{eemR_indices()}}
+\item \strong{usgs}: \code{\link[=usgs_indices]{usgs_indices()}}
+}
+
+You may also pass a custom index-generating function. See the
+\href{../doc/custom-indices.html}{custom-indices vignette} for
+instructions.
+}
+
+\subsection{QA/QC flags}{
+
+Index values are checked for common issues. Flags include:
+\itemize{
+\item \strong{DATA01}: Missing data required for calculation
+\item \strong{DATA02}: Missing required wavelengths; value may be inaccurate
+\item \strong{DATA03}: Ratio denominator was zero
+\item \strong{DATA04}: Spectral slope could not be calculated
+\item \strong{DOC01}: Missing dissolved organic carbon (DOC) data
+\item \strong{INF01}: Infinite value
+\item \strong{MDL01}: All values below MDL
+\item \strong{MDL02}: One or more values below MDL; use cautiously
+\item \strong{MDL03}: Ratio index where numerator or denominator was entirely below MDL
+\item \strong{NEG01}: Negative value
+\item \strong{STD01}: Check standard value outside tolerance
+\item \strong{VAL01}: Value below typical range
+\item \strong{VAL02}: Value above typical range
+}
 }
 }
 \examples{
-indices <- get_indices(example_processed_eems, example_processed_abs,
-qaqc_dir = system.file("extdata", package = "eemanalyzeR"))
+indices <- get_indices(
+  example_processed_eems,
+  example_processed_abs,
+  qaqc_dir = system.file("extdata", package = "eemanalyzeR")
+)
 }

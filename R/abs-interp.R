@@ -3,12 +3,12 @@
 #' Interpolates absorbance data to 1 nm resolution so indices can be calculated
 #' at wavelengths that were not explicitly measured.
 #'
-#' @param abs An object of class `abs` or `abslist`.
+#' @param abs An `abs` or `abslist` object.
 #' @param type The interpolation method, either "linear" for linear interpolation
 #'   using [zoo::na.approx()], or "spline" for spline interpolation using
 #'   [zoo::na.spline()].
 #'
-#' @return An object of class `abs` or `abslist`.
+#' @return An `abs` or `abslist` object.
 #' @export
 #' @md
 #' @examples

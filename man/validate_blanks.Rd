@@ -2,26 +2,21 @@
 % Please edit documentation in R/validate-blanks.R
 \name{validate_blanks}
 \alias{validate_blanks}
-\title{Validate the blanks}
+\title{Validate the instrument blank(s)}
 \usage{
 validate_blanks(blanklist)
 }
 \arguments{
-\item{blanklist}{an \code{eemlist} containing blank samples}
+\item{blanklist}{An \code{eemlist} containing containing the blank EEMs.}
 }
 \value{
-TRUE if blanks meet validation standards, FALSE if not
+TRUE if blanks meet validation standards, FALSE if they do not.
 }
 \description{
-Will run automated validation checks and plot blanks for manual validation.
-}
-\details{
-If validate_blanks run in interactive console (most RStudio sessions), this will plot the blanks
-using ggeem. If run non-interactively (such as in a batch processing or in package tests),
-nothing will be plotted, but automatic checks will take place.
+Plots validation instrument blank samples for manual inspection.
 }
 \examples{
 eems <- add_metadata(metadata, example_eems)
-eems <- subset_type(eems, type="iblank")
+eems <- subset_type(eems, type = "iblank")
 continue <- validate_blanks(eems)
 }

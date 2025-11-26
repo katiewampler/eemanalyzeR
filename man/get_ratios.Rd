@@ -7,26 +7,28 @@
 get_ratios(val1, val2)
 }
 \arguments{
-\item{val1}{the numerator of the ratio, can be a single value or a vector of values}
+\item{val1}{Numerator value(s); may be a single value or a vector.}
 
-\item{val2}{the denominator of the ratio, can be a single value or a vector of values}
+\item{val2}{Denominator value(s); may be a single value or a vector.}
 }
 \value{
-a ratio value if possible or a character flag
+A numeric ratio where possible, otherwise a character QA/QC flag.
 }
 \description{
-Will either return a ratio value or a QA/QC flag if ratio value can't be calculated.
+Computes a ratio and returns either the calculated value or a QA/QC flag
+if the ratio cannot be computed.
 }
 \details{
-The index values will be checked for potential errors prior to reporting and flagged if necessary:
+The following conditions are checked before returning a value:
 \itemize{
- \item DATA_01: Missing data required to calculate the index
- \item DATA_03: Unable to calculate ratio because denominator was zero}
+\item \strong{DATA_01}: Missing data required to calculate the index
+\item \strong{DATA_03}: Denominator is zero, so the ratio cannot be calculated
+}
 }
 \examples{
-#calculate the ratio of Peak A to Peak T
-pA <- get_fluorescence(example_eems, ex=250:260, em=380:480)
-pT <- get_fluorescence(example_eems, ex=270:280, em=320:350)
+# Calculate the ratio of Peak A to Peak T
+pA <- get_fluorescence(example_eems, ex = 250:260, em = 380:480)
+pT <- get_fluorescence(example_eems, ex = 270:280, em = 320:350)
 rAT <- get_ratios(pA, pT)
 
 }

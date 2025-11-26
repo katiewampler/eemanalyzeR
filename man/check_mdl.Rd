@@ -11,7 +11,7 @@ check_eem_mdl(eem, mdl = NULL, ex, em, vals = FALSE)
 check_abs_mdl(abs, mdl = NULL, wl, vals = FALSE)
 }
 \arguments{
-\item{eem}{An object of class \code{eem} or \code{eemlist}.}
+\item{eem}{An \code{eem} or \code{eemlist} object.}
 
 \item{mdl}{An \code{eem} or \code{abs} object containing MDL data.
 If no MDL is provided, \code{NA} is returned.}
@@ -20,10 +20,9 @@ If no MDL is provided, \code{NA} is returned.}
 
 \item{em}{A vector of emission wavelengths.}
 
-\item{vals}{If \code{TRUE}, returns a table of observed and MDL values,
-otherwise returns an MDL flag.}
+\item{vals}{If \code{TRUE}, returns actual values, otherwise returns just flags.}
 
-\item{abs}{An object of class \code{abs} or \code{abslist}.}
+\item{abs}{An \code{abs} or \code{abslist} object.}
 
 \item{wl}{A vector of absorbance wavelengths.}
 }

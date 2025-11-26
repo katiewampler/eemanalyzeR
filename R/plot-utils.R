@@ -1,18 +1,22 @@
-#' Plot an EEMs nicely with ggplot2
+#' Plot an EEM with ggplot2
 #'
-#' @param eem an \code{eem} or object containing EEM's data.
-#' @param nbin the number of bins used in the contour plot
-#' @param z_min the minimum intensity value to plot, if NULL uses the maximum value from the EEM
-#' @param z_max the maximum intensity value to plot, if NULL uses the minimum value from the EEM
-#' @param pal the colors used for the fill scale, if not specified it will use the \link[pals]{parula} palette
-#' @param title logical, if TRUE will inlude the sample name on the plot, if FALSE it will not. Tries to use meta_name, but will use sample if
-#' meta_name doesn't exist.
-#' @param annotate logical, should plots show the index regions?
-#' @param index_method currently supports "eemanalyzeR", "eemR", and "usgs". See details for more information.
-#' @return a ggplot2 object
+#' @param eem An `eem` object or an object containing EEM data.
+#' @param nbin Number of bins used in the contour plot.
+#' @param z_min Minimum intensity value to plot. If `NULL`, uses the minimum
+#'   value from the EEM.
+#' @param z_max Maximum intensity value to plot. If `NULL`, uses the maximum
+#'   value from the EEM.
+#' @param pal Color palette for the fill scale. Defaults to [pals::parula()].
+#' @param title Logical. If `TRUE`, includes the sample name on the plot.
+#'   Attempts to use `meta_name`, falling back to `sample` if missing.
+#' @param annotate Logical. If `TRUE`, shows index regions on the plot.
+#' @param index_method Character. Specifies index method for annotations.
+#'   Currently supports "eemanalyzeR", "eemR", and "usgs".
+#'
+#' @return A `ggplot2` object.
+#'
+#' @seealso [ggplot2]
 #' @noRd
-#' @seealso \link[ggplot2]
-#'
 .plot_eem <- function(eem, nbin, z_min, z_max, pal, lower, title=FALSE, annotate=FALSE,
                       index_method="eemanalyzeR"){
 
@@ -101,15 +105,16 @@
   return(plot)
 }
 
-#' Annotate EEMs plot with location of indices
+#' Annotate EEM plot with location of indices
 #'
-#' Adds labels showing the regions within an EEM that are used to calculate
-#' the indices, customized to the specific index method used.
+#' Adds labels indicating the regions of an excitation–emission matrix (EEM)
+#' that are used to calculate fluorescence indices. The annotation is
+#' customized according to the selected index method.
 #'
-#' @param plot a plot of an `eem`
-#' @param index_method currently supports "eemanalyzeR", "eemR", and "usgs". See details for more information.
+#' @param plot A `ggplot2` object of an `eem`.
+#' @param index_method Either "eemanalyzeR", "eemR", "usgs".
 #'
-#' @returns an ggplot2 object
+#' @return A `ggplot2` object.
 #' @md
 #' @export
 #'

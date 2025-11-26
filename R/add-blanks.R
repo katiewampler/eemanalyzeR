@@ -14,7 +14,7 @@
 #' If a `blanklist` is not provided, one is automatically generated from the `eemlist` attribute
 #' "sample_type", using the samples marked as "iblank".
 #'
-#' @param eemlist An `eemlist` object containing EEM data. See **Details** for more information.
+#' @param eemlist An `eemlist` object.
 #' @param blanklist Optional. An `eem` or `eemlist` containing the blank EEM(s).
 #' @param validate If `TRUE`, the function prints the blanks and requests user validation,
 #'    otherwise validation is skipped and blanks are added automatically.

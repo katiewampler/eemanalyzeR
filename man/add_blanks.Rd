@@ -7,7 +7,7 @@
 add_blanks(eemlist, blanklist = NULL, validate = TRUE)
 }
 \arguments{
-\item{eemlist}{An \code{eemlist} object containing EEM data. See \strong{Details} for more information.}
+\item{eemlist}{An \code{eemlist} object.}
 
 \item{blanklist}{Optional. An \code{eem} or \code{eemlist} containing the blank EEM(s).}
 

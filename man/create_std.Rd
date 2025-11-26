@@ -5,9 +5,10 @@
 \title{Create long term average check standard}
 \source{
 Hansen, A. M., Fleck, J., Kraus, T. E. C., Downing, B. D., von Dessonneck, T., & Bergamaschi, B. (2018).
-Procedures for using the Horiba Scientific Aqualog® fluorometer to measure absorbance and fluorescence from dissolved organic matter
-(USGS Numbered Series No. 2018-1096). Procedures for using the Horiba Scientific Aqualog® fluorometer to measure absorbance and fluorescence
-from dissolved organic matter (Vol. 2018-1096). Reston, VA: U.S. Geological Survey. \url{https://doi.org/10.3133/ofr20181096}
+\emph{Procedures for using the Horiba Scientific Aqualog® fluorometer to measure absorbance
+and fluorescence from dissolved organic matter} (USGS Numbered Series No. 2018-1096).
+U.S. Geological Survey.
+\url{https://doi.org/10.3133/ofr20181096}
 }
 \usage{
 create_std(
@@ -29,8 +30,8 @@ All files in this directory will be loaded.}
 only \code{.xlsx} or \code{.csv} file in \code{dir}. If not specified, the function attempts to find
 a single metadata file and errors if multiple files are present.}
 
-\item{sheet}{Name of the sheet containing metadata (only required if metadata
-is not on the first sheet).}
+\item{sheet}{Name of the sheet containing metadata (only required
+if the metadata is not on the first sheet of an \code{.xlsx} file).}
 
 \item{abs_pattern}{A character string containing a
 \link[base:regex]{base::regular expression} used to identify absorbance files.}
@@ -42,7 +43,7 @@ is not on the first sheet).}
 
 \item{recursive}{Logical. Should the function recursively search directories?}
 
-\item{qaqc_dir}{Directory in which to save the MDL \code{.rds} file.
+\item{qaqc_dir}{Directory in which to save the QAQC \code{.rds} file.
 Default: a user-specific data directory via \code{\link[rappdirs:user_data_dir]{rappdirs::user_data_dir()}}.
 If \code{FALSE}, the function returns the MDL object instead of saving it.}
 }

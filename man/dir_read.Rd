@@ -34,7 +34,7 @@ to match files in \code{input_dir} that should be ignored.}
 
 \item{file_ext}{The file extension of the EEMs or absorbance files.}
 
-\item{recursive}{Logical. Should the function recurse into directories?}
+\item{recursive}{Logical. Should the function recursively search directories?}
 
 \item{import_function}{Character or a user-defined function to import an EEM.
 For more details, see \href{../doc/custom-indices.html}{\code{vignette("custom-indices")}}.}

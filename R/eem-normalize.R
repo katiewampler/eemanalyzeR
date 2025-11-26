@@ -2,7 +2,7 @@
 #'
 #' Useful for Raman normalization or normalizing to a maximum of one for blank comparisons.
 #'
-#' @param eem The `eem` or `eemlist` to normalize.
+#' @param eem An `eem` or `eemlist` object.
 #' @param factor The normalization factor, either a single value or a vector
 #' of factors. If `NULL`, it will normalize to the maximum value for each `eem`.
 #'

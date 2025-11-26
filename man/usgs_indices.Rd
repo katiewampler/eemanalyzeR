@@ -5,51 +5,54 @@
 \title{USGS methods for fluorescence and absorbance indices}
 \source{
 Hansen, A. M., Fleck, J., Kraus, T. E. C., Downing, B. D., von Dessonneck, T., & Bergamaschi, B. (2018).
-Procedures for using the Horiba Scientific Aqualog® fluorometer to measure absorbance and fluorescence from dissolved organic matter
-(USGS Numbered Series No. 2018-1096). Procedures for using the Horiba Scientific Aqualog® fluorometer to measure absorbance and fluorescence
-from dissolved organic matter (Vol. 2018-1096). Reston, VA: U.S. Geological Survey. \url{https://doi.org/10.3133/ofr20181096}
+\emph{Procedures for using the Horiba Scientific Aqualog® fluorometer to measure absorbance
+and fluorescence from dissolved organic matter} (USGS Numbered Series No. 2018-1096).
+U.S. Geological Survey.
+\url{https://doi.org/10.3133/ofr20181096}
 }
 \usage{
-usgs_indices(eemlist, abslist, cuvle = 1, qaqc_dir = .qaqc_dir())
+usgs_indices(eemlist, abslist, cuvle = 1, qaqc_dir = NULL)
 }
 \arguments{
-\item{eemlist}{an \code{eemlist} object containing EEM's data. See details for more info.}
+\item{eemlist}{An \code{eemlist} object.}
 
-\item{abslist}{an \code{abslist} object containing absorbance data.}
+\item{abslist}{An \code{abslist} object.}
 
-\item{cuvle}{cuvette (path) length in cm}
+\item{cuvle}{Cuvette (path) length in cm.}
 
-\item{qaqc_dir}{file path to the mdl files generated with \link[eemanalyzeR]{create_mdl},
-default is a user-specific data directory (\link[rappdirs]{user_data_dir})}
+\item{qaqc_dir}{File path to the QAQC files generated with \code{\link[=create_mdl]{create_mdl()}} and \code{\link[=create_std]{create_std()}}.
+Default is a user-specific data directory \code{\link[rappdirs:user_data_dir]{rappdirs::user_data_dir()}}.}
 }
 \value{
-a list with two objects:
+A list with two elements:
 \itemize{
-  \item eem_index: a data.frame of all the fluorescence indices
-  \item abs_index: a data.frame of all the absorbance indices
+\item \strong{eem_index}: a \code{data.frame} of all fluorescence indices. Each row corresponds to a single index for a sample.
+\item \strong{abs_index}: a \code{data.frame} of all absorbance indices. Each row corresponds to a single index for a sample.
 }
-Each data.frame will have four columns:
+
+Each \code{data.frame} contains the following columns:
 \itemize{
- \item sample_name: the name of the sample
- \item meta_name: the name of the sample in the metadata if metadata has been added, otherwise the sample name again
- \item index: the name of the index being reported, the index name is a human readable index name followed by the USGS parameter code.
- \item value: the value of the index
+\item \strong{sample_name}: name of the sample from the EEM or absorbance list
+\item \strong{meta_name}: sample name from metadata if provided; otherwise same as \code{sample_name}
+\item \strong{index}: name of the index
+\item \strong{value}: calculated value of the index
 }
 }
 \description{
-Calculates commonly used absorbance and fluorescence optical indices from eemlist and abslist.
-Reports indices commonly used by the U.S. Geological Survey.
-For detailed descriptions and references for indices, Hansen et. al. 2018 (Table 1 and 8).
+Calculates commonly used absorbance and fluorescence optical indices from \code{eemlist} and \code{abslist}.
+These indices are those commonly used by the U.S. Geological Survey.
+For detailed descriptions and references, see Hansen et al. 2018 (Tables 1 and 8).
 }
 \note{
-If absorbance is not at a 1 nanometer interval, absorbance will be interpolated using
-\link[zoo]{na.approx} which fills in missing values
-using linear interpolation.
-
-If EEMs data is not a 1 nanometer interval, fluorescence will be interpolated
-using \link[pracma]{interp2}.
+\itemize{
+\item If absorbance is not at a 1 nm interval, it will be interpolated using \code{\link[zoo:na.approx]{zoo::na.approx()}}, which fills in missing values using linear interpolation.
+\item If EEM data is not at a 1 nm interval, fluorescence will be interpolated using \code{\link[pracma:interp2]{pracma::interp2()}}.
+}
 }
 \examples{
-indices <- usgs_indices(example_processed_eems, example_processed_abs,
-qaqc_dir = system.file("extdata", package = "eemanalyzeR"))
+indices <- usgs_indices(
+  example_processed_eems,
+  example_processed_abs,
+  qaqc_dir = system.file("extdata", package = "eemanalyzeR")
+)
 }

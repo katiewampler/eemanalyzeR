@@ -2,30 +2,31 @@
 % Please edit documentation in R/raman-normalize.R
 \name{raman_normalize}
 \alias{raman_normalize}
-\title{Perform Raman Normalization}
+\title{Perform Raman normalization of EEMs}
 \source{
 Lawaetz, A. J., & Stedmon, C. A. (2009). Fluorescence Intensity Calibration Using
 the Raman Scatter Peak of Water. Applied Spectroscopy, 63(8), 936-940.
-\href{https://journals.sagepub.com/doi/10.1366/000370209788964548}{https://journals.sagepub.com/doi/10.1366/000370209788964548}
+\url{https://journals.sagepub.com/doi/10.1366/000370209788964548}
 }
 \usage{
 raman_normalize(eemlist)
 }
 \arguments{
-\item{eemlist}{an \code{eemlist} object containing EEM's data. See details for more info.}
+\item{eemlist}{An \code{eemlist} object.}
 }
 \value{
-an object of class \code{eemlist}
+An \code{eemlist} object with EEMs normalized to Raman Units.
 }
 \description{
-Normalizes the EEM intensity to a standard scale of Raman Units (R.U.) based
-on the area of the water Raman peak (Lawaetz and Stedmon 2009).
+Normalizes the fluorescence intensity of EEMs to Raman Units (R.U.) based
+on the area of the water Raman peak (Lawaetz and Stedmon, 2009).
 }
 \details{
-The function uses the raman area provided by the metadata to normalize the EEMs, because of this,
-samples must have metadata already added to the samples using \link[eemanalyzeR]{add_metadata}.
+The function uses the Raman peak area provided in the metadata to normalize the EEMs.
+Therefore, metadata must be added to the samples prior to normalization using
+\code{\link[=add_metadata]{add_metadata()}}.
 }
 \examples{
-eemlist <- add_metadata(metadata,example_eems)
+eemlist <- add_metadata(metadata, example_eems)
 correct_eem <- raman_normalize(eemlist)
 }

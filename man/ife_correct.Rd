@@ -2,37 +2,40 @@
 % Please edit documentation in R/ife-correct.R
 \name{ife_correct}
 \alias{ife_correct}
-\title{Perform Inner-Filter Corrections}
+\title{Perform inner-filter correction on EEM data}
 \source{
-Massicotte P (2019). eemR: Tools for Pre-Processing
-Emission-Excitation-Matrix (EEM) Fluorescence Data. R package
-version 1.0.1, \href{https://CRAN.R-project.org/package=eemR}{https://CRAN.R-project.org/package=eemR}
+Massicotte P. (2019). \emph{eemR: Tools for Pre-Processing
+Emission-Excitation-Matrix (EEM) Fluorescence Data.} R package version
+1.0.1. \url{https://CRAN.R-project.org/package=eemR}
 }
 \usage{
-ife_correct(eemlist, abslist, pathlength = 1, arg_names = NULL)
+ife_correct(eemlist, abslist, cuvle = 1, arg_names = NULL)
 }
 \arguments{
-\item{eemlist}{an \code{eemlist} object containing EEM's data. See details for more info.}
+\item{eemlist}{An \code{eemlist} object.}
 
-\item{abslist}{an \code{abslist} object containing absorbance data.}
+\item{abslist}{An \code{abslist} object.}
 
-\item{pathlength}{a numeric value indicating the pathlength (in cm) of the
-cuvette used for absorbance measurement. Default is 1 (1 cm).}
+\item{cuvle}{Cuvette (path) length in cm.}
 
-\item{arg_names}{Optional argument used to pass arguments from higher level functions for writing the readme.}
+\item{arg_names}{Optional list of arguments passed from
+higher-level functions for README generation.}
 }
 \value{
-an object of class \code{eemlist}
+An \code{eemlist} with inner-filter–corrected EEMs.
 }
 \description{
-A wrapper for eemR function \link[eemR]{eem_inner_filter_effect},
-modified to work with the augmented eemlist structure and automatically
-cut EEM's wavelengths down to match absorbance data instead of returning an error.
+Wrapper around \code{\link[eemR:eem_inner_filter_effect]{eemR::eem_inner_filter_effect()}} that supports the
+augmented \code{eemlist} structure used in this package.
+Unlike the base function, this version automatically trims EEM
+wavelengths to match the available absorbance data instead of returning
+an error.
 }
 \details{
-The function links the absorbance and EEM's data by the metadata
-name which should be the same between the two datasets, because of this,
-samples must have metadata already added to the samples using \link[eemanalyzeR]{add_metadata}.
+Inner-filter correction requires linking each EEM to its corresponding
+absorbance spectrum. This function uses the metadata \code{name} field to pair
+samples, so \strong{metadata must be added} beforehand using
+\code{\link[=add_metadata]{add_metadata()}}.
 }
 \examples{
 eemlist <- add_metadata(metadata, example_eems)

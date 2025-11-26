@@ -5,17 +5,19 @@
 #'
 #' @md
 #'
-#' @param eemlist An object of class `eemlist`; must be fully processed.
-#' @param abslist An object of class `abslist`; must be fully processed.
-#' @param qaqc_dir File path to the QAQC files generated with
-#'   [create_std()].The default is a user-specific data directory via
-#'   [rappdirs::user_data_dir].
-#' @param tolerance Maximum percent deviation that the tea standard can vary
+#' @param eemlist An `eemlist` object.
+#' @param abslist An `abslist` object.
+#' @param qaqc_dir File path to the QAQC files generated with [create_mdl()]
+#' and [create_std()]. Default is a user-specific data directory
+#' [rappdirs::user_data_dir()].
+#' @param tolerance Maximum percent deviation that the check standard can vary
 #'   from the long-term values without being flagged.
-#' @param index_method The index method used to calculate indices.
-#'   See [get_indices()] for details.
-#' @param vals If `TRUE`, returns a table with observed and standard values
-#'    for each index. If `FALSE`, returns only a flag.
+#' @param index_method Either "eemanalyzeR", "eemR", "usgs", or a custom function.
+#' @param vals If `TRUE`, returns actual values, otherwise returns just flags.
+#'
+#' @seealso [get_indices()]
+#' @details
+#' `eemlist` and `abslist` must be fully processed to match the long-term standard.
 #'
 #' @returns
 #' If `vals = FALSE`, returns a `data.frame` with four columns:

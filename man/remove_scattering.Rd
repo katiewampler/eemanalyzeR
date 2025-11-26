@@ -2,7 +2,7 @@
 % Please edit documentation in R/remove-scattering.R
 \name{remove_scattering}
 \alias{remove_scattering}
-\title{Remove Raman and Rayleigh scattering lines}
+\title{Remove Raman and Rayleigh scattering lines from EEMs}
 \usage{
 remove_scattering(
   eemlist,
@@ -15,58 +15,59 @@ remove_scattering(
 )
 }
 \arguments{
-\item{eemlist}{an \code{eemlist} object containing EEM's data.}
+\item{eemlist}{An \code{eemlist} object.}
 
-\item{type}{a logical vector of length four indicating which scattering lines should be removed.
-The order is "raman1", "raman2", "rayleigh1" and "rayleigh2" scattering.
-Set \code{TRUE} for scattering lines that should be removed.}
+\item{type}{Logical vector of length four indicating which scattering lines to remove.
+The order is "raman1", "raman2", "rayleigh1", "rayleigh2". Set \code{TRUE} to remove.}
 
-\item{width}{a numeric vector of length four containing width of
-scattering in nanometers to remove. The order is "raman1", "raman2", "rayleigh1" and "rayleigh2" scattering.}
+\item{width}{Numeric vector of length four specifying the width (nm) of the scattering lines to remove.
+Order is "raman1", "raman2", "rayleigh1", "rayleigh2".}
 
-\item{interpolate}{a logical vector of length four indicating which scattering lines to interpolate.
-The order is "raman1", "raman2", "rayleigh1" and "rayleigh2" scattering.}
+\item{interpolate}{Logical vector of length four indicating which scattering lines to interpolate.
+Order is "raman1", "raman2", "rayleigh1", "rayleigh2".}
 
-\item{method}{numeric 0 to 4 for interpolation method to use. Default is 1. See \link[staRdom]{eem_interp} for more info.}
+\item{method}{Numeric 0–4 specifying interpolation method (default = 1). See \code{\link[staRdom:eem_interp]{eem_interp()}}.}
 
-\item{cores}{The number of cores used for parallel computation of interpolation.}
+\item{cores}{Number of cores for parallel interpolation computation.}
 
-\item{arg_names}{Optional argument used to pass arguments from higher level functions for writing the readme.}
+\item{arg_names}{Optional list of arguments passed from higher-level
+functions for README generation.}
 }
 \value{
-an object of class \code{eemlist}
+An \code{eemlist} object with specified scattering lines removed.
 }
 \description{
-Raman and Rayleigh scattering can cause signal interference with the sample fluorescence signal,
-thus it is often advisable to remove them. Raman scatting is a form of inelastic scattering,
-that is due light interacting with the solvent, shifting to longer wavelengths. Rayleigh scattering is elastic scattering, where light
-bounces off molecules in the sample without losing energy, thus this line will always appear on the 1:1 line
-and tends to be quite intense. Second order Raman and Rayleigh scattering may also be observed,
-which is due to the interaction between two photons of the same energy which doubles to excitation
-wavelength.
+Raman and Rayleigh scattering can interfere with sample fluorescence signals.
+Raman scattering is inelastic scattering caused by interaction with the solvent,
+shifting to longer wavelengths. Rayleigh scattering is elastic scattering, where
+light bounces off molecules without energy loss, appearing on the 1:1 line and
+often intense. Second-order Raman and Rayleigh scattering may also occur due to
+two-photon interactions doubling the excitation wavelength.
 }
 \note{
-This function is a modified version of the staRdom function \link[staRdom]{eem_rem_scat}, modified to allow
-selective interpolation instead of all or nothing.
+This function is a modified version of \code{\link[staRdom:eem_rem_scat]{staRdom::eem_rem_scat()}}
+from the \code{staRdom} package, allowing selective interpolation instead of all-or-nothing.
 }
 \examples{
-#default settings (remove all, interpolate only raman lines)
+# default settings (remove all, interpolate only raman lines)
 eemlist <- remove_scattering(example_eems)
 plot(eemlist[[6]])
 
-#interpolate all
-eemlist <- remove_scattering(example_eems, interpolate=c(TRUE,TRUE,TRUE,TRUE))
+# interpolate all
+eemlist <- remove_scattering(example_eems, interpolate = c(TRUE, TRUE, TRUE, TRUE))
 plot(eemlist[[6]])
 
-#only remove only rayleigh lines
-eemlist <- remove_scattering(example_eems, type=c(FALSE,FALSE,TRUE,TRUE))
+# only remove only rayleigh lines
+eemlist <- remove_scattering(example_eems, type = c(FALSE, FALSE, TRUE, TRUE))
 plot(eemlist[[6]])
 
-#change the width of the lines
-eemlist <- remove_scattering(example_eems, width=c(16,3,100,40))
+# change the width of the lines
+eemlist <- remove_scattering(example_eems, width = c(16, 3, 100, 40))
 plot(eemlist[[6]])
 }
 \references{
-Gilchrist, J. R., & Reynolds, D. M. (2014). Optical Spectroscopy Instrumentation Design, Quality Assurance, and Control: Bench-Top Fluorimetry. In A. Baker, D. M. Reynolds, J. Lead, P. G. Coble, & R. G. M. Spencer (Eds.), Aquatic Organic Matter Fluorescence (pp. 147-189).
+Gilchrist, J. R., & Reynolds, D. M. (2014). Optical Spectroscopy Instrumentation Design,
+Quality Assurance, and Control: Bench-Top Fluorimetry. In A. Baker, D. M. Reynolds, J. Lead, P. G. Coble,
+& R. G. M. Spencer (Eds.), Aquatic Organic Matter Fluorescence (pp. 147-189).
 Cambridge: Cambridge University Press. \url{https://doi.org/10.1017/CBO9781139045452.009}
 }

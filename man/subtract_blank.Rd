@@ -7,30 +7,31 @@
 subtract_blank(eem)
 }
 \arguments{
-\item{eem}{an \code{eem} or \code{eemlist} that has been augmented with metadata and blanks. See details for more info.}
+\item{eem}{An \code{eem} or \code{eemlist} object.}
 }
 \value{
-an object of class \code{eem} or \code{eemlist} where the sample data (\code{x})
-has been subtracted by the blank data (\code{blk_x})
+An object of class \code{eem} or \code{eemlist} where the sample data (\code{x})
+has been subtracted by the blank data (\code{blk_x}).
 }
 \description{
-Perform blank subtraction on EEM samples
+Subtracts the blank EEM data from sample EEM data. Samples must have
+metadata and blank data attached prior to running.
 }
 \details{
-In order to subtract the blank EEMs data from the sample data, you must first 'attach' the blank data to the \code{eem}
-by using the function \link[eemanalyzeR]{add_blanks}. Note that in order to run \link[eemanalyzeR]{add_blanks} you
-first need to add the metadata via \link[eemanalyzeR]{add_metadata}.
-
-The processing steps are tracked in two ways:
-\itemize{
- \item{processing is tracked for each sample via an attribute attached to each \code{eem}
-object. You can visualize this using the function \link[base]{attributes}\code{(eem)}}
-\item{overall processing steps are also tracked and output as a readme.txt file in the processed data folder} ## TO DO: update when this is finalized
-}
+Blank subtraction requires that blank EEM data be attached to each sample.
+This is done with \code{\link[=add_blanks]{add_blanks()}}, which in turn requires metadata to be added
+via \code{\link[=add_metadata]{add_metadata()}}.
 }
 \examples{
-eem <- add_metadata(metadata,example_eems)
-eem <- add_blanks(eem, validate=FALSE)
+eem <- add_metadata(metadata, example_eems)
+eem <- add_blanks(eem, validate = FALSE)
+
+# Subtract blank from a single EEM
 eem_sub <- subtract_blank(eem[[1]])
+
+# Subtract blank from an EEM list
 eemlist_sub <- subtract_blank(eem)
+}
+\seealso{
+\code{\link[=add_metadata]{add_metadata()}}
 }

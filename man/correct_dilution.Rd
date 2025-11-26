@@ -7,7 +7,7 @@
 correct_dilution(x)
 }
 \arguments{
-\item{x}{An \code{eemlist} or \code{abslist} object. See \strong{Details} for more information.}
+\item{x}{An \code{eemlist} or \code{abslist} object.}
 }
 \value{
 An object of the same class as \code{x} (\code{eemlist} or \code{abslist}) with

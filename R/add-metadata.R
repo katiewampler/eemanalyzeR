@@ -6,7 +6,7 @@
 #' @md
 #'
 #' @param meta A `data.frame` containing metadata.
-#' @param x An `abslist` or `eemlist` object.
+#' @param x An `eemlist` or `abslist` object.
 #' @param sample_type_regex A **named list** of regular expressions used to identify
 #' instrument blanks, sample blanks, check standards, and samples via pattern matching.
 #'

@@ -9,7 +9,7 @@
 #' @param skip Optional. A character string containing a [base::regular expression()]
 #'   to match files in `input_dir` that should be ignored.
 #' @param file_ext The file extension of the EEMs or absorbance files.
-#' @param recursive Logical. Should the function recurse into directories?
+#' @param recursive Logical. Should the function recursively search directories?
 #' @param import_function Character or a user-defined function to import an EEM.
 #'   For more details, see [`vignette("custom-indices")`](../doc/custom-indices.html).
 #'

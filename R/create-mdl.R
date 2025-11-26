@@ -10,13 +10,13 @@
 #' @param meta_name Name of the metadata file. Optional if the metadata file is the
 #'   only `.xlsx` or `.csv` file in `dir`. If not specified, the function attempts to find
 #'   a single metadata file and errors if multiple files are present.
-#' @param sheet Name of the sheet containing metadata (only required if metadata
-#'   is not on the first sheet).
+#' @param sheet Name of the sheet containing metadata (only required
+#'   if the metadata is not on the first sheet of an `.xlsx` file).
 #' @param iblank Optional. A character string containing a
 #'   [base::regular expression] used to identify instrument blanks.
 #' @param type Which MDL to calculate: either "eem" or "abs".
 #' @param recursive Logical. Should the function recursively search directories?
-#' @param qaqc_dir Directory in which to save the MDL `.rds` file.
+#' @param qaqc_dir Directory in which to save the QAQC `.rds` file.
 #'   Default: a user-specific data directory via [rappdirs::user_data_dir()].
 #'   If `FALSE`, the function returns the MDL object instead of saving it.
 #'

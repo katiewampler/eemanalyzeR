@@ -7,19 +7,20 @@
 get_indices_function(index_method = "eemanalyzeR")
 }
 \arguments{
-\item{index_method}{currently supports "eemanalyzeR", "eemR", and "usgs" or a custom function}
+\item{index_method}{Either "eemanalyzeR", "eemR", "usgs", or a custom function.}
 }
 \value{
-a function used to generate indices
+A function used to generate indices.
 }
 \description{
-Accepts either a custom function to generate indices (see vignette) or uses preset methods.
+Returns either a user-supplied custom function or one of the preset index
+generators.
 }
 \details{
-For more details on the preset methods see the following functions:
+Preset methods correspond to the following functions:
 \itemize{
-\item eemanalyzeR: \link[eemanalyzeR]{eemanalyzeR_indices}
-\item eemR: \link[eemanalyzeR]{eemR_indices}
-\item usgs: \link[eemanalyzeR]{usgs_indices}
+\item \strong{eemanalyzeR}: \code{\link[=eemanalyzeR_indices]{eemanalyzeR_indices()}}
+\item \strong{eemR}: \code{\link[=eemR_indices]{eemR_indices()}}
+\item \strong{usgs}: \code{\link[=usgs_indices]{usgs_indices()}}
 }
 }

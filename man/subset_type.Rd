@@ -2,41 +2,48 @@
 % Please edit documentation in R/subset-type.R
 \name{subset_type}
 \alias{subset_type}
-\title{Extract Samples from an eemlist or abslist by sample type}
+\title{Extract samples by type from an \code{eemlist} or \code{abslist}}
 \usage{
 subset_type(x, type = c("iblank", "sblank", "check", "sample"), negate = FALSE)
 }
 \arguments{
-\item{x}{an object of class \code{eemlist} or \code{abslist}}
+\item{x}{An \code{eemlist} or \code{abslist} object.}
 
-\item{type}{either 'iblank' for instrument blank, 'sblank' for analytical blank, 'check' for tea check standard, or 'sample' for samples}
+\item{type}{A character or vector specifying sample type(s) to extract. Options include:
+\itemize{
+\item \strong{iblank}: instrument blank
+\item \strong{sblank}: analytical blank
+\item \strong{check}: check standard
+\item \strong{sample}: regular samples
+}}
 
-\item{negate}{logical, should the samples be returned or removed?}
+\item{negate}{Logical. If \code{TRUE}, returns all samples \strong{except} those of
+the specified type(s). Default is \code{FALSE}.}
 }
 \value{
-an object of the same class as \code{x}.
+An object of the same class as \code{x} containing the selected (or excluded) samples.
 }
 \description{
-Extracts the specified sample type(s) from an \code{eemlist} or \code{abslist}
-using the samples attribute \code{sample_type}. Samples labeled using the the \link[eemanalyzeR]{add_metadata} function.
+Selects samples based on the \code{sample_type} attribute added via \code{\link[=add_metadata]{add_metadata()}}.
+Types include instrument blanks, analytical blanks, check standards, and regular samples.
 }
 \examples{
 abs <- add_metadata(metadata, example_abs)
 eem <- add_metadata(metadata, example_eems)
 
-#returns NULL because no samples are marked as instrument blanks
+# No instrument blanks exist
 tea <- subset_type(abs, "iblank")
 tea
 
-#get tea absorbance
+# Get analytical blanks (tea standards)
 tea <- subset_type(abs, "sblank")
 get_sample_info(tea, "sample")
 
-#get blank eems (instrument and analytical)
+# Get all blank EEMs (instrument + analytical)
 blk <- subset_type(eem, c("iblank", "sblank"))
 get_sample_info(blk, "sample")
 
-#use negate = TRUE to get non instrument blanks
-nonblk <- subset_type(eem, "iblank", negate=TRUE)
+# Get non-instrument blanks
+nonblk <- subset_type(eem, "iblank", negate = TRUE)
 get_sample_info(nonblk, "sample")
 }

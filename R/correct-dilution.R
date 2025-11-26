@@ -9,7 +9,7 @@
 #' absorbance values. Because of this, samples must already have metadata added using
 #' [add_metadata()].
 #'
-#' @param x An `eemlist` or `abslist` object. See **Details** for more information.
+#' @param x An `eemlist` or `abslist` object.
 #'
 #' @returns An object of the same class as `x` (`eemlist` or `abslist`) with
 #'   dilution corrections applied.

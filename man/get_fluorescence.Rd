@@ -7,30 +7,48 @@
 get_fluorescence(eem, ex, em, stat = "max", norm = FALSE)
 }
 \arguments{
-\item{eem}{an \code{eem} or \code{eemlist} object containing EEM's data}
+\item{eem}{An \code{eem} or \code{eemlist} object.}
 
-\item{ex}{a vector of excitation wavelengths}
+\item{ex}{A vector of excitation wavelengths.}
 
-\item{em}{a vector of emission wavelengths}
+\item{em}{A vector of emission wavelengths.}
 
-\item{stat}{either "max" to get the maximum value within the specified range or "sum" to get the sum across the specified range}
+\item{stat}{A string specifying the statistic to return:
+\itemize{
+\item "max": return the maximum value (default)
+\item "sum": return the sum of values
+}}
 
-\item{norm}{logical, if TRUE will divide index value by the DOC concentration. Note that metadata must be added if TRUE using \link[eemanalyzeR]{add_metadata} or NA will be returned.}
+\item{norm}{Logical. If \code{TRUE}, divides the index value by the DOC
+concentration. Metadata must be added using
+\code{\link[=add_metadata]{add_metadata()}}, otherwise \code{NA} will be returned.}
 }
 \value{
-A vector of fluorescence values. If a value cannot be extracted, NA will be returned.
+A numeric vector of fluorescence values. Returns \code{NA} if values
+cannot be extracted.
 }
 \description{
-Gets the fluorescence within a range of excitation and emission wavelengths and returns the maximum or sum within that range.
-Missing values are interpolated using \link[pracma]{interp2}.
+Gets fluorescence within a range of excitation and emission wavelengths and
+returns either the maximum value or the sum across that range.
+Missing values are interpolated using \code{\link[pracma:interp2]{pracma::interp2()}}.
 }
 \examples{
-pA <- get_fluorescence(example_eems, ex=250:260, em=380:480)
-pD <- get_fluorescence(example_eems, ex=390, em=509)
-pA_sum <- get_fluorescence(example_eems, ex=250:260, em=380:480, stat="sum")
+pA <- get_fluorescence(example_eems, ex = 250:260, em = 380:480)
+pD <- get_fluorescence(example_eems, ex = 390, em = 509)
+
+pA_sum <- get_fluorescence(
+  example_eems,
+  ex = 250:260,
+  em = 380:480,
+  stat = "sum"
+)
 
 eemlist <- add_metadata(metadata, example_eems)
-pA_docnorm <- get_fluorescence(eemlist, ex=250:260, em=380:480, norm=TRUE)
 
-
+pA_docnorm <- get_fluorescence(
+  eemlist,
+  ex = 250:260,
+  em = 380:480,
+  norm = TRUE
+)
 }

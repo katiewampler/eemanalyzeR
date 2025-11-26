@@ -29,8 +29,8 @@ All files in this directory will be loaded.}
 only \code{.xlsx} or \code{.csv} file in \code{dir}. If not specified, the function attempts to find
 a single metadata file and errors if multiple files are present.}
 
-\item{sheet}{Name of the sheet containing metadata (only required if metadata
-is not on the first sheet).}
+\item{sheet}{Name of the sheet containing metadata (only required
+if the metadata is not on the first sheet of an \code{.xlsx} file).}
 
 \item{iblank}{Optional. A character string containing a
 \link[base:regex]{base::regular expression} used to identify instrument blanks.}
@@ -39,7 +39,7 @@ is not on the first sheet).}
 
 \item{recursive}{Logical. Should the function recursively search directories?}
 
-\item{qaqc_dir}{Directory in which to save the MDL \code{.rds} file.
+\item{qaqc_dir}{Directory in which to save the QAQC \code{.rds} file.
 Default: a user-specific data directory via \code{\link[rappdirs:user_data_dir]{rappdirs::user_data_dir()}}.
 If \code{FALSE}, the function returns the MDL object instead of saving it.}
 }

@@ -1,22 +1,21 @@
 #' Get function to generate fluorescence and absorbance indices
 #'
-#' Accepts either a custom function to generate indices (see vignette) or uses preset methods.
+#' Returns either a user-supplied custom function or one of the preset index
+#' generators.
 #'
-#' @param index_method currently supports "eemanalyzeR", "eemR", and "usgs" or a custom function
+#' @param index_method Either "eemanalyzeR", "eemR", "usgs", or a custom function.
 #'
-#' @returns a function used to generate indices
+#' @return A function used to generate indices.
+#'
+#' @details
+#' Preset methods correspond to the following functions:
+#'
+#' - **eemanalyzeR**: [eemanalyzeR_indices()]
+#' - **eemR**: [eemR_indices()]
+#' - **usgs**: [usgs_indices()]
 #'
 #' @export
-#' @details
-#' For more details on the preset methods see the following functions:
-#' \itemize{
-#' \item eemanalyzeR: \link[eemanalyzeR]{eemanalyzeR_indices}
-#' \item eemR: \link[eemanalyzeR]{eemR_indices}
-#' \item usgs: \link[eemanalyzeR]{usgs_indices}
-#' }
-#'
-#'
-#'
+#' @md
 get_indices_function <- function(index_method="eemanalyzeR"){
 
   if(is.function(index_method)){

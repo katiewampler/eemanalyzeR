@@ -2,36 +2,46 @@
 % Please edit documentation in R/format-index.R
 \name{format_index}
 \alias{format_index}
-\title{Format Index and Flag Data}
+\title{Format index and flag data}
 \usage{
 format_index(x, index, value, flag)
 }
 \arguments{
-\item{x}{an \code{eemlist} or \code{abslist} object}
+\item{x}{An \code{eemlist} or \code{abslist} object.}
 
-\item{index}{a character, the name of the index}
+\item{index}{A character string giving the name of the index.}
 
-\item{value}{the index values, use \link[eemanalyzeR]{get_fluorescence} or \link[eemanalyzeR]{get_absorbance} to get index values}
+\item{value}{Index values. Use \code{\link[=get_fluorescence]{get_fluorescence()}} or
+\code{\link[=get_absorbance]{get_absorbance()}} to generate these values.}
 
-\item{flag}{the flag values, must be the same length as value, use \link[eemanalyzeR]{flag_missing} to generate flags}
+\item{flag}{Flag values, the same length as \code{value}.}
 }
 \value{
-a data.frame with four columns:
-#' \itemize{
- \item sample_name: the name of the sample
- \item meta_name: the name of the sample in the metadata if metadata has been added, otherwise the sample name again
- \item index: the name of the index being reported
- \item value: the value of the index
+A data frame with four columns:
+\itemize{
+\item \strong{sample_name}: the sample name
+\item \strong{meta_name}: the sample name in metadata (if provided),
+otherwise repeats \code{sample_name}
+\item \strong{index}: the name of the index
+\item \strong{value}: the index value (with \code{MDL01} values removed)
 }
 }
 \description{
-Takes index values, QA/QC flags, and dataset and combines and combines data and formats data for further processing.
-Will remove any values with a flag of MDL01 as these are below the detection limit and won't be reported.
+Combines index values, QA/QC flags, and sample metadata into a clean
+\code{data.frame} for further processing. Any values flagged as "MDL01"
+(below detection limit) are removed and not reported.
 }
 \examples{
- ex <- 240:260
- em <- 300:320
- vals <- get_fluorescence(example_eems, ex, em, stat = "max")
- flags <- flag_missing(example_eems, ex=ex, em=em, all=FALSE)
- index_formatted <- format_index(example_eems, "test_index", vals, flags)
+ex <- 240:260
+em <- 300:320
+
+vals <- get_fluorescence(example_eems, ex, em, stat = "max")
+flags <- flag_missing(example_eems, ex = ex, em = em, all = FALSE)
+
+index_formatted <- format_index(
+  x = example_eems,
+  index = "test_index",
+  value = vals,
+  flag = flags
+)
 }

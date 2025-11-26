@@ -315,9 +315,12 @@ check_processing <- function(eem){
 }
 
 
-#' Nicely print the readme file with proper formatting
+#' Print `readme`
 #'
-.print_readme <- function(){
+#' Nicely print the processing documentation readme file with proper formatting.
+#'
+#' @export
+print_readme <- function(){
   readme <- readme[!is.na(readme)]
 
   #get stuff for the top

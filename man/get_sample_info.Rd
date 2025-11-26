@@ -2,55 +2,51 @@
 % Please edit documentation in R/get-sample-info.R
 \name{get_sample_info}
 \alias{get_sample_info}
-\title{Extract info from eemlist or abslist}
+\title{Extract components from an \code{eemlist} or \code{abslist}}
 \usage{
 get_sample_info(x, info)
 }
 \arguments{
-\item{x}{an object of class:
-\itemize{
-\item{\code{eemlist}}
-\item{\code{eem}}
-\item{\code{abslist}}
-\item{\code{abs}}
-}}
+\item{x}{An \code{eemlist}, \code{eem}, \code{abslist}, or \code{abs} object.}
 
-\item{info}{the name of the component within the \code{eem} or \code{abs} to extract.
-see \link[eemR]{eem} for base \code{eem} component names and \link[eemanalyzeR]{abs_read} for base \code{abs} names.
-see \link[eemanalyzeR]{add_metadata} for extended \code{eem} component names.}
+\item{info}{The name of the component to extract.
+See \link[eemR:eem]{eemR::eem} for base \code{eem} component names,
+\code{\link[=abs_read]{abs_read()}} for base \code{abs} component names,
+and \code{\link[=add_metadata]{add_metadata()}} for extended \code{eem} AND \code{abs} metadata fields.}
 }
 \value{
 if \code{x} is an \code{eemlist} or \code{abslist}:
 
-if requested component (\code{info}) is a:
- \itemize{
- \item vector of length one: a vector of values where each value corresponds to the info for each sample
- \item vector of length greater than one: a matrix of values where each row corresponds to the info for each sample
- \item matrix: returns a list of matrices where each list item corresponds to the info for each sample
- }
+If \code{x} is an \code{eemlist} or \code{abslist}, the returned structure depends on the
+type of the requested component (\code{info}):
+\itemize{
+\item \strong{vector of length 1}: returns a vector with one value per sample
+\item \strong{vector of length >1}: returns a data.frame (samples in columns)
+\item \strong{matrix}: returns a list of matrices (one per sample)
+}
 
-if \code{x} is an \code{eem} or \code{abs} it will return the component, maintaining class and structure.
+If \code{x} is a single \code{eem} or \code{abs} object, the corresponding component is
+returned as-is, preserving its class and structure.
 }
 \description{
-Helper function that build upon the \link[eemR]{eem_names}
-function. Extracts components of an \code{eemlist/eem} and \code{abslist/abs} object.
+Helper function building on \code{\link[eemR:eem_names]{eemR::eem_names()}}. Extracts a specified
+component from an \code{eem} or \code{abs} object.
 }
 \examples{
-#get names
+# Get sample names
 get_sample_info(example_eems, "sample")
 get_sample_info(example_abs, "sample")
 
-#get analysis_date
+# Get analysis dates (metadata required)
 eemlist <- add_metadata(metadata, example_eems)
 get_sample_info(eemlist, "analysis_date")
 
-#get doc for fifth eem
-eemlist <- add_metadata(metadata, example_eems)
+# Get DOC for the fifth sample
 get_sample_info(eemlist[[5]], "doc_mgL")
 
-#get emission wavelengths
+# Get emission wavelengths
 get_sample_info(example_eems, "em")
 
-#get absorbance data
+# Get absorbance matrices
 get_sample_info(example_abs, "data")
 }

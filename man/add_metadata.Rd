@@ -14,7 +14,7 @@ add_metadata(
 \arguments{
 \item{meta}{A \code{data.frame} containing metadata.}
 
-\item{x}{An \code{abslist} or \code{eemlist} object.}
+\item{x}{An \code{eemlist} or \code{abslist} object.}
 
 \item{sample_type_regex}{A \strong{named list} of regular expressions used to identify
 instrument blanks, sample blanks, check standards, and samples via pattern matching.}

@@ -2,40 +2,56 @@
 % Please edit documentation in R/flag-missing.R
 \name{flag_missing}
 \alias{flag_missing}
-\title{QA/QC Flags for Missing Data}
+\title{QA/QC flags for missing data}
 \usage{
 flag_missing(x, ex = NULL, em = NULL, wl = NULL, all = TRUE)
 }
 \arguments{
-\item{x}{an \code{eemlist}, \code{eem}, \code{abslist}, or \code{abs} object.}
+\item{x}{An \code{eemlist}, \code{eem}, \code{abslist}, or \code{abs} object.}
 
-\item{ex}{a vector of the excitation wavelengths required to calculate index, only required if x is an \code{eemlist} or \code{eem}}
+\item{ex}{A vector of excitation wavelengths required to calculate the index.
+Only needed if \code{x} is an \code{eemlist} or \code{eem}.}
 
-\item{em}{a vector of the emission wavelengths required to calculate index, only required if x is an \code{eemlist} or \code{eem}}
+\item{em}{A vector of emission wavelengths required to calculate the index.
+Only needed if \code{x} is an \code{eemlist} or \code{eem}.}
 
-\item{wl}{a vector of the wavelengths required to calculate index, only required if x is an \code{abslist} or \code{abs}}
+\item{wl}{A vector of wavelengths required to calculate the index.
+Only needed if \code{x} is an \code{abslist} or \code{abs}.}
 
-\item{all}{logical, does the index still get calculated if some wavelengths are missing? used to determine if DATA_01 or DATA_02 is returned}
+\item{all}{If \code{TRUE} index will not be calculated
+if some wavelengths are missing, returning "DATA01".}
 }
 \value{
-a vector containing text flags and NA values, the following values may be returned:
+A vector containing text flags and \code{NA} values. Possible values:
 \itemize{
- \item DATA_01: Missing data required to calculate the index
- \item DATA_02: Missing some wavelengths required to calculate the index, value may be inaccurate
- \item NA: No missing data, no flag needed for missing data
+\item "DATA_01": Missing data required to calculate the index.
+\item "DATA_02": Missing some wavelengths required to calculate the index; value
+may be inaccurate.
+\item \code{NA}: No missing data; no flag needed.
 }
 }
 \description{
-Checks if a metric can't be calculated or may be inaccurate due to missing wavelengths required to calculate that metric.
+Checks if a metric can't be calculated or may be inaccurate due to missing
+wavelengths required to calculate that metric.
 }
 \examples{
-#checking absorbance data
-  flag_missing(example_abs, wl=400) #data exists
-  flag_missing(example_abs, wl=100) #data doesn't exist
-  flag_missing(example_abs, wl=100:254, all=FALSE) #some data exists, still calculate
+# checking absorbance data
+# data exists
+flag_missing(example_abs, wl = 400)
 
-#checking fluorescence data
-  flag_missing(example_eems, ex=270:280, em=300:320) #data exists
-  flag_missing(example_eems, ex=100:150, em=300:320) #data doesn't exist
-  flag_missing(example_eems, ex=100:350, em=300:320, all=FALSE) #some data exists, still calculate
+# data doesn't exist
+flag_missing(example_abs, wl = 100)
+
+# some data exists, still calculate
+flag_missing(example_abs, wl = 100:254, all = FALSE)
+
+# checking fluorescence data
+# data exists
+flag_missing(example_eems, ex = 270:280, em = 300:320)
+
+# data doesn't exist
+flag_missing(example_eems, ex = 100:150, em = 300:320)
+
+# some data exists, still calculate
+flag_missing(example_eems, ex = 100:350, em = 300:320, all = FALSE)
 }

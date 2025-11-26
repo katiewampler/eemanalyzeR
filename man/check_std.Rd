@@ -14,22 +14,20 @@ check_std(
 )
 }
 \arguments{
-\item{eemlist}{An object of class \code{eemlist}; must be fully processed.}
+\item{eemlist}{An \code{eemlist} object.}
 
-\item{abslist}{An object of class \code{abslist}; must be fully processed.}
+\item{abslist}{An \code{abslist} object.}
 
-\item{qaqc_dir}{File path to the QAQC files generated with
-\code{\link[=create_std]{create_std()}}.The default is a user-specific data directory via
-\link[rappdirs:user_data_dir]{rappdirs::user_data_dir}.}
+\item{qaqc_dir}{File path to the QAQC files generated with \code{\link[=create_mdl]{create_mdl()}}
+and \code{\link[=create_std]{create_std()}}. Default is a user-specific data directory
+\code{\link[rappdirs:user_data_dir]{rappdirs::user_data_dir()}}.}
 
-\item{tolerance}{Maximum percent deviation that the tea standard can vary
+\item{tolerance}{Maximum percent deviation that the check standard can vary
 from the long-term values without being flagged.}
 
-\item{index_method}{The index method used to calculate indices.
-See \code{\link[=get_indices]{get_indices()}} for details.}
+\item{index_method}{Either "eemanalyzeR", "eemR", "usgs", or a custom function.}
 
-\item{vals}{If \code{TRUE}, returns a table with observed and standard values
-for each index. If \code{FALSE}, returns only a flag.}
+\item{vals}{If \code{TRUE}, returns actual values, otherwise returns just flags.}
 }
 \value{
 If \code{vals = FALSE}, returns a \code{data.frame} with four columns:
@@ -51,10 +49,16 @@ If \code{vals = TRUE}, additional columns include:
 Calculate indices for a check standard to ensure they are consistent
 with the long-term standard values.
 }
+\details{
+\code{eemlist} and \code{abslist} must be fully processed to match the long-term standard.
+}
 \examples{
 check_std(
   example_processed_eems,
   example_processed_abs,
   qaqc_dir = system.file("extdata", package = "eemanalyzeR")
 )
+}
+\seealso{
+\code{\link[=get_indices]{get_indices()}}
 }

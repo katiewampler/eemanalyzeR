@@ -1,37 +1,44 @@
-#' Extract Samples from an eemlist or abslist by sample type
+#' Extract samples by type from an `eemlist` or `abslist`
 #'
-#' Extracts the specified sample type(s) from an `eemlist` or `abslist`
-#' using the samples attribute `sample_type`. Samples labeled using the the \link[eemanalyzeR]{add_metadata} function.
+#' Selects samples based on the `sample_type` attribute added via [add_metadata()].
+#' Types include instrument blanks, analytical blanks, check standards, and regular samples.
+#'
+#' @param x An `eemlist` or `abslist` object.
+#' @param type A character or vector specifying sample type(s) to extract. Options include:
+#'   - **iblank**: instrument blank
+#'   - **sblank**: analytical blank
+#'   - **check**: check standard
+#'   - **sample**: regular samples
+#' @param negate Logical. If `TRUE`, returns all samples **except** those of
+#'  the specified type(s). Default is `FALSE`.
+#'
+#' @return An object of the same class as `x` containing the selected (or excluded) samples.
+#'
+#' @export
 #' @md
 #'
-#' @param x an object of class `eemlist` or `abslist`
-#' @param type either 'iblank' for instrument blank, 'sblank' for analytical blank, 'check' for tea check standard, or 'sample' for samples
-#' @param negate logical, should the samples be returned or removed?
-
-#' @returns an object of the same class as `x`.
-#' @export
-
 #' @examples
 #' abs <- add_metadata(metadata, example_abs)
 #' eem <- add_metadata(metadata, example_eems)
 #'
-#' #returns NULL because no samples are marked as instrument blanks
+#' # No instrument blanks exist
 #' tea <- subset_type(abs, "iblank")
 #' tea
 #'
-#' #get tea absorbance
+#' # Get analytical blanks (tea standards)
 #' tea <- subset_type(abs, "sblank")
 #' get_sample_info(tea, "sample")
 #'
-#' #get blank eems (instrument and analytical)
+#' # Get all blank EEMs (instrument + analytical)
 #' blk <- subset_type(eem, c("iblank", "sblank"))
 #' get_sample_info(blk, "sample")
 #'
-#' #use negate = TRUE to get non instrument blanks
-#' nonblk <- subset_type(eem, "iblank", negate=TRUE)
+#' # Get non-instrument blanks
+#' nonblk <- subset_type(eem, "iblank", negate = TRUE)
 #' get_sample_info(nonblk, "sample")
-
-subset_type <- function(x, type=c("iblank", "sblank", "check", "sample"), negate=FALSE){
+subset_type <- function(x,
+                        type = c("iblank", "sblank", "check", "sample"),
+                        negate = FALSE) {
   stopifnot(.is_eemlist(x) | .is_abslist(x))
 
   type <- match.arg(type, several.ok = TRUE)
@@ -40,9 +47,15 @@ subset_type <- function(x, type=c("iblank", "sblank", "check", "sample"), negate
 
   index <- x_type %in% type
 
-  if(all(!index)){return(NULL)}
+  if (all(!index)) {
+    return(NULL)
+  }
 
-  if(negate){sub_x <- x[!index]}else{sub_x <- x[index]}
+  if (negate) {
+    sub_x <- x[!index]
+  } else {
+    sub_x <- x[index]
+  }
 
   return(sub_x)
 }

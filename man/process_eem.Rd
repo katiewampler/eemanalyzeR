@@ -2,7 +2,7 @@
 % Please edit documentation in R/process-eem.R
 \name{process_eem}
 \alias{process_eem}
-\title{Process and correct excitation emission matrices}
+\title{Process and correct excitation–emission matrices (EEMs)}
 \usage{
 process_eem(
   eemlist,
@@ -14,59 +14,75 @@ process_eem(
   interpolate = c(TRUE, TRUE, FALSE, FALSE),
   method = 1,
   cores = 1,
-  pathlength = 1
+  cuvle = 1
 )
 }
 \arguments{
-\item{eemlist}{an \code{eemlist} object containing EEM's data. See details for more info.}
+\item{eemlist}{An \code{eemlist} object.}
 
-\item{abslist}{an \code{abslist} object containing absorbance data.}
+\item{abslist}{An \code{abslist} object.}
 
-\item{ex_clip}{numerical vector of length two with the minimum and maximum wavelengths to clip the excitation wavelengths to.}
+\item{ex_clip}{Numeric vector of length two specifying the minimum and
+maximum excitation wavelengths to keep.}
 
-\item{em_clip}{numerical vector of length two with the minimum and maximum wavelengths to clip the emission wavelengths to.}
+\item{em_clip}{Numeric vector of length two specifying the minimum and
+maximum emission wavelengths to keep.}
 
-\item{type}{a logical vector of length four indicating which scattering lines should be removed.
-The order is "raman1", "raman2", "rayleigh1" and "rayleigh2" scattering.
-Set \code{TRUE} for scattering lines that should be removed.}
+\item{type}{Logical vector of length four indicating which scattering lines to remove.
+The order is "raman1", "raman2", "rayleigh1", "rayleigh2".}
 
-\item{width}{a numeric vector of length four containing width of
-scattering in nanometers to remove. The order is "raman1", "raman2", "rayleigh1" and "rayleigh2" scattering.}
+\item{width}{Numeric vector of length four specifying the width of scattering
+lines to remove (nm). Same order as \code{type}.}
 
-\item{interpolate}{a logical vector of length four indicating which scattering lines to interpolate.
-The order is "raman1", "raman2", "rayleigh1" and "rayleigh2" scattering.}
+\item{interpolate}{Logical vector of length four indicating which scattering
+lines to interpolate. Same order as \code{type}.}
 
-\item{method}{numeric 0 to 4 for interpolation method to use. Default is 1. See \link[staRdom]{eem_interp} for more info.}
+\item{method}{Numeric (0–4) specifying the interpolation method to use.
+Default is 1. See \code{\link[staRdom:eem_interp]{staRdom::eem_interp()}} for details.}
 
-\item{cores}{The number of cores used for parallel computation of interpolation.}
+\item{cores}{Integer specifying the number of cores for parallel computation
+during interpolation.}
 
-\item{pathlength}{a numeric value indicating the pathlength (in cm) of the
-cuvette used for absorbance measurement. Default is 1 (1 cm).}
+\item{cuvle}{Cuvette (path) length in cm.}
 }
 \value{
-an object of class \code{eemlist}
+An \code{eemlist} object with processed and corrected EEMs.
 }
 \description{
-A wrapper to combine all the processing functions together to make a cleaner workflow.
-Processing steps include:
+Wrapper function that combines multiple EEM processing steps into a
+streamlined workflow. The processing steps include:
 \itemize{
-\item{\link[eemanalyzeR]{subtract_blank}: which subtracts the blanks from the samples}
-\item{\link[eemanalyzeR]{remove_scattering}: which removes scattering lines with optional interpolation}
-\item{\link[eemanalyzeR]{ife_correct}: which corrects the fluorescence intensity for inner filter effects}
-\item{\link[eemanalyzeR]{raman_normalize}: which normalizes the fluorescence intensity to the raman unit area}
-\item{\link[eemanalyzeR]{correct_dilution}: which corrects the fluorescence intensity for any dilutions}
-\item{\link[eemR]{eem_cut}: which clips the area of the excitation emission matrices to the area of interest}
+\item \code{\link[=subtract_blank]{subtract_blank()}}: subtracts blank samples from the EEMs
+\item \code{\link[=remove_scattering]{remove_scattering()}}: removes scattering lines with optional interpolation
+\item \code{\link[=ife_correct]{ife_correct()}}: corrects for inner filter effects
+\item \code{\link[=raman_normalize]{raman_normalize()}}: normalizes fluorescence intensity to Raman units
+\item \code{\link[=correct_dilution]{correct_dilution()}}: adjusts intensity for sample dilutions
+\item \code{\link[eemR:eem_cut]{eemR::eem_cut()}}: clips the excitation–emission matrices to the region of interest
 }
 }
 \details{
-The function links the absorbance and EEM's data by the metadata
-name which should be the same between the two datasets, because of this,
-samples must have metadata already added to the samples using \link[eemanalyzeR]{add_metadata}.
+\subsection{Metadata}{
+
+Absorbance and EEM data are linked via the \code{meta_name} in the metadata.
+Metadata must already be added to the samples using \code{\link[=add_metadata]{add_metadata()}}.
+}
+
+\subsection{Tracking Processing Steps}{
+
+Processing steps are tracked in two ways:
+\itemize{
+\item Each sample has an attribute that records its processing steps.
+You can view this using \code{attributes(eem)}.
+\item Overall processing steps are recorded in a \code{readme} variable
+(accessible using \code{\link[=print_readme]{print_readme()}}) or exported as the \code{readme.txt} file
+using \code{\link[=export_data]{export_data()}}.
+}
+}
 }
 \examples{
 eemlist <- add_metadata(metadata, example_eems)
 abslist <- add_metadata(metadata, example_abs)
-eemlist <- add_blanks(eemlist, validate=FALSE)
+eemlist <- add_blanks(eemlist, validate = FALSE)
 corrected_eem <- process_eem(eemlist, abslist)
 plot(corrected_eem)
 

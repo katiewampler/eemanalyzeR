@@ -4,12 +4,12 @@
 \alias{eemR_indices}
 \title{eemR and staRdom methods for fluorescence and absorbance indices}
 \usage{
-eemR_indices(eemlist, abslist, cuvle = 1, qaqc_dir = .qaqc_dir())
+eemR_indices(eemlist, abslist, cuvle = 1, qaqc_dir = NULL)
 }
 \arguments{
-\item{eemlist}{An \code{eemlist} object containing EEM data.}
+\item{eemlist}{An \code{eemlist} object.}
 
-\item{abslist}{An \code{abslist} object containing absorbance data.}
+\item{abslist}{An \code{abslist} object.}
 
 \item{cuvle}{Cuvette (path) length in cm.}
 
@@ -17,36 +17,48 @@ eemR_indices(eemlist, abslist, cuvle = 1, qaqc_dir = .qaqc_dir())
 Default is a user-specific data directory \code{\link[rappdirs:user_data_dir]{rappdirs::user_data_dir()}}.}
 }
 \value{
-a list with two objects:
+A list with two elements:
 \itemize{
-  \item eem_index: a data.frame of all the fluorescence indices
-  \item abs_index: a data.frame of all the absorbance indices
+\item \strong{eem_index}: a \code{data.frame} of all fluorescence indices. Each row corresponds to a single index for a sample.
+\item \strong{abs_index}: a \code{data.frame} of all absorbance indices. Each row corresponds to a single index for a sample.
 }
-Each data.frame will have four columns:
+
+Each \code{data.frame} contains the following columns:
 \itemize{
- \item sample_name: the name of the sample
- \item meta_name: the name of the sample in the metadata if metadata has been added, otherwise the sample name again
- \item index: the name of the index being reported, see details for more information.
- \item value: the value of the index
+\item \strong{sample_name}: name of the sample from the EEM or absorbance list
+\item \strong{meta_name}: sample name from metadata if provided; otherwise same as \code{sample_name}
+\item \strong{index}: name of the index
+\item \strong{value}: calculated value of the index
 }
 }
 \description{
-Calculates commonly used absorbance and fluorescence optical indices from eemlist and abslist using
-\href{https://CRAN.R-project.org/package=eemR}{eemR} and \href{https://CRAN.R-project.org/package=staRdom}{staRdom} functions.
+Calculates commonly used absorbance and fluorescence optical indices from \code{eemlist} and \code{abslist} objects
+using functions from the \href{https://CRAN.R-project.org/package=eemR}{eemR} and
+\href{https://CRAN.R-project.org/package=staRdom}{staRdom} packages. Can incorporate sample metadata if provided.
 }
 \details{
-\strong{Absorbance Indices}: Absorbance indices (a254, a300, E2_E3, E4_E6, S275_295, S350_400, S300_700, SR)
-are generated using the staRdom function \link[staRdom]{abs_parms}.
+\strong{Absorbance indices} (a254, a300, E2_E3, E4_E6, S275_295, S350_400, S300_700, SR)
+are calculated using \code{\link[staRdom:abs_parms]{staRdom::abs_parms()}}.
 
-\strong{Fluorescence Indices}: Fluorescence indices are generated using the eemR functions:
+\strong{Fluorescence indices} are calculated using the following \link[eemR:eemR-package]{eemR::eemR} functions:
 \itemize{
-\item Coble peaks (b, t, a, m, c): \link[eemR]{eem_coble_peaks}
-\item fi: \link[eemR]{eem_fluorescence_index}
-\item hix: \link[eemR]{eem_humification_index}, where hix_scaled uses scale=TRUE
-\item bix: \link[eemR]{eem_biological_index}
+\item Coble peaks (b, t, a, m, c): \code{\link[eemR:eem_coble_peaks]{eemR::eem_coble_peaks()}}
+\item fi (fluorescence index): \code{\link[eemR:eem_fluorescence_index]{eemR::eem_fluorescence_index()}}
+\item hix (humification index): \code{\link[eemR:eem_humification_index]{eemR::eem_humification_index()}} (use \code{scale = TRUE} for \code{hix_scaled})
+\item bix (biological index): \code{\link[eemR:eem_biological_index]{eemR::eem_biological_index()}}
 }
 }
 \examples{
-indices <- eemR_indices(example_processed_eems, example_processed_abs,
-qaqc_dir = system.file("extdata", package = "eemanalyzeR"))
+indices <- eemR_indices(
+  eemlist = example_processed_eems,
+  abslist = example_processed_abs,
+  qaqc_dir = system.file("extdata", package = "eemanalyzeR")
+)
+
+# View fluorescence indices
+head(indices$eem_index)
+
+# View absorbance indices
+head(indices$abs_index)
+
 }

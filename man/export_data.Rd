@@ -2,7 +2,7 @@
 % Please edit documentation in R/export-data.R
 \name{export_data}
 \alias{export_data}
-\title{Export Processed Optics Data}
+\title{Export processed absorbance and fluorescence data}
 \usage{
 export_data(
   eemlist,
@@ -17,30 +17,33 @@ export_data(
 )
 }
 \arguments{
-\item{eemlist}{an \code{eemlist} object containing EEM's data.}
+\item{eemlist}{An \code{eemlist} object.}
 
-\item{abslist}{an \code{abslist} object containing absorbance data.}
+\item{abslist}{An \code{abslist} object.}
 
-\item{filename}{a character, creates a folder with this name within the \code{output_dir} and uses this name for saving file names}
+\item{filename}{A character string. Creates a folder with this name
+within \code{output_dir} and uses it for file names.}
 
-\item{output_dir}{the location to save the data to. if no location is specified it will save to the temporary directory}
+\item{output_dir}{Path to save the data. Defaults to a temporary directory
+if not specified.}
 
-\item{meta}{optional, a \code{data.frame} of metadata}
+\item{meta}{A \code{data.frame} containing sample metadata.}
 
-\item{indices}{optional, if \code{NULL} indices will not be exported. If a list of indices are included
-these will be exported}
+\item{indices}{If \code{NULL}, indices will not be exported. If a list of
+indices is provided, it is saved.}
 
-\item{eem_plot}{optional, if \code{NULL} EEM's plots will not be exported. If a list of plots are included
-these will be exported as .png files. See \link[=plot.eemlist]{plot.eemlist} for plotting.}
+\item{eem_plot}{If \code{NULL}, EEM plots will not be exported. If a
+list of plots is provided, they are saved as \code{.png} files. See \code{\link[=plot.eemlist]{plot.eemlist()}} for plotting.}
 
-\item{abs_plot}{optional, if \code{NULL} absorbance plots will not be exported. If a plot is included
-these will be exported as a .png file. See \link[=plot.abslist]{plot.abslist} for plotting.}
+\item{abs_plot}{If \code{NULL}, absorbance plots will not be exported.
+If a plot is provided, it is saved as a \code{.png} file. See \code{\link[=plot.abslist]{plot.abslist()}} for plotting.}
 
-\item{csv}{logical, if TRUE processed EEMs and absorbance data will be written to the \code{output_dir} as .csv files}
+\item{csv}{Logical. If \code{TRUE}, processed EEM and absorbance data are
+written to \code{output_dir} as \code{.csv} files.}
 }
 \value{
 A list of the processed data which is also saved to the output directory specified.
-The list contains the following items:
+The list contains:
 \itemize{
 \item \strong{eemlist:} the \code{eemlist}
 \item \strong{abslist:} the \code{abslist}
@@ -52,14 +55,21 @@ The list contains the following items:
 }
 }
 \description{
-Export Processed Optics Data
+Exports processed EEM and absorbance data, plots, indices, and metadata to a
+specified output directory. Creates a folder named by \code{filename} and saves all specified outputs there.
 }
 \examples{
 eem_plots <- plot(example_processed_eems)
 abs_plot <- plot(example_processed_abs)
 
 indices <- get_indices(example_processed_eems, example_processed_abs)
-data <- export_data(example_processed_eems, example_processed_abs,
-    filename="eemanalyzeR_example",indices = indices,
-    eem_plot=eem_plots, abs_plot = abs_plot, meta=metadata)
+data <- export_data(
+  eemlist = example_processed_eems,
+  abslist = example_processed_abs,
+  filename = "eemanalyzeR_example",
+  indices = indices,
+  eem_plot = eem_plots,
+  abs_plot = abs_plot,
+  meta = metadata
+)
 }

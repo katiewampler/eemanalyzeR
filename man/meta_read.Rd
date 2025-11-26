@@ -2,24 +2,26 @@
 % Please edit documentation in R/meta-read.R
 \name{meta_read}
 \alias{meta_read}
-\title{Read metadata file from directory}
+\title{Read metadata from a file}
 \usage{
 meta_read(input, sheet = NULL, validate_metadata = TRUE)
 }
 \arguments{
-\item{input}{path to folder containing metadata file, or name of metadata file}
+\item{input}{Path to the metadata file or the folder containing it.}
 
-\item{sheet}{name of sheet containing metadata. only required if metadata isn't the first sheet of xlsx file}
+\item{sheet}{Name of the sheet containing metadata (only required if the
+metadata is not on the first sheet of an \code{.xlsx} file).}
 
-\item{validate_metadata}{logical. should metadata structure be checked for potential issues that will cause issues during
-further processing? highly recommended to keep as TRUE.}
+\item{validate_metadata}{Logical. If \code{TRUE}, checks the metadata for
+structural issues that could cause problems during processing.
+Recommended to keep \code{TRUE}.}
 }
 \value{
-a data.frame containing metadata of samples
+A \code{data.frame} containing sample metadata.
 }
 \description{
-Reads a .csv or .xlsx file containing metadata related to absorbance and EEM's data.
-Please see \link[eemanalyzeR]{metadata} for the required columns and structure.
+Reads a \code{.csv} or \code{.xlsx} file containing metadata for absorbance and
+EEM data. See \link{metadata} for required columns and structure.
 }
 \examples{
 metadata <- meta_read(system.file("extdata", package = "eemanalyzeR"))

@@ -4,12 +4,12 @@
 \alias{eemanalyzeR_indices}
 \title{Default package methods for fluorescence and absorbance indices}
 \usage{
-eemanalyzeR_indices(eemlist, abslist, cuvle = 1, qaqc_dir = .qaqc_dir())
+eemanalyzeR_indices(eemlist, abslist, cuvle = 1, qaqc_dir = NULL)
 }
 \arguments{
-\item{eemlist}{An \code{eemlist} object containing EEM data.}
+\item{eemlist}{An \code{eemlist} object.}
 
-\item{abslist}{An \code{abslist} object containing absorbance data.}
+\item{abslist}{An \code{abslist} object.}
 
 \item{cuvle}{Cuvette (path) length in cm.}
 
@@ -17,18 +17,18 @@ eemanalyzeR_indices(eemlist, abslist, cuvle = 1, qaqc_dir = .qaqc_dir())
 Default is a user-specific data directory \code{\link[rappdirs:user_data_dir]{rappdirs::user_data_dir()}}.}
 }
 \value{
-A list with two objects:
+A list with two elements:
 \itemize{
-\item \code{eem_index}: a \code{data.frame} of all the fluorescence indices
-\item \code{abs_index}: a \code{data.frame} of all the absorbance indices
+\item \strong{eem_index}: a \code{data.frame} of all fluorescence indices. Each row corresponds to a single index for a sample.
+\item \strong{abs_index}: a \code{data.frame} of all absorbance indices. Each row corresponds to a single index for a sample.
 }
 
-Each \code{data.frame} will have four columns:
+Each \code{data.frame} contains the following columns:
 \itemize{
-\item \code{sample_name}: the name of the sample
-\item \code{meta_name}: the name of the sample in the metadata if metadata has been added, otherwise the sample name again
-\item \code{index}: the name of the index being reported (see \href{../doc/eemanalyzeR-indices.html}{vignette} for more information)
-\item \code{value}: the value of the index
+\item \strong{sample_name}: name of the sample from the EEM or absorbance list
+\item \strong{meta_name}: sample name from metadata if provided; otherwise same as \code{sample_name}
+\item \strong{index}: name of the index
+\item \strong{value}: calculated value of the index
 }
 }
 \description{

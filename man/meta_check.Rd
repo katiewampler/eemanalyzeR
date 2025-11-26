@@ -7,15 +7,22 @@
 meta_check(meta)
 }
 \arguments{
-\item{meta}{a data.frame with metadata}
+\item{meta}{A \code{data.frame} containing sample metadata.}
 }
 \value{
-a \code{data.frame} (meta), with errors fixed
+A corrected metadata \code{data.frame} with formatting issues resolved where
+possible.
 }
 \description{
-Checks for missing information, ensures column formats are correct to ensure smooth processing
+Runs a series of checks to identify missing or malformed metadata and
+corrects issues when possible. Ensures that column formats conform to
+expectations.
 }
 \examples{
 metadata <- meta_read(system.file("extdata", package = "eemanalyzeR"))
 metadata <- eemanalyzeR:::meta_check(metadata)
+
+}
+\seealso{
+\code{\link[=meta_read]{meta_read()}}
 }

@@ -1,14 +1,23 @@
 #' Run tests to validate metadata
 #'
-#' Checks for missing information, ensures column formats are correct to ensure smooth processing
+#' Runs a series of checks to identify missing or malformed metadata and
+#' corrects issues when possible. Ensures that column formats conform to
+#' expectations.
 #'
-#' @param meta a data.frame with metadata
-#' @importFrom lubridate parse_date_time
-#' @returns a \code{data.frame} (meta), with errors fixed
+#' @param meta A `data.frame` containing sample metadata.
+#'
+#' @return
+#' A corrected metadata `data.frame` with formatting issues resolved where
+#' possible.
 #'
 #' @examples
 #' metadata <- meta_read(system.file("extdata", package = "eemanalyzeR"))
 #' metadata <- eemanalyzeR:::meta_check(metadata)
+#'
+#' @export
+#' @md
+#'
+#' @seealso [meta_read()]
 
 
 # TODO These might need to be more robust to weird inputs from the user. Worth checking

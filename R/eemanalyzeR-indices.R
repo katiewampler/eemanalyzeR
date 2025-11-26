@@ -4,8 +4,8 @@
 #' For detailed descriptions and references for indices, see the vignette
 #' [eemanalyzeR-indices](../doc/eemanalyzeR-indices.html).
 #'
-#' @param eemlist An `eemlist` object containing EEM data.
-#' @param abslist An `abslist` object containing absorbance data.
+#' @param eemlist An `eemlist` object.
+#' @param abslist An `abslist` object.
 #' @param cuvle Cuvette (path) length in cm.
 #' @param qaqc_dir File path to the QAQC files generated with [create_mdl()] and [create_std()].
 #' Default is a user-specific data directory [rappdirs::user_data_dir()].
@@ -14,15 +14,17 @@
 #' - If absorbance is not at a 1 nm interval, it will be interpolated using [zoo::na.approx()], which fills in missing values using linear interpolation.
 #' - If EEM data is not at a 1 nm interval, fluorescence will be interpolated using [pracma::interp2()].
 #'
-#' @return A list with two objects:
-#' - `eem_index`: a `data.frame` of all the fluorescence indices
-#' - `abs_index`: a `data.frame` of all the absorbance indices
+#' @return A list with two elements:
 #'
-#' Each `data.frame` will have four columns:
-#' - `sample_name`: the name of the sample
-#' - `meta_name`: the name of the sample in the metadata if metadata has been added, otherwise the sample name again
-#' - `index`: the name of the index being reported (see [vignette](../doc/eemanalyzeR-indices.html) for more information)
-#' - `value`: the value of the index
+#' - **eem_index**: a `data.frame` of all fluorescence indices. Each row corresponds to a single index for a sample.
+#' - **abs_index**: a `data.frame` of all absorbance indices. Each row corresponds to a single index for a sample.
+#'
+#' Each `data.frame` contains the following columns:
+#'
+#' - **sample_name**: name of the sample from the EEM or absorbance list
+#' - **meta_name**: sample name from metadata if provided; otherwise same as `sample_name`
+#' - **index**: name of the index
+#' - **value**: calculated value of the index
 #'
 #' @export
 #' @md
@@ -33,8 +35,11 @@
 #'   example_processed_abs,
 #'   qaqc_dir = system.file("extdata", package = "eemanalyzeR")
 #' )
-eemanalyzeR_indices <- function(eemlist, abslist, cuvle = 1, qaqc_dir = .qaqc_dir()) {
+eemanalyzeR_indices <- function(eemlist, abslist, cuvle = 1, qaqc_dir = NULL) {
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized")) == FALSE)
+
+  #specify qaqc dir if not specified
+  if(is.null(qaqc_dir)){qaqc_dir = .qaqc_dir()}
 
   # get mdl data
   mdls <- .check_mdl_file(qaqc_dir)

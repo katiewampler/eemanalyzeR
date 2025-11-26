@@ -7,29 +7,35 @@
 get_absorbance(abs, wl, cuvle = 1, suva = FALSE)
 }
 \arguments{
-\item{abs}{an object of class \code{abs} or \code{abslist}}
+\item{abs}{An `abs` or `abslist` object.}
 
-\item{wl}{the wavelength in (nm) to get the absorbance at}
+\item{wl}{A vector of absorbance wavelengths.}
 
-\item{cuvle}{cuvette (path) length in cm}
+\item{cuvle}{Cuvette (path) length in cm.}
 
-\item{suva}{logical, if TRUE, returns the specific absorbance}
+\item{suva}{If `TRUE`, returns specific absorbance (SUVA).}
 }
 \value{
-A vector of absorbance values. If a value cannot be extracted, DOC01 will be returned.
+A vector of absorbance (or specific absorbance) values.
+If a value cannot be extracted, "DOC01" is returned.
 }
 \description{
-Get the absorbance value with units of \ifelse{html}{\out{cm<sup>-1</sup>}}{\eqn{cm^-1}} at a specified wavelength with the option to
-calculate specific absorbance (SUVA) which has units of \ifelse{html}{\out{m<sup>-1</sup>}}{\eqn{m^-1}}.
-Note that metadata must be added in order for specific absorbance to be calculated using \link[eemanalyzeR]{add_metadata} or NA will be returned.
+Returns the absorbance value at a specified wavelength, reported in
+\ifelse{html}{\out{cm<sup>-1</sup>}}{\eqn{cm^-1}}.
+Optionally calculates specific absorbance (SUVA), reported in
+\ifelse{html}{\out{m<sup>-1</sup>}}{\eqn{m^-1}}.
 }
 \details{
+If metadata is not present, SUVA cannot be calculated and `NA` will be returned.
+To add metadata, use [add_metadata()].
+
 If the wavelength requested is not
-in the absorbance data, it will be interpolated first using \link[eemanalyzeR]{abs_interp}.
+in the absorbance data, it will be interpolated first using
+\link[eemanalyzeR]{abs_interp}.
 }
 \examples{
 abslist <- add_metadata(metadata, example_abs)
 
 a254 <- get_absorbance(abslist, 254)
-suva254 <- get_absorbance(abslist, 254, suva=TRUE)
+suva254 <- get_absorbance(abslist, 254, suva = TRUE)
 }

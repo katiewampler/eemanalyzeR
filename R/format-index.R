@@ -1,29 +1,39 @@
-#' Format Index and Flag Data
+#' Format index and flag data
 #'
-#' Takes index values, QA/QC flags, and dataset and combines and combines data and formats data for further processing.
-#' Will remove any values with a flag of MDL01 as these are below the detection limit and won't be reported.
+#' Combines index values, QA/QC flags, and sample metadata into a clean
+#' `data.frame` for further processing. Any values flagged as "MDL01"
+#' (below detection limit) are removed and not reported.
 #'
-#' @param x an \code{eemlist} or \code{abslist} object
-#' @param index a character, the name of the index
-#' @param value the index values, use \link[eemanalyzeR]{get_fluorescence} or \link[eemanalyzeR]{get_absorbance} to get index values
-#' @param flag the flag values, must be the same length as value, use \link[eemanalyzeR]{flag_missing} to generate flags
+#' @param x An `eemlist` or `abslist` object.
+#' @param index A character string giving the name of the index.
+#' @param value Index values. Use [get_fluorescence()] or
+#'   [get_absorbance()] to generate these values.
+#' @param flag Flag values, the same length as `value`.
 #'
-#' @returns a data.frame with four columns:
-#' #' \itemize{
-#'  \item sample_name: the name of the sample
-#'  \item meta_name: the name of the sample in the metadata if metadata has been added, otherwise the sample name again
-#'  \item index: the name of the index being reported
-#'  \item value: the value of the index
-#' }
+#' @return A data frame with four columns:
+#'
+#' - **sample_name**: the sample name
+#' - **meta_name**: the sample name in metadata (if provided),
+#'   otherwise repeats `sample_name`
+#' - **index**: the name of the index
+#' - **value**: the index value (with `MDL01` values removed)
+#'
 #' @export
+#' @md
 #'
 #' @examples
-#'  ex <- 240:260
-#'  em <- 300:320
-#'  vals <- get_fluorescence(example_eems, ex, em, stat = "max")
-#'  flags <- flag_missing(example_eems, ex=ex, em=em, all=FALSE)
-#'  index_formatted <- format_index(example_eems, "test_index", vals, flags)
-
+#' ex <- 240:260
+#' em <- 300:320
+#'
+#' vals <- get_fluorescence(example_eems, ex, em, stat = "max")
+#' flags <- flag_missing(example_eems, ex = ex, em = em, all = FALSE)
+#'
+#' index_formatted <- format_index(
+#'   x = example_eems,
+#'   index = "test_index",
+#'   value = vals,
+#'   flag = flags
+#' )
 format_index <- function(x, index, value, flag){
   stopifnot(length(value) == length(flag), .is_eemlist(x) | .is_abslist(x))
 

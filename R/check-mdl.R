@@ -6,15 +6,14 @@
 #'
 #' @md
 #'
-#' @param eem An object of class `eem` or `eemlist`.
-#' @param abs An object of class `abs` or `abslist`.
+#' @param eem An `eem` or `eemlist` object.
+#' @param abs An `abs` or `abslist` object.
 #' @param mdl An `eem` or `abs` object containing MDL data.
 #'   If no MDL is provided, `NA` is returned.
 #' @param ex A vector of excitation wavelengths.
 #' @param em A vector of emission wavelengths.
 #' @param wl A vector of absorbance wavelengths.
-#' @param vals If `TRUE`, returns a table of observed and MDL values,
-#'  otherwise returns an MDL flag.
+#' @param vals If `TRUE`, returns actual values, otherwise returns just flags.
 #'
 #' @name check_mdl
 #'
