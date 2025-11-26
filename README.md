@@ -45,28 +45,3 @@ processing function (run_eems), and the post-processing outputs and
 review process.
 
 <img src="man/figures/eemanalyzeR_workflow.png" alt="" width="650" />
-
-### Workflow draft
-
-Placeholder of function hierarchy
-
-Branch get-data contains the following steps to load the data and metadata, organize
-it into files, apply metadata to R objects, and validate blanks and check standards
-based on long term averages. 
-  - `meta_read` reads in the sample run metadata
-    - `meta_check` checks that the metadata contains necessary information.
-  - `dir_read` reads in all the raw data
-    - `eem_dir_read` -> returns an eems_list
-      - `eemR::eem_read`
-    - `abs_dir_read` -> returns an abs_list
-      - `abs_read`
-  - `add_metadata` adds info from metadata too eems_ and abs_ lists
-  - Blank checks - confirm which blank we want to use
-  - tea absorbance checks - confirm the tea standards have acceptable absorbance values
-  
-Data processing?
-  - EEMs plotting
-  - Calculating EEMs and ABS indices
-  - saving cleaned EEMS (where?)
-  
-    
