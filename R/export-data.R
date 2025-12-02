@@ -5,6 +5,7 @@
 #'
 #' @param eemlist An `eemlist` object.
 #' @param abslist An `abslist` object.
+#' #TODO Ryan doesn't understand the arguments filename and output_dir
 #' @param filename A character string. Creates a folder with this name
 #'   within `output_dir` and uses it for file names.
 #' @param output_dir Path to save the data. Defaults to a temporary directory
@@ -160,4 +161,5 @@ export_data <- function(eemlist, abslist, filename, output_dir = NULL,
     data <- get_sample_info(abslist, "data")
     write.csv(data, file.path(output_dir, filename, name), row.names = FALSE)
   }
+  # TODO add return exit status
 }

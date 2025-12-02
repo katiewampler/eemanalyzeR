@@ -6,107 +6,91 @@
 # if we get all the EEMs processing arguments in here, it leaves us able to handle
 # all ggplot arguments using (...)
 
-# -[x] input_dir
-# -[x] output_dir
-# -[x] metadata filename
-# -[] processing tracking file - THIS MIGHT NEED CHANGING
-# -[] noise value
-# -[] interactive environment? Maybe rlang takes care of this already
-# -[] processing information
-# -[]
-# -[]
-# -[]
-# -[]
 
-
-# TODO make getters and setters grouped by functions so we can find defaults
-# quickly
-
-# TODO Make one big function for user to get and set defaults for processing and
+# TODO Make function for user to get and set defaults for processing and
 # save in same place as MDLs on user's computer for consistency
 
+# Create an environment to store EEMS processing arguments and parameters
+.pkgenv <- rlang::new_environment(data = list(
+  # Optional abs_dir_read arguments with defaults matching abs_dir_read
+  abs_pattern = NULL,
+  abs_skip = "SEM|BEM|Waterfall",
+  abs_file_ext = "dat",
+  abs_recurse_read = FALSE,
 
-# Create an empty environment to store EEMS processing arguments and parameters
-.pkgenv <- new.env(parent = emptyenv())
+  # Optional eem_dir_read arguments with defaults matching eem_dir_read
+  eem_pattern = NULL,
+  eem_skip = "(?i)abs",
+  eem_file_ext = "dat",
+  eem_recurse_read = FALSE,
+  eem_import_func = "aqualog",
 
-# Path to Folder containing raw EEMs and absorbance data (input_dir) ----
-# Initialize
-# TODO Is there a saner default?
-.pkgenv$input_dir <- ""
-# Getter for input_dir
-get_input_dir <- function() {
-  .pkgenv$input_dir
-}
-# Setter for input_dir
-# Setter invisibly returns the old value so we can assign it to a variable if we
-# want to save it and reset to the old value later
-set_input_dir <- function(filepath) {
-  old <- .pkgenv$input_dir
-  .pkgenv$input_dir <- filepath
-  invisible(old)
-}
-
-# Path to Directory where processed data should be saved
-# Initialize
-# TODO Is there a saner default?
-.pkgenv$output_dir <- ""
-# Getter for input_dir
-get_output_dir <- function() {
-  .pkgenv$output_dir
-}
-# Setter for output_dir
-# Setter invisibly returns the old value so we can assign it to a variable if we
-# want to save it and reset to the old value later
-set_output_dir <- function(filepath) {
-  old <- .pkgenv$output_dir
-  .pkgenv$output_dir <- filepath
-  invisible(old)
-}
+  # Optional metadata arguments
+  meta_sheet = NULL, # only if excel
+  meta_validate = TRUE, # usually we want to validate the metadata
+  sample_type_regex = list(iblank_pattern = "BEM$|Waterfall ?Plot ?Blank", 
+                           sblank_pattern = "Blank|blank|BLK", 
+                           check_pattern = "Tea|tea"),
 
 
-# Metadata filename ----
-# Initialize
-.pkgenv$metadata_file <- ""
-# Getter for metadata_file
-get_metadata_file <- function() {
-  .pkgenv$metadata_file
-}
-# Setter for metadata_file
-set_metadata_file <- function(filename) {
-  old <- .pkgenv$metadata_file
-  .pkgenv$metadata_file <- filename
-  invisible(old)
-}
+  # TODO Optional Processing arguments
+  ex_clip = c(247, 450), 
+  em_clip = c(247, 600), 
+  type = c(TRUE, TRUE, TRUE, TRUE), 
+  width = c(16, 3, 30, 10), 
+  interpolate = c(TRUE, TRUE, FALSE, FALSE), 
+  method = 1, 
+  cores = 1, 
+  cuvle = 1,
 
-# Warnings list ----
-# A list of all warnings that have been thrown during data loading and processing
-.pkgenv$warnings_list <- list()
-# Append warnings to the warnings list
-append_warning <- function(condition_message) {
-  old <- .pkgenv$warnings_list
-  .pkgenv$warnings_list <- append(.pkgenv$warnings_list, condition_message)
-  invisible(old)
-}
+  # Saving indices arguments
+  index_method = "eemanalyzeR",
+  tolerance = 0.2,
+  return = "long", 
+  #cuvle = 1, 
+  qaqc_dir = NULL, 
+  arg_names = NULL,
+
+  # Saving the raw files arguments
+  filename = "default_filename.csv", # TODO is this needed?
+  output_dir = NULL,
+  csv = FALSE
+),
+  parent = rlang::empty_env()
+)
 
 
+# Create all the getters and setters for the package environment
+.pkgenv_vars <- names(.pkgenv)
 
+create_setter_function <- function(parameter) {
+  rlang::new_function(
+    rlang::exprs(value = ),
 
-
-# Processing Tracking File ----
-# Initialize the tracking file argument
-# TODO update process file to R object (not external connection)
-.pkgenv$process_file <- ""
-
-# Getter for the tracking file info
-get_process_file <- function() {
-  .pkgenv$process_file
+    rlang::expr({
+      old <- .pkgenv[[!!parameter]]
+      .pkgenv[[!!parameter]] <- value
+      invisible(old)  
+  }),
+rlang::caller_env()
+  )
 }
 
-#Setter
-set_process_file <- function(filepath) {
-  old <- .pkgenv$process_file
-  .pkgenv$process_file <- filepath
-  invisible(old)
+create_getter_function <- function(parameter) {
+  rlang::new_function(
+    NULL,
+    rlang::expr({
+      .pkgenv[[!!parameter]]
+  }),
+  rlang::caller_env()
+  )
 }
 
+# # Try to use lapply to create a bunch of getters and setters from the defaults
+setter_funs <- lapply(.pkgenv_vars, create_setter_function)
+names(setter_funs) <- paste0("set_",.pkgenv_vars)
+getter_funs <- lapply(.pkgenv_vars, create_getter_function)
+names(getter_funs) <- paste0("get_", .pkgenv_vars)
 
+rlang::env_bind(rlang::current_env(), !!!setter_funs)
+rlang::env_bind(rlang::current_env(), !!!getter_funs)

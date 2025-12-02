@@ -49,77 +49,19 @@ run_eems <- function(
 
   # REQUIRED ARGUMENTS (bare minimum)
   prjpath,
-  meta_name,
-
-  # Optional metadata arguments
-  meta_sheet = NULL, # only if excel
-  meta_validate = TRUE, # usually we want to validate the metadata
-  meta_blank_pattern = "BEM|BLK|blank",
-  meta_check_pattern = "tea",
-
-  # Optional abs_dir_read arguments
-  abs_pattern = NULL,
-  abs_skip = "SEM|BEM|Waterfall",
-  abs_file_ext = "dat",
-  abs_recurse_read = FALSE,
-
-
-  # Optional eem_dir_read arguments
-  eem_pattern = NULL,
-  eem_skip = "(?i)abs",
-  eem_file_ext = "dat",
-  eem_recurse_read = FALSE,
-  eem_import_func = "aqualog",
-
-
-  # TODO Optional Validation arguments
-  ## TEA Validation user input percent (how different from long term average? default 20%)
-
-  ## MDL (on blanks) checks:
-  ## Blanks must be raman normalized and processed. The function works the same
-  ## for EEMs and Absorbance (pointed at dir of blank files with metadata.
-  ## There is a pattern argument)
-
-  ## TODO - is there a non-visual blank check we can run? Since the MDL checks run
-  ## on raman normalized blanks
-
-
-
-
-
-  # TODO Optional Processing arguments
-
-
-
-
-
-
-  # TODO should we make the DOC file an object with these characteristics to pass?
-  # get_doc=F,
-  # doc_file,
-  # doc_sheet,
-  # doc_column=7,
-  # name_column=4,
-  # nskip=3,
-  # doc_delim="-",
-  # site_loc=c(1,7),
-
-  # TODO update processing session variables
-  process_file = TRUE,
+  output_dir,
+  filename,
+  #meta_name,
   interactive = TRUE,
-
-  # TODO what varargs should do we want
-  # check_pattern
-  # blank pattern
   ...
     )
 
 {
   # Apply the required arguments to the package environment
+  # Option two: load the package environment here?
 
   # Pull out the ... args
   varargs <- list(...)
-
   # TODO Apply the varargs to the package environment
 
 
@@ -134,85 +76,108 @@ run_eems <- function(
 
   # TODO adjust this for new R object tracking
   # create the tracking file path in environment - can I find this one?
-  set_tracking_file(file.path(prjpath,
-                              "5_Processed",
-                              "processing_tracking.txt"))
-
-  # Read the Metadata file
-  meta_file <- file.path(prjpath, meta_name)
-
-  metadata <- meta_read(meta_file,
-                        sheet = meta_sheet,
-                        validate_metadata = meta_validate)
-
+  
+  # Following processing steps follow the flowchart from github ----------
   # Read the Absorbance data
   abs <- abs_dir_read(prjpath,
-                      pattern = abs_pattern,
-                      skip = abs_skip,
-                      file_ext = abs_file_ext,
-                      recursive = abs_recurse_read)
+                      pattern = get_abs_pattern(),
+                      skip = get_abs_skip(),
+                      file_ext = get_abs_file_ext(),
+                      recursive = get_abs_recurse_read())
 
   # Read the EEMs data
   eems <- eem_dir_read(prjpath,
-                       pattern = eem_pattern,
-                       skip = eem_skip,
-                       file_ext = eem_file_ext,
-                       recursive = eem_recurse_read,
-                       import_function = eem_import_func)
+                       pattern = get_eem_pattern(),
+                       skip = get_eem_skip(),
+                       file_ext = get_eem_file_ext(),
+                       recursive = get_eem_recurse_read(),
+                       import_function = get_eem_import_func())
 
+  # TODO maybe meta_file should be default over prjpath
+  metadata <- meta_read(prjpath,
+                        sheet = get_meta_sheet(),
+                        validate_metadata = get_meta_validate())
   # Add metadata
   eems <- add_metadata(metadata,
                        eems,
-                       blank_pattern = meta_blank_pattern,
-                       check_pattern = meta_check_pattern)
+                       sample_type_regex = get_sample_type_regex())
   abs <- add_metadata(metadata,
                       abs,
-                      blank_pattern = meta_blank_pattern,
-                      check_pattern = meta_check_pattern)
-
+                      sample_type_regex = get_sample_type_regex())
+  
   # Add blanks
-  # TODO how/why do we handle the blanklist argument
-  # TODO figure out validation
+  blanklist <- unique(subset_type(eems, c('iblank')))
+  # TODO Need to change how we deal with blanks here. Problems:
+  # if you try to subset by iblank and sblank the blanklist won't match the eemlist
+  # if you try only to do the iblank then it doesn't allow you to pick the next sblank
+  # when the iblank is bad
+  # NOTE: rlang::is_interactive might not work great with box large file storage
   eems <- add_blanks(eems,
-                     blanklist = NULL,
-                     pattern = "BEM|Blank$")
-
-  # Made it here <-----------------------------------------------------------
-
-
-  ## Check that the instrument blank is ok before continuing with processing steps
-  Iblank <- X_blk[[1]]
-  Sblank <- X[sapply(X,
-                     \(x) grepl("^blk",
-                                x$sample,
-                                ignore.case = TRUE))]
-  class(Sblank) <- "eemlist"
-  blanks_eemlist <- eemR::eem_bind(Iblank, Sblank)
-
-  ## NOTE: rlang::is_interactive might not work great with box large file storage
-  if (rlang::is_interactive()) {
-    blank_validation <- validate_instrument_blank(blanks_eemlist) }
-  else {blank_validation <- FALSE}
+                     blanklist = blanklist, #TODO FIX
+                     validate = rlang::is_interactive())
+  
+  # Correct the eems and absorbance for dilutions
+  eems <- correct_dilution(eems)
+  processed_abs <-  correct_dilution(abs)
 
   # Process the EEMs
-
-  # Validation checks on Processed EEMs and Absorbance Data
+  # This involves a wrapper that calls:
+    # subtract_blank
+    # remove_scattering
+    # ife_correct
+    # raman_normalize
+    # correct_dilution
+    # eem_cut
+  
+  processed_eems <- process_eem(eems, processed_abs,
+                                # Default Argument values
+                                ex_clip = get_ex_clip(), 
+                                em_clip = get_em_clip(), 
+                                type = get_type(), 
+                                width = get_width(), 
+                                interpolate = get_interpolate(), 
+                                method = get_method(), 
+                                cores = get_cores(), 
+                                cuvle = get_cuvle())
+  
+  # TODOS below:
+  # Validation checks on Processed EEMs and Absorbance Data? ----
 
   ## Blank Checks
 
   ## Tea Checks
 
-  ## MDL Checks
-
-  # Report the data
+  
+  # Report the data ----
 
   # create plots
+  processed_eems_plots <- plot(processed_eems)
+  processed_abs_plots <- plot(processed_abs)
 
   # Save indices
+  indices <- get_indices(processed_eems,
+                         processed_abs,
+                         # Defaults for get_indices
+                         # TODO these into wrapper/pkg_env
+                         index_method = get_index_method(),
+                         tolerance = get_tolerance(),
+                         return = get_return(), 
+                         cuvle = get_cuvle(), 
+                         qaqc_dir = get_qaqc_dir(), 
+                         arg_names = get_arg_names())
 
   # Save Raw Files
+  save_raw_file_status <- export_data(processed_eems,
+                                      processed_abs,
+                                      filename,
+                                      output_dir = get_output_dir(), # TODO change to run_eems argument
+                                      meta = metadata, 
+                                      indices = indices, 
+                                      eem_plot = processed_eems_plots, 
+                                      abs_plot = processed_abs_plots, 
+                                      csv = csv)
+  # TODO check raw file status after added to export-data
 
   # Done!
-
 
 }

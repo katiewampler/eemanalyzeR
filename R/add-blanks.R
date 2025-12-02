@@ -79,7 +79,7 @@ add_blanks <- function(eemlist,
     class(eem) <- "eem"
     return(eem)
   }
-
+  
   if (continue) {
     if (length(blanklist) == 1) {
       # if only one eem, add to all eems
@@ -94,7 +94,6 @@ add_blanks <- function(eemlist,
         stop("more than one blank was provided, but blank names do not match samples")
       } else {
         blanklist <- blanklist[match(eem_names, blank_names)] # make sure blanklist is in same order as eemlist
-
         eemlist <- mapply(.add_x_blk, eemlist, blanklist, SIMPLIFY = F)
         class(eemlist) <- "eemlist"
       }

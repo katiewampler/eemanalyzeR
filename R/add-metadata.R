@@ -45,7 +45,7 @@
 add_metadata <- function(meta, x,
                          sample_type_regex = list(
                            iblank_pattern = "BEM$|Waterfall ?Plot ?Blank",
-                           sblank_pattern = "Blank|blank",
+                           sblank_pattern = "Blank|blank|BLK",
                            check_pattern = "Tea|tea"
                          )) {
   class_type <- class(x)

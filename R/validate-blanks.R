@@ -29,7 +29,8 @@ validate_blanks <- function(blanklist) {
   }
 
   # TODO - write validation data to tracking file
-
+  
+  Sys.sleep(1)
   # Prompt user for input to accept or decline the warning
   continue <- .yesorno(
     "After reviewing blank(s), do you want to continue processing samples",
