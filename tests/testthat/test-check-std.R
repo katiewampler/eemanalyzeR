@@ -43,7 +43,7 @@ test_that("tea checks work", {
     expect_equal(unique(check$meta_name), c("ExampleTeaStd", "example_tea2"))
 
   #check the readme
-    expect_true(grepl("0% (n=8) of the absorbance indices", readme$check_std, fixed=TRUE))
+    expect_true(grepl("0% (n=8) of the absorbance indices", get_readme()$check_std, fixed=TRUE))
 
 })
 

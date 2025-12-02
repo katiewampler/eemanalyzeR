@@ -4,10 +4,12 @@ test_that("data export works", {
     prjname <- basename(dir)
     dir <- dirname(dir)
 
-    #TODO: change to package environment
-    #remove readme if it exists because new dataset
-    if(exists("readme")){rm("readme", envir = .GlobalEnv)}
-
+  # Set readme back to NULL if it exists because new dataset
+  if (!is.null(get_readme())) {
+    set_readme(NULL)
+    message("NOTE: removed previous 'readme' file")
+  }
+  
   #do processing (manually so we can check the readme)
     eemlist <- add_metadata(metadata,example_eems)
     abslist <- add_metadata(metadata, example_abs)

@@ -48,8 +48,9 @@
   #deal with zero values
   if(z_min == 0){z_min_nice <- 0}
 
+  # Don't run the function if all data is zero
+  if(is.nan(z_max_nice)) return(NULL)
   #make labels
-  browser()
   labs <- data.frame(start=signif(seq(z_min_nice,z_max_nice, length.out = nbin+1), 2))
   labs$end <- c(labs$start[2:nrow(labs)], NA)
   labs$label <- paste(as.character(labs$start), as.character(labs$end), sep=" - ")

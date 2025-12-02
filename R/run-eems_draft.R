@@ -175,7 +175,7 @@ run_eems <- function(
                                       indices = indices, 
                                       eem_plot = processed_eems_plots, 
                                       abs_plot = processed_abs_plots, 
-                                      csv = csv)
+                                      csv = get_csv())
   # TODO check raw file status after added to export-data
 
   # Done!

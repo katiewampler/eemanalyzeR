@@ -54,7 +54,8 @@
   # Saving the raw files arguments
   filename = "default_filename.csv", # TODO is this needed?
   output_dir = NULL,
-  csv = FALSE
+  csv = FALSE,
+  readme = NULL
 ),
   parent = rlang::empty_env()
 )

@@ -80,7 +80,7 @@ export_data <- function(eemlist, abslist, filename, output_dir = NULL,
   }
 
   # TODO: replace with package envir
-  readme <- get("readme", envir = .GlobalEnv)
+  readme <- get_readme()
 
   # convert everything to list and save
   output <- list(

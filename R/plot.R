@@ -100,7 +100,6 @@ plot.eemlist <- function(x, nbin = 8, equal_scale = FALSE, pal = NULL, remove_lo
     z_min <- NULL
     scale <- FALSE
   }
-  browser()
   if (annotate) {
     plot <- lapply(x, .plot_eem, nbin, z_min, z_max, pal, remove_lower, title = TRUE, annotate = TRUE, index_method = index_method)
   } else {

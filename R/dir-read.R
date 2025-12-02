@@ -42,13 +42,11 @@ eem_dir_read <- function(input_dir,
                          import_function = "aqualog") {
   stopifnot(dir.exists(input_dir))
 
-  # TODO: change to package environment
-  # remove readme if it exists because new dataset
-  if (exists("readme")) {
-    rm("readme", envir = .GlobalEnv)
+  # Set readme back to NULL if it exists because new dataset
+  if (!is.null(get_readme())) {
+    set_readme(NULL)
     message("NOTE: removed previous 'readme' file")
   }
-
 
   warnings_list <- list() # Initialize an empty list to store warnings
 
@@ -124,15 +122,15 @@ abs_dir_read <- function(input_dir,
                          skip = "SEM|BEM|Waterfall",
                          file_ext = "dat",
                          recursive = FALSE) {
-  # TODO: change to package environment
-  # remove readme if it exists because new dataset
-  if (exists("readme")) {
-    rm("readme", envir = .GlobalEnv)
-    message("NOTE: removed previous 'readme' file")
-  }
 
   stopifnot(dir.exists(input_dir))
 
+  # Set readme back to NULL if it exists because new dataset
+  if (!is.null(get_readme())) {
+    set_readme(NULL)
+    message("NOTE: removed previous 'readme' file")
+  }
+  
   files <- list.files(input_dir, full.names = T, recursive = recursive)
 
   # only gets files with correct file extension and ones that optionally match the pattern
