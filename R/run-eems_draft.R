@@ -62,7 +62,8 @@ run_eems <- function(
 
   # Pull out the ... args
   varargs <- list(...)
-  # TODO Apply the varargs to the package environment
+  # TODO Apply the varargs to some environment (or data structure) only in the
+  # function scope so these aren't stored elsewhere.
 
 
 
@@ -74,17 +75,15 @@ run_eems <- function(
   # if ("noise_ratio" %in% names(varargs)) set_noise_ratio(varargs[['noise_ratio']])
   # cat("changed noise ratio to", get_noise_ratio(), "\n")
 
-  # TODO adjust this for new R object tracking
-  # create the tracking file path in environment - can I find this one?
-  
+
   # Following processing steps follow the flowchart from github ----------
+
   # Read the Absorbance data
   abs <- abs_dir_read(prjpath,
                       pattern = get_abs_pattern(),
                       skip = get_abs_skip(),
                       file_ext = get_abs_file_ext(),
                       recursive = get_abs_recurse_read())
-
   # Read the EEMs data
   eems <- eem_dir_read(prjpath,
                        pattern = get_eem_pattern(),
@@ -92,6 +91,7 @@ run_eems <- function(
                        file_ext = get_eem_file_ext(),
                        recursive = get_eem_recurse_read(),
                        import_function = get_eem_import_func())
+  # TODO don't warn user about overwriting a blank readme since eem_dir_read will overwrite tha abs_dir_read readme
 
   # TODO maybe meta_file should be default over prjpath
   metadata <- meta_read(prjpath,
@@ -104,7 +104,7 @@ run_eems <- function(
   abs <- add_metadata(metadata,
                       abs,
                       sample_type_regex = get_sample_type_regex())
-  
+
   # Add blanks
   blanklist <- unique(subset_type(eems, c('iblank')))
   # TODO Need to change how we deal with blanks here. Problems:
@@ -115,7 +115,7 @@ run_eems <- function(
   eems <- add_blanks(eems,
                      blanklist = blanklist, #TODO FIX
                      validate = rlang::is_interactive())
-  
+
   # Correct the eems and absorbance for dilutions
   eems <- correct_dilution(eems)
   processed_abs <-  correct_dilution(abs)
@@ -128,26 +128,24 @@ run_eems <- function(
     # raman_normalize
     # correct_dilution
     # eem_cut
-  
+
+  # TODO split out the process eems functions into its part
+  # TODO print a message that processing is happening for user
   processed_eems <- process_eem(eems, processed_abs,
                                 # Default Argument values
-                                ex_clip = get_ex_clip(), 
-                                em_clip = get_em_clip(), 
-                                type = get_type(), 
-                                width = get_width(), 
-                                interpolate = get_interpolate(), 
-                                method = get_method(), 
-                                cores = get_cores(), 
+                                ex_clip = get_ex_clip(),
+                                em_clip = get_em_clip(),
+                                type = get_type(),
+                                width = get_width(),
+                                interpolate = get_interpolate(),
+                                method = get_method(),
+                                cores = get_cores(),
                                 cuvle = get_cuvle())
-  
+
   # TODOS below:
+  # Dev examples code will create mdl files on my computer
   # Validation checks on Processed EEMs and Absorbance Data? ----
 
-  ## Blank Checks
-
-  ## Tea Checks
-
-  
   # Report the data ----
 
   # create plots
@@ -161,9 +159,9 @@ run_eems <- function(
                          # TODO these into wrapper/pkg_env
                          index_method = get_index_method(),
                          tolerance = get_tolerance(),
-                         return = get_return(), 
-                         cuvle = get_cuvle(), 
-                         qaqc_dir = get_qaqc_dir(), 
+                         return = get_return(),
+                         cuvle = get_cuvle(),
+                         qaqc_dir = get_qaqc_dir(),
                          arg_names = get_arg_names())
 
   # Save Raw Files
@@ -171,10 +169,10 @@ run_eems <- function(
                                       processed_abs,
                                       filename,
                                       output_dir = get_output_dir(), # TODO change to run_eems argument
-                                      meta = metadata, 
-                                      indices = indices, 
-                                      eem_plot = processed_eems_plots, 
-                                      abs_plot = processed_abs_plots, 
+                                      meta = metadata,
+                                      indices = indices,
+                                      eem_plot = processed_eems_plots,
+                                      abs_plot = processed_abs_plots,
                                       csv = get_csv())
   # TODO check raw file status after added to export-data
 
