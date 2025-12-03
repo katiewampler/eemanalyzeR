@@ -20,7 +20,7 @@
 #' @seealso [meta_read()]
 
 
-# TODO These might need to be more robust to weird inputs from the user. Worth checking
+# NOTE: These might need to be more robust to weird inputs from the user. Worth checking
 # a few more edge cases? Can do after we publish package
 meta_check <- function(meta){
   #check required columns are there

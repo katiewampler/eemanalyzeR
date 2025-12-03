@@ -1,5 +1,5 @@
 date <- "2025_11_14"
-dir <- "T:/Research/Wildfire_Water_Security/02_Nodes/01_Empirical/05_Projects/storm-chasing/Flat-Fire/Data/water-quality/DOM-EEMs"
+dir <- file.path(fs::path_home(), "Documents/Projects/WWS-Node1-SSFLAT-storm-sampling-flat-fire/Data/water-quality/DOM-EEMs")
 input_dir <- file.path(dir, date)
 
   abs <- abs_dir_read(input_dir)
@@ -21,7 +21,7 @@ input_dir <- file.path(dir, date)
   export_data(eems, abs, date, file.path(dir, date), meta, indices, eem_plots, abs_plots)
 
 
-  #code when blank needs to be replaced (incorporate into the valdidate blanks??)
+  #code when blank needs to be replaced (incorporate into the validate blanks??)
   abs <- add_metadata(meta, abs)
   eems <- add_metadata(meta, eems)
 
@@ -29,4 +29,6 @@ input_dir <- file.path(dir, date)
   blk <- subset_samples(eems, "meta_name","BLK2511121", keep=TRUE)
   eems <- subset_samples(eems, "meta_name","BLK2511121")
 
-  eems <- add_blanks(eems, validate = T)
+  eems <- add_blanks(eems, blk, validate = T)
+
+

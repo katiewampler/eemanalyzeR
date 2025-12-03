@@ -90,7 +90,12 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
     if(n_samps < 20){warning("Calculating average check standard based on less than 20 samples, average may be unreliable")}
 
   #add metadata
-    tea <- add_metadata(tea_meta, tea)
+    tea <- add_metadata(tea_meta, tea,
+                        sample_type_regex = list(
+      iblank_pattern = iblank,
+      sblank_pattern = "Blank|blank",
+      check_pattern = "Tea|tea"
+    ))
 
   if(type == "eem"){
     #check if the wavelengths are different across data if so, stop and provide info
