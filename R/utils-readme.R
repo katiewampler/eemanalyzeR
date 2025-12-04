@@ -1,3 +1,10 @@
+#' Wrapper to cleanly get the readme from the package enviornment
+#'
+#' @noRd
+#'
+#' @examples
+get_readme <- function(){get("readme", envir = .pkgenv)}
+
 #' Returns eemanalyzeR package version loaded
 #'
 #' @return text string with eemanalyzeR package version
