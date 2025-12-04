@@ -1,6 +1,8 @@
 #' @keywords internal
 "_PACKAGE"
 
+utils::globalVariables(c(".pkgenv", "value"))
+
 ## usethis namespace: start
 
 #' @importFrom dplyr across

@@ -100,3 +100,5 @@ names(getter_funs) <- paste0("get_", .pkgenv_vars)
 
 rlang::env_bind(rlang::current_env(), !!!setter_funs)
 rlang::env_bind(rlang::current_env(), !!!getter_funs)
+
+

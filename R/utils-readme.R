@@ -2,8 +2,9 @@
 #'
 #' @noRd
 #'
-#' @examples
-get_readme <- function(){get("readme", envir = .pkgenv)}
+get_readme <- function(){.pkgenv[["readme"]]}
+
+set_readme <-function(val){.pkgenv[["readme"]] <- val}
 
 #' Returns eemanalyzeR package version loaded
 #'

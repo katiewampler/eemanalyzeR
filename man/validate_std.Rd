@@ -20,7 +20,7 @@ A \code{ggplot} object showing the absorbance of the check standards,
 the long-term standard (dashed line), and the tolerance thresholds (gray ribbon).
 }
 \description{
-Visually inspect plots of the tea check standards compared to the long-term standard.
+Visually inspect plots of the tea check standard absorbance compared to the long-term standard.
 }
 \examples{
 abslist <- add_metadata(metadata, example_abs)

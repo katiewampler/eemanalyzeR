@@ -20,7 +20,6 @@ Donati
 Doran
 EEM
 EEM's
-EEMS
 EEMs
 Ecohydrology
 Emblanch
@@ -94,8 +93,8 @@ Polydispersity
 Pre
 QAQC
 Quinones
+README
 RSU
-RStudio
 Raman
 Relexans
 Reston
@@ -137,7 +136,6 @@ chromophoric
 csv
 cuvette
 diagenetically
-doi
 eem
 eemR
 eemlist
@@ -147,10 +145,8 @@ fi
 fluorometer
 frac
 fulvic
-ggeem
 ggplot
 hix
-https
 humic
 humification
 iblank
@@ -159,8 +155,6 @@ mdl
 mgL
 microbially
 microplastics
-nanometer
-nanometers
 nm
 ohno
 pA
@@ -171,11 +165,10 @@ pE
 pM
 pN
 pT
-pathlength
+parula
 photobleaching
 photolytic
 phytoplankton
-png
 polycondensed
 pre
 preprocess
@@ -185,9 +178,8 @@ rCM
 rCT
 raman
 rayleigh
+rds
 readme
-recurse
-sagepub
 sampleQ
 sblank
 snowmelt

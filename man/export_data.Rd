@@ -19,7 +19,8 @@ export_data(
 \arguments{
 \item{eemlist}{An \code{eemlist} object.}
 
-\item{abslist}{An \code{abslist} object.}
+\item{abslist}{An \code{abslist} object.
+#TODO Ryan doesn't understand the arguments filename and output_dir}
 
 \item{filename}{A character string. Creates a folder with this name
 within \code{output_dir} and uses it for file names.}
