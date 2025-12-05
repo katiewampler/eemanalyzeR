@@ -46,9 +46,10 @@
 #'   abs_plot = abs_plot,
 #'   meta = metadata
 #' )
-export_data <- function(eemlist, abslist, filename, output_dir = NULL,
+export_data <- function(eemlist, abslist, filename,
                         meta = NULL, indices = NULL,
-                        eem_plot = NULL, abs_plot = NULL, csv = FALSE) {
+                        eem_plot = NULL, abs_plot = NULL, csv = FALSE,
+                        output_dir = NULL) {
   stopifnot(
     .is_eemlist(eemlist), .is_abslist(abslist), is.data.frame(meta) | is.null(meta),
     is.list(indices) | is.null(indices), is.list(eem_plot) | is.null(eem_plot),

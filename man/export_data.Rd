@@ -8,12 +8,12 @@ export_data(
   eemlist,
   abslist,
   filename,
-  output_dir = NULL,
   meta = NULL,
   indices = NULL,
   eem_plot = NULL,
   abs_plot = NULL,
-  csv = FALSE
+  csv = FALSE,
+  output_dir = NULL
 )
 }
 \arguments{
@@ -23,9 +23,6 @@ export_data(
 #TODO Ryan doesn't understand the arguments filename and output_dir}
 
 \item{filename}{A character string, used for file names.}
-
-\item{output_dir}{Path to save the data. Defaults to a temporary directory
-if not specified.}
 
 \item{meta}{A \code{data.frame} containing sample metadata.}
 
@@ -40,6 +37,9 @@ If a plot is provided, it is saved as a \code{.png} file. See \code{\link[=plot.
 
 \item{csv}{Logical. If \code{TRUE}, processed EEM and absorbance data are
 written to \code{output_dir} as \code{.csv} files.}
+
+\item{output_dir}{Path to save the data. Defaults to a temporary directory
+if not specified.}
 }
 \value{
 A list of the processed data which is also saved to the output directory specified.

@@ -66,15 +66,9 @@ ife_correct <- function(eemlist, abslist, cuvle=1, arg_names=NULL){
 
 
     #modify eemR ife function to return warning and not print otherwise, also works now with modified eem format
-    ife_eemR <- function(eem, absorbance, cuvle = 1){
-      stopifnot(.is_eemlist(eem) | .is_eem(eem), is.data.frame(absorbance),
-                is.numeric(cuvle))
-      if (.is_eemlist(eem)) {
-        res <- lapply(eem, ife_eemR, absorbance = absorbance,
-                      cuvle = cuvle)
-        class(res) <- class(eem)
-        return(res)
-      }
+    ife_eemR <- purrr::quietly(function(eem, absorbance, cuvle = 1){
+      stopifnot(.is_eem(eem), is.data.frame(absorbance),is.numeric(cuvle))
+
       if (!any(names(absorbance) == "wavelength")) {
         stop("'wavelength' variable was not found in the data frame.",
              call. = FALSE)
@@ -115,8 +109,15 @@ ife_correct <- function(eemlist, abslist, cuvle=1, arg_names=NULL){
       eem$x <- eem$x * ife_correction_factor
       attr(eem, "is_ife_corrected") <- TRUE
       return(eem)
-    }
-    res <- ife_eemR(eemlist, abs_table, cuvle = cuvle)
+    })
+
+    res <- lapply(eemlist, ife_eemR, absorbance = abs_table,
+                    cuvle = cuvle)
+    res <- purrr::list_transpose(res)
+
+    abs_warn <- unlist(res$warnings)
+    res <- res$result
+    class(res) <- "eemlist"
 
     #put inner filter effect corrected eems back into augmented eemlist
     res <- lapply(1:length(eemlist), function(i){
@@ -136,8 +137,14 @@ ife_correct <- function(eemlist, abslist, cuvle=1, arg_names=NULL){
       .write_readme_line(paste0("   warning: removed the following wavelengths in EEM's to match absorbance data wavelengths\n\texcitation: ",
                          ex_range, "\n\temission: ", em_range, "\n"), "eem_ife_corrected", NULL, append=TRUE)
 
-      }
-    class(res) <- "eemlist"
+    }
 
+    if(length(abs_warn) > 0){
+      warn <- sapply(abs_warn, warning)
+      abs_warn <- gsub("\n", "\n   ", abs_warn)
+      .write_readme_line(paste(c("   warning: ", abs_warn), collapse=""), "eem_ife_corrected", NULL, append=TRUE)
+    }
+
+    class(res) <- "eemlist"
     return(res)
 }

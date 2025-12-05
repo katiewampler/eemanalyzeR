@@ -1,7 +1,6 @@
 ##
 #' Takes raw EEMs and absorbance data from Aqualog, returns cleaned, processed data
 #'
-#' @importFrom stringr str_replace_all
 #' @param prjpath path to folder with raw samples
 #' @param meta_name the file name of the metadata with the extension
 #' @param get_doc logical, if TRUE will use 'get_doc' function to match DOC data to metadata samples, only required if get_doc is TRUE

@@ -17,7 +17,11 @@ test_that("data export works", {
     expect_warning(eemlist <- process_eem(eemlist, abslist), "trimmed EEM's to match absorbance data wavelengths")
 
   #test exporting minimum
-    expect_message(export_data(eemlist, abslist,prjname, dir, metadata), "Data successfully exported to")
+    expect_message(export_data(eemlist=eemlist,
+                               abslist=abslist,
+                               filename=prjname,
+                               meta=metadata,
+                               output_dir = dir), "Data successfully exported to")
 
     files <- paste0(paste0(c("readme_", "processed_data_"), prjname), c(".txt", ".rds"))
     expect_true(all(file.exists(file.path(dir, files))))
@@ -33,7 +37,14 @@ test_that("data export works", {
     abs_plots <- plot(abslist)
     indices <- get_indices(eemlist, abslist, return="wide",  qaqc_dir = system.file("extdata", package = "eemanalyzeR"))
 
-    expect_message(export_data(eemlist, abslist,prjname, dir, metadata, indices, eem_plots, abs_plots), "Data successfully exported to")
+    expect_message(export_data(eemlist=eemlist,
+                               abslist=abslist,
+                               filename=prjname,
+                               meta=metadata,
+                               indices=indices,
+                               eem_plot = eem_plots,
+                               abs_plot = abs_plots,
+                               output_dir = dir), "Data successfully exported to")
 
     files <- paste0(c(paste0(c("absindices_", "fluorindices_", "summary_plots_", "absorbance_plot_"), prjname),
                       c("B1S1ExampleBlankSEM", "B1S2ExampleTeaStdSEM", "B1S3ExampleSampleSEM", "ManualExampleTeaWaterfallPlotSample")), c(rep(".csv",2), rep(".png", 6)))
@@ -51,7 +62,14 @@ test_that("data export works", {
 
 
   #check writing to csv
-    expect_message(export_data(eemlist, abslist, prjname, dir, metadata, indices, eem_plots, abs_plots, csv = TRUE), "Data successfully exported to")
+    expect_message(export_data(eemlist=eemlist,
+                               abslist=abslist,
+                               filename=prjname,
+                               meta=metadata,
+                               indices=indices,
+                               eem_plot = eem_plots,
+                               abs_plot = abs_plots,
+                               output_dir = dir, csv = TRUE), "Data successfully exported to")
     files <- c(paste0(c("B1S1ExampleBlankSEM", "B1S2ExampleTeaStdSEM", "B1S3ExampleSampleSEM", "ManualExampleTeaWaterfallPlotSample"), "_processed.csv"),
                 paste0("absorbance_processed_", prjname, ".csv"))
 

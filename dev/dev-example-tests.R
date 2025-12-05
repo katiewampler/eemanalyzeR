@@ -41,7 +41,7 @@
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      export_data(eems, abs, "devtest1", tempdir(),meta, indices, plots)
+      export_data(eems, abs, "devtest1", meta, indices, plots)
 
     #example 2: Hohner-Lab-2025-01-08
     input_dir <- here("dev/dev-examples/Hohner-Lab-2025-01-08")
@@ -68,7 +68,7 @@
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      export_data(eems, abs, "devtest2", tempdir(), meta, indices, plots)
+      export_data(eems, abs, "devtest2", meta, indices, plots)
 
   #example 3: PNNL-2022-11-10
     input_dir <- here("dev/dev-examples/PNNL-2022-11-10")
@@ -96,7 +96,7 @@
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      export_data(eems, abs, "devtest3", tempdir(), meta, indices, plots)
+      export_data(eems, abs, "devtest3", meta, indices, plots)
 
   #example 4: Vick-Majors-Lab-2024-11-04
     input_dir <- here("dev/dev-examples/Vick-Majors-Lab-2024-11-04")
@@ -122,7 +122,7 @@
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      export_data(eems, abs, "devtest4", tempdir(), meta, indices, plots)
+      export_data(eems, abs, "devtest4", meta, indices, plots)
 
   #example 5: Bladon-Lab-2024-08-19
     input_dir <- here("dev/dev-examples/Bladon-Lab-2024-08-19")
@@ -148,7 +148,7 @@
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      export_data(eems, abs, "devtest5", tempdir(), meta, indices, plots)
+      export_data(eems, abs, "devtest5", meta, indices, plots)
 
   #example 6: Bladon-Lab-2024-08-22
     input_dir <- here("dev/dev-examples/Bladon-Lab-2024-08-22")
@@ -174,7 +174,7 @@
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
 
-      export_data(eems, abs, "devtest6", tempdir(), meta, indices, plots)
+      export_data(eems, abs, "devtest6", meta, indices, plots)
 
   #example 7: Bladon-Lab-2024-11-01
     input_dir <- here("dev/dev-examples/Bladon-Lab-2024-11-01")
@@ -199,6 +199,6 @@
       indices <- get_indices(eems, abs, return="wide", index_method = "eemR")
       abs_index <- indices$abs_index
       eem_index <- indices$eem_index
-      export_data(eems, abs, "devtest7", tempdir(), meta, indices, plots)
+      export_data(eems, abs, "devtest7", meta, indices, plots)
 
 

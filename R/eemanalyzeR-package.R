@@ -23,6 +23,7 @@ utils::globalVariables(c(".pkgenv", "value"))
 #' @importFrom eemR eem_humification_index
 #' @importFrom eemR eem_inner_filter_effect
 #' @importFrom eemR eem_read
+#' @importFrom fs dir_tree
 #' @importFrom fs path_norm
 #' @importFrom ggplot2 aes
 #' @importFrom ggplot2 annotate
@@ -52,6 +53,7 @@ utils::globalVariables(c(".pkgenv", "value"))
 #' @importFrom pracma interp2
 #' @importFrom purrr discard
 #' @importFrom purrr list_transpose
+#' @importFrom purrr quietly
 #' @importFrom purrr reduce
 #' @importFrom rappdirs user_data_dir
 #' @importFrom rlang .data
@@ -71,6 +73,7 @@ utils::globalVariables(c(".pkgenv", "value"))
 #' @importFrom staRdom ggeem
 #' @importFrom stats na.omit
 #' @importFrom stats sd
+#' @importFrom stringr str_replace_all
 #' @importFrom stringr str_split
 #' @importFrom stringr str_split_i
 #' @importFrom tidyr pivot_longer
