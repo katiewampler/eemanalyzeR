@@ -7,7 +7,7 @@
 #'
 #' @details
 #' The defaults are stored in a YAML configuration file on the user data directory.
-#' This function will open up the file so the text can be editted. To save new defaults simply
+#' This function will open up the file so the text can be edited. To save new defaults simply
 #' edit the file and save it. The arguments in this file will overwrite the defaults
 #' set in the package.
 #'
@@ -54,7 +54,6 @@ load_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR"),
   config <- utils::modifyList(config, user_config)
   }
 
-  browser()
   if(env){list2env(config, envir = .pkgenv)}else{
     return(config)
 

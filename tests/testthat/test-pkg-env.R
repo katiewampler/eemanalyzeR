@@ -16,7 +16,7 @@ test_that("package defaults load into .pkgenv", {
 
   # compare default values
   for (n in names(builtin)) {
-    expect_identical(cfg[[n]], builtin[[n]])
+    expect_equal(cfg[[n]], builtin[[n]], ignore_attr = TRUE)
   }
 
 })

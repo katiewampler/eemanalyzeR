@@ -52,15 +52,12 @@
   index_method = "eemanalyzeR",
   tolerance = 0.2,
   return = "long",
-  #cuvle = 1,
   qaqc_dir = NULL,
-  arg_names = NULL,
 
   # Saving the raw files arguments
-  filename = "default_filename.csv", # TODO is this needed?
+  filename = "eemanalyzeR-output",
   output_dir = NULL,
-  csv = FALSE,
-  readme = NULL
+  csv = FALSE
 ),
   parent = rlang::empty_env()
 )

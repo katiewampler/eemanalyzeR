@@ -4,10 +4,7 @@
 \alias{load_config}
 \title{Load user defaults}
 \usage{
-load_config(
-  config_path = rappdirs::user_data_dir("eemanalyzeR"),
-  env = .pkgenv
-)
+load_config(config_path = rappdirs::user_data_dir("eemanalyzeR"), env = TRUE)
 }
 \arguments{
 \item{config_path}{path the YAML file with user default values}
@@ -16,4 +13,7 @@ load_config(
 }
 \description{
 Load user defaults
+}
+\examples{
+load_config()
 }
