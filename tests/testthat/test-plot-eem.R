@@ -21,6 +21,19 @@ test_that("plotting works", {
   plot <- plot(eem)
   expect_equal(plot$labels$fill, "Intensity (L mgC \U207B\U00B9)")
 
+  #check that error is given if eem is all 0 or NA
+    eem_zero <- eem
+    eem_zero$x[eem_zero$x != 0] <- 0
+    expect_true(is.null(plot(eem_zero)))
+
+    eemlist <- list(eem_zero)
+    class(eemlist) <- "eemlist"
+    plot(eemlist)
+
+    eem_zero <- eem
+    eem_zero$x[eem_zero$x != 0] <- NA
+    expect_true(is.null(plot(eem_zero)))
+
 })
 
 

@@ -23,6 +23,7 @@ utils::globalVariables(c(".pkgenv", "value"))
 #' @importFrom eemR eem_humification_index
 #' @importFrom eemR eem_inner_filter_effect
 #' @importFrom eemR eem_read
+#' @importFrom fs path_norm
 #' @importFrom ggplot2 aes
 #' @importFrom ggplot2 annotate
 #' @importFrom ggplot2 coord_cartesian

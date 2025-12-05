@@ -22,8 +22,7 @@ export_data(
 \item{abslist}{An \code{abslist} object.
 #TODO Ryan doesn't understand the arguments filename and output_dir}
 
-\item{filename}{A character string. Creates a folder with this name
-within \code{output_dir} and uses it for file names.}
+\item{filename}{A character string, used for file names.}
 
 \item{output_dir}{Path to save the data. Defaults to a temporary directory
 if not specified.}

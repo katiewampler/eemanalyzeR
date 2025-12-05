@@ -6,8 +6,7 @@
 #' @param eemlist An `eemlist` object.
 #' @param abslist An `abslist` object.
 #' #TODO Ryan doesn't understand the arguments filename and output_dir
-#' @param filename A character string. Creates a folder with this name
-#'   within `output_dir` and uses it for file names.
+#' @param filename A character string, used for file names.
 #' @param output_dir Path to save the data. Defaults to a temporary directory
 #'   if not specified.
 #' @param meta A `data.frame` containing sample metadata.
@@ -73,13 +72,12 @@ export_data <- function(eemlist, abslist, filename, output_dir = NULL,
 
   # if no output_dir is specified get the temp directory
   if (is.null(output_dir)) {
-    output_dir <- tempdir()
+    output_dir <- file.path(tempdir(), filename)
   }
-  if (!dir.exists(file.path(output_dir, filename))) {
-    dir.create(file.path(output_dir, filename))
+  if (!dir.exists(file.path(output_dir))) {
+    dir.create(file.path(output_dir))
   }
 
-  # TODO: replace with package envir
   readme <- get_readme()
 
   # convert everything to list and save
@@ -90,10 +88,10 @@ export_data <- function(eemlist, abslist, filename, output_dir = NULL,
     abs_plot = abs_plot
   )
 
-  saveRDS(output, file.path(output_dir, filename, paste0("processed_data_", filename, ".rds")))
+  saveRDS(output, file.path(output_dir, paste0("processed_data_", filename, ".rds")))
 
   # save readme as text file (add initial information about package to it)
-  write.table(capture.output(print_readme()), file.path(output_dir, filename, paste0("readme_", filename, ".txt")),
+  write.table(capture.output(print_readme()), file.path(output_dir, paste0("readme_", filename, ".txt")),
     quote = FALSE, col.names = FALSE, row.names = FALSE
   )
 
@@ -106,7 +104,7 @@ export_data <- function(eemlist, abslist, filename, output_dir = NULL,
     summary <- ggpubr::ggarrange(plotlist = eem_plot, nrow = height, ncol = width)
     ggplot2::ggsave(
       filename = paste0("summary_plots_", filename, ".png"),
-      path = file.path(output_dir, filename),
+      path = output_dir,
       plot = summary,
       units = "cm",
       height = height * 13,
@@ -118,7 +116,7 @@ export_data <- function(eemlist, abslist, filename, output_dir = NULL,
       file <- paste0(name, ".png")
       ggplot2::ggsave(
         filename = file,
-        path = file.path(output_dir, filename),
+        path = output_dir,
         plot = eem_plot[[name]],
         units = "cm",
         height = 13,
@@ -131,7 +129,7 @@ export_data <- function(eemlist, abslist, filename, output_dir = NULL,
   if (!is.null(abs_plot)) {
     ggplot2::ggsave(
       filename = paste0("absorbance_plot_", filename, ".png"),
-      path = file.path(output_dir, filename),
+      path = output_dir,
       plot = abs_plot,
       units = "cm",
       height = 13,
@@ -141,10 +139,10 @@ export_data <- function(eemlist, abslist, filename, output_dir = NULL,
   }
   # save indices as .csv
   if (!is.null(indices)) {
-    write.csv(indices$abs_index, file.path(output_dir, filename, paste0("absindices_", filename, ".csv")),
+    write.csv(indices$abs_index, file.path(output_dir, paste0("absindices_", filename, ".csv")),
       row.names = FALSE, quote = FALSE
     )
-    write.csv(indices$eem_index, file.path(output_dir, filename, paste0("fluorindices_", filename, ".csv")),
+    write.csv(indices$eem_index, file.path(output_dir, paste0("fluorindices_", filename, ".csv")),
       row.names = FALSE, quote = FALSE
     )
   }
@@ -154,12 +152,13 @@ export_data <- function(eemlist, abslist, filename, output_dir = NULL,
     lapply(eemlist, function(x) {
       name <- paste0(x$sample, "_processed.csv")
       data <- get_sample_info(x, "x")
-      write.csv(data, file.path(output_dir, filename, name), row.names = TRUE)
+      write.csv(data, file.path(output_dir, name), row.names = TRUE)
     })
 
     name <- paste0("absorbance_processed_", filename, ".csv")
     data <- get_sample_info(abslist, "data")
-    write.csv(data, file.path(output_dir, filename, name), row.names = FALSE)
+    write.csv(data, file.path(output_dir, name), row.names = FALSE)
   }
-  # TODO add return exit status
+
+  message("Data successfully exported to: ", fs::path_norm(output_dir))
 }

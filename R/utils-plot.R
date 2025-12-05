@@ -49,6 +49,7 @@
 
   # Don't run the function if all data is zero
   if(is.nan(z_max_nice)) return(NULL)
+
   #make labels
   labs <- data.frame(start=signif(seq(z_min_nice,z_max_nice, length.out = nbin+1), 2))
   labs$end <- c(labs$start[2:nrow(labs)], NA)

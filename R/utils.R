@@ -51,7 +51,7 @@
 #' Just a nicer way to get the directory where the QAQC files should live
 #' @noRd
 .qaqc_dir <- function(){
-  return(file.path(rappdirs::user_data_dir(appname = "eemanalyzeR"), "qaqc-stds"))
+  return(file.path(fs::path_norm(rappdirs::user_data_dir(appname = "eemanalyzeR")), "qaqc-stds"))
 }
 
 #' Look for MDL files
