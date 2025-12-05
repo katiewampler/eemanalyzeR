@@ -98,4 +98,33 @@
       expect_error(add_blanks(eemlist, validate = FALSE), "more than one blank was provided, but blank names do not match samples")
     })
 
+#using a sample blank works
+    test_that("replacing the blank works",{
+      eemlist <- add_metadata(metadata, example_eems)
+
+      #create two blanks for checking
+        eemlist[9:10] <- eemlist[1:2]
+        eemlist[[9]]$meta_name <- eemlist[[10]]$meta_name <- "ExampleBlank2"
+
+      #not accept all
+        with_mocked_bindings(
+          validate_blanks = function(eemlist) FALSE,
+          {
+            expect_error(add_blanks(eemlist), "Processing stopped by user")
+          })
+
+      #pretend to skip the first and accept the second
+        with_mocked_bindings(
+          validate_blanks = function(eemlist) if(all(sapply(eemlist, attr, "sample_type") == "iblank")){FALSE}else{TRUE},
+          {
+            #fails because integration times aren't the same
+            expect_error(add_blanks(eemlist), "integration times are not the same between the sample and the blank")
+
+            eemlist[7:8] <- NULL
+            list_with_blanks <- add_blanks(eemlist)
+          })
+
+       expect_equal(unique(get_sample_info(list_with_blanks, "blk_file")), "data-raw/B1S1ExampleBlankSEM.dat")
+       expect_true(grepl("Instrument blank was replaced with analytical blank: ExampleBlank", get_readme()$eem_add_blank))
+    })
 

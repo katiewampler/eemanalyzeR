@@ -34,6 +34,11 @@ Because of this, samples must already have metadata assigned using
 If a \code{blanklist} is not provided, one is automatically generated from the \code{eemlist} attribute
 "sample_type", using the samples marked as "iblank".
 }
+\note{
+If the instrument blank is not accepted, the function will attempt to use an
+analytical blank instead (a sample type 'sblank'). If this blank is used instead,
+the blank will be removed from the sample set and a note will be written to the readme.
+}
 \examples{
 eemlist <- add_metadata(metadata, example_eems)
 augment_eemlist <- add_blanks(eemlist, validate = FALSE)

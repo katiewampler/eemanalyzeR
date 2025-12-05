@@ -17,9 +17,9 @@ validate_blanks <- function(blanklist) {
 
   # Plot the instrument blank
   if (rlang::is_interactive()) {
-    blank_plot1 <- ggpubr::ggarrange(plotlist = plot(unique(blanklist)), common.legend = T, legend = "right")
+    blank_plot1 <- ggpubr::ggarrange(plotlist = plot(unique(blanklist), title="sample"), common.legend = T, legend = "right")
     blank_plot2 <- ggpubr::ggarrange(
-      plotlist = plot(remove_scattering(unique(blanklist), type = c(T, T, T, T), interpolate = c(F, F, F, F))),
+      plotlist = plot(remove_scattering(unique(blanklist, , title="sample"), type = c(T, T, T, T), interpolate = c(F, F, F, F))),
       common.legend = T, legend = "right"
     )
 
@@ -29,13 +29,13 @@ validate_blanks <- function(blanklist) {
   }
 
   # TODO - write validation data to tracking file
-  
+
   Sys.sleep(1)
   # Prompt user for input to accept or decline the warning
   continue <- .yesorno(
     "After reviewing blank(s), do you want to continue processing samples",
-    "Instrument blank accepted and added to samples",
-    "Instrument blank not accepted - Exiting"
+    "Blank accepted and added to samples",
+    "Blank not accepted"
   )
 
   return(continue)

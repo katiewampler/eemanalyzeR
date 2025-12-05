@@ -47,14 +47,17 @@ subset_type <- function(x,
 
   index <- x_type %in% type
 
-  if (all(!index)) {
-    return(NULL)
-  }
 
   if (negate) {
     sub_x <- x[!index]
+    if (all(index)) {
+      return(NULL)
+    }
   } else {
     sub_x <- x[index]
+    if (all(!index)) {
+      return(NULL)
+    }
   }
 
   return(sub_x)

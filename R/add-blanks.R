@@ -14,6 +14,11 @@
 #' If a `blanklist` is not provided, one is automatically generated from the `eemlist` attribute
 #' "sample_type", using the samples marked as "iblank".
 #'
+#' @note
+#' If the instrument blank is not accepted, the function will attempt to use an
+#' analytical blank instead (a sample type 'sblank'). If this blank is used instead,
+#' the blank will be removed from the sample set and a note will be written to the readme.
+#'
 #' @param eemlist An `eemlist` object.
 #' @param blanklist Optional. An `eem` or `eemlist` containing the blank EEM(s).
 #' @param validate If `TRUE`, the function prints the blanks and requests user validation,
@@ -67,10 +72,41 @@ add_blanks <- function(eemlist,
     continue <- TRUE
   }
 
+
+  # if continue is false, try again
+  if(!continue){
+    sblank <-  subset_type(eemlist, type = "sblank")
+
+    #try to validate using sblanks
+    while(length(sblank) > 0 & !continue){
+      continue <- validate_blanks(sblank[1])
+
+      if(continue){
+        #edit eemlist and blanklist
+          eemlist <- subset_type(eemlist, type="iblank", negate=TRUE)
+          eemlist <- subset_samples(eemlist, "meta_name", sblank[[1]]$meta_name, verbose = FALSE)
+
+          blanklist <- sblank[1]
+
+        #write to readme
+          .write_readme_line(paste0("Instrument blank was replaced with analytical blank: ", sblank[[1]]$meta_name), "eem_add_blank", NULL)
+
+      }else{
+        #remove non accepted blank and try again
+        sblank[[1]] <- NULL
+      }
+    }
+  }
+
   # makes sure blank has same wavelengths as sample then adds into eem as x_blK
   .add_x_blk <- function(eem, eem_blk) {
     if (!identical(eem$ex, eem_blk$ex) | !identical(eem$em, eem_blk$em)) {
       stop("excitation and/or emission wavelengths as mismatched between sample and blank")
+    }
+
+    if(.meta_added(eem) & .meta_added(eem_blk) && eem$integration_time_s != eem_blk$integration_time_s){
+      stop("integration times are not the same between the sample and the blank")
+
     }
     eem$blk_file <- eem_blk$file
     eem$blk_x <- eem_blk$x
@@ -79,7 +115,7 @@ add_blanks <- function(eemlist,
     class(eem) <- "eem"
     return(eem)
   }
-  
+
   if (continue) {
     if (length(blanklist) == 1) {
       # if only one eem, add to all eems

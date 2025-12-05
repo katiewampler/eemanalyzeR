@@ -27,6 +27,7 @@ utils::globalVariables(c(".pkgenv", "value"))
 #' @importFrom ggplot2 annotate
 #' @importFrom ggplot2 coord_cartesian
 #' @importFrom ggplot2 element_text
+#' @importFrom ggplot2 facet_wrap
 #' @importFrom ggplot2 geom_contour
 #' @importFrom ggplot2 geom_contour_filled
 #' @importFrom ggplot2 geom_line

@@ -10,6 +10,7 @@
 #' @param pal Color palette for the fill scale. Defaults to [pals::parula()].
 #'   If fewer colors are provided than required, [grDevices::colorRampPalette()]
 #'   is used to fill in colors.
+#' @param title Either "none", "meta_name", or "sample" which indicates what to use for the plot title.
 #' @param remove_lower Logical. If `TRUE`, sets values below the first-order
 #'   Rayleigh line to `NA`, which can reduce artifacts affecting the color scale.
 #' @param annotate Logical. If `TRUE`, displays index regions on EEM plots.
@@ -71,11 +72,15 @@
 #' @method plot eem
 #' @name plot
 
-plot.eem <- function(x, nbin = 8, equal_scale = FALSE, pal = NULL, remove_lower = FALSE,
+plot.eem <- function(x, nbin = 8, equal_scale = FALSE, pal = NULL,
+                     title = "none", remove_lower = FALSE,
                      annotate = FALSE, index_method = "eemanalyzeR", ...) {
   stopifnot(.is_eem(x))
 
-  plot <- .plot_eem(x, nbin = nbin, z_min = NULL, z_max = NULL, pal = pal, lower = remove_lower, annotate = annotate, index_method = index_method)
+  plot <- .plot_eem(x, nbin = nbin, z_min = NULL, z_max = NULL, pal = pal,
+                    title=title,
+                    lower = remove_lower, annotate = annotate,
+                    index_method = index_method)
   return(plot)
 }
 
@@ -83,7 +88,7 @@ plot.eem <- function(x, nbin = 8, equal_scale = FALSE, pal = NULL, remove_lower 
 #' @export
 #' @name plot
 plot.eemlist <- function(x, nbin = 8, equal_scale = FALSE, pal = NULL, remove_lower = FALSE,
-                         annotate = FALSE, index_method = "eemanalyzeR", ...) {
+                         title = "none", annotate = FALSE, index_method = "eemanalyzeR", ...) {
   stopifnot(.is_eemlist(x))
 
   # if equal_scale == TRUE, get limits
@@ -101,9 +106,9 @@ plot.eemlist <- function(x, nbin = 8, equal_scale = FALSE, pal = NULL, remove_lo
     scale <- FALSE
   }
   if (annotate) {
-    plot <- lapply(x, .plot_eem, nbin, z_min, z_max, pal, remove_lower, title = TRUE, annotate = TRUE, index_method = index_method)
+    plot <- lapply(x, .plot_eem, nbin, z_min, z_max, pal, remove_lower, title = title, annotate = TRUE, index_method = index_method)
   } else {
-    plot <- lapply(x, .plot_eem, nbin, z_min, z_max, pal, remove_lower, title = TRUE)
+    plot <- lapply(x, .plot_eem, nbin, z_min, z_max, pal, remove_lower, title = title)
   }
   names(plot) <- get_sample_info(x, "sample")
 
@@ -155,9 +160,9 @@ plot.abslist <- function(x, pal = NULL, ...) {
   abs <- as.data.frame(abs)
   abs <- abs %>% pivot_longer(-"wavelength", names_to = "sample", values_to = "abs")
 
-  plot <- ggplot2::ggplot(data = abs, aes(x = .data$wavelength, y = .data$abs, color = .data$sample)) +
+  plot <- ggplot2::ggplot(data = abs, aes(x = .data$wavelength, y = .data$abs)) +
     ggplot2::geom_line(linewidth = 1) +
-    labs(x = "Wavelength (nm)", y = "Absorbance (AU)", color = "Sample")
+    labs(x = "Wavelength (nm)", y = "Absorbance (AU)") + facet_wrap(~sample)
 
   # add custom colors if specified
   if (!is.null(pal)) {
