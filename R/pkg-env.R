@@ -133,3 +133,6 @@ reset_eemanalyzer_settings <- function(env = .pkgenv) {
   !!!eemanalyzer_processing_defaults)
 }
 
+# TODO Create some function to validate the settings? Like which ones are numeric, logical, lists, etc?
+# So if the user messes something up the error isn't thrown by the function that calls it but is caught e
+# early
