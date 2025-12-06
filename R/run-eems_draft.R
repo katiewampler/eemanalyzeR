@@ -159,8 +159,7 @@ run_eems <- function(
                          tolerance = get_tolerance(.fnenv),
                          return = get_return(.fnenv),
                          cuvle = get_cuvle(.fnenv),
-                         qaqc_dir = get_qaqc_dir(.fnenv),
-                         arg_names = get_arg_names(.fnenv))
+                         qaqc_dir = get_qaqc_dir(.fnenv))
 
   # Save Raw Files
   save_raw_file_status <- export_data(processed_eems,

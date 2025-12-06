@@ -56,15 +56,12 @@ eemanalyzer_processing_defaults <- list(
   tolerance = 0.2,
   return = "long",
   qaqc_dir = NULL,
-  arg_names = NULL,
 
   # Saving the raw files arguments
-  filename = "default_filename.csv", # TODO is this needed?
+  filename = "eemanalyzeR-output",
   output_dir = NULL,
-  csv = FALSE,
-  readme = NULL
+  csv = FALSE
 )
-
 # Create an environment to store EEMS processing arguments and parameters
 .pkgenv <- rlang::new_environment(data = eemanalyzer_processing_defaults,
   parent = rlang::empty_env()
@@ -136,4 +133,3 @@ reset_eemanalyzer_settings <- function(env = .pkgenv) {
   !!!eemanalyzer_processing_defaults)
 }
 
-# TODO load_user_processing_defaults function that pulls defaults from file

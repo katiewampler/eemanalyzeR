@@ -80,10 +80,12 @@ utils::globalVariables(c(".pkgenv", "value"))
 #' @importFrom tidyr pivot_wider
 #' @importFrom tools file_ext
 #' @importFrom utils capture.output
+#' @importFrom utils file.edit
 #' @importFrom utils file_test
 #' @importFrom utils read.csv
 #' @importFrom utils write.csv
 #' @importFrom utils write.table
+#' @importFrom yaml read_yaml
 #' @importFrom zoo na.approx
 #' @importFrom zoo na.spline
 ## usethis namespace: end
