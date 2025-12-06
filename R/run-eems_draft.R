@@ -59,50 +59,49 @@ run_eems <- function(
   # Apply the required arguments to the package environment
   # Option two: load the package environment here?
 
-  # Pull out the ... args
-  varargs <- list(...)
   # TODO Apply the varargs to some environment (or data structure) only in the
   # function scope so these aren't stored elsewhere.
+  varargs <- rlang::list2(...)
+  # Pick out the varargs that match the package env names
+  parameters_to_modify <- varargs[which(names(varargs) %in% names(.pkgenv))]
 
+  # Clone the package environment (does this work?)
+  .fnenv <- rlang::env_clone(.pkgenv, parent = rlang::caller_env())
 
+  # Modify the function environment processing parameters with any from varargs
+  modify_eemanalyzer_settings(env =.fnenv, !!!parameters_to_modify)
 
   # Decide whether the script is running in interactive or batch mode
   rlang::local_interactive(value = interactive)
-
-  # TODO decide if we want to do this
-  # Set the processing environment noise_ratio
-  # if ("noise_ratio" %in% names(varargs)) set_noise_ratio(varargs[['noise_ratio']])
-  # cat("changed noise ratio to", get_noise_ratio(), "\n")
-
 
   # Following processing steps follow the flowchart from github ----------
 
   # Read the Absorbance data
   abs <- abs_dir_read(prjpath,
-                      pattern = get_abs_pattern(),
-                      skip = get_abs_skip(),
-                      file_ext = get_abs_file_ext(),
-                      recursive = get_abs_recurse_read())
+                      pattern = get_abs_pattern(.fnenv),
+                      skip = get_abs_skip(.fnenv),
+                      file_ext = get_abs_file_ext(.fnenv),
+                      recursive = get_abs_recurse_read(.fnenv))
   # Read the EEMs data
   eems <- eem_dir_read(prjpath,
-                       pattern = get_eem_pattern(),
-                       skip = get_eem_skip(),
-                       file_ext = get_eem_file_ext(),
-                       recursive = get_eem_recurse_read(),
-                       import_function = get_eem_import_func())
+                       pattern = get_eem_pattern(.fnenv),
+                       skip = get_eem_skip(.fnenv),
+                       file_ext = get_eem_file_ext(.fnenv),
+                       recursive = get_eem_recurse_read(.fnenv),
+                       import_function = get_eem_import_func(.fnenv))
   # TODO don't warn user about overwriting a blank readme since eem_dir_read will overwrite tha abs_dir_read readme
 
   # TODO maybe meta_file should be default over prjpath
   metadata <- meta_read(prjpath,
-                        sheet = get_meta_sheet(),
-                        validate_metadata = get_meta_validate())
+                        sheet = get_meta_sheet(.fnenv),
+                        validate_metadata = get_meta_validate(.fnenv))
   # Add metadata
   eems <- add_metadata(metadata,
                        eems,
-                       sample_type_regex = get_sample_type_regex())
+                       sample_type_regex = get_sample_type_regex(.fnenv))
   abs <- add_metadata(metadata,
                       abs,
-                      sample_type_regex = get_sample_type_regex())
+                      sample_type_regex = get_sample_type_regex(.fnenv))
 
   # Add blanks
   blanklist <- unique(subset_type(eems, c('iblank')))
@@ -132,14 +131,14 @@ run_eems <- function(
   # TODO print a message that processing is happening for user
   processed_eems <- process_eem(eems, processed_abs,
                                 # Default Argument values
-                                ex_clip = get_ex_clip(),
-                                em_clip = get_em_clip(),
-                                type = get_type(),
-                                width = get_width(),
-                                interpolate = get_interpolate(),
-                                method = get_method(),
-                                cores = get_cores(),
-                                cuvle = get_cuvle())
+                                ex_clip = get_ex_clip(.fnenv),
+                                em_clip = get_em_clip(.fnenv),
+                                type = get_type(.fnenv),
+                                width = get_width(.fnenv),
+                                interpolate = get_interpolate(.fnenv),
+                                method = get_method(.fnenv),
+                                cores = get_cores(.fnenv),
+                                cuvle = get_cuvle(.fnenv))
 
   # TODOS below:
   # Dev examples code will create mdl files on my computer
@@ -156,23 +155,23 @@ run_eems <- function(
                          processed_abs,
                          # Defaults for get_indices
                          # TODO these into wrapper/pkg_env
-                         index_method = get_index_method(),
-                         tolerance = get_tolerance(),
-                         return = get_return(),
-                         cuvle = get_cuvle(),
-                         qaqc_dir = get_qaqc_dir(),
-                         arg_names = get_arg_names())
+                         index_method = get_index_method(.fnenv),
+                         tolerance = get_tolerance(.fnenv),
+                         return = get_return(.fnenv),
+                         cuvle = get_cuvle(.fnenv),
+                         qaqc_dir = get_qaqc_dir(.fnenv),
+                         arg_names = get_arg_names(.fnenv))
 
   # Save Raw Files
   save_raw_file_status <- export_data(processed_eems,
                                       processed_abs,
                                       filename,
-                                      output_dir = get_output_dir(), # TODO change to run_eems argument
+                                      output_dir = get_output_dir(.fnenv), # TODO change to run_eems argument
                                       meta = metadata,
                                       indices = indices,
                                       eem_plot = processed_eems_plots,
                                       abs_plot = processed_abs_plots,
-                                      csv = get_csv())
+                                      csv = get_csv(.fnenv))
   # TODO check raw file status after added to export-data
 
   # Done!

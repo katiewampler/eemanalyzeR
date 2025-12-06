@@ -15,8 +15,11 @@
 # TODO Make function for user to get and set defaults for processing and
 # save in same place as MDLs on user's computer for consistency
 
-# Create an environment to store EEMS processing arguments and parameters
-.pkgenv <- rlang::new_environment(data = list(
+# Package processing defaults list
+# TODO maybe this should be in a file? Or at least point it to a users file so it
+# can modify defaults on package load
+# TODO - document these defaults
+eemanalyzer_processing_defaults <- list(
   # Optional abs_dir_read arguments with defaults matching abs_dir_read
   abs_pattern = NULL,
   abs_skip = "SEM|BEM|Waterfall",
@@ -52,7 +55,6 @@
   index_method = "eemanalyzeR",
   tolerance = 0.2,
   return = "long",
-  #cuvle = 1,
   qaqc_dir = NULL,
   arg_names = NULL,
 
@@ -61,21 +63,26 @@
   output_dir = NULL,
   csv = FALSE,
   readme = NULL
-),
-  parent = rlang::empty_env()
 )
 
+# Create an environment to store EEMS processing arguments and parameters
+.pkgenv <- rlang::new_environment(data = eemanalyzer_processing_defaults,
+  parent = rlang::empty_env()
+)
 
 # Create all the getters and setters for the package environment
 .pkgenv_vars <- names(.pkgenv)
 
 create_setter_function <- function(parameter) {
   rlang::new_function(
-    rlang::exprs(value = ),
+    rlang::exprs(value = ,
+                 env = .pkgenv),
 
     rlang::expr({
-      old <- .pkgenv[[!!parameter]]
-      .pkgenv[[!!parameter]] <- value
+      old <- rlang::env_get(env, !!parameter)
+      rlang::env_poke(env, !!parameter, value)
+      #old <- .pkgenv[[!!parameter]]
+      #.pkgenv[[!!parameter]] <- value
       invisible(old)
   }),
 rlang::caller_env()
@@ -84,15 +91,16 @@ rlang::caller_env()
 
 create_getter_function <- function(parameter) {
   rlang::new_function(
-    NULL,
+    rlang::exprs(env = .pkgenv),
     rlang::expr({
-      .pkgenv[[!!parameter]]
+      rlang::env_get(env, !!parameter)
+      #.pkgenv[[!!parameter]]
   }),
   rlang::caller_env()
   )
 }
 
-# # Try to use lapply to create a bunch of getters and setters from the defaults
+# Create a bunch of getters and setters from the defaults
 setter_funs <- lapply(.pkgenv_vars, create_setter_function)
 names(setter_funs) <- paste0("set_",.pkgenv_vars)
 getter_funs <- lapply(.pkgenv_vars, create_getter_function)
@@ -102,3 +110,30 @@ rlang::env_bind(rlang::current_env(), !!!setter_funs)
 rlang::env_bind(rlang::current_env(), !!!getter_funs)
 
 
+# Create one big function with variable arguments to modify defaults
+# TODO: document this with all the defaults
+modify_eemanalyzer_settings <- function(env = .pkgenv, ...) {
+  # Capture the varargs as a list
+  newdefaults <- rlang::list2(...)
+  # Assert the varargs the user wants to modify are in the .pkgenv
+  not_matching_names <- names(newdefaults[which(!names(newdefaults) %in% .pkgenv_vars)])
+  if(length(not_matching_names) > 0) {
+    stop(simpleError(paste("Cannot modify default:", not_matching_names, " is not valid")))
+  }
+  # Bind the variables to the environment 
+  rlang::env_bind(env, ...)
+}
+
+# Returns all the currently set eemanalyzer processing settings
+# TODO Document this
+list_eemanalyzer_settings <- function(env = .pkgenv) {
+  rlang::env_get_list(env, rlang::env_names(env))
+}
+
+# Reset all eemanalzyer settings to package defaults
+reset_eemanalyzer_settings <- function(env = .pkgenv) {
+  modify_eemanalyzer_settings(env,
+  !!!eemanalyzer_processing_defaults)
+}
+
+# TODO load_user_processing_defaults function that pulls defaults from file

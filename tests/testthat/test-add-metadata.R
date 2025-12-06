@@ -75,7 +75,7 @@
 
   })
 
-  test_that("metadata add works with names contining each other", {
+  test_that("metadata add works with names containing each other", {
    #make contained names
     meta <- eemanalyzeR::metadata
     meta$data_identifier[2] <- "ExampleSample1"
