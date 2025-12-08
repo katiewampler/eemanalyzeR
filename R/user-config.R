@@ -1,9 +1,9 @@
-#' Set up user defaults for data processing
+#' Set up and apply user defaults for data processing
 #'
-#' Opens up a YAML configuration file which stores the default arguments for
-#' `eemanalyzeR`. This allows the user to change the package defaults by computer
-#' customizing the processing steps in [run_eems] but also ensuring that all data
-#' processed will use the same user defaults without needing to specify each time.
+#' Reads the user generated YAML file (`user-config.yaml`) which stores the
+#' user specified values for the arguments in [run_eems()] and applies them
+#' to the package environment (`.pkgenv`). This allows the user to specify
+#' processing parameters that are maintained across R sessions.
 #'
 #' @details
 #' The defaults are stored in a YAML configuration file on the user data directory.
@@ -11,12 +11,20 @@
 #' edit the file and save it. The arguments in this file will overwrite the defaults
 #' set in the package.
 #'
-#' @returns Opens up `user-config.yaml`.
+#' @returns
+#' - **edit_user_config** opens up `user-config.yaml`.
+#' - **load_user_config** will apply the user defaults from `user-config.yaml`
+#' to the package environment
+#'
 #' @export
+#' @md
+#' @rdname user_config
 #'
 #' @examples
-#' edit_config()
-edit_config <- function() {
+#' edit_user_config()
+#'
+#' load_user_config()
+edit_user_config <- function() {
   user_dir <- rappdirs::user_data_dir("eemanalyzeR")
   if (!dir.exists(user_dir)) dir.create(user_dir, recursive = TRUE)
 
@@ -31,20 +39,19 @@ edit_config <- function() {
   # Open in user's editor
   if(is_interactive()){file.edit(defaults_file)}
 
+  #apply user edited configuration
+  load_user_config()
 
-  #TODO: after save update in pkgenv or just message to restart R?
+  message("User configuration applied.")
 }
 
-#' Load user defaults
-#'
 #' @param config_path path the YAML file with user default values
 #' @param env the environment name to write to
 #'
 #' @export
-#' @examples
-#' load_config()
-load_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR"),
-                        env = TRUE){
+#' @rdname user_config
+load_user_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR"),
+                        env = .pkgenv){
   # load built-in defaults
   config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yml"))
 
@@ -55,9 +62,7 @@ load_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR"),
   config <- utils::modifyList(config, user_config)
   }
 
-  if(env){list2env(config, envir = .pkgenv)}else{
-    return(config)
-
-  }
+  #modify in this session
+  modify_config(env = env, !!!config)
 
 }

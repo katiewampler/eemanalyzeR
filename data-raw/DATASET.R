@@ -271,3 +271,10 @@ for(x in files){
 
   usethis::use_data(example_processed_eems, overwrite = T)
   usethis::use_data(example_processed_abs, overwrite = T)
+
+#read yaml and save as default so we can document it ------
+  default_config <- yaml::read_yaml(
+    file.path(system.file("extdata", package = "eemanalyzeR"),
+              "eemanalyzeR-config.yml"))
+
+  usethis::use_data(default_config, overwrite = TRUE)

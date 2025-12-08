@@ -1,18 +1,22 @@
 # BEFORE ANYTHING RESET THE EEMANALYZER TO DEFAULTS SO IT DOESN'T DEPEND ON ANY OTHER TESTS
-reset_eemanalyzer_settings()
 
 test_that("pkg environment gets created", {
+  reset_config()
   expect_true(rlang::is_environment(.pkgenv))
 })
 
 test_that("pkg environment has correct defaults", {
+  reset_config()
+
   # list of wanted defaults (have to make sure they are in the same order)
-  package_default_list <- eemanalyzer_processing_defaults[order(names(eemanalyzer_processing_defaults))]
-  package_defaults_from_env <- list_eemanalyzer_settings()[order(names(list_eemanalyzer_settings()))]
+  package_default_list <- default_config[order(names(default_config))]
+  package_defaults_from_env <- list_config()[order(names(list_config()))]
   expect_identical(package_default_list, package_defaults_from_env)
 })
 
 test_that("pkg environment can be modified by modify_defaults and then reset back to defaults", {
+  reset_config()
+
   new_default_list <- list(
     # Text
     abs_pattern = "testpass",
@@ -31,7 +35,7 @@ test_that("pkg environment can be modified by modify_defaults and then reset bac
   expect_true(rlang::is_environment(.pkgenv))
 
   # The function to modify the defaults
-  modify_eemanalyzer_settings(.pkgenv, !!!new_default_list)
+  modify_config(.pkgenv, !!!new_default_list)
 
   expect_true(rlang::is_environment(.pkgenv))
 
@@ -44,15 +48,16 @@ test_that("pkg environment can be modified by modify_defaults and then reset bac
   new_default_list)
 
   # Check the package resets back to defaults
-  package_default_list <- eemanalyzer_processing_defaults[order(names(eemanalyzer_processing_defaults))]
+  package_default_list <- default_config[order(names(default_config))]
 
-  reset_eemanalyzer_settings()
-  package_defaults_from_env <- list_eemanalyzer_settings()[order(names(list_eemanalyzer_settings()))]
+  reset_config()
+  package_defaults_from_env <- list_config()[order(names(list_config()))]
   expect_identical(package_default_list, package_defaults_from_env)
   }
 )
 
 test_that("modify_defaults can work inside function without modifying package environment", {
+  reset_config()
 
   .fnenv <- rlang::env_clone(.pkgenv)
   new_default_list <- list(
@@ -70,7 +75,7 @@ test_that("modify_defaults can work inside function without modifying package en
     )
   )
   # The functio to modify the defaults
-  modify_eemanalyzer_settings(.fnenv, !!!new_default_list)
+  modify_config(.fnenv, !!!new_default_list)
 
   expect_identical(list(
     abs_pattern = get_abs_pattern(.fnenv),
@@ -91,25 +96,3 @@ test_that("modify_defaults can work inside function without modifying package en
 
 })
 
-# test_that("package defaults load into .pkgenv", {
-#   # get things in .pkgenv to make sure they load
-#     cfg <- as.list(.pkgenv)
-#
-#   # read expected defaults
-#   builtin <- yaml::read_yaml(
-#     file.path(system.file("extdata", package = "eemanalyzeR"),
-#               "eemanalyzeR-config.yml")
-#   )
-#
-#   expect_true(is.list(cfg))
-#   expect_true(length(cfg) > 0)
-#
-#   # compare names
-#   expect_setequal(names(cfg), names(builtin))
-#
-#   # compare default values
-#   for (n in names(builtin)) {
-#     expect_equal(cfg[[n]], builtin[[n]], ignore_attr = TRUE)
-#   }
-#
-# })

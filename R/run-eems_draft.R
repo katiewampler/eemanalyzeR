@@ -69,7 +69,7 @@ run_eems <- function(
   .fnenv <- rlang::env_clone(.pkgenv, parent = rlang::caller_env())
 
   # Modify the function environment processing parameters with any from varargs
-  modify_eemanalyzer_settings(env =.fnenv, !!!parameters_to_modify)
+  modify_config(env =.fnenv, !!!parameters_to_modify)
 
   # Decide whether the script is running in interactive or batch mode
   rlang::local_interactive(value = interactive)

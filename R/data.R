@@ -120,3 +120,68 @@
 #' Zsolnay, A., Baigar, E., Jimenez, M., Steinweg, B., & Saccomandi, F. (1999). Differentiating with fluorescence spectroscopy the sources of dissolved organic matter in soils subjected to drying. Chemosphere, 38(1), 45-50. \url{https://doi.org/10.1016/S0045-6535(98)00166-0}
 
 "indice_ranges"
+
+#' Default configuration of arguments for eemanalyzeR
+#'
+#' The default argument values used in the [run_eems()] function. Argument
+#' values are stored in a package environment (`.pkgenv`) which will be accessed
+#' in the case where a specific variable is not specified by the user.
+#'
+#' @details
+#' These values can be edited by:
+#' - the user permanently using [edit_user_config()]
+#' - the user for the current R session using `modify_config()`
+#' - or within the [run_eems()] function itself by providing argument values
+#'
+#' @md
+#' @format A list of length 27:
+#' - **abs_pattern**: Used by [abs_dir_read()]. A character string containing a [base::regular expression()]
+#'   to match files in `input_dir`. Only files matching the pattern will be loaded.
+#' - **abs_skip**: Used by [abs_dir_read()]. A character string containing a [base::regular expression()]
+#'   to match files in `input_dir` that should be ignored.
+#' - **abs_file_ext**: Used by [abs_dir_read()]. The file extension of the absorbance files.
+#' - **abs_recurse_read**: Used by [eem_dir_read()]. Logical. Should the function recursively search directories?
+#' - **eem_pattern**: Used by [eem_dir_read()]. A character string containing a [base::regular expression()]
+#'   to match files in `input_dir`. Only files matching the pattern will be loaded.
+#' - **eem_skip**: Used by [eem_dir_read()]. A character string containing a [base::regular expression()]
+#'   to match files in `input_dir` that should be ignored.
+#' - **eem_file_ext**: Used by [eem_dir_read()]. The file extension of the EEMs files.
+#' - **eem_recurse_read**: Used by [eem_dir_read()]. Logical. Should the function recursively search directories?
+#' - **eem_import_func**: Used by [abs_dir_read()]. Character or a user-defined function to import an EEM.
+#'   For more details, see [`vignette("custom-indices")`](../doc/custom-indices.html).
+#' - **meta_sheet**: Used by [meta_read()]. Name of the sheet containing metadata (only required if the
+#'   metadata is not on the first sheet of an `.xlsx` file).
+#' - **meta_validate**: Used by [meta_read()]. Logical. If `TRUE`, checks the metadata for
+#'   structural issues that could cause problems during processing.
+#'   Recommended to keep `TRUE`.
+#' - **sample_type_regex**: Used by [add_metadata()]. A **named list** of regular expressions used to identify
+#'   instrument blanks, sample blanks, check standards, and samples via pattern matching.
+#' - **ex_clip**: Used by [process_eem()]. Numeric vector of length two specifying the minimum and
+#'   maximum excitation wavelengths to keep.
+#' - **em_clip**: Used by [process_eem()]. Numeric vector of length two specifying the minimum and
+#'   maximum emission wavelengths to keep.
+#' - **type**: Used by [process_eem()]. Logical vector of length four indicating which scattering lines to remove.
+#'   The order is "raman1", "raman2", "rayleigh1", "rayleigh2".
+#' - **width**: Used by [process_eem()]. Numeric vector of length four specifying the width of scattering
+#'   lines to remove (nm). Same order as `type`.
+#' - **interpolate**: Used by [process_eem()]. Logical vector of length four indicating which scattering
+#'   lines to interpolate. Same order as `type`.
+#' - **method**: Used by [process_eem()]. Numeric (0–4) specifying the interpolation method to use.
+#'   Default is 1. See [staRdom::eem_interp()] for details.
+#' - **cores**: Used by [process_eem()]. Integer specifying the number of cores for parallel computation
+#'   during interpolation.
+#' - **cuvle**: Used by [process_eem()]. Cuvette (path) length in cm.
+#' - **index_method**: Used by [get_indices()]. Either "eemanalyzeR", "eemR", "usgs", or a custom
+#'   function.
+#' - **tolerance**: Used by [get_indices()]. Maximum percent deviation that the check standard can vary
+#'   from the long-term values without being flagged.
+#' - **return**: Used by [get_indices()].Output format: "long" or "wide".
+#' - **qaqc_dir**: Used by [get_indices()]. File path to the QAQC files generated with [create_mdl()]
+#'     and [create_std()]. Default is a user-specific data directory
+#'     [rappdirs::user_data_dir()].
+#' - **filename**: Used by [export_data()]. A character string, used for file names.
+#' - **output_dir**: Used by [export_data()]. Path to save the data. Defaults to a temporary directory
+#'   if not specified.
+#' - **readme**: Starts as NULL, used to store notes and warnings about processing.
+
+"default_config"

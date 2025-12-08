@@ -17,103 +17,26 @@
 
 # Package processing defaults list
 # TODO maybe this should be in a file? Or at least point it to a users file so it
-# can modify defaults on package load
-# TODO - document these defaults
-eemanalyzer_processing_defaults <- list(
-  # Optional abs_dir_read arguments with defaults matching abs_dir_read
-  abs_pattern = NULL,
-  abs_skip = "SEM|BEM|Waterfall",
-  abs_file_ext = "dat",
-  abs_recurse_read = FALSE,
+# can modify defaults on package load --> saved in inst/ext_data as yaml and as package obj now
+# TODO - document these defaults -> documented in data.R under  eemanalyzer_processing_defaults
 
-  # Optional eem_dir_read arguments with defaults matching eem_dir_read
-  eem_pattern = NULL,
-  eem_skip = "(?i)abs",
-  eem_file_ext = "dat",
-  eem_recurse_read = FALSE,
-  eem_import_func = "aqualog",
-
-  # Optional metadata arguments
-  meta_sheet = NULL, # only if excel
-  meta_validate = TRUE, # usually we want to validate the metadata
-  sample_type_regex = list(iblank_pattern = "BEM$|Waterfall ?Plot ?Blank",
-                           sblank_pattern = "Blank|blank|BLK",
-                           check_pattern = "Tea|tea"),
-
-
-  # TODO Optional Processing arguments
-  ex_clip = c(247, 450),
-  em_clip = c(247, 600),
-  type = c(TRUE, TRUE, TRUE, TRUE),
-  width = c(16, 3, 30, 10),
-  interpolate = c(TRUE, TRUE, FALSE, FALSE),
-  method = 1,
-  cores = 1,
-  cuvle = 1,
-
-  # Saving indices arguments
-  index_method = "eemanalyzeR",
-  tolerance = 0.2,
-  return = "long",
-  qaqc_dir = NULL,
-
-  # Saving the raw files arguments
-  filename = "eemanalyzeR-output",
-  output_dir = NULL,
-  csv = FALSE,
-
-  #spot for readme to be saved (otherwise tests fail)
-  readme = NULL
-
-)
 # Create an environment to store EEMS processing arguments and parameters
-.pkgenv <- rlang::new_environment(data = eemanalyzer_processing_defaults,
+
+default_config <- yaml::read_yaml(
+  file.path(system.file("extdata", package = "eemanalyzeR"),
+            "eemanalyzeR-config.yml"))
+#look for user config -> safely check and load if it exists, if it exists use that instead [how do we write tests?]
+
+
+.pkgenv <- rlang::new_environment(data = default_config,
   parent = rlang::empty_env()
 )
 
-# Create all the getters and setters for the package environment
-.pkgenv_vars <- names(.pkgenv)
-
-create_setter_function <- function(parameter) {
-  rlang::new_function(
-    rlang::exprs(value = ,
-                 env = .pkgenv),
-
-    rlang::expr({
-      old <- rlang::env_get(env, !!parameter)
-      rlang::env_poke(env, !!parameter, value)
-      #old <- .pkgenv[[!!parameter]]
-      #.pkgenv[[!!parameter]] <- value
-      invisible(old)
-  }),
-rlang::caller_env()
-  )
-}
-
-create_getter_function <- function(parameter) {
-  rlang::new_function(
-    rlang::exprs(env = .pkgenv),
-    rlang::expr({
-      rlang::env_get(env, !!parameter)
-      #.pkgenv[[!!parameter]]
-  }),
-  rlang::caller_env()
-  )
-}
-
-# Create a bunch of getters and setters from the defaults
-setter_funs <- lapply(.pkgenv_vars, create_setter_function)
-names(setter_funs) <- paste0("set_",.pkgenv_vars)
-getter_funs <- lapply(.pkgenv_vars, create_getter_function)
-names(getter_funs) <- paste0("get_", .pkgenv_vars)
-
-rlang::env_bind(rlang::current_env(), !!!setter_funs)
-rlang::env_bind(rlang::current_env(), !!!getter_funs)
 
 
 # Create one big function with variable arguments to modify defaults
-# TODO: document this with all the defaults
-modify_eemanalyzer_settings <- function(env = .pkgenv, ...) {
+# TODO: document this with all the defaults -> see data.R
+modify_config <- function(env = .pkgenv, ...) {
   # Capture the varargs as a list
   newdefaults <- rlang::list2(...)
   # Assert the varargs the user wants to modify are in the .pkgenv
@@ -127,14 +50,14 @@ modify_eemanalyzer_settings <- function(env = .pkgenv, ...) {
 
 # Returns all the currently set eemanalyzer processing settings
 # TODO Document this
-list_eemanalyzer_settings <- function(env = .pkgenv) {
+list_config <- function(env = .pkgenv) {
   rlang::env_get_list(env, rlang::env_names(env))
 }
 
 # Reset all eemanalzyer settings to package defaults
-reset_eemanalyzer_settings <- function(env = .pkgenv) {
-  modify_eemanalyzer_settings(env,
-  !!!eemanalyzer_processing_defaults)
+reset_config <- function(env = .pkgenv) {
+  modify_config(env,
+  !!!default_config)
 }
 
 # TODO Create some function to validate the settings? Like which ones are numeric, logical, lists, etc?

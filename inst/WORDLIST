@@ -135,6 +135,7 @@ boreal
 chromophoric
 csv
 cuvette
+cuvle
 diagenetically
 drEEM
 eem
@@ -174,6 +175,7 @@ png
 polycondensed
 pre
 preprocess
+qaqc
 rAT
 rCA
 rCM
@@ -182,6 +184,7 @@ raman
 rayleigh
 rds
 readme
+recurse
 sampleQ
 sblank
 snowmelt
@@ -191,6 +194,5 @@ unreplicated
 usgs
 von
 xlsx
-yaml
 α
 β
