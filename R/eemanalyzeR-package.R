@@ -1,7 +1,7 @@
 #' @keywords internal
 "_PACKAGE"
 
-utils::globalVariables(c(".pkgenv", "value"))
+utils::globalVariables(c(".pkgenv", "value", "env"))
 
 ## usethis namespace: start
 

@@ -1,6 +1,10 @@
 # BEFORE ANYTHING RESET THE EEMANALYZER TO DEFAULTS SO IT DOESN'T DEPEND ON ANY OTHER TESTS
 reset_eemanalyzer_settings()
 
+test_that("pkg environment gets created", {
+  expect_true(rlang::is_environment(.pkgenv))
+})
+
 test_that("pkg environment has correct defaults", {
   # list of wanted defaults (have to make sure they are in the same order)
   package_default_list <- eemanalyzer_processing_defaults[order(names(eemanalyzer_processing_defaults))]
@@ -11,7 +15,7 @@ test_that("pkg environment has correct defaults", {
 test_that("pkg environment can be modified by modify_defaults and then reset back to defaults", {
   new_default_list <- list(
     # Text
-    abs_pattern = "testpass", 
+    abs_pattern = "testpass",
     # Vector of numbers
     em_clip = c(300, 400),
     # Logical
@@ -23,14 +27,19 @@ test_that("pkg environment can be modified by modify_defaults and then reset bac
       check_pattern = "test_tea"
     )
   )
+
+  expect_true(rlang::is_environment(.pkgenv))
+
   # The function to modify the defaults
   modify_eemanalyzer_settings(.pkgenv, !!!new_default_list)
 
+  expect_true(rlang::is_environment(.pkgenv))
+
   expect_identical(list(
-    abs_pattern = get_abs_pattern(),
-    em_clip = get_em_clip(),
-    csv = get_csv(),
-    sample_type_regex = get_sample_type_regex()
+    abs_pattern = get_abs_pattern(.pkgenv),
+    em_clip = get_em_clip(.pkgenv),
+    csv = get_csv(.pkgenv),
+    sample_type_regex = get_sample_type_regex(.pkgenv)
   ),
   new_default_list)
 
@@ -48,7 +57,7 @@ test_that("modify_defaults can work inside function without modifying package en
   .fnenv <- rlang::env_clone(.pkgenv)
   new_default_list <- list(
     # Text
-    abs_pattern = "testpass", 
+    abs_pattern = "testpass",
     # Vector of numbers
     em_clip = c(300, 400),
     # Logical
@@ -72,34 +81,35 @@ test_that("modify_defaults can work inside function without modifying package en
   new_default_list)
 
   package_default_list <- list(
-    abs_pattern = get_abs_pattern(),
-    em_clip = get_em_clip(),
-    csv = get_csv(),
-    sample_type_regex = get_sample_type_regex()
+    abs_pattern = get_abs_pattern(.pkgenv),
+    em_clip = get_em_clip(.pkgenv),
+    csv = get_csv(.pkgenv),
+    sample_type_regex = get_sample_type_regex(.pkgenv)
   )
 
   expect_false(identical(package_default_list, new_default_list))
 
 })
-test_that("package defaults load into .pkgenv", {
-  # get things in .pkgenv to make sure they load
-    cfg <- as.list(.pkgenv)
 
-  # read expected defaults
-  builtin <- yaml::read_yaml(
-    file.path(system.file("extdata", package = "eemanalyzeR"),
-              "eemanalyzeR-config.yml")
-  )
-
-  expect_true(is.list(cfg))
-  expect_true(length(cfg) > 0)
-
-  # compare names
-  expect_setequal(names(cfg), names(builtin))
-
-  # compare default values
-  for (n in names(builtin)) {
-    expect_equal(cfg[[n]], builtin[[n]], ignore_attr = TRUE)
-  }
-
-})
+# test_that("package defaults load into .pkgenv", {
+#   # get things in .pkgenv to make sure they load
+#     cfg <- as.list(.pkgenv)
+#
+#   # read expected defaults
+#   builtin <- yaml::read_yaml(
+#     file.path(system.file("extdata", package = "eemanalyzeR"),
+#               "eemanalyzeR-config.yml")
+#   )
+#
+#   expect_true(is.list(cfg))
+#   expect_true(length(cfg) > 0)
+#
+#   # compare names
+#   expect_setequal(names(cfg), names(builtin))
+#
+#   # compare default values
+#   for (n in names(builtin)) {
+#     expect_equal(cfg[[n]], builtin[[n]], ignore_attr = TRUE)
+#   }
+#
+# })

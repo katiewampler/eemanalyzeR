@@ -60,7 +60,11 @@ eemanalyzer_processing_defaults <- list(
   # Saving the raw files arguments
   filename = "eemanalyzeR-output",
   output_dir = NULL,
-  csv = FALSE
+  csv = FALSE,
+
+  #spot for readme to be saved (otherwise tests fail)
+  readme = NULL
+
 )
 # Create an environment to store EEMS processing arguments and parameters
 .pkgenv <- rlang::new_environment(data = eemanalyzer_processing_defaults,
@@ -117,7 +121,7 @@ modify_eemanalyzer_settings <- function(env = .pkgenv, ...) {
   if(length(not_matching_names) > 0) {
     stop(simpleError(paste("Cannot modify default:", not_matching_names, " is not valid")))
   }
-  # Bind the variables to the environment 
+  # Bind the variables to the environment
   rlang::env_bind(env, ...)
 }
 

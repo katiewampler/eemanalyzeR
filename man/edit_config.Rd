@@ -17,7 +17,7 @@ processed will use the same user defaults without needing to specify each time.
 }
 \details{
 The defaults are stored in a YAML configuration file on the user data directory.
-This function will open up the file so the text can be editted. To save new defaults simply
+This function will open up the file so the text can be edited. To save new defaults simply
 edit the file and save it. The arguments in this file will overwrite the defaults
 set in the package.
 }

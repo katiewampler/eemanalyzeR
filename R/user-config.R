@@ -31,6 +31,7 @@ edit_config <- function() {
   # Open in user's editor
   if(is_interactive()){file.edit(defaults_file)}
 
+
   #TODO: after save update in pkgenv or just message to restart R?
 }
 

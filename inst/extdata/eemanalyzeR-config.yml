@@ -58,3 +58,6 @@
   filename: "eemanalyzeR-output"
   output_dir: NULL
   csv: FALSE
+
+  #spot for readme to be saved (otherwise tests fail)
+  readme: NULL

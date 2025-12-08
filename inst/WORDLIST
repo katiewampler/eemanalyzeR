@@ -136,6 +136,7 @@ chromophoric
 csv
 cuvette
 diagenetically
+drEEM
 eem
 eemR
 eemlist
@@ -169,6 +170,7 @@ parula
 photobleaching
 photolytic
 phytoplankton
+png
 polycondensed
 pre
 preprocess
@@ -189,5 +191,6 @@ unreplicated
 usgs
 von
 xlsx
+yaml
 α
 β
