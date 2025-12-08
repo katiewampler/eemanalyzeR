@@ -22,16 +22,10 @@
 
 # Create an environment to store EEMS processing arguments and parameters
 
-default_config <- yaml::read_yaml(
-  file.path(system.file("extdata", package = "eemanalyzeR"),
-            "eemanalyzeR-config.yml"))
-#look for user config -> safely check and load if it exists, if it exists use that instead [how do we write tests?]
+default_config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"),
+                          "eemanalyzeR-config.yaml"))
 
-
-.pkgenv <- rlang::new_environment(data = default_config,
-  parent = rlang::empty_env()
-)
-
+.pkgenv <- rlang::new_environment(data = default_config, parent = rlang::empty_env())
 
 
 # Create one big function with variable arguments to modify defaults
@@ -55,6 +49,7 @@ list_config <- function(env = .pkgenv) {
 }
 
 # Reset all eemanalzyer settings to package defaults
+# Reset all eemanalzyer settings to package defaults  ##NOTE: defaults don't seem to work here for env
 reset_config <- function(env = .pkgenv) {
   modify_config(env,
   !!!default_config)

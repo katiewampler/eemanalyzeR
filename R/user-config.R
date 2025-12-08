@@ -32,7 +32,7 @@ edit_user_config <- function() {
 
   # if file doesn't exist, write template
   if (!file.exists(defaults_file)) {
-    file.copy(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yml"),
+    file.copy(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"),
               defaults_file)
   }
 
@@ -53,7 +53,7 @@ edit_user_config <- function() {
 load_user_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR"),
                         env = .pkgenv){
   # load built-in defaults
-  config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yml"))
+  config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"))
 
   # try to load user file
   defaults_file <- file.path(config_path, "user-config.yaml")

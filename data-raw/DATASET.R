@@ -275,6 +275,6 @@ for(x in files){
 #read yaml and save as default so we can document it ------
   default_config <- yaml::read_yaml(
     file.path(system.file("extdata", package = "eemanalyzeR"),
-              "eemanalyzeR-config.yml"))
+              "eemanalyzeR-config.yaml"))
 
   usethis::use_data(default_config, overwrite = TRUE)
