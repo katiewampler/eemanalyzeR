@@ -35,15 +35,15 @@ test_that("pkg environment can be modified by modify_defaults and then reset bac
   expect_true(rlang::is_environment(.pkgenv))
 
   # The function to modify the defaults
-  modify_config(.pkgenv, !!!new_default_list)
+  modify_config(!!!new_default_list, env = .pkgenv)
 
   expect_true(rlang::is_environment(.pkgenv))
 
   expect_identical(list(
-    abs_pattern = get_abs_pattern(.pkgenv),
-    em_clip = get_em_clip(.pkgenv),
-    csv = get_csv(.pkgenv),
-    sample_type_regex = get_sample_type_regex(.pkgenv)
+    abs_pattern = get_abs_pattern(),
+    em_clip = get_em_clip(),
+    csv = get_csv(),
+    sample_type_regex = get_sample_type_regex()
   ),
   new_default_list)
 
@@ -75,7 +75,7 @@ test_that("modify_defaults can work inside function without modifying package en
     )
   )
   # The functio to modify the defaults
-  modify_config(.fnenv, !!!new_default_list)
+  modify_config(!!!new_default_list, env = .fnenv)
 
   expect_identical(list(
     abs_pattern = get_abs_pattern(.fnenv),
@@ -86,10 +86,10 @@ test_that("modify_defaults can work inside function without modifying package en
   new_default_list)
 
   package_default_list <- list(
-    abs_pattern = get_abs_pattern(.pkgenv),
-    em_clip = get_em_clip(.pkgenv),
-    csv = get_csv(.pkgenv),
-    sample_type_regex = get_sample_type_regex(.pkgenv)
+    abs_pattern = get_abs_pattern(),
+    em_clip = get_em_clip(),
+    csv = get_csv(),
+    sample_type_regex = get_sample_type_regex()
   )
 
   expect_false(identical(package_default_list, new_default_list))

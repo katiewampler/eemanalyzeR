@@ -50,6 +50,9 @@ edit_user_config <- function() {
 #'
 #' @export
 #' @rdname user_config
+# NOTE: This effectively returns everything back to package defaults if the user config can't be found.
+# Is that what we want? It might overwrite settings if the user changed them before trying to load the user config.
+# I'm ok with this as long as it's documented behavior
 load_user_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR"),
                         env = .pkgenv){
   # load built-in defaults
@@ -61,8 +64,14 @@ load_user_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR"
   user_config <- yaml::read_yaml(defaults_file)
   config <- utils::modifyList(config, user_config)
   }
-
   #modify in this session
-  modify_config(env = env, !!!config)
+  modify_config(!!!config, env = env)
+  # invisibly return the modified configuration
+  invisible(list_config())
 
 }
+
+# load the user config on package load
+rlang::on_load({
+  load_user_config()
+})
