@@ -9,29 +9,13 @@ run_eems(prjpath, output_dir, filename, interactive = TRUE, ...)
 \arguments{
 \item{prjpath}{path to folder with raw samples}
 
-\item{...}{additional arguments passed to the 'get_doc', 'clean_files', 'abs_preprocess', 'load_eems', 'eem_process', 'plot_eems', 'get_indices', 'save_eems' functions}
+\item{output_dir}{TODO}
 
-\item{meta_name}{the file name of the metadata with the extension}
+\item{filename}{TODO}
 
-\item{get_doc}{logical, if TRUE will use 'get_doc' function to match DOC data to metadata samples, only required if get_doc is TRUE}
+\item{interactive}{TODO}
 
-\item{doc_file}{a string of the file path of the DOC file, can be .xlsx or .csv, only required if get_doc is TRUE}
-
-\item{doc_sheet}{a string of the sheet name of the DOC results, only required if the DOC file is an .xlsx file, only required if get_doc is TRUE}
-
-\item{doc_column}{a numeric indicating which column the DOC results are stored in in the DOC file, only required if get_doc is TRUE}
-
-\item{name_column}{a numeric indicating which column the sample/site names are stored in the DOC file, only required if get_doc is TRUE}
-
-\item{nskip}{a numeric indicating a number of lines to skip when reading in the DOC file, optional, only required if get_doc is TRUE}
-
-\item{doc_delim}{a string indicating the separation between site name and other identifiers in the DOC data, it will only keep the first piece, only required if get_doc is TRUE}
-
-\item{meta_sheet}{a string of the metadata sheet name, only required if the metadata file is an .xlsx file}
-
-\item{site_loc}{a vector indicating the start and end of the site name in the metadata data identifier}
-
-\item{process_file}{logical, if TRUE it will put a text file in the processed data folder named 'processing_tracking'}
+\item{...}{}
 }
 \value{
 saves processed EEMs as .csv and .rds files, absorbance as .csv and .rds, and metadata as .csv
@@ -42,7 +26,6 @@ Takes raw EEMs and absorbance data from Aqualog, returns cleaned, processed data
 }
 \details{
 The following steps are chosen by default:
- -DOC is added to the metadata and the file is overwritten
 
  -The file directory is created, raw files are zipped
 
@@ -62,5 +45,5 @@ The following steps are chosen by default:
  normalized, sample are reported in rows.
 
  If you want to change these defaults add the appropriate arguments into the
- function to change the defaults for the other functions.
+ function to change the defaults for the processing functions.
 }

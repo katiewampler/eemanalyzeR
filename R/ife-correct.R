@@ -41,8 +41,7 @@ ife_correct <- function(eemlist, abslist, cuvle=1, arg_names=NULL){
 
   #collect arguments for readme, and to put into the following functions
   if(is.null(arg_names)){
-    args <- rlang::enquos(cuvle)
-    names(args) <- c("cuvle")
+    args <- list(cuvle = cuvle)
   }else{args <- arg_names}
 
   #internal function from eemR, added here to maintain stability

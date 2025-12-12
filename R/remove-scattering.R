@@ -50,23 +50,30 @@
 remove_scattering <- function(eemlist, type = c(TRUE, TRUE, TRUE, TRUE), width = c(16, 3, 30, 10),
                               interpolate = c(TRUE, TRUE, FALSE, FALSE), method = 1,
                               cores = 1, arg_names = NULL) {
+
+  # collect arguments for readme, and to put into the following functions
+  # Note: changed to named list instead of rlang::enquo since unsure why enquo was needed and 
+  # led to readme issues since we weren't ever evaluating the arguments before writing the readme
+  # Also moved stopifnot below this because we weren't properly defusing arguments before when
+  # stopifnot was first since it would evaluate the arguments before we had a chance to defuse them.
+  if (is.null(arg_names)) {
+    args <- list(
+      type = type,
+      width = width,
+      interpolate = interpolate, 
+      method = method,
+      cores = cores
+    )
+  } else {
+    args <- arg_names
+  }
+
   stopifnot(
     .is_eemlist(eemlist), all(is.logical(type)), all(is.logical(interpolate)),
     length(width) == 4, length(type) == 4, length(interpolate) == 4,
     method %in% c(0:4), all(is.numeric(width))
   )
 
-  # collect arguments for readme, and to put into the following functions
-  if (is.null(arg_names)) {
-    args <- rlang::enquos(
-      type, width,
-      interpolate, method,
-      cores
-    )
-    names(args) <- c("type", "width", "interpolate", "method", "cores")
-  } else {
-    args <- arg_names
-  }
 
   # remove raman lines, track which are NA, either add in final or add these interpolated
   if (type[1]) {
@@ -156,7 +163,9 @@ remove_scattering <- function(eemlist, type = c(TRUE, TRUE, TRUE, TRUE), width =
   class(data) <- "eemlist"
 
   # write readme
-  .write_readme_line(text = "scattering lines removed via 'remove_scattering' function", slot = "eem_scatter_corrected", args = args)
+  .write_readme_line(text = "scattering lines removed via 'remove_scattering' function", 
+  slot = "eem_scatter_corrected", 
+  args = args)
 
   return(data)
 }

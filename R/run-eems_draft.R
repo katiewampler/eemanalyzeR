@@ -2,24 +2,16 @@
 #' Takes raw EEMs and absorbance data from Aqualog, returns cleaned, processed data
 #'
 #' @param prjpath path to folder with raw samples
-#' @param meta_name the file name of the metadata with the extension
-#' @param get_doc logical, if TRUE will use 'get_doc' function to match DOC data to metadata samples, only required if get_doc is TRUE
-#' @param doc_file a string of the file path of the DOC file, can be .xlsx or .csv, only required if get_doc is TRUE
-#' @param doc_sheet a string of the sheet name of the DOC results, only required if the DOC file is an .xlsx file, only required if get_doc is TRUE
-#' @param doc_column a numeric indicating which column the DOC results are stored in in the DOC file, only required if get_doc is TRUE
-#' @param name_column a numeric indicating which column the sample/site names are stored in the DOC file, only required if get_doc is TRUE
-#' @param nskip a numeric indicating a number of lines to skip when reading in the DOC file, optional, only required if get_doc is TRUE
-#' @param doc_delim a string indicating the separation between site name and other identifiers in the DOC data, it will only keep the first piece, only required if get_doc is TRUE
-#' @param meta_sheet a string of the metadata sheet name, only required if the metadata file is an .xlsx file
-#' @param site_loc a vector indicating the start and end of the site name in the metadata data identifier
-#' @param process_file logical, if TRUE it will put a text file in the processed data folder named 'processing_tracking'
-#' @param ... additional arguments passed to the 'get_doc', 'clean_files', 'abs_preprocess', 'load_eems', 'eem_process', 'plot_eems', 'get_indices', 'save_eems' functions
-#'
+#' @param output_dir TODO
+#' @param filename TODO
+#' @param interactive TODO
+#' @param ...
+#' 
+#' 
 #' @return saves processed EEMs as .csv and .rds files, absorbance as .csv and .rds, and metadata as .csv
 #' creates plots for each sample and calculates indices.
 #'
 #' @details The following steps are chosen by default:
-#'  -DOC is added to the metadata and the file is overwritten
 #'
 #'  -The file directory is created, raw files are zipped
 #'
@@ -39,7 +31,7 @@
 #'  normalized, sample are reported in rows.
 #'
 #'  If you want to change these defaults add the appropriate arguments into the
-#'  function to change the defaults for the other functions.
+#'  function to change the defaults for the processing functions.
 #'
 #' @export
 #'
@@ -50,7 +42,6 @@ run_eems <- function(
   prjpath,
   output_dir,
   filename,
-  #meta_name,
   interactive = TRUE,
   ...
     )
@@ -119,7 +110,6 @@ run_eems <- function(
   processed_abs <-  correct_dilution(abs)
 
   # Process the EEMs
-  # This involves a wrapper that calls:
     # subtract_blank
     # remove_scattering
     # ife_correct
@@ -127,18 +117,55 @@ run_eems <- function(
     # correct_dilution
     # eem_cut
 
-  # TODO split out the process eems functions into its part
   # TODO print a message that processing is happening for user
-  processed_eems <- process_eem(eems, processed_abs,
-                                # Default Argument values
-                                ex_clip = get_ex_clip(.fnenv),
-                                em_clip = get_em_clip(.fnenv),
-                                type = get_type(.fnenv),
-                                width = get_width(.fnenv),
-                                interpolate = get_interpolate(.fnenv),
-                                method = get_method(.fnenv),
-                                cores = get_cores(.fnenv),
-                                cuvle = get_cuvle(.fnenv))
+  # collect parameters for readme, and to put into the following functions
+  # pars <- rlang::enquos(
+  #   ex_clip, em_clip, type, width,
+  #   interpolate, method,
+  #   cores, cuvle
+  # )
+  # names(pars) <- c("ex_clip", "em_clip", "type", "width", "interpolate", "method", "cores", "cuvle")
+
+  # Subtract the Blank
+  eems <- subtract_blank(eem = eems)
+  # Remove Scattering
+  eems <- remove_scattering(
+    eemlist = eems,
+    type = get_type(.fnenv),
+    width = get_width(.fnenv),
+    interpolate = get_interpolate(.fnenv),
+    method = get_method(.fnenv),
+    cores = get_cores(.fnenv)
+  )
+  # Correct for inner filter effects
+  eems <- ife_correct(eemlist = eems, 
+    processed_abs, 
+    cuvle = get_cuvle(.fnenv))
+  # Normalize by Raman area
+  eems <- raman_normalize(eemlist = eems)
+  # Correct for any dilutions
+  eems <- correct_dilution(x = eems)
+
+  # Clip EEMs to just the region you care about
+  ex_rm <- unique(get_sample_info(eems, "ex")[get_sample_info(eems, "ex") < get_ex_clip(.fnenv)[1] | get_sample_info(eems, "ex") > get_ex_clip(.fnenv)[2]])
+  em_rm <- unique(get_sample_info(eems, "em")[get_sample_info(eems, "em") < get_em_clip(.fnenv)[1] | get_sample_info(eems, "em") > get_em_clip(.fnenv)[2]])
+  processed_eems <- eemR::eem_cut(eems, ex = ex_rm, em = em_rm, exact = TRUE)
+  .write_readme_line("EEMs data were cropped using the 'eemR::eem_cut' function", 
+                     "eem_cut", 
+                     args = list(ex_clip = get_ex_clip(.fnenv),
+                                 em_clip = get_em_clip(.fnenv)))
+
+  # Or we could do it all in one step
+  # processed_eems <- process_eem(eems, processed_abs,
+  #                               # Default Argument values
+  #                               ex_clip = get_ex_clip(.fnenv),
+  #                               em_clip = get_em_clip(.fnenv),
+  #                               type = get_type(.fnenv),
+  #                               width = get_width(.fnenv),
+  #                               interpolate = get_interpolate(.fnenv),
+  #                               method = get_method(.fnenv),
+  #                               cores = get_cores(.fnenv),
+  #                               cuvle = get_cuvle(.fnenv))
 
   # TODOS below:
   # Dev examples code will create mdl files on my computer
