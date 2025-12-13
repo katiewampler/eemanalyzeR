@@ -28,6 +28,8 @@ The package is designed to creates a streamlined and automated workflow
 that ensures consistent analysis and simplifies the coding required to
 process the data.
 
+------------------------------------------------------------------------
+
 # The Need
 
 While many instruments to measure EEMs and absorbance come with built in
@@ -47,8 +49,8 @@ tools:
 -   [`staRdom`](https://cran.r-project.org/web/packages/staRdom/index.html)
 
 However, these tools require a fair bit of coding knowledge to set up a
-processing procedure. The `eemanalyzeR` package aims to be simple enough that
-undergraduates, who are often the ones running the instruments, can
+processing procedure. The `eemanalyzeR` package aims to be simple enough
+that undergraduates, who are often the ones running the instruments, can
 process the data to shorten the time between data collection and data
 checks to ensure samples can be rerun within hold times.
 
@@ -59,6 +61,8 @@ checks to ensure samples can be rerun within hold times.
 -   Automate processing via a single function to make it easy for
     beginner coders to use
 -   Retain the ability to customize processing steps
+
+------------------------------------------------------------------------
 
 # Installation
 
@@ -92,32 +96,36 @@ remotes::install_github("katiewampler/eemanalyzeR", ref = "dev")
 
 Load the package
 
-```{r, include=TRUE, eval=FALSE}
+```{r, include=TRUE, eval=TRUE}
 library(eemanalyzeR)
 ```
 
+------------------------------------------------------------------------
+
 # Processing Data
 
-To go from raw data to processed and clean data use the [run_eems](../html/run_eems.html)
-function. At a minimum this requires the following arguments:
+To go from raw data to processed and clean data use the
+[run_eems](../html/run_eems.html) function. At a minimum this requires
+the following arguments:
 
 -   **input_dir:** the file path to the folder containing the raw EEMs
     and absorbance files on your computer.
 -   **filename:** the name of your project, used to name your exported
     files.
 
-```{r, eval=FALSE}
-  run_eem(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-example")
+```{r eval=TRUE, message=FALSE, warning=FALSE}
+  run_eems(input_dir = system.file("extdata", package = "eemanalyzeR"),
+           filename = "eemanalyzeR-example")
 ```
 
 This function will export the processed data, indices calculations, and
 plots by defaults we can look at the function outputs.
 
-```{r, eval=FALSE, include=FALSE}
+```{r echo=FALSE}
 tree_output <- capture.output(fs::dir_tree(file.path(tempdir(), "eemanalyzeR-example")))
 tree_output[1] <- "~/"
 
-tree_output <- tree_output[order(file_ext(tree_output))]
+tree_output <- tree_output[order(tools::file_ext(tree_output))]
 tree_output <- gsub("└──", "├──", tree_output)
 tree_output[length(tree_output)] <- gsub("├──", "└──", tree_output[length(tree_output)] )
 cat(tree_output, sep = "\n")
@@ -125,7 +133,7 @@ cat(tree_output, sep = "\n")
 
 ## The Outputs
 
--   **\* _indices_filename.csv**:The absorbance and fluorescence indices
+-   **\*\_indices_filename.csv**:The absorbance and fluorescence indices
 -   **absorbance_plot_filename.png:** Plot showing the absorbance
     spectra
 -   **\* .png:** Plots of the individual EEMs
@@ -138,19 +146,34 @@ cat(tree_output, sep = "\n")
 -   **processed_data_filename.rds:** An R readable object containing all
     of the exported data
 
+------------------------------------------------------------------------
+
 # Setting up Processing Defaults
 
 `eemanalyzeR` will process files directly "out of the box", but specific
 research projects may have differing processing needs. If you would like
-to consistently modify the defaults used in the [run_eems](../html/run_eems.html) function you
-can use the [] function. This will create a [] file stored on your
-computer which will be read when you load the package.
+to consistently modify the defaults used in the
+[run_eems](../html/run_eems.html) function you can use the
+[edit_user_config](../html/user_config.html) function. This will create
+a YAML file with your selected defaults which is stored on your computer
+will be read when you load the package.
+
+------------------------------------------------------------------------
 
 # Creating QA/QC Standards
 
-One of the goals with the `eemanalyzeR` package was to build in QA/QC checks to ensure data quality. While not required to use the package, you can use the [create_mdl](../html/create_mdl.html) and [create_std](../html/create_std.html) functions. These function requires a directory of analytical blanks and check standards (for instance the [tea standard](http://pubs.er.usgs.gov/publication/ofr20181096) recommended by the USGS). While you can create these standards with any number of samples, its recommended to use at least 20 for stability. 
+One of the goals with the `eemanalyzeR` package was to build in QA/QC
+checks to ensure data quality. While not required to use the package,
+you can use the [create_mdl](../html/create_mdl.html) and
+[create_std](../html/create_std.html) functions. These function requires
+a directory of analytical blanks and check standards (for instance the
+[tea standard](http://pubs.er.usgs.gov/publication/ofr20181096)
+recommended by the USGS). While you can create these standards with any
+number of samples, its recommended to use at least 20 for stability.
 
-Use the following code to create the method detection limit (MDL) files. These by default will be stored in your user-specific data directory and loaded when needed to process samples. 
+Use the following code to create the method detection limit (MDL) files.
+These by default will be stored in your user-specific data directory and
+loaded when needed to process samples.
 
 ```{r, eval=FALSE}
 #specify where the long-term blank files live
@@ -172,11 +195,15 @@ eem_std <- create_std(dir, type = "eem")
 abs_std <- create_std(dir, type = "abs")
 ```
 
-These files will be used when calculating absorbance and fluorescence indices to ensure: 
+These files will be used when calculating absorbance and fluorescence
+indices to ensure:
 
-1. Sample index values are "real" and distinguishable above a blank (above MDL)
-    - Prevents reporting of values that are just noise
-2. The analytical blanks in the sample run are blank (below MDL)
-    - Checks for potential contamination
-3. Check standard index values in the sample run are consistent with a long-term standard (within 20 % of mean standard)
-    - Checks for potential run issues (air bubbles, equipment issues, calculation issues)
+1.  Sample index values are "real" and distinguishable above a blank
+    (above MDL)
+    -   Prevents reporting of values that are just noise
+2.  The analytical blanks in the sample run are blank (below MDL)
+    -   Checks for potential contamination
+3.  Check standard index values in the sample run are consistent with a
+    long-term standard (within 20 % of mean standard)
+    -   Checks for potential run issues (air bubbles, equipment issues,
+        calculation issues)

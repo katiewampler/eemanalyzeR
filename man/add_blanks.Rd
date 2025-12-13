@@ -22,7 +22,7 @@ An \code{eemlist} where each \code{eem} object has two added components:
 }
 }
 \description{
-Allows the user to visually check excitation–emission matrix (EEM) plots of the blanks,
+Allows the user to visually check excitation-emission matrix (EEM) plots of the blanks,
 and then, if approved, the blanks will be added to the \code{eem} objects for further processing.
 }
 \details{

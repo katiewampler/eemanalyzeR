@@ -11,7 +11,7 @@ modify_config(..., env = .pkgenv)
 NOTE: these MUST be named arguments, otherwise the modification of all settings
 will fail.}
 
-\item{env}{the environment in which configuration settings is stored. Defaults to the package 
+\item{env}{the environment in which configuration settings is stored. Defaults to the package
 environment. Note: we do not recommend the user modifies this argument.}
 }
 \value{
@@ -19,13 +19,13 @@ invisible returns the named list of the new defaults, but this function is calle
          for it's side effects
 }
 \description{
-Allows the user to modify configuration settings that affect data processing through the 
-remainder of the current processing session (i.e. until the package is reloaded via 
+Allows the user to modify configuration settings that affect data processing through the
+remainder of the current processing session (i.e. until the package is reloaded via
 `library(eemanalyzeR)` or R is restarted)
 }
 \details{
 There are two ways the user can provide name-value pairs of settings that they want to modify.
-The first and most useful way is to provide them as named arguments directly to this 
+The first and most useful way is to provide them as named arguments directly to this
 function via the ... variable arguments. To do this the user would provide the arguments
 as name = value separated by commas if multiple settings are to be changed at the same time
 

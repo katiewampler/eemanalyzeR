@@ -58,7 +58,8 @@ validate_std <- function(abslist, qaqc_dir=NULL, tolerance=0.2){
         labs(x="Wavelength (nm)", y="Absorbance (AU)", color="Sample")
     }
 
-    print(plot)
+    #only print if interactive, otherwise it will save a pdf we don't need
+    if (is_interactive()) {print(plot)}
 
     return(plot)
 

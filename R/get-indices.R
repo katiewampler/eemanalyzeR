@@ -104,8 +104,13 @@ get_indices <- function(eemlist, abslist, index_method = "eemanalyzeR",
 
   # collect arguments for readme, and to put into the following functions
   if (is.null(arg_names)) {
-    args <- rlang::enquos(index_method, return, cuvle, qaqc_dir)
-    names(args) <- c("index_method", "return", "cuvle", "qaqc_dir")
+    args <- list(
+      index_method = index_method,
+      return = return,
+      cuvle = cuvle,
+      qaqc_dir = qaqc_dir
+    )
+
   } else {
     args <- arg_names
   }

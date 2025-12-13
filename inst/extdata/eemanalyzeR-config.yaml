@@ -22,6 +22,10 @@
     sblank_pattern: "Blank|blank|BLK"
     check_pattern: "Tea|tea"
 
+ # arguments for adding blanks to samples
+  blk_validate: TRUE
+  blanklist: NULL
+
   # processing arguments from process_eems()
   ex_clip:
     - 247

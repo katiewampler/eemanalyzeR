@@ -22,7 +22,7 @@ eemanalyzeR allows the user to control data processing via configuration setting
 various steps of the automated data processing code. This function allows the user to see values
 of the processing configuration for the current processing environment. Note: This configuration
 resets to either the package defaults (stored in package data as eemanalyzeR-config.yaml) or in
-the user's default settins (stored in a separate yaml file on user's computer) when the package
+the user's default settings (stored in a separate yaml file on user's computer) when the package
 is re-loaded (such as via \code{library(eemanalyzeR)})
 }
 \examples{

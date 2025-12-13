@@ -162,7 +162,7 @@ plot.abslist <- function(x, pal = NULL, ...) {
 
   plot <- ggplot2::ggplot(data = abs, aes(x = .data$wavelength, y = .data$abs)) +
     ggplot2::geom_line(linewidth = 1) +
-    labs(x = "Wavelength (nm)", y = "Absorbance (AU)") + facet_wrap(~sample)
+    labs(x = "Wavelength (nm)", y = "Absorbance (AU)") + facet_wrap(~sample, scales="free")
 
   # add custom colors if specified
   if (!is.null(pal)) {

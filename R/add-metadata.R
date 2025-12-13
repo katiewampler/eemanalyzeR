@@ -50,7 +50,8 @@ add_metadata <- function(meta, x,
                          )) {
   class_type <- class(x)
 
-  stopifnot("data.frame" %in% class(meta), class_type %in% c("abslist", "eemlist"))
+  stopifnot("data.frame" %in% class(meta), class_type %in% c("abslist", "eemlist"),
+            length(x) > 0)
 
   names <- get_sample_info(x, "sample")
 

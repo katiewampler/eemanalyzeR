@@ -2,48 +2,42 @@
 % Please edit documentation in R/run-eems_draft.R
 \name{run_eems}
 \alias{run_eems}
-\title{Takes raw EEMs and absorbance data from Aqualog, returns cleaned, processed data}
+\title{Load, clean, and process EEMs and absorbance data}
 \usage{
-run_eems(prjpath, output_dir, filename, interactive = TRUE, ...)
+run_eems(input_dir, output_dir, filename, interactive = TRUE, ...)
 }
 \arguments{
-\item{prjpath}{path to folder with raw samples}
+\item{input_dir}{Path to folder containing raw EEMs and/or absorbance files.}
 
-\item{output_dir}{TODO}
+\item{output_dir}{Path to save the processed data.}
 
-\item{filename}{TODO}
+\item{filename}{A character string, used for file names.}
 
-\item{interactive}{TODO}
+\item{interactive}{Logical, used to determine if user input should be used.}
 
-\item{...}{}
+\item{...}{additional arguments used to make one time modifications to processing arguments. See}
 }
 \value{
-saves processed EEMs as .csv and .rds files, absorbance as .csv and .rds, and metadata as .csv
-creates plots for each sample and calculates indices.
+A list of the processed data which is also saved to the output directory specified.
+The list contains:
+\itemize{
+\item \strong{eemlist:} the \code{eemlist}
+\item \strong{abslist:} the \code{abslist}
+\item \strong{readme:} a character vector containing information about the data processing steps
+\item \strong{meta:} the metadata associated with the samples, may be \code{NULL} if not provided
+\item \strong{indices:} a list of EEMs and absorbance indices, may be \code{NULL} if not provided
+\item \strong{eem_plot:} a list of EEMs plots, may be \code{NULL} if not provided
+\item \strong{abs_plot:} a ggplot2 object of the absorbance data, may be \code{NULL} if not provided
+}
 }
 \description{
-Takes raw EEMs and absorbance data from Aqualog, returns cleaned, processed data
+The main high-level function of the \link{eemanalyzeR} package.
+It is designed for users who want a fast, automated workflow without needing
+to write complex R code or string together a bunch of processing functions.
+By pointing the function to a folder of raw EEMs or absorbance data,
+specifying an output directory, and providing a file prefix for naming
+outputs, the function performs the full processing pipeline from start to finish.
 }
 \details{
-The following steps are chosen by default:
-
- -The file directory is created, raw files are zipped
-
- -A process file is created, The instrument blank is subtracted from the
- samples, raman scattering is removed and interpolated, rayleigh scattering
- is removed but not interpolated, widths are determined automatically,
- samples are corrected for inner filter effects, raman normalized, and
- normalized for DOC, excitation is clipped from 247 to 450 nm, emission
- is clipped from 247 to 550 nm
-
- -Sample are plotted individually and a summary plot using the parula
- color palette with descriptions for the plot titles, the peaks are not
- annotated on the plot. Plots are created for DOC normalized data (_DOC),
- and for non normalized data.
-
- -Fluorescence indices are reported for data that has and hasn't been DOC
- normalized, sample are reported in rows.
-
- If you want to change these defaults add the appropriate arguments into the
- function to change the defaults for the processing functions.
+#TODO: instructions on the ways to modify the parameters
 }

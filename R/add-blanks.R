@@ -1,6 +1,6 @@
 #' Check blanks and add to sample data
 #'
-#' Allows the user to visually check excitation–emission matrix (EEM) plots of the blanks,
+#' Allows the user to visually check excitation-emission matrix (EEM) plots of the blanks,
 #' and then, if approved, the blanks will be added to the `eem` objects for further processing.
 #'
 #' @md
