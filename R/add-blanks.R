@@ -36,7 +36,9 @@
 #' eemlist <- add_metadata(metadata, example_eems)
 #' augment_eemlist <- add_blanks(eemlist, validate = FALSE)
 add_blanks <- function(eemlist,
-                       blanklist = NULL,
+                       blanklist = NULL, 
+                       # TODO maybe it's not a good idea to add the blanklist to the config since it's not stable across sessions
+                       # Could add to .pkgenv separately like readme
                        validate = TRUE) {
   stopifnot(
     class(eemlist) %in% c("eemlist"),

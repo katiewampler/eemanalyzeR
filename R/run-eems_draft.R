@@ -19,7 +19,20 @@
 #' @details #TODO: instructions on the ways to modify the parameters
 #'
 #' @export
-run_eems <- function(input_dir, output_dir, filename, interactive = TRUE, ...) {
+#'
+run_eems <- function(
+
+
+  # REQUIRED ARGUMENTS (bare minimum)
+  prjpath,
+  # TODO either force output dir here or in package config, not both
+  output_dir,
+  filename,
+  interactive = TRUE,
+  ...
+    )
+
+{
   # Apply the required arguments to the package environment
   # Option two: load the package environment here?
 
@@ -137,6 +150,7 @@ run_eems <- function(input_dir, output_dir, filename, interactive = TRUE, ...) {
       em_clip = get_em_clip(.fnenv)
     )
   )
+  message("All EEMs and Absorbance data successfully processed. See readme for notes and warnings.")
 
   # Or we could do it all in one step
   # processed_eems <- process_eem(eems, processed_abs,
@@ -155,10 +169,10 @@ run_eems <- function(input_dir, output_dir, filename, interactive = TRUE, ...) {
   # Validation checks on Processed EEMs and Absorbance Data? ----
 
   # Report the data ----
-
   # create plots
   processed_eems_plots <- plot(processed_eems)
   processed_abs_plots <- plot(processed_abs)
+  message("EEMs and absorbance successfully plotted.")
 
   # Save indices
   indices <- get_indices(processed_eems,

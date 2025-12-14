@@ -7,6 +7,7 @@
 #' @param abslist An `abslist` object.
 #' @param index_method Either "eemanalyzeR", "eemR", "usgs", or a custom
 #'   function. See **Details**.
+#' #TODO I don't think the package environment has support for index_method to be a function yet
 #' @param tolerance Maximum percent deviation that the check standard can vary
 #'   from the long-term values without being flagged.
 #' @param return Output format: "long" or "wide".
@@ -82,11 +83,11 @@
 #' )
 get_indices <- function(eemlist, abslist, index_method = "eemanalyzeR",
                         tolerance = 0.2, return = "long",
-                        cuvle = 1, qaqc_dir = NULL, arg_names = NULL) {
+                        cuvle = 1, qaqc_dir = NA, arg_names = NULL) {
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist))
 
   #specify qaqc dir if not specified
-  if(is.null(qaqc_dir)){qaqc_dir = .qaqc_dir()}
+  if(is.na(qaqc_dir)){qaqc_dir = .qaqc_dir()}
 
   # check if processing has been done, not warn that indices may be unreliable
   steps <- check_processing(eemlist)

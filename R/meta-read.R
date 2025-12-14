@@ -18,7 +18,7 @@
 #' @examples
 #' metadata <- meta_read(system.file("extdata", package = "eemanalyzeR"))
 meta_read <- function(input,
-                      sheet = NULL,
+                      sheet = NA,
                       validate_metadata = TRUE) {
   # Figure out whether the user input a directory (automatic metadata file choice)
   # or specified a file (manual file choice)
@@ -55,7 +55,9 @@ meta_read <- function(input,
         call. = FALSE
       )
     }
-    meta <- readxl::read_excel(meta_file, sheet = sheet)
+    meta <- readxl::read_excel(meta_file, sheet = ifelse(is.na(sheet),
+                                                        1,
+                                                        sheet))
   } else {
     meta <- read.csv(meta_file)
   }

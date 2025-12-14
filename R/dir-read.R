@@ -35,7 +35,7 @@
 #' # Load absorbance samples while skipping EEMs and other files
 #' abs <- abs_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "SEM|BEM|waterfall")
 eem_dir_read <- function(input_dir,
-                         pattern = NULL,
+                         pattern = NA,
                          skip = "(?i)abs",
                          file_ext = "dat",
                          recursive = FALSE,
@@ -83,13 +83,13 @@ eem_dir_read <- function(input_dir,
 
   # only gets files with correct file extension and ones that optionally match the pattern
   # RPC refactored this because I don't like nested loops. Also wanted to check the tests
-  if (is.null(pattern)) {
+  if (is.na(pattern)) {
     pattern_choices <- rep(TRUE, length(files)) # We want NULL to select all files
   } else {
     pattern_choices <- grepl(pattern, files, ignore.case = FALSE)
   }
 
-  if (is.null(skip)) {
+  if (is.na(skip)) {
     skip_choices <- rep(TRUE, length(files))
   } else {
     skip_choices <- !grepl(skip, files, ignore.case = FALSE)
@@ -118,7 +118,7 @@ eem_dir_read <- function(input_dir,
 #' @name dir_read
 #' @export
 abs_dir_read <- function(input_dir,
-                         pattern = NULL,
+                         pattern = NA,
                          skip = "SEM|BEM|Waterfall",
                          file_ext = "dat",
                          recursive = FALSE) {
@@ -135,13 +135,13 @@ abs_dir_read <- function(input_dir,
 
   # only gets files with correct file extension and ones that optionally match the pattern
   # RPC refactored this because I don't like nested loops. Also wanted to check the tests
-  if (is.null(pattern)) {
+  if (is.na(pattern)) {
     pattern_choices <- rep(TRUE, length(files)) # We want NULL to select all files
   } else {
     pattern_choices <- grepl(pattern, files, ignore.case = FALSE)
   }
 
-  if (is.null(skip)) {
+  if (is.na(skip)) {
     skip_choices <- rep(TRUE, length(files))
   } else {
     skip_choices <- !grepl(skip, files, ignore.case = FALSE)

@@ -8,7 +8,7 @@
 \usage{
 eem_dir_read(
   input_dir,
-  pattern = NULL,
+  pattern = NA,
   skip = "(?i)abs",
   file_ext = "dat",
   recursive = FALSE,
@@ -17,7 +17,7 @@ eem_dir_read(
 
 abs_dir_read(
   input_dir,
-  pattern = NULL,
+  pattern = NA,
   skip = "SEM|BEM|Waterfall",
   file_ext = "dat",
   recursive = FALSE

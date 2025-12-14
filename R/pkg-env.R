@@ -21,10 +21,67 @@
 # TODO - document these defaults -> documented in data.R under  eemanalyzer_processing_defaults
 
 # Create an environment to store EEMS processing arguments and parameters
-default_config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"),
+default_config <- yaml::yaml.load_file(file.path(system.file("extdata", package = "eemanalyzeR"),
                           "eemanalyzeR-config.yaml"))
 
-.pkgenv <- rlang::new_environment(data = default_config, parent = rlang::empty_env())
+.pkgenv <- rlang::new_environment(data = list(config = default_config), parent = rlang::empty_env())
+
+#' List current eemanalyzeR configuration
+#' 
+#' Returns a named list of all configuration options for eemanalyzeR data processing.
+#' 
+#' eemanalyzeR allows the user to control data processing via configuration settings that modify
+#' various steps of the automated data processing code. This function allows the user to see values
+#' of the processing configuration for the current processing environment. Note: This configuration
+#' resets to either the package defaults (stored in package data as eemanalyzeR-config.yaml) or in
+#' the user's default settins (stored in a separate yaml file on user's computer) when the package
+#' is re-loaded (such as via `library(eemanalyzeR)`)
+#' 
+#' @param env the environment to search for the configuration settings. Defaults to the package
+#'        environment (.pkgenv). It is unlikely the user would change this default unless debugging custom
+#'        processing scripts.
+#' @md
+#' @returns a named list with the configuration setting names and their values
+#' @export
+#' @examples
+#' # Get current configuration options
+#' current_settings <- list_config()
+list_config <- function(env = .pkgenv) {
+  rlang::env_get(env, "config")
+}
+
+#' Validate the eemanalyzeR configuration
+#' 
+#' Checks that all settings in the eemanalyzeR config are valid options and warns user if not
+#' 
+#' @param env environment where to find the config. Defaults to the package environment
+#' 
+#' @export
+#' @examples
+#' # Example validation
+#' validate_config()
+validate_config <- function(env = .pkgenv) {
+  # Get the default config template
+  default_config_modes <- lapply(default_config, mode)
+  default_config_modes <- default_config_modes[order(names(default_config_modes))]
+  default_config_lengths <- lapply(default_config, length)
+  default_config_lengths <- default_config_lengths[order(names(default_config_lengths))]
+
+  # Read in the config
+  current_config <- list_config(env)
+  # Get the current configuration modes
+  config_modes <- lapply(current_config, mode)
+  config_modes <- config_modes[order(names(config_modes))]
+  # Get the current configuration lengths
+  config_lengths <- lapply(current_config, length)
+  config_lengths <- config_lengths[order(names(config_lengths))]
+
+  # Compare the Modes first then lengths
+  stopifnot(identical(default_config_modes, config_modes) &
+    identical(default_config_lengths, config_lengths))
+
+  invisible(current_config)
+}
 
 
 # TODO: document this with all the defaults -> see data.R
@@ -70,34 +127,24 @@ modify_config <- function(..., env = .pkgenv) {
   if(length(not_matching_names) > 0) {
     stop(simpleError(paste("Cannot modify default:", not_matching_names, " is not valid")))
   }
+  # Add the new variables to the old config
+  old_config <- list_config()
+  new_config <- utils::modifyList(old_config, newdefaults)
+
   # Bind the variables to the environment
-  rlang::env_bind(env, ...)
+  rlang::env_bind(env, config = new_config)
+
+  # Validate the config
+  tryCatch(
+    validate_config(env),
+    error = function(e) {
+      reset_config()
+      stop("New config not valid. Reset to package defaults.")
+    }
+  )
   invisible(newdefaults)
 }
 
-#' List current eemanalyzeR configuration
-#'
-#' Returns a named list of all configuration options for eemanalyzeR data processing.
-#'
-#' eemanalyzeR allows the user to control data processing via configuration settings that modify
-#' various steps of the automated data processing code. This function allows the user to see values
-#' of the processing configuration for the current processing environment. Note: This configuration
-#' resets to either the package defaults (stored in package data as eemanalyzeR-config.yaml) or in
-#' the user's default settings (stored in a separate yaml file on user's computer) when the package
-#' is re-loaded (such as via `library(eemanalyzeR)`)
-#'
-#' @param env the environment to search for the configuration settings. Defaults to the package
-#'        environment (.pkgenv). It is unlikely the user would change this default unless debugging custom
-#'        processing scripts.
-#' @md
-#' @returns a named list with the configuration setting names and their values
-#' @export
-#' @examples
-#' # Get current configuration options
-#' current_settings <- list_config()
-list_config <- function(env = .pkgenv) {
-  rlang::env_get_list(env, rlang::env_names(env))
-}
 
 #' Reset all eemanalyzeR settings to package defaults
 #'
@@ -122,7 +169,3 @@ reset_config <- function(env = .pkgenv) {
   modify_config(!!!default_config, env = env)
   invisible(list_config(env = env))
 }
-
-# TODO Create some function to validate the settings? Like which ones are numeric, logical, lists, etc?
-# So if the user messes something up the error isn't thrown by the function that calls it but is caught
-# early
