@@ -69,10 +69,12 @@ load_user_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR"
     #modify in this session
     modify_config(!!!modified_config, env = env)
     packageStartupMessage("User configuration loaded.")
+  } else {
+    packageStartupMessage("User configuration not found. If eemanalyzeR package defaults are not ok, create user configuration with edit_config()")
+
   }
   # Don't modify anything if the user config isn't found
   # invisibly return the completed configuration
-  packageStartupMessage("User configuration not found. If eemanalyzeR package defaults are not ok, create user configuration with edit_config()")
   invisible(list_config())
 
 }
