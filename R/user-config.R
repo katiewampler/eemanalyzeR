@@ -30,6 +30,10 @@ edit_user_config <- function() {
 
   defaults_file <- file.path(user_dir, "user-config.yaml")
 
+  # TODO should be a separate function to write the config
+  # As written it would cause problems if we ever update the package defaults unless
+  # the user manually deletes the file. One solution would be to always delete the user
+  # config whenever the package is installed/updated
   # if file doesn't exist, write template
   if (!file.exists(defaults_file)) {
     file.copy(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"),
@@ -42,7 +46,7 @@ edit_user_config <- function() {
   #apply user edited configuration
   load_user_config()
 
-  message("User configuration applied.")
+  message("Changes to user configuration applied.")
 }
 
 #' @param config_path path the YAML file with user default values
@@ -57,21 +61,23 @@ load_user_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR"
                         env = .pkgenv){
   # load built-in defaults
   config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"))
-
   # try to load user file
-  defaults_file <- file.path(config_path, "user-config.yaml")
-  if(file.exists(defaults_file)){
-  user_config <- yaml::read_yaml(defaults_file)
-  config <- utils::modifyList(config, user_config)
+  user_defaults_file <- file.path(config_path, "user-config.yaml")
+  if(file.exists(user_defaults_file)){
+    user_config <- yaml::read_yaml(user_defaults_file)
+    modified_config <- utils::modifyList(config, user_config, keep.null = TRUE)
+    #modify in this session
+    modify_config(!!!modified_config, env = env)
+    packageStartupMessage("User configuration loaded.")
   }
-  #modify in this session
-  modify_config(!!!config, env = env)
-  # invisibly return the modified configuration
+  # Don't modify anything if the user config isn't found
+  # invisibly return the completed configuration
+  packageStartupMessage("User configuration not found. If eemanalyzeR package defaults are not ok, create user configuration with edit_config()")
   invisible(list_config())
 
 }
 
-# load the user config on package load
+# Load the user config on package load
 rlang::on_load({
   load_user_config()
 })

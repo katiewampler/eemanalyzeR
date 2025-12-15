@@ -14,7 +14,7 @@ create_setter_function <- function(parameter) {
       # make new config a named list object
       new_parm <- list(value)
       names(new_parm) <- !!parameter
-      new_config <- utils::modifyList(old_config, new_parm)
+      new_config <- utils::modifyList(old_config, new_parm, keep.null = TRUE)
       # Bind the variables to the environment
       rlang::env_bind(env, config = new_config)
       invisible(old_config)

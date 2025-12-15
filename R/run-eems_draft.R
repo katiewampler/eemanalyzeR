@@ -24,19 +24,17 @@ run_eems <- function(
 
 
   # REQUIRED ARGUMENTS (bare minimum)
-  prjpath,
-  # TODO either force output dir here or in package config, not both
+  input_dir,
   output_dir,
   filename,
+  # Optional arguments
   interactive = TRUE,
   ...
     )
 
 {
-  # Apply the required arguments to the package environment
-  # Option two: load the package environment here?
 
-  # TODO Apply the varargs to some environment (or data structure) only in the
+  # Apply the varargs to function environment  only in the
   # function scope so these aren't stored elsewhere.
   varargs <- rlang::list2(...)
   # Pick out the varargs that match the package env names
@@ -47,6 +45,7 @@ run_eems <- function(
 
   # Modify the function environment processing parameters with any from varargs
   modify_config(!!!parameters_to_modify, env = .fnenv)
+  # Add the required arguments to the function environment
 
   # Decide whether the script is running in interactive or batch mode
   #rlang::local_interactive(value = interactive)
@@ -70,7 +69,7 @@ run_eems <- function(
   )
   # TODO don't warn user about overwriting a blank readme since eem_dir_read will overwrite tha abs_dir_read readme
 
-  # TODO maybe meta_file should be default over prjpath
+  # TODO maybe meta_file should be default over input_dir
   metadata <- meta_read(input_dir,
     sheet = get_meta_sheet(.fnenv),
     validate_metadata = get_meta_validate(.fnenv)
@@ -190,7 +189,7 @@ run_eems <- function(
   save_raw_file_status <- export_data(processed_eems,
     processed_abs,
     filename,
-    output_dir = get_output_dir(.fnenv), # TODO change to run_eems argument
+    output_dir = get_output_dir(.fnenv), # TODO figure out how to handle missing output dir
     meta = metadata,
     indices = indices,
     eem_plot = processed_eems_plots,

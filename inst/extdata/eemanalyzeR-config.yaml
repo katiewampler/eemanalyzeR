@@ -24,7 +24,7 @@
 
  # arguments for adding blanks to samples
   blk_validate: TRUE
-  blanklist: NULL
+  blanklist: NULL # TODO blanklist should be in pkg environment outside config (like readme)
 
   # processing arguments from process_eems()
   ex_clip:
