@@ -80,6 +80,8 @@ load_user_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR"
 }
 
 # Load the user config on package load
-rlang::on_load({
-  load_user_config()
-})
+# TODO this aborts the package load if user config is invalid, which we DON'T want
+# Not sure how to fix this yet
+# rlang::on_load({
+#   load_user_config()
+# })

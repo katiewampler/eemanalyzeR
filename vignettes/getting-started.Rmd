@@ -113,7 +113,7 @@ the following arguments:
 -   **filename:** the name of your project, used to name your exported
     files.
 
-```{r eval=TRUE, message=FALSE, warning=FALSE}
+```{r eval=FALSE, message=FALSE, warning=FALSE}
   run_eems(input_dir = system.file("extdata", package = "eemanalyzeR"),
            filename = "eemanalyzeR-example")
 ```
@@ -121,7 +121,7 @@ the following arguments:
 This function will export the processed data, indices calculations, and
 plots by defaults we can look at the function outputs.
 
-```{r echo=FALSE}
+```{r eval=FALSE, echo=FALSE}
 tree_output <- capture.output(fs::dir_tree(file.path(tempdir(), "eemanalyzeR-example")))
 tree_output[1] <- "~/"
 

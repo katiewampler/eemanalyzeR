@@ -156,6 +156,7 @@
 #'   Recommended to keep `TRUE`.
 #' - **sample_type_regex**: Used by [add_metadata()]. A **named list** of regular expressions used to identify
 #'   instrument blanks, sample blanks, check standards, and samples via pattern matching.
+#' - **blank_validate**: Used by [add_blanks()]. Logical vector length one indicating whether blanks should be validated.
 #' - **ex_clip**: Used by [process_eem()]. Numeric vector of length two specifying the minimum and
 #'   maximum excitation wavelengths to keep.
 #' - **em_clip**: Used by [process_eem()]. Numeric vector of length two specifying the minimum and

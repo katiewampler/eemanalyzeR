@@ -32,6 +32,9 @@
 
 #' Removes extra list items from eemlist, replaces sample with meta_name for matching
 #' @noRd
+# TODO running an eemlist through this function removes the metadata added attribute.
+# Need to keep metadata after making the base eem
+# Also this is never called by another function as far as I can tell.
 .make_base_eem <- function(x){
   if(.is_eemlist(x)){
     x <- lapply(x, .make_base_eem)

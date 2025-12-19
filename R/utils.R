@@ -87,5 +87,3 @@
 
   return(list(eem_mdl = eem_mdl, abs_mdl=abs_mdl))
 }
-
-

@@ -11,6 +11,7 @@
 #' @param output_dir Path to save the processed data.
 #' @param filename A character string, used for file names.
 #' @param interactive Logical, used to determine if user input should be used.
+#' @param blanklist eemslist of blank files to subract from samples. Automatically detects instrument blanks if not provided
 #' @param ... additional arguments used to make one time modifications to processing arguments. See
 #'
 #' @inherit export_data return
@@ -29,6 +30,7 @@ run_eems <- function(
   filename,
   # Optional arguments
   interactive = TRUE,
+  blanklist = NULL,
   ...
     )
 
@@ -90,9 +92,18 @@ run_eems <- function(
   # if you try only to do the iblank then it doesn't allow you to pick the next sblank
   # when the iblank is bad
   # NOTE: rlang::is_interactive might not work great with box large file storage
-  eems <- add_blanks(eems,
-    blanklist = get_blanklist(.fnenv),
-    validate = get_blk_validate(.fnenv)
+  # Automatically create blanklist
+  # if no blanks are provided
+  if (is.null(blanklist)) {
+    # separate into blanklist and eemlist based on pattern given
+    blanklist <- subset_type(eemlist, type = "iblank")
+  }
+  # First validate blanklist (only if in interactive session)
+  if(interactive & get_blk_validate()) validate_blanks(blanklist)
+  # Then only add blanks when eemslist is valid
+  eems <- add_blanks(
+    eems,
+    blanklist
   )
 
   # Correct the eems and absorbance for dilutions

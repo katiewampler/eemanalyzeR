@@ -28,6 +28,7 @@ structural issues that could cause problems during processing.
 Recommended to keep \code{TRUE}.
 \item \strong{sample_type_regex}: Used by \code{\link[=add_metadata]{add_metadata()}}. A \strong{named list} of regular expressions used to identify
 instrument blanks, sample blanks, check standards, and samples via pattern matching.
+\item \strong{blank_validate}: Used by \code{\link[=add_blanks]{add_blanks()}}. Logical vector length one indicating whether blanks should be validated.
 \item \strong{ex_clip}: Used by \code{\link[=process_eem]{process_eem()}}. Numeric vector of length two specifying the minimum and
 maximum excitation wavelengths to keep.
 \item \strong{em_clip}: Used by \code{\link[=process_eem]{process_eem()}}. Numeric vector of length two specifying the minimum and

@@ -106,7 +106,8 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
     tea_abs <- add_metadata(tea_meta, tea_abs)
 
     #blank subtract
-    tea_eems <- add_blanks(tea, validate = FALSE)
+    tea_iblanks <- subset_type(tea, "iblank")
+    tea_eems <- add_blanks(tea, tea_iblanks)
     tea_eems <- subtract_blank(tea_eems)
 
     #remove scattering

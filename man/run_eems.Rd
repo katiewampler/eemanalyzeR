@@ -4,7 +4,14 @@
 \alias{run_eems}
 \title{Load, clean, and process EEMs and absorbance data}
 \usage{
-run_eems(input_dir, output_dir, filename, interactive = TRUE, ...)
+run_eems(
+  input_dir,
+  output_dir,
+  filename,
+  interactive = TRUE,
+  blanklist = NULL,
+  ...
+)
 }
 \arguments{
 \item{input_dir}{Path to folder containing raw EEMs and/or absorbance files.}
@@ -14,6 +21,8 @@ run_eems(input_dir, output_dir, filename, interactive = TRUE, ...)
 \item{filename}{A character string, used for file names.}
 
 \item{interactive}{Logical, used to determine if user input should be used.}
+
+\item{blanklist}{eemslist of blank files to subract from samples. Automatically detects instrument blanks if not provided}
 
 \item{...}{additional arguments used to make one time modifications to processing arguments. See}
 }

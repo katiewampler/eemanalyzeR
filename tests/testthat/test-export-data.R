@@ -13,7 +13,8 @@ test_that("data export works", {
   #do processing (manually so we can check the readme)
     eemlist <- add_metadata(metadata,example_eems)
     abslist <- add_metadata(metadata, example_abs)
-    eemlist <- add_blanks(eemlist, validate=FALSE)
+    blanklist <- subset_type(eemlist, "iblank")
+    eemlist <- add_blanks(eemlist, blanklist)
     expect_warning(eemlist <- process_eem(eemlist, abslist), "trimmed EEM's to match absorbance data wavelengths")
 
   #test exporting minimum

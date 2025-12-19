@@ -3,7 +3,8 @@ test_that("we can get the mdl for eems data", {
   mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),"eem-mdl.rds"))
   abslist <- add_metadata(metadata, example_abs)
   eemlist <- add_metadata(metadata, example_eems)
-  eemlist <- add_blanks(eemlist, validate=FALSE)
+  blanklist <- subset_type(eemlist, type = "iblank")
+  eemlist <- add_blanks(eemlist, blanklist)
 
   #should return an error because it hasn't been processed the same as the mdl
   expect_error(check_eem_mdl(eemlist[[1]], mdl, ex = 270:280, em=300:320), "attr")

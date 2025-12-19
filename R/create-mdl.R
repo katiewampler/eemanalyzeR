@@ -107,7 +107,9 @@ create_mdl <- function(dir, meta_name = NULL, sheet = NULL, iblank = "BEM",
     }
 
     # blank correct blanks
-    blank_eems <- add_blanks(blank, validate = FALSE)
+    # TODO: What does this mean? Does it just do iblanks?
+    iblanks <- subset_type(blank, "iblank")
+    blank_eems <- add_blanks(blank, iblanks)
 
     # blank subtract
     blank_eems <- subtract_blank(blank_eems)

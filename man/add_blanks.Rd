@@ -4,15 +4,12 @@
 \alias{add_blanks}
 \title{Check blanks and add to sample data}
 \usage{
-add_blanks(eemlist, blanklist = NULL, validate = TRUE)
+add_blanks(eemlist, blanklist)
 }
 \arguments{
 \item{eemlist}{An \code{eemlist} object.}
 
 \item{blanklist}{Optional. An \code{eem} or \code{eemlist} containing the blank EEM(s).}
-
-\item{validate}{If \code{TRUE}, the function prints the blanks and requests user validation,
-otherwise validation is skipped and blanks are added automatically.}
 }
 \value{
 An \code{eemlist} where each \code{eem} object has two added components:
@@ -41,5 +38,6 @@ the blank will be removed from the sample set and a note will be written to the 
 }
 \examples{
 eemlist <- add_metadata(metadata, example_eems)
-augment_eemlist <- add_blanks(eemlist, validate = FALSE)
+blanklist <- subset_type(eemlist, "iblank")
+augment_eemlist <- add_blanks(eemlist, blanklist)
 }
