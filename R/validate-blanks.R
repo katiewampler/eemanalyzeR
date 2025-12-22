@@ -4,7 +4,7 @@
 #'
 #' @param blanklist An `eemlist` containing containing the blank EEMs.
 #'
-#' @return TRUE if blanks meet validation standards, FALSE if they do not.
+#' @return A blanklist with validated blanks, or an error if no valid blanks are selected
 #'
 #' @export
 #' @md
@@ -12,33 +12,43 @@
 #' @examples
 #' eems <- add_metadata(metadata, example_eems)
 #' eems <- subset_type(eems, type = "iblank")
-#' continue <- validate_blanks(eems)
+#' valid_blanklist <- validate_blanks(eems)
 validate_blanks <- function(blanklist) {
 
-  # Plot the instrument blank
-  if (rlang::is_interactive()) {
-    blank_plot1 <- ggpubr::ggarrange(plotlist = plot(unique(blanklist), title="sample"), common.legend = T, legend = "right")
-    blank_plot2 <- ggpubr::ggarrange(
-      plotlist = plot(remove_scattering(unique(blanklist, , title="sample"), type = c(T, T, T, T), interpolate = c(F, F, F, F))),
-      common.legend = T, legend = "right"
-    )
+  # Split the blanklist into iblanks and sblank
+  iblank <- unique(subset_type(blanklist, "iblank"))
+  sblank <- unique(subset_type(blanklist, "sblank"))
 
-    blank_plot <- ggpubr::ggarrange(blank_plot1, blank_plot2, ncol = 1, align = "h")
-    print(blank_plot)
-    # print("is_interactive didn't work")
+  # Instrument blank - First check it is valid by plotting
+  iblank_valid <- plot_blank_and_ask(iblank)
+
+  # if iblank is NOT valid try the sblanks (in sequence)
+  if(!iblank_valid) {
+    sblank_valid <- FALSE
+    #try to validate using sblanks
+    while(length(sblank) > 0 & !sblank_valid){
+      try_sblank <- sblank[1]
+      sblank_valid <- plot_blank_and_ask(try_sblank)
+
+      if(sblank_valid) {
+        valid_blanklist <- try_sblank
+
+        #write to readme
+        .write_readme_line(paste0("Instrument blank was replaced with analytical blank: ", try_sblank$meta_name), "eem_add_blank", NULL)
+
+      }else {
+        #remove non accepted blank and try again
+        sblank[[1]] <- NULL
+      }
+    }
+  } else {
+    valid_blanklist <- iblank
   }
 
-  # TODO - write validation data to tracking file
+  # What to do if no valid blanks?
+  stopifnot("No valid instrument or sample blanks found. Aborting processing" = exists("valid_blanklist"))
 
-  Sys.sleep(1)
-  # Prompt user for input to accept or decline the warning
-  continue <- .yesorno(
-    "After reviewing blank(s), do you want to continue processing samples",
-    "Blank accepted and added to samples",
-    "Blank not accepted"
-  )
-
-  return(continue)
+  return(valid_blanklist)
 }
 
 
@@ -73,4 +83,31 @@ validate_blanks <- function(blanklist) {
 
       message("Improper response; please respond with 'y' or 'n'.")
     }
+}
+
+#' Helper function to plot blanks for validation
+#'
+#' @param blanklist An `eemlist` containing containing the blank EEMs.
+#'
+#' @return TRUE if blank is valid, FALSE if not. Based on user input. If not run in interactive session returns TRUE
+#' @noRd
+plot_blank_and_ask <- function(blanklist) {
+  blank_plot1 <- ggpubr::ggarrange(plotlist = plot(unique(blanklist), title="sample"), common.legend = T, legend = "right")
+    blank_plot2 <- ggpubr::ggarrange(
+      plotlist = plot(remove_scattering(unique(blanklist, , title="sample"), type = c(T, T, T, T), interpolate = c(F, F, F, F))),
+      common.legend = T, legend = "right"
+    )
+    blank_plot <- ggpubr::ggarrange(blank_plot1, blank_plot2, ncol = 1, align = "h")
+  
+  # TODO - why does plotting sometimes not happen until after accepting?
+  print(blank_plot)
+  
+  Sys.sleep(1)
+  # Prompt user for input to accept or decline the warning
+  continue <- .yesorno(
+    "After reviewing blank(s), do you want to continue processing samples",
+    "Blank accepted and added to samples",
+    "Blank not accepted"
+  )
+  return(continue)
 }

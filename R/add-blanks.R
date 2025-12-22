@@ -60,39 +60,6 @@ add_blanks <- function(eemlist,
     stop("metadata must be added to link the samples and blanks, please run 'eemanalyzeR::add_metadata' first")
   }
 
-  # TODO create validate blank function that runs separately BEFORE add_blanks
-  # # Validate the instrument blank
-  # if (validate) {
-  #   continue <- validate_blanks(unique(blanklist))
-  # } else {
-  #   continue <- TRUE
-  # }
-
-  # # if continue is false, try again
-  # if(!continue){
-  #   sblank <-  subset_type(eemlist, type = "sblank")
-
-  #   #try to validate using sblanks
-  #   while(length(sblank) > 0 & !continue){
-  #     continue <- validate_blanks(sblank[1])
-
-  #     if(continue){
-  #       #edit eemlist and blanklist
-  #         eemlist <- subset_type(eemlist, type="iblank", negate=TRUE)
-  #         eemlist <- subset_samples(eemlist, "meta_name", sblank[[1]]$meta_name, verbose = FALSE)
-
-  #         blanklist <- sblank[1]
-
-  #       #write to readme
-  #         .write_readme_line(paste0("Instrument blank was replaced with analytical blank: ", sblank[[1]]$meta_name), "eem_add_blank", NULL)
-
-  #     }else{
-  #       #remove non accepted blank and try again
-  #       sblank[[1]] <- NULL
-  #     }
-  #   }
-  # }
-
   # makes sure blank has same wavelengths as sample then adds into eem as x_blK
   .add_x_blk <- function(eem, eem_blk) {
     if (!identical(eem$ex, eem_blk$ex) | !identical(eem$em, eem_blk$em)) {

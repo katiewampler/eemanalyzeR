@@ -11,7 +11,7 @@
 #' @param output_dir Path to save the processed data.
 #' @param filename A character string, used for file names.
 #' @param interactive Logical, used to determine if user input should be used.
-#' @param blanklist eemslist of blank files to subract from samples. Automatically detects instrument blanks if not provided
+#' @param blanklist eemslist of blank files to subract from samples. Automatically uses instrument blanks if not provided
 #' @param ... additional arguments used to make one time modifications to processing arguments. See
 #'
 #' @inherit export_data return
@@ -47,10 +47,11 @@ run_eems <- function(
 
   # Modify the function environment processing parameters with any from varargs
   modify_config(!!!parameters_to_modify, env = .fnenv)
-  # Add the required arguments to the function environment
+  # Add the output_dir to the function environment
+  modify_config("output_dir" = output_dir, env = .fnenv)
 
   # Decide whether the script is running in interactive or batch mode
-  #rlang::local_interactive(value = interactive)
+  rlang::local_interactive(value = interactive)
 
   # Following processing steps follow the flowchart from github ----------
 
@@ -96,11 +97,16 @@ run_eems <- function(
   # if no blanks are provided
   if (is.null(blanklist)) {
     # separate into blanklist and eemlist based on pattern given
-    blanklist <- subset_type(eemlist, type = "iblank")
+    blanklist <- subset_type(eems, type = c("iblank", "sblank"))
   }
   # First validate blanklist (only if in interactive session)
-  if(interactive & get_blk_validate()) validate_blanks(blanklist)
-  # Then only add blanks when eemslist is valid
+  if(interactive & get_blk_validate()) {
+    blanklist <- validate_blanks(blanklist)
+  } else {
+    # If we aren't validating then use only the iblank
+    blanklist <- subset_type(blanklist, "iblank")
+  }
+  # Add the correct blanks to the eemlist
   eems <- add_blanks(
     eems,
     blanklist

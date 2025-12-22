@@ -10,7 +10,7 @@ validate_blanks(blanklist)
 \item{blanklist}{An \code{eemlist} containing containing the blank EEMs.}
 }
 \value{
-TRUE if blanks meet validation standards, FALSE if they do not.
+A blanklist with validated blanks, or an error if no valid blanks are selected
 }
 \description{
 Plots validation instrument blank samples for manual inspection.
@@ -18,5 +18,5 @@ Plots validation instrument blank samples for manual inspection.
 \examples{
 eems <- add_metadata(metadata, example_eems)
 eems <- subset_type(eems, type = "iblank")
-continue <- validate_blanks(eems)
+valid_blanklist <- validate_blanks(eems)
 }
