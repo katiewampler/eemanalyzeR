@@ -100,7 +100,7 @@ run_eems <- function(
     blanklist <- subset_type(eems, type = c("iblank", "sblank"))
   }
   # First validate blanklist (only if in interactive session)
-  if(interactive & get_blk_validate()) {
+  if(interactive & get_blk_validate(.fnenv)) {
     blanklist <- validate_blanks(blanklist)
   } else {
     # If we aren't validating then use only the iblank
