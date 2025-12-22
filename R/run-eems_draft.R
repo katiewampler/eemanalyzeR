@@ -72,7 +72,9 @@ run_eems <- function(
   )
   # TODO don't warn user about overwriting a blank readme since eem_dir_read will overwrite tha abs_dir_read readme
 
-  # TODO maybe meta_file should be default over input_dir
+  # Find the metadata file in the input directory.
+  # NOTE: This function only uses the input_dir in the run_eems function. There's no
+  # option to supply a separate metadata file at this time. Could add that later
   metadata <- meta_read(input_dir,
     sheet = get_meta_sheet(.fnenv),
     validate_metadata = get_meta_validate(.fnenv)
@@ -194,13 +196,13 @@ run_eems <- function(
   indices <- get_indices(processed_eems,
     processed_abs,
     # Defaults for get_indices
-    # TODO these into wrapper/pkg_env
     index_method = get_index_method(.fnenv),
     tolerance = get_tolerance(.fnenv),
     return = get_return(.fnenv),
     cuvle = get_cuvle(.fnenv),
     qaqc_dir = get_qaqc_dir(.fnenv)
   )
+  message("Calculated absorbance and fluorescence indices")
 
   # Save Raw Files
   save_raw_file_status <- export_data(processed_eems,
@@ -213,7 +215,7 @@ run_eems <- function(
     abs_plot = processed_abs_plots,
     csv = get_csv(.fnenv)
   )
-  # TODO check raw file status after added to export-data
+  # TODO check raw file status after added to export-data?
 
   # Done!
 }
