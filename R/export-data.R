@@ -16,7 +16,7 @@
 #'   If a plot is provided, it is saved as a `.png` file. See [plot.abslist()] for plotting.
 #' @param indices If `NULL`, indices will not be exported. If a list of
 #'   indices is provided, it is saved.
-#' @param csv Logical. If `TRUE`, processed EEM and absorbance data are
+#' @param csv Logical. If `TRUE`, processed EEM and absorbance data and metadata are
 #'   written to `output_dir` as `.csv` files.
 #'
 #' @export
@@ -145,6 +145,10 @@ export_data <- function(eemlist, abslist, filename,
     )
     write.csv(indices$eem_index, file.path(output_dir, paste0("fluorindices_", filename, ".csv")),
       row.names = FALSE, quote = FALSE
+    )
+
+    write.csv(meta, file.path(output_dir, paste0("metadata_", filename, ".csv")),
+              row.names = FALSE, quote = FALSE
     )
   }
 

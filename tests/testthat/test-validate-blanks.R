@@ -1,7 +1,7 @@
 test_that("Instrument blank is accepted and valid blanklist returned", {
   eems <- add_metadata(metadata, example_eems)
   test_blanklist <- subset_type(eems, type = c("iblank", "sblank"))
-  
+
   # Do some mocked bindings here
   local_mocked_bindings(.yesorno = function(...) TRUE)
   valid_blanklist <- validate_blanks(test_blanklist)
@@ -16,7 +16,7 @@ test_that("Instrument blank is accepted and valid blanklist returned", {
 test_that("Instrument blank not accepted, but sample blank accepted and valid blanklist returned", {
   eems <- add_metadata(metadata, example_eems)
   test_blanklist <- subset_type(eems, type = c("iblank", "sblank"))
-  
+
   # Do some mocked bindings here
   local_mocked_bindings(.yesorno = mock_output_sequence(FALSE, TRUE))
   valid_blanklist <- validate_blanks(test_blanklist)
@@ -29,7 +29,7 @@ test_that("Instrument blank not accepted, but sample blank accepted and valid bl
 test_that("Processing aborts if no blanks are accepted", {
   eems <- add_metadata(metadata, example_eems)
   test_blanklist <- subset_type(eems, type = c("iblank", "sblank"))
-  
+
   # Do some mocked bindings here
   local_mocked_bindings(.yesorno = mock_output_sequence(FALSE, FALSE))
   expect_error(validate_blanks(test_blanklist), "No valid instrument or sample blanks found. Aborting processing")

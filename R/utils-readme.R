@@ -26,7 +26,7 @@ set_readme <-function(val){.pkgenv[["readme"]] <- val}
   readme <- get_readme()
   #if this is the first thing getting written to readme, create
   if(is.null(readme)){
-    readme <- list(eem_add_blank =NA, eem_blank_corrected=NA, eem_scatter_corrected=NA,
+    readme <- list(eem_add_blank = NA, eem_blank_corrected=NA, eem_scatter_corrected=NA,
                    eem_ife_corrected=NA, eem_raman_normalized=NA,
                    eem_doc_normalized=NA, eem_dil_corrected=NA,
                    abs_dil_corrected=NA, abs_doc_normalized=NA,

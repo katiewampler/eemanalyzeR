@@ -43,6 +43,8 @@ validate_blanks <- function(blanklist) {
     }
   } else {
     valid_blanklist <- iblank
+    .write_readme_line("Instrument blank was visually validated and accepted using the 'validate_blanks' function", "eem_add_blank", NULL)
+
   }
 
   # What to do if no valid blanks?
@@ -93,21 +95,23 @@ validate_blanks <- function(blanklist) {
 #' @noRd
 plot_blank_and_ask <- function(blanklist) {
   blank_plot1 <- ggpubr::ggarrange(plotlist = plot(unique(blanklist), title="sample"), common.legend = T, legend = "right")
-    blank_plot2 <- ggpubr::ggarrange(
+
+  blank_plot2 <- ggpubr::ggarrange(
       plotlist = plot(remove_scattering(unique(blanklist, , title="sample"), type = c(T, T, T, T), interpolate = c(F, F, F, F))),
       common.legend = T, legend = "right"
     )
-    blank_plot <- ggpubr::ggarrange(blank_plot1, blank_plot2, ncol = 1, align = "h")
-  
+
+  blank_plot <- ggpubr::ggarrange(blank_plot1, blank_plot2, ncol = 1, align = "h")
+
   # TODO - why does plotting sometimes not happen until after accepting?
-  print(blank_plot)
-  
-  Sys.sleep(1)
-  # Prompt user for input to accept or decline the warning
-  continue <- .yesorno(
-    "After reviewing blank(s), do you want to continue processing samples",
-    "Blank accepted and added to samples",
-    "Blank not accepted"
-  )
+    #only print if interactive, otherwise it will save a pdf we don't need
+    if(rlang::is_interactive()){print(blank_plot)}
+
+   #Prompt user for input to accept or decline the warning
+   continue <- .yesorno(
+     "After reviewing blank(s), do you want to continue processing samples",
+     "Blank accepted and added to samples",
+     "Blank not accepted"
+   )
   return(continue)
 }

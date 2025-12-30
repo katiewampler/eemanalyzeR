@@ -35,7 +35,7 @@ list of plots is provided, they are saved as \code{.png} files. See \code{\link[
 \item{abs_plot}{If \code{NULL}, absorbance plots will not be exported.
 If a plot is provided, it is saved as a \code{.png} file. See \code{\link[=plot.abslist]{plot.abslist()}} for plotting.}
 
-\item{csv}{Logical. If \code{TRUE}, processed EEM and absorbance data are
+\item{csv}{Logical. If \code{TRUE}, processed EEM and absorbance data and metadata are
 written to \code{output_dir} as \code{.csv} files.}
 
 \item{output_dir}{Path to save the data. Defaults to a temporary directory
