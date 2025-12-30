@@ -4,6 +4,7 @@
 #' both the samples and blanks. Data was loaded using [eem_dir_read()].
 #' For more details on the format of an eemlist, see the [eemR] package.
 #'
+#' @md
 #' @format An `eemlist` with eight samples:
 #' - **B1S1ExampleBlankBEM**: Fluorescence measured for a blank of Type 1 water
 #' - **B1S1ExampleBlankSEM**: Fluorescence measured for a sample of Type 1 water
@@ -23,6 +24,7 @@
 #' the absorbance data associated with the samples in [example_eems()]. Data was loaded using [abs_dir_read()].
 #' For more details on the format of an abslist, see [abs_read()].
 #'
+#' @md
 #' @format An `abslist` with four samples:
 #' - **B1S1ExampleBlankABS**: Absorbance measured for a sample of Type 1 water
 #' - **B1S2ExampleTeaStdABS**: Absorbance measured for a sample of dilute unsweetened tea
@@ -36,7 +38,7 @@
 #' Down-scaled and processed excitation emission matrices
 #'
 #' Processed version of [example_eems()] using `eemanalyzeR`.
-#'
+#' @md
 #' @format An `eemlist` with four samples:
 #' - **B1S1ExampleBlankSEM**: Fluorescence measured for a sample of Type 1 water
 #' - **B1S2ExampleTeaStdSEM**: Fluorescence measured for a sample of dilute unsweetened tea
@@ -49,7 +51,7 @@
 #' Down-scaled and processed absorbance data
 #'
 #' Processed version of [example_abs()] using `eemanalyzeR`.
-#'
+#' @md
 #' @format An `abslist` with four samples:
 #' - **B1S1ExampleBlankABS**: Absorbance measured for a sample of Type 1 water
 #' - **B1S2ExampleTeaStdABS**: Absorbance measured for a sample of dilute unsweetened tea
@@ -63,7 +65,7 @@
 #'
 #' Metadata associated with the samples in [example_eems()] and [example_abs()]. Provides an example of the structure
 #' and requirements for metadata needed to run samples.
-#'
+#' @md
 #' @format A data.frame with 3 rows and 11 columns:
 #' - **index**: Numeric order of entry (e.g., 1, 2, 3, etc.)
 #' - **analysis_date**: Optional, date samples were run on instrument (not collected in the field)
@@ -86,7 +88,7 @@
 #'
 #' A data.frame containing the minimum and maximum range expected for index values generated using [get_indices()].
 #' Used to flag indices that warrant further examination to ensure accuracy.
-#'
+#' @md
 #' @format A data.frame with 62 rows and 5 columns:
 #' - **index_method**: The index method used to calculate the index
 #' - **index**: Name of the index metric calculated

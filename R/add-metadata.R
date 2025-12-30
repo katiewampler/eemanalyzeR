@@ -48,6 +48,7 @@ add_metadata <- function(meta, x,
                            sblank_pattern = "Blank|blank|BLK",
                            check_pattern = "Tea|tea"
                          )) {
+
   class_type <- class(x)
 
   stopifnot("data.frame" %in% class(meta), class_type %in% c("abslist", "eemlist"),
@@ -104,6 +105,8 @@ add_metadata <- function(meta, x,
       "\nthese sample will be removed from further processing"
     )
     meta <- meta[-setdiff(1:nrow(meta), meta_order), ]
+    meta_order <- sapply(names, .get_row_meta, meta) # get order of eems in metadata
+
   }
 
   # Deal with sample_types ----

@@ -43,7 +43,7 @@ downscale_eems <- function(file, factor=6){
 
   }}
 
-files <- list.files("data-raw/fullsize data", pattern=".dat", full.names = TRUE)
+files <- list.files("data-raw/fullsize-data", pattern=".dat", full.names = TRUE)
 
 #downscale and save
 for(x in files){
@@ -52,10 +52,10 @@ for(x in files){
 
 #read into R environment
   #read in samples and blanks
-  example_eems <- eem_dir_read("data-raw", pattern="SEM|BEM")
+  example_eems <- eem_dir_read("data-raw", pattern="SEM|BEM|ManualExampleTea")
 
   #read in absorbance
-  example_abs <- abs_dir_read("data-raw", pattern="ABS[.]dat")
+  example_abs <- abs_dir_read("data-raw", pattern="ABS[.]dat|SpectraGraphs.dat")
 
     usethis::use_data(example_eems, overwrite = T)
     usethis::use_data(example_abs, overwrite = T)
@@ -148,12 +148,12 @@ for(x in files){
 
   #make a test mdl file for functions
     create_mdl(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
-                      meta_name="longtermblank-metadata.csv", pattern = "longtermblank",
-                      type="eem", output_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
+                      meta_name="longtermblank-metadata.csv",
+                      type="eem", qaqc_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
 
     create_mdl(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
-            meta_name="longtermblank-metadata.csv", pattern = "longtermblank",
-            type="abs", output_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
+            meta_name="longtermblank-metadata.csv",
+            type="abs", qaqc_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
 
 #do the same for the tea samples
     #pull files from Aqualog folder and put in raw data
@@ -236,11 +236,11 @@ for(x in files){
     #make a test tea file for functions
     create_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-std"),
             meta_name="longterm-checkstd-metadata.csv", abs_pattern="ABS",
-            type="eem", output_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
+            type="eem", qaqc_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
 
     create_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-std"),
             meta_name="longterm-checkstd-metadata.csv", abs_pattern="ABS",
-            type="abs", output_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
+            type="abs", qaqc_dir = system.file("extdata", package = "eemanalyzeR"), "qaqc-stds")
 
 #save index ranges as data.frame ------
   make_na <- function(df){
@@ -266,7 +266,7 @@ for(x in files){
   example_processed_abs <- add_metadata(metadata, example_abs)
   example_processed_abs <- correct_dilution(example_processed_abs)
   example_processed_eems <- add_metadata(metadata, example_eems)
-  example_processed_eems <- add_blanks(example_processed_eems, validate=FALSE)
+  example_processed_eems <- add_blanks(example_processed_eems, subset_type(example_processed_eems, "iblank"))
   example_processed_eems <- process_eem(example_processed_eems, example_processed_abs)
 
   usethis::use_data(example_processed_eems, overwrite = T)

@@ -24,7 +24,7 @@ run_eems(
 
 \item{blanklist}{eemslist of blank files to subract from samples. Automatically uses instrument blanks if not provided}
 
-\item{...}{additional arguments used to make one time modifications to processing arguments. See}
+\item{...}{additional arguments used to make one time modifications to processing arguments. See #TODO add text here}
 }
 \value{
 A list of the processed data which is also saved to the output directory specified.

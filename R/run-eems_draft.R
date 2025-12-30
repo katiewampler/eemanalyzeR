@@ -12,7 +12,7 @@
 #' @param filename A character string, used for file names.
 #' @param interactive Logical, used to determine if user input should be used.
 #' @param blanklist eemslist of blank files to subract from samples. Automatically uses instrument blanks if not provided
-#' @param ... additional arguments used to make one time modifications to processing arguments. See
+#' @param ... additional arguments used to make one time modifications to processing arguments. See #TODO add text here
 #'
 #' @inherit export_data return
 #' @md

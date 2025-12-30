@@ -6,19 +6,21 @@
 \title{Example metadata}
 \format{
 A data.frame with 3 rows and 11 columns:
-- **index**: Numeric order of entry (e.g., 1, 2, 3, etc.)
-- **analysis_date**: Optional, date samples were run on instrument (not collected in the field)
-- **description**: Optional, brief description of the sample collected
-- **data_identifier**: REQUIRED, file name from the aqualog, must match exactly
-- **replicate_no**: REQUIRED, number indicating if the sample was replicated; unreplicated = 1
-- **integration_time_s**: REQUIRED, integration time of sample (e.g., 1, 2, etc.)
-- **dilution**: REQUIRED, dilution factor as decimal (e.g., 0.5 for 2-fold dilution); 1 if no dilution
-- **RSU_area_1s**: REQUIRED, RSU Adjust Area from the Raman test for normalization
-- **sample_type**: Optional, flag (sample, sblank, or check)
-- **run_type**: Optional, how the samples were run (manual or sampleQ)
-- **collect_date**: Optional, date the water samples were collected
-- **DOC_mg_L**: Optional, DOC concentration in mg/L of original sample
-- **Notes**: Optional, any notes from collection or running
+\itemize{
+\item \strong{index}: Numeric order of entry (e.g., 1, 2, 3, etc.)
+\item \strong{analysis_date}: Optional, date samples were run on instrument (not collected in the field)
+\item \strong{description}: Optional, brief description of the sample collected
+\item \strong{data_identifier}: REQUIRED, file name from the aqualog, must match exactly
+\item \strong{replicate_no}: REQUIRED, number indicating if the sample was replicated; unreplicated = 1
+\item \strong{integration_time_s}: REQUIRED, integration time of sample (e.g., 1, 2, etc.)
+\item \strong{dilution}: REQUIRED, dilution factor as decimal (e.g., 0.5 for 2-fold dilution); 1 if no dilution
+\item \strong{RSU_area_1s}: REQUIRED, RSU Adjust Area from the Raman test for normalization
+\item \strong{sample_type}: Optional, flag (sample, sblank, or check)
+\item \strong{run_type}: Optional, how the samples were run (manual or sampleQ)
+\item \strong{collect_date}: Optional, date the water samples were collected
+\item \strong{DOC_mg_L}: Optional, DOC concentration in mg/L of original sample
+\item \strong{Notes}: Optional, any notes from collection or running
+}
 }
 \source{
 Oregon State University Forest Ecohydrology and Watershed Sciences Lab (2022-11-14)
@@ -27,7 +29,7 @@ Oregon State University Forest Ecohydrology and Watershed Sciences Lab (2022-11-
 metadata
 }
 \description{
-Metadata associated with the samples in [example_eems()] and [example_abs()]. Provides an example of the structure
+Metadata associated with the samples in \code{\link[=example_eems]{example_eems()}} and \code{\link[=example_abs]{example_abs()}}. Provides an example of the structure
 and requirements for metadata needed to run samples.
 }
 \keyword{datasets}

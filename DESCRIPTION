@@ -22,7 +22,7 @@ Suggests:
     knitr,
     rmarkdown,
     spelling, 
-    testthat, 
+    testthat (>= 3.3.0), 
     withr, 
     readxl
 VignetteBuilder: knitr

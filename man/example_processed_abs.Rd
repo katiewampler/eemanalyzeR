@@ -5,11 +5,13 @@
 \alias{example_processed_abs}
 \title{Down-scaled and processed absorbance data}
 \format{
-An `abslist` with four samples:
-- **B1S1ExampleBlankABS**: Absorbance measured for a sample of Type 1 water
-- **B1S2ExampleTeaStdABS**: Absorbance measured for a sample of dilute unsweetened tea
-- **B1S3ExampleSampleABS**: Absorbance measured for a sample of stream water from Oregon, USA
-- **ManualExampleTeaAbsSpectraGraphs**: Absorbance measured for a sample of dilute unsweetened tea
+An \code{abslist} with four samples:
+\itemize{
+\item \strong{B1S1ExampleBlankABS}: Absorbance measured for a sample of Type 1 water
+\item \strong{B1S2ExampleTeaStdABS}: Absorbance measured for a sample of dilute unsweetened tea
+\item \strong{B1S3ExampleSampleABS}: Absorbance measured for a sample of stream water from Oregon, USA
+\item \strong{ManualExampleTeaAbsSpectraGraphs}: Absorbance measured for a sample of dilute unsweetened tea
+}
 }
 \source{
 Oregon State University Forest Ecohydrology and Watershed Sciences Lab (2022-11-14)
@@ -18,6 +20,6 @@ Oregon State University Forest Ecohydrology and Watershed Sciences Lab (2022-11-
 example_processed_abs
 }
 \description{
-Processed version of [example_abs()] using `eemanalyzeR`.
+Processed version of \code{\link[=example_abs]{example_abs()}} using \code{eemanalyzeR}.
 }
 \keyword{datasets}
