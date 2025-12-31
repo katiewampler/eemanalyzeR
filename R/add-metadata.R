@@ -116,8 +116,6 @@ add_metadata <- function(meta, x,
   # New metadata version: use sample_type to define samples, sample blanks, and check standards
   #                       the rest of the eems/abs not in the metadata are instrument blanks
 
-  # TODO manual sample pattern matching w/ metadata
-
   if (!("sample_type" %in% names(meta))) {
     # Warn the user if sample types are pattern matched?
     warning("No sample_type in Metadata. Guessing sample_types by pattern matching data_identifier")

@@ -12,9 +12,6 @@
 # 4) User supplies arguments to run_eems function that modify processing ONLY during
 #    that run.
 
-# TODO: Take output_dir and filename out of package environment? It doesn't really make sense for
-# those to have defaults since they probably change every time eems are processed
-
 # Package processing defaults list
 # can modify defaults on package load --> saved in inst/ext_data as yaml and as package obj now
 # TODO - document these defaults -> documented in data.R under  eemanalyzer_processing_defaults
@@ -56,7 +53,9 @@ list_config <- function(env = .pkgenv) {
 #' Checks that all settings in the eemanalyzeR config are valid options and warns user if not
 #'
 #' @param env environment where to find the config. Defaults to the package environment
-#' #TODO: does this need to be exported?
+#' 
+#' @returns invisibly returns TRUE if the configuration is valid, otherwise returns an error
+#' 
 #' @export
 #' @examples
 #' # Example validation
@@ -81,7 +80,6 @@ validate_config <- function(env = .pkgenv) {
   stopifnot(identical(default_config_modes, config_modes) &
     identical(default_config_lengths, config_lengths))
 
-  packageStartupMessage("Config is valid")
   invisible(TRUE)
 }
 

@@ -29,9 +29,9 @@ run_eems <- function(
 
   # REQUIRED ARGUMENTS (bare minimum)
   input_dir,
+  # Optional arguments
   output_dir,
   filename,
-  # Optional arguments
   interactive = TRUE,
   blanklist = NULL,
   ...
@@ -50,8 +50,11 @@ run_eems <- function(
 
   # Modify the function environment processing parameters with any from varargs
   modify_config(!!!parameters_to_modify, env = .fnenv)
-  # Add the output_dir to the function environment
-  modify_config("output_dir" = output_dir, env = .fnenv)
+  # TODO - make these work as expected when defaults are given or not
+  # Add the output_dir and filename to the function environment
+  modify_config(list("output_dir" = output_dir,
+                     "filename" = filename),
+                 env = .fnenv)
 
   # Decide whether the script is running in interactive or batch mode
   rlang::local_interactive(value = interactive)
@@ -78,8 +81,11 @@ run_eems <- function(
   # TODO don't warn user about overwriting a blank readme since eem_dir_read will overwrite tha abs_dir_read readme
 
   # Find the metadata file in the input directory.
-  # NOTE: This function only uses the input_dir in the run_eems function. There's no
-  # option to supply a separate metadata file at this time. Could add that later
+  # TODO: This function only uses the input_dir in the run_eems function. There's no
+  # option to supply a separate metadata file at this 
+  
+  # Check to see if there are multiple metadata files in the directory
+  metadata_file <- .find_meta_file(input_dir)
   metadata <- meta_read(input_dir,
     sheet = get_meta_sheet(.fnenv),
     validate_metadata = get_meta_validate(.fnenv)
@@ -192,10 +198,6 @@ run_eems <- function(
   #                               cores = get_cores(.fnenv),
   #                               cuvle = get_cuvle(.fnenv))
 
-  # TODOS below:
-  # Dev examples code will create mdl files on my computer
-  # Validation checks on Processed EEMs and Absorbance Data? ----
-
   # Report the data ----
   # create plots
   processed_eems_plots <- plot(processed_eems)
@@ -203,6 +205,7 @@ run_eems <- function(
   message("EEMs and absorbance successfully plotted.")
 
   # Save indices
+  # Check MDLS are in the get_indices function
   indices <- get_indices(processed_eems,
     processed_abs,
     # Defaults for get_indices
@@ -217,7 +220,7 @@ run_eems <- function(
   # Save Raw Files
   save_raw_file_status <- export_data(processed_eems,
     processed_abs,
-    filename,
+    filename = get_filename(.fnenv),
     output_dir = get_output_dir(.fnenv), # TODO figure out how to handle missing output dir
     meta = metadata,
     indices = indices,

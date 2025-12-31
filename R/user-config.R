@@ -31,10 +31,6 @@ edit_user_config <- function() {
 
   defaults_file <- file.path(user_dir, "user-config.yaml")
 
-  # TODO should be a separate function to write the config
-  # As written it would cause problems if we ever update the package defaults unless
-  # the user manually deletes the file. One solution would be to always delete the user
-  # config whenever the package is installed/updated
   # if file doesn't exist, write template
   if (!file.exists(defaults_file)) {
     file.copy(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"),
@@ -114,8 +110,6 @@ reset_user_config <- function() {
 }
 
 # Load the user config on package load
-# TODO this aborts the package load if user config is invalid, which we DON'T want
-# Not sure how to fix this yet
 rlang::on_load({
   tryCatch(load_user_config(),
   error = function(e) {
