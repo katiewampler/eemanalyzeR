@@ -9,11 +9,13 @@
   library(here)
 
   #get mdls
-    create_mdl("data-raw/long-term-standards/blanks", recursive = TRUE, type="eem", blk="_blank")
-    create_mdl("data-raw/long-term-standards/blanks", recursive = TRUE, type="abs", pattern="Abs")
+    create_mdl("data-raw/long-term-standards/blanks", recursive = TRUE, type="eem", iblank="_blank")
+
+    # create_mdl doesn't have pattern argument - warns user about mdls
+    create_mdl("data-raw/long-term-standards/blanks", recursive = TRUE, type="abs", iblank="_blank")
 
     create_std("data-raw/long-term-standards/tea-standards", recursive = TRUE,
-                   type="eem", blk="_blank", abs_pattern="Abs") #gives warning about trying to load eem with abs
+                   type="eem", iblank="_blank", abs_pattern="Abs") #gives warning about trying to load eem with abs
     create_std("data-raw/long-term-standards/tea-standards", recursive = TRUE,
                    type="abs", abs_pattern="Abs")
 
@@ -89,11 +91,10 @@
     meta <- meta_read(input_dir)
     abs <- add_metadata(meta, abs)
     eems <- add_metadata(meta, eems,
-                         sample_type_regex = list(
                            iblank_pattern = "blank$",
                            sblank_pattern = "none",
                            check_pattern = "Tea|tea"
-                         ))
+                         )
     blk <- subset_type(eems, "iblank")
     blk <- validate_blanks(blk)
     eems <- add_blanks(eems, blk)

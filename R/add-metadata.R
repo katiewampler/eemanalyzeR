@@ -7,9 +7,10 @@
 #'
 #' @param meta A `data.frame` containing metadata.
 #' @param x An `eemlist` or `abslist` object.
-#' @param sample_type_regex A **named list** of regular expressions used to identify
-#' instrument blanks, sample blanks, check standards, and samples via pattern matching.
-#'
+#' @param iblank_pattern a character vector of length 1 with a regular expression that matches sample names of instrument blanks. Default is "BEM$|Waterfall ?Plot ?Blank" 
+#' @param sblank_pattern a character vector of length 1 with a regular expression that matches sample names of sample blanks. Default is "Blank|blank|BLK"
+#' @param check_pattern  a character vector of length 1 with a regular expression that matches sample names of check standards. Default is "Tea|tea"
+#' 
 #' @note
 #' If an `eemlist` contains blanks, the blanks automatically inherit metadata from their
 #' corresponding sample.
@@ -43,11 +44,10 @@
 #' # Add metadata to EEM data
 #' eem_augment <- add_metadata(metadata, example_eems)
 add_metadata <- function(meta, x,
-                         sample_type_regex = list(
                            iblank_pattern = "BEM$|Waterfall ?Plot ?Blank",
                            sblank_pattern = "Blank|blank|BLK",
                            check_pattern = "Tea|tea"
-                         )) {
+                         ) {
 
   class_type <- class(x)
 
@@ -124,7 +124,7 @@ add_metadata <- function(meta, x,
     # Guess instrument blanks
     inst_blank_flags <- sapply(names,
       \(s) grepl(
-        pattern = sample_type_regex$iblank_pattern,
+        pattern = iblank_pattern,
         x = s,
         ignore.case = FALSE
       ),
@@ -133,7 +133,7 @@ add_metadata <- function(meta, x,
     # Guess checks
     check_flags <- sapply(names,
       \(s) grepl(
-        pattern = sample_type_regex$check_pattern,
+        pattern = check_pattern,
         x = s,
         ignore.case = FALSE
       ),
@@ -142,7 +142,7 @@ add_metadata <- function(meta, x,
     # Guess sample blanks
     sample_blank_flags <- sapply(names,
       \(s) grepl(
-        pattern = sample_type_regex$sblank_pattern,
+        pattern = sblank_pattern,
         x = s,
         ignore.case = FALSE
       ),
@@ -177,7 +177,7 @@ add_metadata <- function(meta, x,
     # Pattern match the iblank pattern
     inst_blank_flags <- sapply(names,
       \(s) grepl(
-        pattern = sample_type_regex$iblank_pattern,
+        pattern = iblank_pattern,
         x = s,
         ignore.case = FALSE
       ),

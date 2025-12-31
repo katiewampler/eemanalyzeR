@@ -88,11 +88,7 @@ create_mdl <- function(dir, meta_name = NULL, sheet = NULL, iblank = "BEM",
   }
 
   # add metadata
-  blank <- add_metadata(blank_meta, blank, sample_type_regex = list(
-    iblank_pattern = iblank,
-    sblank_pattern = "Blank|blank",
-    check_pattern = "Tea|tea"
-  ))
+  blank <- add_metadata(blank_meta, blank, iblank_pattern = iblank)
 
   if (type == "eem") {
     # check if the wavelengths are different across data if so, stop and provide info

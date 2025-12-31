@@ -7,8 +7,9 @@
 add_metadata(
   meta,
   x,
-  sample_type_regex = list(iblank_pattern = "BEM$|Waterfall ?Plot ?Blank", sblank_pattern
-    = "Blank|blank|BLK", check_pattern = "Tea|tea")
+  iblank_pattern = "BEM$|Waterfall ?Plot ?Blank",
+  sblank_pattern = "Blank|blank|BLK",
+  check_pattern = "Tea|tea"
 )
 }
 \arguments{
@@ -16,8 +17,11 @@ add_metadata(
 
 \item{x}{An \code{eemlist} or \code{abslist} object.}
 
-\item{sample_type_regex}{A \strong{named list} of regular expressions used to identify
-instrument blanks, sample blanks, check standards, and samples via pattern matching.}
+\item{iblank_pattern}{a character vector of length 1 with a regular expression that matches sample names of instrument blanks. Default is "BEM$|Waterfall ?Plot ?Blank"}
+
+\item{sblank_pattern}{a character vector of length 1 with a regular expression that matches sample names of sample blanks. Default is "Blank|blank|BLK"}
+
+\item{check_pattern}{a character vector of length 1 with a regular expression that matches sample names of check standards. Default is "Tea|tea"}
 }
 \value{
 An object of the same class as the input (\code{abslist} or \code{eemlist}), with metadata added.

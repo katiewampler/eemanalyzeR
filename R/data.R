@@ -156,8 +156,12 @@
 #' - **meta_validate**: Used by [meta_read()]. Logical. If `TRUE`, checks the metadata for
 #'   structural issues that could cause problems during processing.
 #'   Recommended to keep `TRUE`.
-#' - **sample_type_regex**: Used by [add_metadata()]. A **named list** of regular expressions used to identify
-#'   instrument blanks, sample blanks, check standards, and samples via pattern matching.
+#' - **iblank_pattern**: Used by [add_metadata()]. A character vector of length 1 with a regular expression that 
+#'   matches sample names of instrument blanks.
+#' - **sblank_pattern**: Used by [add_metadata()]. A character vector of length 1 with a regular expression that 
+#'   matches sample names of sample blanks.
+#' - **check_pattern**: Used by [add_metadata()]. A character vector of length 1 with a regular expression that 
+#'   matches sample names of check standards.
 #' - **blank_validate**: Used by [add_blanks()]. Logical vector length one indicating whether blanks should be validated.
 #' - **ex_clip**: Used by [process_eem()]. Numeric vector of length two specifying the minimum and
 #'   maximum excitation wavelengths to keep.

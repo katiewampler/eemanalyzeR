@@ -82,11 +82,15 @@ run_eems <- function(
   # Add metadata
   eems <- add_metadata(metadata,
     eems,
-    sample_type_regex = get_sample_type_regex(.fnenv)
+    iblank_pattern = get_iblank_pattern(.fnenv),
+    sblank_pattern = get_sblank_pattern(.fnenv),
+    check_pattern = get_check_pattern(.fnenv)
   )
   abs <- add_metadata(metadata,
     abs,
-    sample_type_regex = get_sample_type_regex(.fnenv)
+    iblank_pattern = get_iblank_pattern(.fnenv),
+    sblank_pattern = get_sblank_pattern(.fnenv),
+    check_pattern = get_check_pattern(.fnenv)
   )
 
   # Add blanks

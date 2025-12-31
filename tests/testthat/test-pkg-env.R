@@ -24,12 +24,11 @@ test_that("pkg environment can be modified by modify_defaults and then reset bac
     em_clip = c(300, 400),
     # Logical
     csv = FALSE,
-    # List
-    sample_type_regex = list(
-      iblank_pattern = "test_iblank",
-      sblank_pattern = "test_sblank",
-      check_pattern = "test_tea"
-    )
+    # Text
+    iblank_pattern = "test_iblank",
+    sblank_pattern = "test_sblank",
+    check_pattern = "test_tea"
+  
   )
 
   expect_true(rlang::is_environment(.pkgenv))
@@ -43,7 +42,9 @@ test_that("pkg environment can be modified by modify_defaults and then reset bac
     abs_pattern = get_abs_pattern(),
     em_clip = get_em_clip(),
     csv = get_csv(),
-    sample_type_regex = get_sample_type_regex()
+    iblank_pattern = get_iblank_pattern(),
+    sblank_pattern = get_sblank_pattern(),
+    check_pattern = get_check_pattern()
   ),
   new_default_list)
 
@@ -67,12 +68,10 @@ test_that("modify_defaults can work inside function without modifying package en
     em_clip = c(300, 400),
     # Logical
     csv = FALSE,
-    # List
-    sample_type_regex = list(
-      iblank_pattern = "test_iblank",
-      sblank_pattern = "test_sblank",
-      check_pattern = "test_tea"
-    )
+    # Text
+    iblank_pattern = "test_iblank",
+    sblank_pattern = "test_sblank",
+    check_pattern = "test_tea"
   )
   # The functio to modify the defaults
   modify_config(!!!new_default_list, env = .fnenv)
@@ -81,7 +80,9 @@ test_that("modify_defaults can work inside function without modifying package en
     abs_pattern = get_abs_pattern(.fnenv),
     em_clip = get_em_clip(.fnenv),
     csv = get_csv(.fnenv),
-    sample_type_regex = get_sample_type_regex(.fnenv)
+    iblank_pattern = get_iblank_pattern(.fnenv),
+    sblank_pattern = get_sblank_pattern(.fnenv),
+    check_pattern = get_check_pattern(.fnenv)
   ),
   new_default_list)
 
@@ -89,7 +90,9 @@ test_that("modify_defaults can work inside function without modifying package en
     abs_pattern = get_abs_pattern(),
     em_clip = get_em_clip(),
     csv = get_csv(),
-    sample_type_regex = get_sample_type_regex()
+    iblank_pattern = get_iblank_pattern(),
+    sblank_pattern = get_sblank_pattern(),
+    check_pattern = get_check_pattern()
   )
 
   expect_false(identical(package_default_list, new_default_list))

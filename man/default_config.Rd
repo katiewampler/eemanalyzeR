@@ -26,8 +26,12 @@ metadata is not on the first sheet of an \code{.xlsx} file).
 \item \strong{meta_validate}: Used by \code{\link[=meta_read]{meta_read()}}. Logical. If \code{TRUE}, checks the metadata for
 structural issues that could cause problems during processing.
 Recommended to keep \code{TRUE}.
-\item \strong{sample_type_regex}: Used by \code{\link[=add_metadata]{add_metadata()}}. A \strong{named list} of regular expressions used to identify
-instrument blanks, sample blanks, check standards, and samples via pattern matching.
+\item \strong{iblank_pattern}: Used by \code{\link[=add_metadata]{add_metadata()}}. A character vector of length 1 with a regular expression that
+matches sample names of instrument blanks.
+\item \strong{sblank_pattern}: Used by \code{\link[=add_metadata]{add_metadata()}}. A character vector of length 1 with a regular expression that
+matches sample names of sample blanks.
+\item \strong{check_pattern}: Used by \code{\link[=add_metadata]{add_metadata()}}. A character vector of length 1 with a regular expression that
+matches sample names of check standards.
 \item \strong{blank_validate}: Used by \code{\link[=add_blanks]{add_blanks()}}. Logical vector length one indicating whether blanks should be validated.
 \item \strong{ex_clip}: Used by \code{\link[=process_eem]{process_eem()}}. Numeric vector of length two specifying the minimum and
 maximum excitation wavelengths to keep.

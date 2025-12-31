@@ -76,12 +76,47 @@ load_user_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR"
   # Don't modify anything if the user config isn't found
   # invisibly return the completed configuration
   invisible(list_config())
+}
 
+#' Reset all eemanalyzeR settings in the user configuration file to package defaults
+#'
+#' This allows the user to overwrite the data processing settings in the user configuration file back to 
+#' the default configuration of the eemanalyzeR package. These defaults are documented in data.R under "default_config".
+#' This function is provided in case the user has a malformed configuration file or wants to revert back to default processing 
+#' settings after experimenting with modifying the settings using `edit_user_config`.
+#'
+#' @returns invisibly returns the reset default configuration settings as a named list
+#' @export
+#'
+#' @examples
+#' reset_user_config()
+#' load_user_config()
+reset_user_config <- function() {
+  user_dir <- rappdirs::user_data_dir("eemanalyzeR")
+  if (!dir.exists(user_dir)) dir.create(user_dir, recursive = TRUE)
+  
+    defaults_file <- file.path(user_dir, "user-config.yaml")
+  if (file.exists(defaults_file)) {
+    # Save the old config as .backup just in case
+    file.rename(defaults_file, paste0(defaults_file, ".old"))
+    file.copy(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"),
+              defaults_file)
+  } else{
+    stop("No User Config found. Please create using edit_user_config.")
+  }
+
+ message("User configuration reset.\n",
+         "Find reset conifg at ",
+         defaults_file)
 }
 
 # Load the user config on package load
 # TODO this aborts the package load if user config is invalid, which we DON'T want
 # Not sure how to fix this yet
-# rlang::on_load({
-#   load_user_config()
-# })
+rlang::on_load({
+  tryCatch(load_user_config(),
+  error = function(e) {
+    packageStartupMessage("Warning: Malformed User Configuration File stored on disk. User Configuration not loaded.\n",
+    "Please edit user config or reset to defaults using reset_user_config")
+  })
+})

@@ -43,12 +43,14 @@ eem_dir_read <- function(input_dir,
   stopifnot(dir.exists(input_dir))
 
   # Set readme back to NULL if it exists because new dataset
+  # TODO do we want to do this within the read function or outside?
+  # Or we could make it an option? Same for abs
   if (!is.null(get_readme())) {
     set_readme(NULL)
     message("NOTE: removed previous 'readme' file")
   }
 
-  warnings_list <- list() # Initialize an empty list to store warnings
+  #warnings_list <- list() # Initialize an empty list to store warnings
 
   # wrapper on eemR::eem_read to try and catch errors from absorbance data being included
   # It's not really an error in our package if absorbance data is included in the directory,
