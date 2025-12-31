@@ -60,7 +60,7 @@ ife_correct <- function(eemlist, abslist, cuvle=1, arg_names=NULL){
 
     if(length(ex_rm) >0|length(em_rm) >0){
       eemlist <- eemR::eem_cut(eemlist, ex_rm, em_rm, exact=T)
-      warning("trimmed EEM's to match absorbance data wavelengths, see readme.txt for more info")
+      #warning("trimmed EEM's to match absorbance data wavelengths, see readme.txt for more info") #don't need to print every time
       trim <- TRUE}else{trim <- FALSE}
 
 

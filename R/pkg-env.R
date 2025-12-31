@@ -153,7 +153,7 @@ modify_config <- function(..., env = .pkgenv) {
     stop(simpleError(paste("Cannot modify default:", not_matching_names, " is not valid")))
   }
   # Add the new variables to the old config
-  old_config <- list_config()
+  old_config <- list_config(env)
   new_config <- utils::modifyList(old_config, newdefaults, keep.null = TRUE)
 
   # Bind the variables to the environment

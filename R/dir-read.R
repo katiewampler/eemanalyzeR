@@ -12,6 +12,7 @@
 #' @param recursive Logical. Should the function recursively search directories?
 #' @param import_function Character or a user-defined function to import an EEM.
 #'   For more details, see [`vignette("custom-indices")`](../doc/custom-indices.html).
+#' @param verbose Logical. Should the function return notes about resetting the readme file?
 #'
 #' @name dir_read
 #' @rdname dir_read
@@ -40,7 +41,8 @@ eem_dir_read <- function(input_dir,
                          skip = "(?i)abs",
                          file_ext = "dat",
                          recursive = FALSE,
-                         import_function = "aqualog") {
+                         import_function = "aqualog",
+                         verbose = TRUE) {
   stopifnot(dir.exists(input_dir))
 
   # Set readme back to NULL if it exists because new dataset
@@ -48,7 +50,7 @@ eem_dir_read <- function(input_dir,
   # Or we could make it an option? Same for abs
   if (!is.null(get_readme())) {
     set_readme(NULL)
-    message("NOTE: removed previous 'readme' file")
+    if(verbose){message("NOTE: removed previous 'readme' file")}
   }
 
   #warnings_list <- list() # Initialize an empty list to store warnings
@@ -125,14 +127,15 @@ abs_dir_read <- function(input_dir,
                          pattern = NA,
                          skip = "SEM|BEM|Waterfall",
                          file_ext = "dat",
-                         recursive = FALSE) {
+                         recursive = FALSE,
+                         verbose = TRUE) {
 
   stopifnot(dir.exists(input_dir))
 
   # Set readme back to NULL if it exists because new dataset
   if (!is.null(get_readme())) {
     set_readme(NULL)
-    message("NOTE: removed previous 'readme' file")
+    if(verbose){message("NOTE: removed previous 'readme' file")}
   }
 
   files <- list.files(input_dir, full.names = T, recursive = recursive)

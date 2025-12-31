@@ -15,7 +15,7 @@ test_that("data export works", {
     abslist <- add_metadata(metadata, example_abs)
     blanklist <- subset_type(eemlist, "iblank")
     eemlist <- add_blanks(eemlist, blanklist)
-    expect_warning(eemlist <- process_eem(eemlist, abslist), "trimmed EEM's to match absorbance data wavelengths")
+    eemlist <- process_eem(eemlist, abslist)
 
   #test exporting minimum
     expect_message(export_data(eemlist=eemlist,

@@ -76,7 +76,7 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
   #get all tea samples in directory with instrument blanks
     tea_abs <- abs_dir_read(dir, recursive=recursive, pattern=abs_pattern)
 
-    if(type == "eem"){tea <- eem_dir_read(dir, recursive=recursive)}
+    if(type == "eem"){tea <- eem_dir_read(dir, recursive=recursive, skip=abs_pattern)}
     if(type == "abs"){tea <- tea_abs}
 
   #check number of samples

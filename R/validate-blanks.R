@@ -110,8 +110,8 @@ plot_blank_and_ask <- function(blanklist) {
    #Prompt user for input to accept or decline the warning
    continue <- .yesorno(
      "After reviewing blank(s), do you want to continue processing samples",
-     "Blank accepted and added to samples",
-     "Blank not accepted"
+     "Blank accepted and added to samples.",
+     "Blank not accepted."
    )
   return(continue)
 }

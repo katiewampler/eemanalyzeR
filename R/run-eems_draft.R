@@ -43,7 +43,7 @@ run_eems <- function(
   # function scope so these aren't stored elsewhere.
   varargs <- rlang::list2(...)
   # Pick out the varargs that match the package env names
-  parameters_to_modify <- varargs[which(names(varargs) %in% names(.pkgenv))]
+  parameters_to_modify <- varargs[which(names(varargs) %in% names(.pkgenv$config))]
 
   # Clone the package environment (does this work?)
   .fnenv <- rlang::env_clone(.pkgenv, parent = rlang::caller_env())
@@ -57,13 +57,14 @@ run_eems <- function(
   rlang::local_interactive(value = interactive)
 
   # Following processing steps follow the flowchart from github ----------
-
+  message("Loading samples...")
   # Read the Absorbance data
   abs <- abs_dir_read(input_dir,
     pattern = get_abs_pattern(.fnenv),
     skip = get_abs_skip(.fnenv),
     file_ext = get_abs_file_ext(.fnenv),
-    recursive = get_abs_recurse_read(.fnenv)
+    recursive = get_abs_recurse_read(.fnenv),
+    verbose = FALSE
   )
   # Read the EEMs data
   eems <- eem_dir_read(input_dir,
@@ -71,7 +72,8 @@ run_eems <- function(
     skip = get_eem_skip(.fnenv),
     file_ext = get_eem_file_ext(.fnenv),
     recursive = get_eem_recurse_read(.fnenv),
-    import_function = get_eem_import_func(.fnenv)
+    import_function = get_eem_import_func(.fnenv),
+    verbose = FALSE
   )
   # TODO don't warn user about overwriting a blank readme since eem_dir_read will overwrite tha abs_dir_read readme
 
@@ -82,6 +84,7 @@ run_eems <- function(
     sheet = get_meta_sheet(.fnenv),
     validate_metadata = get_meta_validate(.fnenv)
   )
+
   # Add metadata
   eems <- add_metadata(metadata,
     eems,
@@ -209,7 +212,7 @@ run_eems <- function(
     cuvle = get_cuvle(.fnenv),
     qaqc_dir = get_qaqc_dir(.fnenv)
   )
-  message("Calculated absorbance and fluorescence indices")
+  message("Calculated absorbance and fluorescence indices.")
 
   # Save Raw Files
   save_raw_file_status <- export_data(processed_eems,

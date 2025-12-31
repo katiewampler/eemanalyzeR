@@ -83,12 +83,12 @@ load_user_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR"
 
 #' Reset all eemanalyzeR settings in the user configuration file to package defaults
 #'
-#' This allows the user to overwrite the data processing settings in the user configuration file back to 
+#' This allows the user to overwrite the data processing settings in the user configuration file back to
 #' the default configuration of the eemanalyzeR package. These defaults are documented in data.R under "default_config".
-#' This function is provided in case the user has a malformed configuration file or wants to revert back to default processing 
+#' This function is provided in case the user has a malformed configuration file or wants to revert back to default processing
 #' settings after experimenting with modifying the settings using `edit_user_config`.
 #'
-#' @returns invisibly returns the reset default configuration settings as a named list
+#' @returns Invisibly returns the reset default configuration settings as a named list.
 #' @export
 #'
 #' @examples
@@ -97,7 +97,7 @@ load_user_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR"
 reset_user_config <- function() {
   user_dir <- rappdirs::user_data_dir("eemanalyzeR")
   if (!dir.exists(user_dir)) dir.create(user_dir, recursive = TRUE)
-  
+
     defaults_file <- file.path(user_dir, "user-config.yaml")
   if (file.exists(defaults_file)) {
     # Save the old config as .backup just in case

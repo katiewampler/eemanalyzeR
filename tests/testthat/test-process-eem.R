@@ -5,8 +5,7 @@ test_that("processing works", {
   eemlist <- add_blanks(eemlist, blanklist)
 
 
-  expect_warning(correct_eem <- process_eem(eemlist, abslist), "trimmed EEM's to match absorbance data wavelengths")
-
+  correct_eem <- process_eem(eemlist, abslist)
   expect_s3_class(correct_eem, "eemlist")
 
   #check clipping

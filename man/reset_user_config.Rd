@@ -7,12 +7,12 @@
 reset_user_config()
 }
 \value{
-invisibly returns the reset default configuration settings as a named list
+Invisibly returns the reset default configuration settings as a named list.
 }
 \description{
-This allows the user to overwrite the data processing settings in the user configuration file back to 
+This allows the user to overwrite the data processing settings in the user configuration file back to
 the default configuration of the eemanalyzeR package. These defaults are documented in data.R under "default_config".
-This function is provided in case the user has a malformed configuration file or wants to revert back to default processing 
+This function is provided in case the user has a malformed configuration file or wants to revert back to default processing
 settings after experimenting with modifying the settings using `edit_user_config`.
 }
 \examples{

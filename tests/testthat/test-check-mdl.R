@@ -10,7 +10,7 @@ test_that("we can get the mdl for eems data", {
   expect_error(check_eem_mdl(eemlist[[1]], mdl, ex = 270:280, em=300:320), "attr")
 
   #now process data
-  expect_warning(eemlist <- process_eem(eemlist, abslist))
+  eemlist <- process_eem(eemlist, abslist)
 
   #works with a single sample
   expect_equal(check_eem_mdl(eemlist[[1]], mdl, ex = 270:280, em=300:320), "MDL01")

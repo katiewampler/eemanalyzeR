@@ -9,13 +9,16 @@
   library(here)
 
   #get mdls
-    create_mdl("data-raw/long-term-standards/blanks", recursive = TRUE, type="eem", iblank="_blank")
+    create_mdl("data-raw/long-term-standards/blanks", recursive = TRUE, type="eem",
+               iblank="_blank")
 
     # create_mdl doesn't have pattern argument - warns user about mdls
-    create_mdl("data-raw/long-term-standards/blanks", recursive = TRUE, type="abs", iblank="_blank")
+    create_mdl("data-raw/long-term-standards/blanks", recursive = TRUE,
+               type="abs", iblank="_blank")
 
     create_std("data-raw/long-term-standards/tea-standards", recursive = TRUE,
-                   type="eem", iblank="_blank", abs_pattern="Abs") #gives warning about trying to load eem with abs
+                   type="eem", iblank="_blank", abs_pattern="Abs")
+
     create_std("data-raw/long-term-standards/tea-standards", recursive = TRUE,
                    type="abs", abs_pattern="Abs")
 
@@ -48,7 +51,7 @@
       export_data(eems, abs, "devtest1", meta, indices, plots)
 
   #try with run_eems function
-    run_eems(input_dir, output_dir=NULL, filename="devtest1_auto") ##errors on config
+    run_eems(input_dir, output_dir=tempdir(), filename="devtest1_auto")
 
 
     #example 2: Hohner-Lab-2025-01-08
@@ -81,7 +84,8 @@
       export_data(eems, abs, "devtest2", meta, indices, plots)
 
       #try with run_eems function
-      run_eems(input_dir, output_dir=NULL, filename="devtest2_auto") ##errors on config
+      run_eems(input_dir, output_dir=tempdir(),
+               filename="devtest2_auto", ) ##errors on config
 
   #example 3: PNNL-2022-11-10
     input_dir <- here("dev/dev-examples/PNNL-2022-11-10")
@@ -117,7 +121,8 @@
       export_data(eems, abs, "devtest3", meta, indices, plots)
 
       #try with run_eems function
-      run_eems(input_dir, output_dir=NULL, filename="devtest3_auto") ##errors on config
+      run_eems(input_dir, output_dir=tempdir(), abs_pattern="Abs",
+               iblank_pattern = "blank$", filename="devtest3_auto")
 
   #example 4: Vick-Majors-Lab-2024-11-04
     input_dir <- here("dev/dev-examples/Vick-Majors-Lab-2024-11-04")

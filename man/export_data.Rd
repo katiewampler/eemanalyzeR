@@ -13,7 +13,7 @@ export_data(
   eem_plot = NULL,
   abs_plot = NULL,
   csv = FALSE,
-  output_dir = NA
+  output_dir = NULL
 )
 }
 \arguments{
