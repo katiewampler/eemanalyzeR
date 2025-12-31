@@ -20,6 +20,7 @@
 #' `eemlist` and `abslist` must be fully processed to match the long-term standard.
 #'
 #' @returns
+#'
 #' If `vals = FALSE`, returns a `data.frame` with four columns:
 #'
 #' - `meta_name`: metadata name of the check standard

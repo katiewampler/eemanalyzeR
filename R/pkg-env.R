@@ -20,27 +20,29 @@
 # TODO - document these defaults -> documented in data.R under  eemanalyzer_processing_defaults
 
 # Create an environment to store EEMS processing arguments and parameters
-default_config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"),
-                          "eemanalyzeR-config.yaml"))
+default_config <- yaml::read_yaml(file.path(
+  system.file("extdata", package = "eemanalyzeR"),
+  "eemanalyzeR-config.yaml"
+))
 
 .pkgenv <- rlang::new_environment(data = list(config = default_config), parent = rlang::empty_env())
 
 #' List current eemanalyzeR configuration
-#' 
+#'
 #' Returns a named list of all configuration options for eemanalyzeR data processing.
-#' 
+#'
 #' eemanalyzeR allows the user to control data processing via configuration settings that modify
 #' various steps of the automated data processing code. This function allows the user to see values
 #' of the processing configuration for the current processing environment. Note: This configuration
 #' resets to either the package defaults (stored in package data as eemanalyzeR-config.yaml) or in
-#' the user's default settins (stored in a separate yaml file on user's computer) when the package
+#' the user's default settings (stored in a separate yaml file on user's computer) when the package
 #' is re-loaded (such as via `library(eemanalyzeR)`)
-#' 
+#'
 #' @param env the environment to search for the configuration settings. Defaults to the package
 #'        environment (.pkgenv). It is unlikely the user would change this default unless debugging custom
 #'        processing scripts.
 #' @md
-#' @returns a named list with the configuration setting names and their values
+#' @returns A named list with the configuration setting names and their values.
 #' @export
 #' @examples
 #' # Get current configuration options
@@ -50,11 +52,11 @@ list_config <- function(env = .pkgenv) {
 }
 
 #' Validate the eemanalyzeR configuration
-#' 
+#'
 #' Checks that all settings in the eemanalyzeR config are valid options and warns user if not
-#' 
+#'
 #' @param env environment where to find the config. Defaults to the package environment
-#' 
+#' #TODO: does this need to be exported?
 #' @export
 #' @examples
 #' # Example validation
@@ -95,7 +97,7 @@ validate_config <- function(env = .pkgenv) {
 #' @param env the environment that stores the processing settings. Defaults to the package environment.
 #'            It is not recommended the user modifies this argument.
 #'
-#' @returns invisibly returns the reset default configuration settings as a named list
+#' @returns Invisibly returns the reset default configuration settings as a named list.
 #' @export
 #'
 #' @examples
@@ -127,8 +129,8 @@ reset_config <- function(env = .pkgenv) {
 #'        will fail.
 #' @param env the environment in which configuration settings is stored. Defaults to the package
 #'        environment. Note: we do not recommend the user modifies this argument.
-#' @returns invisible returns the named list of the new defaults, but this function is called mostly
-#'          for it's side effects
+#' @returns Invisible returns the named list of the new defaults, but this function is called mostly
+#'          for it's side effects.
 #' @export
 #' @examples
 #' # Modify the cuvette length to two centimeters
@@ -147,7 +149,7 @@ modify_config <- function(..., env = .pkgenv) {
   newdefaults <- rlang::list2(...)
   # Assert the varargs the user wants to modify are valid names in the package environment
   not_matching_names <- names(newdefaults[which(!names(newdefaults) %in% .pkgenv_vars)])
-  if(length(not_matching_names) > 0) {
+  if (length(not_matching_names) > 0) {
     stop(simpleError(paste("Cannot modify default:", not_matching_names, " is not valid")))
   }
   # Add the new variables to the old config

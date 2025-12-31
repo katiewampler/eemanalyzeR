@@ -13,6 +13,9 @@
 
 \item{mdl}{logical, combing two MDL flags?}
 }
+\value{
+A character vector of combined flags.
+}
 \description{
 If the previous flags were `NA`, replaces with the new flagged value, otherwise combines
 the flags with a "_" between.

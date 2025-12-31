@@ -304,7 +304,8 @@ Great, that all looks good, now we just need to combine all that code to a custo
 ```{r}
 zhang2025 <- function(eemlist, abslist, cuvle=1, qaqc_dir){
   #making sure eemlist and abslist are correct objects
-    stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
+    stopifnot(eemanalyzeR:::.is_eemlist(eemlist), eemanalyzeR:::.is_abslist(abslist), 
+              is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
   
   #get mdl data
   check_eem <- file.exists(file.path(qaqc_dir, "eem-mdl.rds"))
@@ -514,7 +515,8 @@ Great, that all looks good, now we just need to combine all that code to a custo
 ```{r}
 erlandsson2012 <- function(eemlist, abslist, cuvle=1, qaqc_dir){
   #making sure eemlist and abslist are correct objects
-    stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
+    stopifnot(eemanalyzeR:::.is_eemlist(eemlist), eemanalyzeR:::.is_abslist(abslist), 
+              is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
   
   #get mdl 
   check_abs <- file.exists(file.path(qaqc_dir, "abs-mdl.rds"))
@@ -611,6 +613,6 @@ indices$abs_index
 
 ## References
 
-Zhang, H., Hou, J., Nie, L., Hao, Y., Gao, H., & Yu, H. (2025). Developing new spectral indices for identifying DOM sources in Liaohe River in a large-scale river basin by fluorescence spectroscopy and random forest model. Process Safety and Environmental Protection, 201, 107553. <https://doi.org/10.1016/j.psep.2025.107553>
+Zhang, H., Hou, J., Nie, L., Hao, Y., Gao, H., & Yu, H. (2025). Developing new spectral indices for identifying DOM sources in Liaohe River in a large-scale river basin by fluorescence spectroscopy and random forest model. Process Safety and Environmental Protection, 201, 107553. <doi:10.1016/j.psep.2025.107553>
 
-Erlandsson, M., N. Futter, M., N. Kothawala, D., & J. Köhler, S. (2012). Variability in spectral absorbance metrics across boreal lake waters. Journal of Environmental Monitoring, 14(10), 2643-2652. <https://doi.org/10.1039/C2EM30266G>
+Erlandsson, M., N. Futter, M., N. Kothawala, D., & J. Köhler, S. (2012). Variability in spectral absorbance metrics across boreal lake waters. Journal of Environmental Monitoring, 14(10), 2643-2652. <doi:10.1039/C2EM30266G>

@@ -9,6 +9,7 @@ Baigar
 Batiot
 Beltrone
 Bergamaschi
+Changelog
 Chemosphere
 Chimica
 Chromophoric
@@ -131,6 +132,7 @@ aromaticity
 autochthonous
 autotrophic
 bix
+blanklist
 boreal
 chromophoric
 csv
@@ -142,6 +144,7 @@ eem
 eemR
 eemlist
 eems
+eemslist
 et
 fi
 fluorometer
@@ -167,10 +170,10 @@ pE
 pM
 pN
 pT
-parula
 photobleaching
 photolytic
 phytoplankton
+pkgenv
 png
 polycondensed
 pre
@@ -193,6 +196,6 @@ tyrosine
 unreplicated
 usgs
 von
-xlsx
+yaml
 α
 β

@@ -15,8 +15,8 @@ will fail.}
 environment. Note: we do not recommend the user modifies this argument.}
 }
 \value{
-invisible returns the named list of the new defaults, but this function is called mostly
-         for it's side effects
+Invisible returns the named list of the new defaults, but this function is called mostly
+         for it's side effects.
 }
 \description{
 Allows the user to modify configuration settings that affect data processing through the

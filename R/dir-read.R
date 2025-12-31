@@ -14,6 +14,7 @@
 #'   For more details, see [`vignette("custom-indices")`](../doc/custom-indices.html).
 #'
 #' @name dir_read
+#' @rdname dir_read
 #'
 #' @return
 #' - `eem_dir_read()` returns an object of class `eemlist`, containing a list of `eem`. For more details see [eemR::eem_read()].
@@ -118,6 +119,7 @@ eem_dir_read <- function(input_dir,
 }
 
 #' @name dir_read
+#' @rdname dir_read
 #' @export
 abs_dir_read <- function(input_dir,
                          pattern = NA,
@@ -132,7 +134,7 @@ abs_dir_read <- function(input_dir,
     set_readme(NULL)
     message("NOTE: removed previous 'readme' file")
   }
-  
+
   files <- list.files(input_dir, full.names = T, recursive = recursive)
 
   # only gets files with correct file extension and ones that optionally match the pattern

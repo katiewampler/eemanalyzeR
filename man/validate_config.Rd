@@ -7,7 +7,8 @@
 validate_config(env = .pkgenv)
 }
 \arguments{
-\item{env}{environment where to find the config. Defaults to the package environment}
+\item{env}{environment where to find the config. Defaults to the package environment
+#TODO: does this need to be exported?}
 }
 \description{
 Checks that all settings in the eemanalyzeR config are valid options and warns user if not

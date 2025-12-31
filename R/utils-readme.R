@@ -61,6 +61,10 @@ set_readme <-function(val){.pkgenv[["readme"]] <- val}
 #' as an object called `readme` in the package environment.
 #'
 #' @export
+#'
+#' @returns None (invisible NULL).
+#' @examples
+#' print_readme()
 print_readme <- function(){
   readme <- get_readme()[!is.na(get_readme())]
 

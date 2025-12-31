@@ -51,7 +51,7 @@
 #' *Procedures for using the Horiba Scientific Aqualog® fluorometer to measure absorbance
 #' and fluorescence from dissolved organic matter* (USGS Numbered Series No. 2018-1096).
 #' U.S. Geological Survey.
-#' <https://doi.org/10.3133/ofr20181096>
+#' <doi:10.3133/ofr20181096>
 #'
 #' @examples
 #' eem_std <- create_std(file.path(system.file("extdata", package = "eemanalyzeR"),"long-term-std"),
@@ -84,7 +84,7 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
 
     #error if samples are missing, likely a pattern issue
     if(length(tea_abs) == 0){stop("No absorbance was found to load. Please check your abs_pattern arugment.")}
-    if(length(tea) == 0){stop("No fluoresence data was found to load. Please check your eem_pattern arugment.")}
+    if(length(tea) == 0){stop("No fluorescence data was found to load. Please check your eem_pattern arugment.")}
 
     if(type == "eem"){n_samps <- n_samps/2}
     if(n_samps < 20){warning("Calculating average check standard based on less than 20 samples, average may be unreliable")}

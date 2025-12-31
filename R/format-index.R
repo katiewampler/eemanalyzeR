@@ -73,6 +73,7 @@ format_index <- function(x, index, value, flag){
 #' @param x1 flags to add
 #' @param mdl logical, combing two MDL flags?
 #'
+#' @returns A character vector of combined flags.
 #' @export
 #' @examples
 #' .combine_flags("DATA01", NA)

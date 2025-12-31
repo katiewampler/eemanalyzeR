@@ -29,15 +29,11 @@
 #' @references Gilchrist, J. R., & Reynolds, D. M. (2014). Optical Spectroscopy Instrumentation Design,
 #' Quality Assurance, and Control: Bench-Top Fluorimetry. In A. Baker, D. M. Reynolds, J. Lead, P. G. Coble,
 #' & R. G. M. Spencer (Eds.), Aquatic Organic Matter Fluorescence (pp. 147-189).
-#' Cambridge: Cambridge University Press. <https://doi.org/10.1017/CBO9781139045452.009>
+#' Cambridge: Cambridge University Press. <doi:10.1017/CBO9781139045452.009>
 #'
 #' @examples
 #' # default settings (remove all, interpolate only raman lines)
 #' eemlist <- remove_scattering(example_eems)
-#' plot(eemlist[[6]])
-#'
-#' # interpolate all
-#' eemlist <- remove_scattering(example_eems, interpolate = c(TRUE, TRUE, TRUE, TRUE))
 #' plot(eemlist[[6]])
 #'
 #' # only remove only rayleigh lines
@@ -52,7 +48,7 @@ remove_scattering <- function(eemlist, type = c(TRUE, TRUE, TRUE, TRUE), width =
                               cores = 1, arg_names = NULL) {
 
   # collect arguments for readme, and to put into the following functions
-  # Note: changed to named list instead of rlang::enquo since unsure why enquo was needed and 
+  # Note: changed to named list instead of rlang::enquo since unsure why enquo was needed and
   # led to readme issues since we weren't ever evaluating the arguments before writing the readme
   # Also moved stopifnot below this because we weren't properly defusing arguments before when
   # stopifnot was first since it would evaluate the arguments before we had a chance to defuse them.
@@ -60,7 +56,7 @@ remove_scattering <- function(eemlist, type = c(TRUE, TRUE, TRUE, TRUE), width =
     args <- list(
       type = type,
       width = width,
-      interpolate = interpolate, 
+      interpolate = interpolate,
       method = method,
       cores = cores
     )
@@ -163,8 +159,8 @@ remove_scattering <- function(eemlist, type = c(TRUE, TRUE, TRUE, TRUE), width =
   class(data) <- "eemlist"
 
   # write readme
-  .write_readme_line(text = "scattering lines removed via 'remove_scattering' function", 
-  slot = "eem_scatter_corrected", 
+  .write_readme_line(text = "scattering lines removed via 'remove_scattering' function",
+  slot = "eem_scatter_corrected",
   args = args)
 
   return(data)

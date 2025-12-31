@@ -42,7 +42,7 @@
 #' *Procedures for using the Horiba Scientific Aqualog® fluorometer to measure absorbance
 #' and fluorescence from dissolved organic matter* (USGS Numbered Series No. 2018-1096).
 #' U.S. Geological Survey.
-#' <https://doi.org/10.3133/ofr20181096>
+#' \doi{doi:10.3133/ofr20181096}
 #'
 #' @examples
 #' eem_mdl <- create_mdl(

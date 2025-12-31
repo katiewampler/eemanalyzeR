@@ -54,7 +54,7 @@ eemR_indices <- function(eemlist, abslist, cuvle = 1, qaqc_dir = NULL) {
   eem_mdl <- mdls$eem_mdl
   abs_mdl <- mdls$abs_mdl
 
-  # get fluoresence peaks
+  # get fluorescence peaks
   # define wavelengths for peaks and metrics to check if there are missing wavelengths
   # format: index = list(excitation wavelengths, emission wavelengths)
   peaks <- list(

@@ -32,8 +32,6 @@ files:
 -   **readme_filename.txt:** A text file detailing the processing steps,
     any warnings that occurred during data processing, and information
     about the QA/QC checks performed
--   **processed_data_filename.rds:** An R readable object containing all
-    of the exported data
 
 <br>
 
@@ -66,7 +64,7 @@ the MDL is calculated using the approach proposed by Hansen et al.
 (2018):
 
 $$ \text{MDL} = \text{mean}(\text{long-term blank}) + 3 × \text{SD}(\text{long-term blank})$$where
-**long-term blank** is the fluoresence for a specific wavelength pair or
+**long-term blank** is the fluorescence for a specific wavelength pair or
 absorbance at a specific wavelength, **mean** is the average signal, and
 **SD** is the standard deviation.
 
@@ -79,7 +77,7 @@ found, a warning will appear in the **readme** file.
 
 ## Check Standards
 
-Samples of sample type `check`can also be checked against a long-term
+Samples of sample type `check` can also be checked against a long-term
 average for consistency.
 
 To use the check standard checks, the user must create average standard
@@ -134,14 +132,14 @@ abs_index <- data.frame('Index Name'=c("SUVA 254", "SUVA 280", "SVA 412",
                                ), 
                         'Index Abbreviation' =c("SUVA254", "SUVA280", "SVA412", "S275_295",
                                     "S350_400", "SR", "E2_E3", "E4_E6"),
-                        'Interpretation'=c("Proxy for aromaticity", 
-                                    "Proxy for aromaticity",
-                                    "Proxy for aromaticity",
-                                    "Related to molecular weight and aromaticity",
-                                    "Related to molecular weight and aromaticity", 
-                                    "Related to molecular weight", 
-                                    "Related to molecular weight and aromaticity",
-                                    "Related to humic-like organic matter"
+                        'Interpretation'=c("proxy for aromaticity", 
+                                    "proxy for aromaticity",
+                                    "proxy for aromaticity",
+                                    "related to molecular weight and aromaticity",
+                                    "related to molecular weight and aromaticity", 
+                                    "related to molecular weight", 
+                                    "related to molecular weight and aromaticity",
+                                    "related to humic-like organic matter"
                                     ))
 colnames(abs_index) <- c("Index Name", "Index Abbreviation", "Interpretation")
 knitr::kable(abs_index)
@@ -149,7 +147,7 @@ knitr::kable(abs_index)
 
 <br>
 
-The fluoresence indices reported by the default index method
+The fluorescence indices reported by the default index method
 (`eemanalyzeR`) and their **typical** interpretations are:
 
 ```{r echo=FALSE, include=TRUE}
@@ -202,4 +200,4 @@ Dessonneck, T., & Bergamaschi, B. (2018). *Procedures for using the
 Horiba Scientific Aqualog® fluorometer to measure absorbance and
 fluorescence from dissolved organic matter* (USGS Numbered Series No.
 2018-1096). U.S. Geological Survey.
-<https://doi.org/10.3133/ofr20181096>
+<doi:10.3133/ofr20181096>

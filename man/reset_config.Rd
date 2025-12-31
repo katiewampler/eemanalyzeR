@@ -11,7 +11,7 @@ reset_config(env = .pkgenv)
 It is not recommended the user modifies this argument.}
 }
 \value{
-invisibly returns the reset default configuration settings as a named list
+Invisibly returns the reset default configuration settings as a named list.
 }
 \description{
 Returns the data processing configuration settings for this R session back to package defaults.

@@ -19,6 +19,7 @@
 #' @export
 #' @md
 #' @rdname user_config
+#' @name user_config
 #'
 #' @examples
 #' edit_user_config()
@@ -54,6 +55,8 @@ edit_user_config <- function() {
 #'
 #' @export
 #' @rdname user_config
+#' @name user_config
+
 # NOTE: This effectively returns everything back to package defaults if the user config can't be found.
 # Is that what we want? It might overwrite settings if the user changed them before trying to load the user config.
 # I'm ok with this as long as it's documented behavior

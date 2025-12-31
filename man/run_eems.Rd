@@ -22,22 +22,13 @@ run_eems(
 
 \item{interactive}{Logical, used to determine if user input should be used.}
 
-\item{blanklist}{eemslist of blank files to subract from samples. Automatically uses instrument blanks if not provided}
+\item{blanklist}{eemslist of blank files to subtract from samples. Automatically uses instrument blanks if not provided}
 
 \item{...}{additional arguments used to make one time modifications to processing arguments. See #TODO add text here}
 }
 \value{
-A list of the processed data which is also saved to the output directory specified.
-The list contains:
-\itemize{
-\item \strong{eemlist:} the \code{eemlist}
-\item \strong{abslist:} the \code{abslist}
-\item \strong{readme:} a character vector containing information about the data processing steps
-\item \strong{meta:} the metadata associated with the samples, may be \code{NULL} if not provided
-\item \strong{indices:} a list of EEMs and absorbance indices, may be \code{NULL} if not provided
-\item \strong{eem_plot:} a list of EEMs plots, may be \code{NULL} if not provided
-\item \strong{abs_plot:} a ggplot2 object of the absorbance data, may be \code{NULL} if not provided
-}
+Processed data files are saved to the specified \code{output_dir}. See
+\link{export_data} for more details on exports. #TODO: also return outputs as object like export-data?
 }
 \description{
 The main high-level function of the \link{eemanalyzeR} package.

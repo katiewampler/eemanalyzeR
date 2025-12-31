@@ -4,9 +4,9 @@
 \name{eemanalyzeR-package}
 \alias{eemanalyzeR}
 \alias{eemanalyzeR-package}
-\title{eemanalyzeR: Semi-automated processing of excitation emission matrices}
+\title{eemanalyzeR: Semi-Automated Processing of Excitation Emission Matrices}
 \description{
-Provides tools for processing and analyzing raw excitation-emission matrices (EEMs) data. Includes functions for data cleaning, quality assurance, calculation of indices, and generating visualizations. Builds upon the 'eemR' and 'staRdom' packages to create a more streamlined and automated workflow that ensures consistent analysis and simplify the coding required to process the data.
+Tools for processing and analyzing raw excitation-emission matrices (EEMs) and absorbance data. Includes functions for data cleaning, quality assurance, calculation of indices, and generating visualizations. Builds upon the 'eemR' and 'staRdom' packages to create a more streamlined and automated workflow that ensures consistent analysis and simplify the coding required to process the data.
 }
 \seealso{
 Useful links:
