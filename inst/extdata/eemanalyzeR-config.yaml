@@ -15,14 +15,15 @@
   eem_import_func: "aqualog" #import_function in function
 
   # metadata arguments for reading and loading metadata from meta_read() and add_metadata()
+  meta_file:  .na.character # User can specify the filename
   meta_sheet: .na.character # only needed if excel file
-  meta_validate: TRUE # usually we want to validate the metadata
+  meta_validate: TRUE       # usually we want to validate the metadata
   iblank_pattern: "BEM$|Waterfall ?Plot ?Blank" # Regex to pattern match instrument blanks
   sblank_pattern: "Blank|blank|BLK"             # Regex to pattern match sample blanks
   check_pattern: "Tea|tea"                      # Regex to pattern match check standards
 
  # arguments for adding blanks to samples
-  blk_validate: TRUE
+  blank_validate: TRUE
 
   # processing arguments from process_eems()
   ex_clip:

@@ -5,7 +5,6 @@
 #'
 #' @param eemlist An `eemlist` object.
 #' @param abslist An `abslist` object.
-#' #TODO Ryan doesn't understand the arguments filename and output_dir
 #' @param filename A character string, used for file names.
 #' @param output_dir Path to save the data. Defaults to a temporary directory
 #'   if not specified.
@@ -49,7 +48,7 @@
 export_data <- function(eemlist, abslist, filename,
                         meta = NULL, indices = NULL,
                         eem_plot = NULL, abs_plot = NULL, csv = FALSE,
-                        output_dir = NULL) {
+                        output_dir = NA) {
   stopifnot(
     .is_eemlist(eemlist), .is_abslist(abslist), is.data.frame(meta) | is.null(meta),
     is.list(indices) | is.null(indices), is.list(eem_plot) | is.null(eem_plot),
@@ -72,7 +71,7 @@ export_data <- function(eemlist, abslist, filename,
 
 
   # if no output_dir is specified get the temp directory
-  if (is.null(output_dir)) {
+  if (is.na(output_dir)) {
     output_dir <- file.path(tempdir(), filename)
   }
   if (!dir.exists(file.path(output_dir))) {

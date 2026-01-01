@@ -12,12 +12,31 @@
 #' @param filename A character string, used for file names.
 #' @param interactive Logical, used to determine if user input should be used.
 #' @param blanklist eemslist of blank files to subtract from samples. Automatically uses instrument blanks if not provided
-#' @param ... additional arguments used to make one time modifications to processing arguments. See #TODO add text here
+#' @param ... additional arguments used to make one time modifications to processing arguments. List of optional arguments 
+#' to modify within the processing are located in the default_config. See details for more info on modifying processing configuration.
 #'
 #' @inherit export_data return
 #' @md
 #'
-#' @details #TODO: instructions on the ways to modify the parameters
+#' @details The only requirement to use this wrapper function to process EEMs and Absorbance data is an input directory
+#' containing the raw data files and a metadata spreadsheet. However, there are many optional arguments for the
+#' user to modify the EEMs and Absorbance processing. The names and default values for these arguements can be
+#' found in the documentation for the default_config. # TODO can I link this here?
+#' 
+#' There are four ways for user to use and modify the processing configuration defaults. 
+#' 
+#' Option 1: User doesn't change anything then the package defaults are used by run_eems.
+#' 
+#' Option 2: User creates a file (stored on their computer) that has processing defaults that
+#' eemanalyzer pulls from at load time. This is created using the edit_user_config function # TODO link documenation
+#' 
+#' Option 3: User modifies the defaults BEFORE using the run_eems function using modify_config function.
+#' This modifies the settings for the R session and will be applied to any data processing that occurs until 
+#' the package is reloaded or the R session is restarted. After the package is reloaded the defaults revert
+#' back to the package defaults or (if they exist) user defaults.
+#' 
+#' Option 4: User supplies arguments to run_eems function that modify processing ONLY during that run. These
+#' configuration options will not persist across multiple tries of run_eems and must be specified each time.
 #'
 #' @returns Processed data files are saved to the specified `output_dir`. See
 #' [export_data] for more details on exports. #TODO: also return outputs as object like export-data?
@@ -39,22 +58,20 @@ run_eems <- function(
 
 {
 
-  # Apply the varargs to function environment  only in the
+  # Apply the varargs to function environment only in the
   # function scope so these aren't stored elsewhere.
   varargs <- rlang::list2(...)
-  # Pick out the varargs that match the package env names
+  # Pick out the varargs that match the config names
   parameters_to_modify <- varargs[which(names(varargs) %in% names(.pkgenv$config))]
+  # Modify the output_dir and filename if it exists in the function call
+  if(!missing("output_dir")) parameters_to_modify$output_dir <- output_dir
+  if(!missing("filename"))   parameters_to_modify$filename   <- filename 
 
-  # Clone the package environment (does this work?)
+  # Clone the package environment - Everything below should use  .fnenv
   .fnenv <- rlang::env_clone(.pkgenv, parent = rlang::caller_env())
 
   # Modify the function environment processing parameters with any from varargs
   modify_config(!!!parameters_to_modify, env = .fnenv)
-  # TODO - make these work as expected when defaults are given or not
-  # Add the output_dir and filename to the function environment
-  modify_config(list("output_dir" = output_dir,
-                     "filename" = filename),
-                 env = .fnenv)
 
   # Decide whether the script is running in interactive or batch mode
   rlang::local_interactive(value = interactive)
@@ -78,15 +95,10 @@ run_eems <- function(
     import_function = get_eem_import_func(.fnenv),
     verbose = FALSE
   )
-  # TODO don't warn user about overwriting a blank readme since eem_dir_read will overwrite tha abs_dir_read readme
 
   # Find the metadata file in the input directory.
-  # TODO: This function only uses the input_dir in the run_eems function. There's no
-  # option to supply a separate metadata file at this 
-  
-  # Check to see if there are multiple metadata files in the directory
-  metadata_file <- .find_meta_file(input_dir)
   metadata <- meta_read(input_dir,
+    meta_file = get_meta_file(.fnenv),
     sheet = get_meta_sheet(.fnenv),
     validate_metadata = get_meta_validate(.fnenv)
   )
@@ -106,19 +118,14 @@ run_eems <- function(
   )
 
   # Add blanks
-  # TODO Need to change how we deal with blanks here. Problems:
-  # if you try to subset by iblank and sblank the blanklist won't match the eemlist
-  # if you try only to do the iblank then it doesn't allow you to pick the next sblank
-  # when the iblank is bad
   # NOTE: rlang::is_interactive might not work great with box large file storage
-  # Automatically create blanklist
-  # if no blanks are provided
+  # Automatically create blanklist if no blanklist provided
   if (is.null(blanklist)) {
     # separate into blanklist and eemlist based on pattern given
     blanklist <- subset_type(eems, type = c("iblank", "sblank"))
   }
   # First validate blanklist (only if in interactive session)
-  if(interactive & get_blk_validate(.fnenv)) {
+  if(interactive & get_blank_validate(.fnenv)) {
     blanklist <- validate_blanks(blanklist)
   } else {
     # If we aren't validating then use only the iblank
@@ -134,23 +141,7 @@ run_eems <- function(
   eems <- correct_dilution(eems)
   processed_abs <- correct_dilution(abs)
 
-  # Process the EEMs
-  # subtract_blank
-  # remove_scattering
-  # ife_correct
-  # raman_normalize
-  # correct_dilution
-  # eem_cut
-
   # TODO print a message that processing is happening for user
-  # collect parameters for readme, and to put into the following functions
-  # pars <- rlang::enquos(
-  #   ex_clip, em_clip, type, width,
-  #   interpolate, method,
-  #   cores, cuvle
-  # )
-  # names(pars) <- c("ex_clip", "em_clip", "type", "width", "interpolate", "method", "cores", "cuvle")
-
   # Subtract the Blank
   eems <- subtract_blank(eem = eems)
   # Remove Scattering
@@ -221,14 +212,13 @@ run_eems <- function(
   save_raw_file_status <- export_data(processed_eems,
     processed_abs,
     filename = get_filename(.fnenv),
-    output_dir = get_output_dir(.fnenv), # TODO figure out how to handle missing output dir
+    output_dir = get_output_dir(.fnenv),
     meta = metadata,
     indices = indices,
     eem_plot = processed_eems_plots,
     abs_plot = processed_abs_plots,
     csv = get_csv(.fnenv)
   )
-  # TODO check raw file status after added to export-data?
 
   # Done!
 }

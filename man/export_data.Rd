@@ -13,14 +13,13 @@ export_data(
   eem_plot = NULL,
   abs_plot = NULL,
   csv = FALSE,
-  output_dir = NULL
+  output_dir = NA
 )
 }
 \arguments{
 \item{eemlist}{An \code{eemlist} object.}
 
-\item{abslist}{An \code{abslist} object.
-#TODO Ryan doesn't understand the arguments filename and output_dir}
+\item{abslist}{An \code{abslist} object.}
 
 \item{filename}{A character string, used for file names.}
 

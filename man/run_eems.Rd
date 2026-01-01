@@ -24,7 +24,8 @@ run_eems(
 
 \item{blanklist}{eemslist of blank files to subtract from samples. Automatically uses instrument blanks if not provided}
 
-\item{...}{additional arguments used to make one time modifications to processing arguments. See #TODO add text here}
+\item{...}{additional arguments used to make one time modifications to processing arguments. List of optional arguments
+to modify within the processing are located in the default_config. See details for more info on modifying processing configuration.}
 }
 \value{
 Processed data files are saved to the specified \code{output_dir}. See
@@ -39,5 +40,23 @@ specifying an output directory, and providing a file prefix for naming
 outputs, the function performs the full processing pipeline from start to finish.
 }
 \details{
-#TODO: instructions on the ways to modify the parameters
+The only requirement to use this wrapper function to process EEMs and Absorbance data is an input directory
+containing the raw data files and a metadata spreadsheet. However, there are many optional arguments for the
+user to modify the EEMs and Absorbance processing. The names and default values for these arguements can be
+found in the documentation for the default_config. # TODO can I link this here?
+
+There are four ways for user to use and modify the processing configuration defaults.
+
+Option 1: User doesn't change anything then the package defaults are used by run_eems.
+
+Option 2: User creates a file (stored on their computer) that has processing defaults that
+eemanalyzer pulls from at load time. This is created using the edit_user_config function # TODO link documenation
+
+Option 3: User modifies the defaults BEFORE using the run_eems function using modify_config function.
+This modifies the settings for the R session and will be applied to any data processing that occurs until
+the package is reloaded or the R session is restarted. After the package is reloaded the defaults revert
+back to the package defaults or (if they exist) user defaults.
+
+Option 4: User supplies arguments to run_eems function that modify processing ONLY during that run. These
+configuration options will not persist across multiple tries of run_eems and must be specified each time.
 }

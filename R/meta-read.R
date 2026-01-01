@@ -4,8 +4,8 @@
 #' EEM data. See [eemanalyzeR::metadata] for required columns and structure.
 #'
 #' @param input_dir Path to the metadata file or the folder containing it.
-#' @param meta_file Optional: Filename of the metadata file. If a full path is
-#'   provided, it will find that specific file, otherwise it will search within input_dir
+#' @param meta_file Optional: Filename of the metadata file. If left as NA, 
+#'   the metadata file will be guessed from files in the input directory.
 #' @param sheet Name of the sheet containing metadata (only required if the
 #'   metadata is not on the first sheet of an `.xlsx` file).
 #' @param validate_metadata Logical. If `TRUE`, checks the metadata for
@@ -21,15 +21,19 @@
 #' metadata <- meta_read(system.file("extdata", package = "eemanalyzeR"))
 
 meta_read <- function(input_dir,
-                      meta_file,
+                      meta_file = NA,
                       sheet = NA,
                       validate_metadata = TRUE) {
   
-  # TODO: here's how we want metadata reading to go:
   # 1) If NOT given meta_file, it searches input_dir and if it finds only one csv/xlsx file, it assumes that's metadata and chugs along (with a message)
   # 2) If NOT given meta_file, it searches input_dir it finds >1 csv/xlsx file, it stops and warns the user to provide a meta_file argument that specifies which metadata to use
   # 3) If given a meta file argument, it tries to find that file and if it does, then it chugs along (no message), otherwise it errors
-  meta_file <- .find_meta_file(input_dir)
+  if(!is.na(meta_file)) {
+    message("Using metadata in file: ", meta_file)
+    meta_file <- .find_meta_file(file.path(input_dir, meta_file))
+  } else {
+    meta_file <- .find_meta_file(input_dir)
+  }
 
   # read in metadata
   if (tools::file_ext(meta_file) == "xlsx") {
@@ -63,10 +67,9 @@ meta_read <- function(input_dir,
     # if name isn't specified, it pulls all xlsx/csv files, assuming there will only be one
     # check we have one and only one file to read in
     if (length(meta_file) > 1) {
-      message("Multiple possible metadata files in directory. Please specify only one file")
-
+      stop("Multiple possible metadata files in directory. Please specify one filename using meta_file argument.")
     } else if (length(meta_file) == 0) {
-      stop("Unable to locate metadata in: ", dir, "\nplease ensure metadata is .csv or .xlsx file")
+      stop("Unable to locate metadata in: ", dir, "\nplease ensure metadata is .csv or .xlsx file.")
     }
     message("No Meta file specified, using: ", meta_file)
   }
@@ -77,7 +80,7 @@ meta_read <- function(input_dir,
   }
   # Fail if neither of these options work
   else {
-    stop("unable to locate metadata")
+    stop("Unable to locate metadata. Please specify a metadata file using meta_file argument.")
   }
   return(meta_file)
 }

@@ -2,19 +2,6 @@
 # Need to make these so it cleans up the processing code and makes passing
 # function arguments much more clear.
 
-# 4 different ways for user to use processing environment variables
-# 1) User doesn't do anything then the package defaults are used by run_eems
-# 2) User creates a file (stored on their computer) that has processing defaults that
-#    eemanalyzer pulls from at load time
-# 3) User sets pkg environment defaults in session but that affects any processing
-#    that occurs during that session. After package is reloaded the defaults are
-#    restored to package defaults
-# 4) User supplies arguments to run_eems function that modify processing ONLY during
-#    that run.
-
-# Package processing defaults list
-# can modify defaults on package load --> saved in inst/ext_data as yaml and as package obj now
-# TODO - document these defaults -> documented in data.R under  eemanalyzer_processing_defaults
 
 # Create an environment to store EEMS processing arguments and parameters
 default_config <- yaml::read_yaml(file.path(
@@ -107,7 +94,6 @@ reset_config <- function(env = .pkgenv) {
 }
 
 
-# TODO: document this with all the defaults -> see data.R
 #' Modify the eemanalyzeR configuration settings
 #'
 #' Allows the user to modify configuration settings that affect data processing through the
