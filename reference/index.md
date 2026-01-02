@@ -1,0 +1,181 @@
+# Package index
+
+## Automated EEMs processing
+
+Automated loading, processing, and export of EEMs and and absorbance
+data.
+
+- [`run_eems()`](https://katiewampler.github.io/eemanalyzeR/reference/run_eems.md)
+  : Load, clean, and process EEMs and absorbance data
+
+## Reading Data
+
+Functions for loading in EEMs, absorbance, and metadata.
+
+- [`abs_read()`](https://katiewampler.github.io/eemanalyzeR/reference/abs_read.md)
+  : Read a single absorbance file into R
+- [`eem_dir_read()`](https://katiewampler.github.io/eemanalyzeR/reference/dir_read.md)
+  [`abs_dir_read()`](https://katiewampler.github.io/eemanalyzeR/reference/dir_read.md)
+  : Read absorbance and fluorescence data from directory
+- [`meta_check()`](https://katiewampler.github.io/eemanalyzeR/reference/meta_check.md)
+  : Run tests to validate metadata
+- [`meta_read()`](https://katiewampler.github.io/eemanalyzeR/reference/meta_read.md)
+  : Read metadata from a file
+
+## Processing Data
+
+Functions to process and clean data.
+
+- [`add_blanks()`](https://katiewampler.github.io/eemanalyzeR/reference/add_blanks.md)
+  : Check blanks and add to sample data
+- [`add_metadata()`](https://katiewampler.github.io/eemanalyzeR/reference/add_metadata.md)
+  : Add metadata to absorbance and EEM data
+- [`correct_dilution()`](https://katiewampler.github.io/eemanalyzeR/reference/correct_dilution.md)
+  : Perform dilution corrections
+- [`ife_correct()`](https://katiewampler.github.io/eemanalyzeR/reference/ife_correct.md)
+  : Perform inner-filter correction on EEM data
+- [`process_eem()`](https://katiewampler.github.io/eemanalyzeR/reference/process_eem.md)
+  : Process and correct excitation–emission matrices (EEMs)
+- [`raman_normalize()`](https://katiewampler.github.io/eemanalyzeR/reference/raman_normalize.md)
+  : Perform Raman normalization of EEMs
+- [`remove_scattering()`](https://katiewampler.github.io/eemanalyzeR/reference/remove_scattering.md)
+  : Remove Raman and Rayleigh scattering lines from EEMs
+- [`subtract_blank()`](https://katiewampler.github.io/eemanalyzeR/reference/subtract_blank.md)
+  : Perform blank subtraction on EEM samples
+
+## Indices
+
+Functions to generate EEMs and absorbance indices.
+
+- [`eemanalyzeR_indices()`](https://katiewampler.github.io/eemanalyzeR/reference/eemanalyzeR_indices.md)
+  : Default package methods for fluorescence and absorbance indices
+- [`eemR_indices()`](https://katiewampler.github.io/eemanalyzeR/reference/eemR_indices.md)
+  : eemR and staRdom methods for fluorescence and absorbance indices
+- [`get_abs_slope()`](https://katiewampler.github.io/eemanalyzeR/reference/get_abs_slope.md)
+  : Calculate spectral slopes
+- [`get_absorbance()`](https://katiewampler.github.io/eemanalyzeR/reference/get_absorbance.md)
+  : Extract absorbance at a given wavelength
+- [`get_fluorescence()`](https://katiewampler.github.io/eemanalyzeR/reference/get_fluorescence.md)
+  : Get fluorescence within a specified range
+- [`get_indices()`](https://katiewampler.github.io/eemanalyzeR/reference/get_indices.md)
+  : Get fluorescence and absorbance indices
+- [`get_indices_function()`](https://katiewampler.github.io/eemanalyzeR/reference/get_indices_function.md)
+  : Get function to generate fluorescence and absorbance indices
+- [`get_ratios()`](https://katiewampler.github.io/eemanalyzeR/reference/get_ratios.md)
+  : Safely return ratios values
+- [`usgs_indices()`](https://katiewampler.github.io/eemanalyzeR/reference/usgs_indices.md)
+  : USGS methods for fluorescence and absorbance indices
+
+## Exporting Data
+
+Functions to plot and export data.
+
+- [`annotate_plot()`](https://katiewampler.github.io/eemanalyzeR/reference/annotate_plot.md)
+  : Annotate EEM plot with location of indices
+- [`export_data()`](https://katiewampler.github.io/eemanalyzeR/reference/export_data.md)
+  : Export processed absorbance and fluorescence data
+- [`plot(`*`<eem>`*`)`](https://katiewampler.github.io/eemanalyzeR/reference/plot.md)
+  [`plot(`*`<eemlist>`*`)`](https://katiewampler.github.io/eemanalyzeR/reference/plot.md)
+  [`plot(`*`<abs>`*`)`](https://katiewampler.github.io/eemanalyzeR/reference/plot.md)
+  [`plot(`*`<abslist>`*`)`](https://katiewampler.github.io/eemanalyzeR/reference/plot.md)
+  : Default plot methods for optical data with ggplot2
+- [`print_readme()`](https://katiewampler.github.io/eemanalyzeR/reference/print_readme.md)
+  : Print \`readme\`
+
+## QA/QC
+
+Functions to aid in QA/QC checks.
+
+- [`check_eem_mdl()`](https://katiewampler.github.io/eemanalyzeR/reference/check_mdl.md)
+  [`check_abs_mdl()`](https://katiewampler.github.io/eemanalyzeR/reference/check_mdl.md)
+  : Check whether an EEM or absorbance sample is above the MDL
+- [`check_std()`](https://katiewampler.github.io/eemanalyzeR/reference/check_std.md)
+  : Check if a check standard is consistent with long-term standard
+- [`create_mdl()`](https://katiewampler.github.io/eemanalyzeR/reference/create_mdl.md)
+  : Calculate method detection limits (MDL)
+- [`create_std()`](https://katiewampler.github.io/eemanalyzeR/reference/create_std.md)
+  : Create long term average check standard
+- [`.combine_flags()`](https://katiewampler.github.io/eemanalyzeR/reference/dot-combine_flags.md)
+  : Nicely combine data QAQC flags
+- [`flag_missing()`](https://katiewampler.github.io/eemanalyzeR/reference/flag_missing.md)
+  : QA/QC flags for missing data
+- [`format_index()`](https://katiewampler.github.io/eemanalyzeR/reference/format_index.md)
+  : Format index and flag data
+- [`validate_blanks()`](https://katiewampler.github.io/eemanalyzeR/reference/validate_blanks.md)
+  : Validate the instrument blank(s)
+- [`validate_std()`](https://katiewampler.github.io/eemanalyzeR/reference/validate_std.md)
+  : Visually validate the check standard
+
+## Configuration File
+
+Functions to create and maintain processing configuration files.
+
+- [`list_config()`](https://katiewampler.github.io/eemanalyzeR/reference/list_config.md)
+  : List current eemanalyzeR configuration
+- [`modify_config()`](https://katiewampler.github.io/eemanalyzeR/reference/modify_config.md)
+  : Modify the eemanalyzeR configuration settings
+- [`reset_config()`](https://katiewampler.github.io/eemanalyzeR/reference/reset_config.md)
+  : Reset all eemanalyzeR settings to package defaults
+- [`reset_user_config()`](https://katiewampler.github.io/eemanalyzeR/reference/reset_user_config.md)
+  : Reset all eemanalyzeR settings in the user configuration file to
+  package defaults
+- [`edit_user_config()`](https://katiewampler.github.io/eemanalyzeR/reference/user_config.md)
+  [`load_user_config()`](https://katiewampler.github.io/eemanalyzeR/reference/user_config.md)
+  : Set up and apply user defaults for data processing
+- [`validate_config()`](https://katiewampler.github.io/eemanalyzeR/reference/validate_config.md)
+  : Validate the eemanalyzeR configuration
+
+## Utilities
+
+Helper functions and internal utilities.
+
+- [`abs_interp()`](https://katiewampler.github.io/eemanalyzeR/reference/abs_interp.md)
+  : Interpolate absorbance data
+
+- [`eem_normalize()`](https://katiewampler.github.io/eemanalyzeR/reference/eem_normalize.md)
+  :
+
+  Normalize an `eem` or `eemlist` based on a normalization factor
+
+- [`eem_transform()`](https://katiewampler.github.io/eemanalyzeR/reference/eem_transform.md)
+  :
+
+  Convert between an `eem` object and a `data.frame`
+
+- [`get_sample_info()`](https://katiewampler.github.io/eemanalyzeR/reference/get_sample_info.md)
+  :
+
+  Extract components from an `eemlist` or `abslist`
+
+- [`subset_samples()`](https://katiewampler.github.io/eemanalyzeR/reference/subset_samples.md)
+  :
+
+  Subset `eemlist` or `abslist` based on components
+
+- [`subset_type()`](https://katiewampler.github.io/eemanalyzeR/reference/subset_type.md)
+  :
+
+  Extract samples by type from an `eemlist` or `abslist`
+
+- [`unique(`*`<eemlist>`*`)`](https://katiewampler.github.io/eemanalyzeR/reference/unique.md)
+  [`unique(`*`<abslist>`*`)`](https://katiewampler.github.io/eemanalyzeR/reference/unique.md)
+  : Get unique EEMs or absorbance samples
+
+## Datasets
+
+Functions to plot and export data.
+
+- [`default_config`](https://katiewampler.github.io/eemanalyzeR/reference/default_config.md)
+  : Default configuration of arguments for eemanalyzeR
+- [`example_abs`](https://katiewampler.github.io/eemanalyzeR/reference/example_abs.md)
+  : Down-scaled absorbance data
+- [`example_eems`](https://katiewampler.github.io/eemanalyzeR/reference/example_eems.md)
+  : Down-scaled excitation emission matrices
+- [`example_processed_abs`](https://katiewampler.github.io/eemanalyzeR/reference/example_processed_abs.md)
+  : Down-scaled and processed absorbance data
+- [`example_processed_eems`](https://katiewampler.github.io/eemanalyzeR/reference/example_processed_eems.md)
+  : Down-scaled and processed excitation emission matrices
+- [`indice_ranges`](https://katiewampler.github.io/eemanalyzeR/reference/indice_ranges.md)
+  : Standard ranges for absorbance and EEMs indices
+- [`metadata`](https://katiewampler.github.io/eemanalyzeR/reference/metadata.md)
+  : Example metadata
