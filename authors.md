@@ -14,7 +14,7 @@ Source:
 
 Wampler Katie A., Cole Ryan P., (2026). eemanalyzeR: Semi-Automated
 Processing of Excitation Emission Matrices. R package version 1.0.0,
-https://github.com/katiewampler/eemanalyzeR,
+https://CRAN.R-project.org/package=eemanalyzeR,
 https://katiewampler.github.io/eemanalyzeR/
 
     @Manual{,
@@ -22,5 +22,5 @@ https://katiewampler.github.io/eemanalyzeR/
       author = {Katie A. Wampler and Ryan P. Cole},
       year = {2026},
       note = {R package version 1.0.0},
-      url = {https://github.com/katiewampler/eemanalyzeR, https://katiewampler.github.io/eemanalyzeR/},
+      url = {https://CRAN.R-project.org/package=eemanalyzeR, https://katiewampler.github.io/eemanalyzeR/},
     }

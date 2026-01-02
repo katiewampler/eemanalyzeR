@@ -64,10 +64,16 @@ settings after experimenting with modifying the settings using `edit_user_config
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">reset_user_config</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in reset_user_config():</span> No User Config found. Please create using edit_user_config.</span>
-<span class="r-in"><span><span class="fu"><a href="user_config.html">load_user_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> User configuration not found. If eemanalyzeR package defaults are not ok, create user configuration with edit_config()</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="user_config.html">edit_user_config</a></span><span class="op">(</span><span class="op">)</span> <span class="co">#create a config file</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> User configuration loaded from file:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ~/.local/share/eemanalyzeR/user-config.yaml</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Changes to user configuration applied.</span>
+<span class="r-in"><span><span class="fu">reset_user_config</span><span class="op">(</span><span class="op">)</span> <span class="co">#reset config file</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> User configuration reset.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Find reset conifg at ~/.local/share/eemanalyzeR/user-config.yaml</span>
+<span class="r-in"><span><span class="fu"><a href="user_config.html">load_user_config</a></span><span class="op">(</span><span class="op">)</span> <span class="co">#load config file</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> User configuration loaded from file:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ~/.local/share/eemanalyzeR/user-config.yaml</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -61,7 +61,7 @@ metadata):
   for an analytical blank, `check` for a check standard). Default values
   match Horiba Aqualog exports.
 
-- **doc_mgL**: dissolved organic carbon concentration in mg L⁻¹
+- **doc_mgL**: dissolved organic carbon concentration in mg/L
 
 - **notes**: optional notes on sample or sampling conditions
 

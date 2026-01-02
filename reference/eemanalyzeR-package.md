@@ -11,7 +11,7 @@ analysis and simplify the coding required to process the data.
 
 Useful links:
 
-- <https://github.com/katiewampler/eemanalyzeR>
+- <https://CRAN.R-project.org/package=eemanalyzeR>
 
 - <https://katiewampler.github.io/eemanalyzeR/>
 

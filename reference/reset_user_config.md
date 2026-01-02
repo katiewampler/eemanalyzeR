@@ -22,8 +22,14 @@ list.
 ## Examples
 
 ``` r
-reset_user_config()
-#> Error in reset_user_config(): No User Config found. Please create using edit_user_config.
-load_user_config()
-#> User configuration not found. If eemanalyzeR package defaults are not ok, create user configuration with edit_config()
+edit_user_config() #create a config file
+#> User configuration loaded from file:
+#> ~/.local/share/eemanalyzeR/user-config.yaml
+#> Changes to user configuration applied.
+reset_user_config() #reset config file
+#> User configuration reset.
+#> Find reset conifg at ~/.local/share/eemanalyzeR/user-config.yaml
+load_user_config() #load config file
+#> User configuration loaded from file:
+#> ~/.local/share/eemanalyzeR/user-config.yaml
 ```
