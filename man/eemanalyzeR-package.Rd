@@ -6,12 +6,15 @@
 \alias{eemanalyzeR-package}
 \title{eemanalyzeR: Semi-Automated Processing of Excitation Emission Matrices}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Tools for processing and analyzing raw excitation-emission matrices (EEMs) and absorbance data. Includes functions for data cleaning, quality assurance, calculation of indices, and generating visualizations. Builds upon the 'eemR' and 'staRdom' packages to create a more streamlined and automated workflow that ensures consistent analysis and simplify the coding required to process the data.
 }
 \seealso{
 Useful links:
 \itemize{
   \item \url{https://github.com/katiewampler/eemanalyzeR}
+  \item \url{https://katiewampler.github.io/eemanalyzeR/}
   \item Report bugs at \url{https://github.com/katiewampler/eemanalyzeR/issues}
 }
 

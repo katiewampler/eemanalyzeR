@@ -10,7 +10,7 @@
 This package provides tools for processing and analyzing raw
 excitation-emission matrices (EEMs) data generated using an Aqualog.
 This package was designed to build upon the
-[eemR](https://cran.r-project.org/package=eemR) and
+[eemR](https://cran.r-project.org/web/packages/eemR/index.html) and
 [staRdom](https://cran.r-project.org/package=staRdom) packages to create
 a more streamlined and automated workflow that ensures consistent
 analysis and simplify the coding required to process the data.

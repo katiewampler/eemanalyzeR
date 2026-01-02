@@ -1,4 +1,113 @@
-url: ~
+url: https://katiewampler.github.io/eemanalyzeR/
 template:
   bootstrap: 5
+  bootswatch: zephyr
+  params:
+    logo: man/figures/eemanalyzeR_nobg.png
+reference:
+- title: Automated EEMs processing
+  desc: |
+    Automated loading, processing, and export of EEMs and and absorbance data.
+  contents: run_eems
+- title: Reading Data
+  desc: |
+    Functions for loading in EEMs, absorbance, and metadata.
+  contents:
+  - abs_read
+  - eem_dir_read
+  - abs_dir_read
+  - meta_check
+  - meta_read
+- title: Processing Data
+  desc: |
+    Functions to process and clean data.
+  contents:
+  - add_blanks
+  - add_metadata
+  - correct_dilution
+  - ife_correct
+  - process_eem
+  - raman_normalize
+  - remove_scattering
+  - subtract_blank
+- title: Indices
+  desc: |
+    Functions to generate EEMs and absorbance indices.
+  contents:
+  - eemanalyzeR_indices
+  - eemR_indices
+  - get_abs_slope
+  - get_absorbance
+  - get_fluorescence
+  - get_indices
+  - get_indices_function
+  - get_ratios
+  - usgs_indices
+- title: Exporting Data
+  desc: |
+    Functions to plot and export data.
+  contents:
+  - annotate_plot
+  - export_data
+  - plot.eem
+  - plot.eemlist
+  - plot.abs
+  - plot.abslist
+  - print_readme
+- title: QA/QC
+  desc: |
+    Functions to aid in QA/QC checks.
+  contents:
+  - check_eem_mdl
+  - check_abs_mdl
+  - check_std
+  - create_mdl
+  - create_std
+  - .combine_flags
+  - flag_missing
+  - format_index
+  - validate_blanks
+  - validate_std
+- title: Configuration File
+  desc: |
+    Functions to create and maintain processing configuration files.
+  contents:
+  - list_config
+  - modify_config
+  - reset_config
+  - reset_user_config
+  - edit_user_config
+  - load_user_config
+  - validate_config
+- title: Utilities
+  desc: |
+    Helper functions and internal utilities.
+  contents:
+  - abs_interp
+  - eem_normalize
+  - eem_transform
+  - get_sample_info
+  - subset_samples
+  - subset_type
+  - unique.eemlist
+  - unique.abslist
+- title: Datasets
+  desc: |
+    Functions to plot and export data.
+  contents:
+  - default_config
+  - example_abs
+  - example_eems
+  - example_processed_abs
+  - example_processed_eems
+  - indice_ranges
+  - metadata
+articles:
+- title: Articles
+  navbar: ~
+  contents:
+  - getting-started
+  - output-documentation
+  - eemanalyzeR-indices
+  - custom-indices
 
