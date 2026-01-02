@@ -71,7 +71,7 @@ print_readme <- function(){
   #get stuff for the top
   date <- strftime(Sys.time(), format="%Y-%m-%d %H:%M")
   version <- paste0("Data processed using ", .eemanalyzeR_ver(), " package in R.")
-  link <- "For details on processing steps, indices, and QA/QC flags see the package website: https://github.com/katiewampler/eemanalyzeR"
+  link <- "For details on processing steps, indices, and QA/QC flags see the package website: https://katiewampler.github.io/eemanalyzeR/articles/output-documentation.html"
 
   cat(paste(date, version, link, "______________________________\n", paste(unlist(readme), collapse = "\n"), sep="\n"))
 

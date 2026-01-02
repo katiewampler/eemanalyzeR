@@ -88,8 +88,9 @@ load_user_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR"
 #' @export
 #'
 #' @examples
-#' reset_user_config()
-#' load_user_config()
+#' edit_user_config() #create a config file
+#' reset_user_config() #reset config file
+#' load_user_config() #load config file
 reset_user_config <- function() {
   user_dir <- rappdirs::user_data_dir("eemanalyzeR")
   if (!dir.exists(user_dir)) dir.create(user_dir, recursive = TRUE)
@@ -101,7 +102,8 @@ reset_user_config <- function() {
     file.copy(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"),
               defaults_file)
   } else{
-    stop("No User Config found. Please create using edit_user_config.")
+    warning("No User Config found. Creating one using edit_user_config.")
+    edit_user_config()
   }
 
  message("User configuration reset.\n",

@@ -16,6 +16,7 @@ This function is provided in case the user has a malformed configuration file or
 settings after experimenting with modifying the settings using `edit_user_config`.
 }
 \examples{
-reset_user_config()
-load_user_config()
+edit_user_config() #create a config file
+reset_user_config() #reset config file
+load_user_config() #load config file
 }
