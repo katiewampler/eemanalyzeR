@@ -81,12 +81,12 @@
 #'   qaqc_dir = system.file("extdata", package = "eemanalyzeR")
 #' )
 get_indices <- function(eemlist, abslist, index_method = "eemanalyzeR",
-                        tolerance = 0.2, return = "long",
-                        cuvle = 1, qaqc_dir = NULL, arg_names = NULL) {
+                        tolerance = 0.2, return = "wide",
+                        cuvle = 1, qaqc_dir = NA, arg_names = NULL) {
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist))
 
   #specify qaqc dir if not specified
-  if(is.null(qaqc_dir)){qaqc_dir = .qaqc_dir()}
+  if(!is.null(qaqc_dir) && is.na(qaqc_dir)){qaqc_dir = .qaqc_dir()}
 
   # check if processing has been done, not warn that indices may be unreliable
   steps <- check_processing(eemlist)
@@ -104,8 +104,13 @@ get_indices <- function(eemlist, abslist, index_method = "eemanalyzeR",
 
   # collect arguments for readme, and to put into the following functions
   if (is.null(arg_names)) {
-    args <- rlang::enquos(index_method, return, cuvle, qaqc_dir)
-    names(args) <- c("index_method", "return", "cuvle", "qaqc_dir")
+    args <- list(
+      index_method = index_method,
+      return = return,
+      cuvle = cuvle,
+      qaqc_dir = qaqc_dir
+    )
+
   } else {
     args <- arg_names
   }

@@ -4,15 +4,12 @@
 \alias{add_blanks}
 \title{Check blanks and add to sample data}
 \usage{
-add_blanks(eemlist, blanklist = NULL, validate = TRUE)
+add_blanks(eemlist, blanklist)
 }
 \arguments{
 \item{eemlist}{An \code{eemlist} object.}
 
 \item{blanklist}{Optional. An \code{eem} or \code{eemlist} containing the blank EEM(s).}
-
-\item{validate}{If \code{TRUE}, the function prints the blanks and requests user validation,
-otherwise validation is skipped and blanks are added automatically.}
 }
 \value{
 An \code{eemlist} where each \code{eem} object has two added components:
@@ -22,7 +19,7 @@ An \code{eemlist} where each \code{eem} object has two added components:
 }
 }
 \description{
-Allows the user to visually check excitation–emission matrix (EEM) plots of the blanks,
+Allows the user to visually check excitation-emission matrix (EEM) plots of the blanks,
 and then, if approved, the blanks will be added to the \code{eem} objects for further processing.
 }
 \details{
@@ -34,7 +31,13 @@ Because of this, samples must already have metadata assigned using
 If a \code{blanklist} is not provided, one is automatically generated from the \code{eemlist} attribute
 "sample_type", using the samples marked as "iblank".
 }
+\note{
+If the instrument blank is not accepted, the function will attempt to use an
+analytical blank instead (a sample type 'sblank'). If this blank is used instead,
+the blank will be removed from the sample set and a note will be written to the readme.
+}
 \examples{
 eemlist <- add_metadata(metadata, example_eems)
-augment_eemlist <- add_blanks(eemlist, validate = FALSE)
+blanklist <- subset_type(eemlist, "iblank")
+augment_eemlist <- add_blanks(eemlist, blanklist)
 }

@@ -30,32 +30,6 @@
 
 }
 
-#' Removes extra list items from eemlist, replaces sample with meta_name for matching
-#' @noRd
-.make_base_eem <- function(x){
-  if(.is_eemlist(x)){
-    x <- lapply(x, .make_base_eem)
-    class(x) <- "eemlist"
-    return(x)
-  }
-
-  if(.meta_added(x)){
-    x$sample <- x$meta_name
-    x$meta_name <- NULL
-    x$dilution <- NULL
-    x$integration_time_s <- NULL
-    x$raman_area_1s <- NULL
-    x$analysis_date <- NULL
-    x$description <- NULL
-    x$doc_mgL <-NULL
-    x$notes <- NULL
-    x$blk_x <- NULL
-    x$blk_file <- NULL
-  }
-  return(x)
-
-}
-
 #' Check which processing steps have been completed on an eem or eemlist
 #'
 #' @param eem an \code{eemlist} or \code{eem} object containing EEM's data.

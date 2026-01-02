@@ -42,7 +42,7 @@
 #' *Procedures for using the Horiba Scientific Aqualog® fluorometer to measure absorbance
 #' and fluorescence from dissolved organic matter* (USGS Numbered Series No. 2018-1096).
 #' U.S. Geological Survey.
-#' <https://doi.org/10.3133/ofr20181096>
+#' \doi{doi:10.3133/ofr20181096}
 #'
 #' @examples
 #' eem_mdl <- create_mdl(
@@ -88,11 +88,7 @@ create_mdl <- function(dir, meta_name = NULL, sheet = NULL, iblank = "BEM",
   }
 
   # add metadata
-  blank <- add_metadata(blank_meta, blank, sample_type_regex = list(
-    iblank_pattern = iblank,
-    sblank_pattern = "Blank|blank",
-    check_pattern = "Tea|tea"
-  ))
+  blank <- add_metadata(blank_meta, blank, iblank_pattern = iblank)
 
   if (type == "eem") {
     # check if the wavelengths are different across data if so, stop and provide info
@@ -107,7 +103,10 @@ create_mdl <- function(dir, meta_name = NULL, sheet = NULL, iblank = "BEM",
     }
 
     # blank correct blanks
-    blank_eems <- add_blanks(blank, validate = FALSE)
+      #analytical blanks still need to be blank
+      #subtracted to be consistent with sample data
+    iblanks <- subset_type(blank, "iblank")
+    blank_eems <- add_blanks(blank, iblanks)
 
     # blank subtract
     blank_eems <- subtract_blank(blank_eems)

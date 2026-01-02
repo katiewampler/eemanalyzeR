@@ -1,0 +1,203 @@
+---
+title: "Interpreting eemanalyzeR Outputs"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Interpreting eemanalyzeR Outputs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Exported Data
+
+Every data export from `eemanalyzeR` using the
+[export_data](../html/export_data.html) or
+[run_eems](../html/run_eems.html) functions contains the following
+files:
+
+-   **\*\_indices_filename.csv**:The absorbance and fluorescence indices
+-   **absorbance_plot_filename.png:** Plot showing the absorbance
+    spectra
+-   **\* .png:** Plots of the individual EEMs
+-   **summary_plots_filename.png:** Plot showing all of the EEMs
+    together
+-   **processed_data_filename.rds:** An R readable object containing all
+    of the exported data
+-   **readme_filename.txt:** A text file detailing the processing steps,
+    any warnings that occurred during data processing, and information
+    about the QA/QC checks performed
+
+<br>
+
+# QA/QC Checks
+
+## Visual Validation of Instrument Blank
+
+The instrument blank can be plotted and visually validated by the user.
+This step is used to visually look for blank contamination or errant
+peaks that could impact data during blank subtraction.
+
+-   If this step is performed the **readme** will contain a line that
+    this visual check occurred and the user processing the data accepted
+    the data.
+
+-   The [validate_blanks](../html/validate_blanks.html) function also
+    has the option that if the user does **not** accept the instrument
+    blank, it may be replaced with one of the analytical blanks. In this
+    case the **readme** will note the blank that was used instead of the
+    instrument blank.
+
+<br>
+
+## Method Detection Limits
+
+Absorbance and fluorescence indices can be compared to method detection
+limits (MDL). The MDL is the minimum signal at which we can confidently
+distinguish a measurement from zero and from analytical blanks. Here,
+the MDL is calculated using the approach proposed by Hansen et al.
+(2018):
+
+$$ \text{MDL} = \text{mean}(\text{long-term blank}) + 3 × \text{SD}(\text{long-term blank})$$where
+**long-term blank** is the fluorescence for a specific wavelength pair or
+absorbance at a specific wavelength, **mean** is the average signal, and
+**SD** is the standard deviation.
+
+To use the MDL checks, the user must create MDL files for both
+absorbance and fluorescence data using the
+[create_mdl](../html/create_mdl.html) function. If no MDL files are
+found, a warning will appear in the **readme** file.
+
+<br>
+
+## Check Standards
+
+Samples of sample type `check` can also be checked against a long-term
+average for consistency.
+
+To use the check standard checks, the user must create average standard
+files for both absorbance and fluorescence data using the
+[create_std](../html/create_std.html) function.
+
+-   **If no standard files are found**: a warning will appear in the
+    **readme** file.
+
+-   **If a standard file exists**: all available index values will be
+    compared between the check standards within the run and the long
+    term standard. If the value is outside the tolerance range (default
+    is 20%), it will be flagged in the index file. Additionally the
+    **readme** file will contain a summary of the number of indices
+    outside the tolerance range across the entire run and the tolerance
+    used.
+
+<br>
+
+## Index QA/QC Flags
+
+**The following flags may appear in the indices output files:**
+
+-   **DATA01**: Missing data required for calculation
+-   **DATA02**: Missing required wavelengths; value may be inaccurate
+-   **DATA03**: Ratio denominator was zero
+-   **DATA04**: Spectral slope could not be calculated
+-   **DOC01**: Missing dissolved organic carbon (DOC) data
+-   **INF01**: Infinite value
+-   **MDL01**: All values below MDL
+-   **MDL02**: One or more values below MDL; use cautiously
+-   **MDL03**: Ratio index where numerator or denominator was entirely
+    below MDL
+-   **NEG01**: Negative value
+-   **STD01**: Check standard value outside tolerance
+-   **VAL01**: Value below typical range
+-   **VAL02**: Value above typical range
+
+<br>
+
+# Indices
+
+The absorbance indices reported by the default index method
+(`eemanalyzeR`) and their **typical** interpretations are:
+
+```{r echo=FALSE, include=TRUE}
+abs_index <- data.frame('Index Name'=c("SUVA 254", "SUVA 280", "SVA 412",
+                               "Spectral Slope (275-295)",
+                               "Spectral Slope (350-400)",
+                               "Spectral Slope Ratio", 
+                               "E~2~/E~3~", "E~4~/E~6~"
+                               ), 
+                        'Index Abbreviation' =c("SUVA254", "SUVA280", "SVA412", "S275_295",
+                                    "S350_400", "SR", "E2_E3", "E4_E6"),
+                        'Interpretation'=c("proxy for aromaticity", 
+                                    "proxy for aromaticity",
+                                    "proxy for aromaticity",
+                                    "related to molecular weight and aromaticity",
+                                    "related to molecular weight and aromaticity", 
+                                    "related to molecular weight", 
+                                    "related to molecular weight and aromaticity",
+                                    "related to humic-like organic matter"
+                                    ))
+colnames(abs_index) <- c("Index Name", "Index Abbreviation", "Interpretation")
+knitr::kable(abs_index)
+```
+
+<br>
+
+The fluorescence indices reported by the default index method
+(`eemanalyzeR`) and their **typical** interpretations are:
+
+```{r echo=FALSE, include=TRUE}
+eem_index <- data.frame('Index Name'=c("Peak B", "Peak T", "Peak A", "Peak M", "Peak C",
+                                       "Peak D", "Peak E", "Peak N", 
+                                       "Ratio of Peak A to Peak T",
+                                       "Ratio of Peak C to Peak A",
+                                       "Ratio of Peak C to Peak M",
+                                       "Ratio of Peak C to Peak T",
+                                       "Fluorescence Index", "Humification Index-Zsolnay",
+                                       "Humification Index-Ohno",
+                                       "Freshness Index", "Biological Index"), 
+                        'Index Abbreviation' =c("pB", "pT", "pA", "pM","pC","pD",
+                                                "pE", "pN","rAT", "rCA", "rCM", "rCT", 
+                                                "FI", "HIX", "HIX_ohno", "fresh", "BIX"),
+                        'Interpretation'=c("tyrosine-like, protein-like organic matter",
+                                           "tryptophan-like, protein-like organic matter",
+                                           "UV humic-like organic matter",
+                                           "marine humic-like organic matter", 
+                                           "visible humic-like organic matter", 
+                                           "soil fulvic acid-like organic matter",
+                                          "soil fulvic acid-like organic matter",
+                                          "related to phytoplankton productivity",
+                                          "ratio of humic-like to fresh organic matter",
+                                          "ratio of humic-like to fulvic-like organic matter",
+                                          "amount of blueshifted organic matter",
+                                          "related to biochemical oxygen demand",
+                                          "terrestrial versus microbial sources", 
+                                          "indication of humic substances",
+                                          "indication of humic substances", 
+                                          "indication of recently produced organic matter",
+                                          "indicator of autotrophic activity"
+
+                                    ))
+colnames(eem_index) <- c("Index Name", "Index Abbreviation", "Interpretation")
+knitr::kable(eem_index)
+```
+
+<br>
+
+For more details on interpretation and sources see the vignette
+[eemanalyzeR-indices](../doc/eemanalyzeR-indices.html).
+
+<br>
+
+# References
+
+Hansen, A. M., Fleck, J., Kraus, T. E. C., Downing, B. D., von
+Dessonneck, T., & Bergamaschi, B. (2018). *Procedures for using the
+Horiba Scientific Aqualog® fluorometer to measure absorbance and
+fluorescence from dissolved organic matter* (USGS Numbered Series No.
+2018-1096). U.S. Geological Survey.
+<doi:10.3133/ofr20181096>

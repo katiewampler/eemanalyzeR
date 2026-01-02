@@ -82,7 +82,8 @@ using \code{\link[=export_data]{export_data()}}.
 \examples{
 eemlist <- add_metadata(metadata, example_eems)
 abslist <- add_metadata(metadata, example_abs)
-eemlist <- add_blanks(eemlist, validate = FALSE)
+blanklist <- subset_type(eemlist, "iblank")
+eemlist <- add_blanks(eemlist, blanklist)
 corrected_eem <- process_eem(eemlist, abslist)
 plot(corrected_eem)
 

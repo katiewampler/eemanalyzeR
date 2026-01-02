@@ -1,0 +1,63 @@
+---
+#for details on the definition of each argument see the correspoanding function documentation
+
+  # arguments for reading in absorbance data from abs_dir_read()
+  abs_pattern: .na.character #pattern in function
+  abs_skip: "SEM|BEM|Waterfall" #skip in function
+  abs_file_ext: "dat" #file_ext in function
+  abs_recurse_read: FALSE #recursive in function
+
+  # arguments for reading in absorbance data from eem_dir_read()
+  eem_pattern: .na.character #pattern in function
+  eem_skip: "(?i)abs" #skip in function
+  eem_file_ext: "dat" #file_ext in function
+  eem_recurse_read: FALSE #recursive in function
+  eem_import_func: "aqualog" #import_function in function
+
+  # metadata arguments for reading and loading metadata from meta_read() and add_metadata()
+  meta_file:  .na.character # User can specify the filename
+  meta_sheet: .na.character # only needed if excel file
+  meta_validate: TRUE       # usually we want to validate the metadata
+  iblank_pattern: "BEM$|Waterfall ?Plot ?Blank" # Regex to pattern match instrument blanks
+  sblank_pattern: "Blank|blank|BLK"             # Regex to pattern match sample blanks
+  check_pattern: "Tea|tea"                      # Regex to pattern match check standards
+
+ # arguments for adding blanks to samples
+  blank_validate: TRUE
+
+  # processing arguments from process_eems()
+  ex_clip:
+    - 247
+    - 450
+  em_clip:
+    - 247
+    - 600
+  type:
+    - TRUE #first order raman
+    - TRUE #second order raman
+    - TRUE #first order rayleigh
+    - TRUE #second order rayleigh
+  width:
+    - 16 #first order raman
+    - 3 #second order raman
+    - 30 #first order rayleigh
+    - 10 #second order rayleigh
+  interpolate:
+    - TRUE #first order raman
+    - TRUE #second order raman
+    - FALSE #first order rayleigh
+    - FALSE #second order rayleigh
+  method: 1
+  cores: 1
+  cuvle: 1
+
+  # indices arguments from get_indices()
+  index_method: "eemanalyzeR"
+  tolerance: 0.2
+  return: "wide"
+  qaqc_dir: .na.character
+
+  # exporting the data arguments using export_data()
+  filename: "eemanalyzeR-output"
+  output_dir: .na.character
+  csv: FALSE

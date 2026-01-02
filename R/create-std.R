@@ -51,7 +51,7 @@
 #' *Procedures for using the Horiba Scientific Aqualog® fluorometer to measure absorbance
 #' and fluorescence from dissolved organic matter* (USGS Numbered Series No. 2018-1096).
 #' U.S. Geological Survey.
-#' <https://doi.org/10.3133/ofr20181096>
+#' <doi:10.3133/ofr20181096>
 #'
 #' @examples
 #' eem_std <- create_std(file.path(system.file("extdata", package = "eemanalyzeR"),"long-term-std"),
@@ -76,7 +76,7 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
   #get all tea samples in directory with instrument blanks
     tea_abs <- abs_dir_read(dir, recursive=recursive, pattern=abs_pattern)
 
-    if(type == "eem"){tea <- eem_dir_read(dir, recursive=recursive)}
+    if(type == "eem"){tea <- eem_dir_read(dir, recursive=recursive, skip=abs_pattern)}
     if(type == "abs"){tea <- tea_abs}
 
   #check number of samples
@@ -84,18 +84,13 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
 
     #error if samples are missing, likely a pattern issue
     if(length(tea_abs) == 0){stop("No absorbance was found to load. Please check your abs_pattern arugment.")}
-    if(length(tea) == 0){stop("No fluoresence data was found to load. Please check your eem_pattern arugment.")}
+    if(length(tea) == 0){stop("No fluorescence data was found to load. Please check your eem_pattern arugment.")}
 
     if(type == "eem"){n_samps <- n_samps/2}
     if(n_samps < 20){warning("Calculating average check standard based on less than 20 samples, average may be unreliable")}
 
   #add metadata
-    tea <- add_metadata(tea_meta, tea,
-                        sample_type_regex = list(
-      iblank_pattern = iblank,
-      sblank_pattern = "Blank|blank",
-      check_pattern = "Tea|tea"
-    ))
+    tea <- add_metadata(tea_meta, tea, iblank_pattern = iblank)
 
   if(type == "eem"){
     #check if the wavelengths are different across data if so, stop and provide info
@@ -111,7 +106,8 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
     tea_abs <- add_metadata(tea_meta, tea_abs)
 
     #blank subtract
-    tea_eems <- add_blanks(tea, validate = FALSE)
+    tea_iblanks <- subset_type(tea, "iblank")
+    tea_eems <- add_blanks(tea, tea_iblanks)
     tea_eems <- subtract_blank(tea_eems)
 
     #remove scattering

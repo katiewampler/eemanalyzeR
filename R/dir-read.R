@@ -12,8 +12,10 @@
 #' @param recursive Logical. Should the function recursively search directories?
 #' @param import_function Character or a user-defined function to import an EEM.
 #'   For more details, see [`vignette("custom-indices")`](../doc/custom-indices.html).
+#' @param verbose Logical. Should the function return notes about resetting the readme file?
 #'
 #' @name dir_read
+#' @rdname dir_read
 #'
 #' @return
 #' - `eem_dir_read()` returns an object of class `eemlist`, containing a list of `eem`. For more details see [eemR::eem_read()].
@@ -35,22 +37,23 @@
 #' # Load absorbance samples while skipping EEMs and other files
 #' abs <- abs_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "SEM|BEM|waterfall")
 eem_dir_read <- function(input_dir,
-                         pattern = NULL,
+                         pattern = NA,
                          skip = "(?i)abs",
                          file_ext = "dat",
                          recursive = FALSE,
-                         import_function = "aqualog") {
+                         import_function = "aqualog",
+                         verbose = TRUE) {
   stopifnot(dir.exists(input_dir))
 
-  # TODO: change to package environment
-  # remove readme if it exists because new dataset
-  if (exists("readme")) {
-    rm("readme", envir = .GlobalEnv)
-    message("NOTE: removed previous 'readme' file")
+  # Set readme back to NULL if it exists because new dataset
+  # TODO do we want to do this within the read function or outside?
+  # Or we could make it an option? Same for abs
+  if (!is.null(get_readme())) {
+    set_readme(NULL)
+    if(verbose){message("NOTE: removed previous 'readme' file")}
   }
 
-
-  warnings_list <- list() # Initialize an empty list to store warnings
+  #warnings_list <- list() # Initialize an empty list to store warnings
 
   # wrapper on eemR::eem_read to try and catch errors from absorbance data being included
   # It's not really an error in our package if absorbance data is included in the directory,
@@ -85,13 +88,13 @@ eem_dir_read <- function(input_dir,
 
   # only gets files with correct file extension and ones that optionally match the pattern
   # RPC refactored this because I don't like nested loops. Also wanted to check the tests
-  if (is.null(pattern)) {
+  if (is.na(pattern)) {
     pattern_choices <- rep(TRUE, length(files)) # We want NULL to select all files
   } else {
     pattern_choices <- grepl(pattern, files, ignore.case = FALSE)
   }
 
-  if (is.null(skip)) {
+  if (is.na(skip)) {
     skip_choices <- rep(TRUE, length(files))
   } else {
     skip_choices <- !grepl(skip, files, ignore.case = FALSE)
@@ -118,32 +121,34 @@ eem_dir_read <- function(input_dir,
 }
 
 #' @name dir_read
+#' @rdname dir_read
 #' @export
 abs_dir_read <- function(input_dir,
-                         pattern = NULL,
+                         pattern = NA,
                          skip = "SEM|BEM|Waterfall",
                          file_ext = "dat",
-                         recursive = FALSE) {
-  # TODO: change to package environment
-  # remove readme if it exists because new dataset
-  if (exists("readme")) {
-    rm("readme", envir = .GlobalEnv)
-    message("NOTE: removed previous 'readme' file")
-  }
+                         recursive = FALSE,
+                         verbose = TRUE) {
 
   stopifnot(dir.exists(input_dir))
+
+  # Set readme back to NULL if it exists because new dataset
+  if (!is.null(get_readme())) {
+    set_readme(NULL)
+    if(verbose){message("NOTE: removed previous 'readme' file")}
+  }
 
   files <- list.files(input_dir, full.names = T, recursive = recursive)
 
   # only gets files with correct file extension and ones that optionally match the pattern
   # RPC refactored this because I don't like nested loops. Also wanted to check the tests
-  if (is.null(pattern)) {
+  if (is.na(pattern)) {
     pattern_choices <- rep(TRUE, length(files)) # We want NULL to select all files
   } else {
     pattern_choices <- grepl(pattern, files, ignore.case = FALSE)
   }
 
-  if (is.null(skip)) {
+  if (is.na(skip)) {
     skip_choices <- rep(TRUE, length(files))
   } else {
     skip_choices <- !grepl(skip, files, ignore.case = FALSE)

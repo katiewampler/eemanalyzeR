@@ -7,8 +7,7 @@
 #' @param z_max Maximum intensity value to plot. If `NULL`, uses the maximum
 #'   value from the EEM.
 #' @param pal Color palette for the fill scale. Defaults to [pals::parula()].
-#' @param title Logical. If `TRUE`, includes the sample name on the plot.
-#'   Attempts to use `meta_name`, falling back to `sample` if missing.
+#' @param title Either "none", "meta_name", or "sample" which indicates what to use for the plot title.
 #' @param annotate Logical. If `TRUE`, shows index regions on the plot.
 #' @param index_method Character. Specifies index method for annotations.
 #'   Currently supports "eemanalyzeR", "eemR", and "usgs".
@@ -17,7 +16,7 @@
 #'
 #' @seealso [ggplot2]
 #' @noRd
-.plot_eem <- function(eem, nbin, z_min, z_max, pal, lower, title=FALSE, annotate=FALSE,
+.plot_eem <- function(eem, nbin, z_min, z_max, pal, lower, title="none", annotate=FALSE,
                       index_method="eemanalyzeR"){
 
   #remove lower region
@@ -47,6 +46,9 @@
 
   #deal with zero values
   if(z_min == 0){z_min_nice <- 0}
+
+  # Don't run the function if all data is zero
+  if(is.nan(z_max_nice)) return(NULL)
 
   #make labels
   labs <- data.frame(start=signif(seq(z_min_nice,z_max_nice, length.out = nbin+1), 2))
@@ -92,7 +94,15 @@
                                                  reverse=TRUE)) +
     ggplot2::scale_fill_manual(labels=labs$label, values=pal, drop=FALSE)
 
-  if(.meta_added(eem)){plot_name <- eem$meta_name}else{plot_name <- eem$sample}
+  if(title == "meta_name"){
+    plot_name <- eem$meta_name
+    title <- TRUE
+  }else if(title == "sample"){
+    plot_name <- eem$sample
+    title <- TRUE
+  }else{
+      title <- FALSE
+    }
 
   if(title){
     plot <- plot + ggplot2::labs(subtitle=plot_name) +

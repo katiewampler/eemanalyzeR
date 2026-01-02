@@ -8,12 +8,12 @@ export_data(
   eemlist,
   abslist,
   filename,
-  output_dir = NULL,
   meta = NULL,
   indices = NULL,
   eem_plot = NULL,
   abs_plot = NULL,
-  csv = FALSE
+  csv = FALSE,
+  output_dir = NA
 )
 }
 \arguments{
@@ -21,11 +21,7 @@ export_data(
 
 \item{abslist}{An \code{abslist} object.}
 
-\item{filename}{A character string. Creates a folder with this name
-within \code{output_dir} and uses it for file names.}
-
-\item{output_dir}{Path to save the data. Defaults to a temporary directory
-if not specified.}
+\item{filename}{A character string, used for file names.}
 
 \item{meta}{A \code{data.frame} containing sample metadata.}
 
@@ -38,8 +34,11 @@ list of plots is provided, they are saved as \code{.png} files. See \code{\link[
 \item{abs_plot}{If \code{NULL}, absorbance plots will not be exported.
 If a plot is provided, it is saved as a \code{.png} file. See \code{\link[=plot.abslist]{plot.abslist()}} for plotting.}
 
-\item{csv}{Logical. If \code{TRUE}, processed EEM and absorbance data are
+\item{csv}{Logical. If \code{TRUE}, processed EEM and absorbance data and metadata are
 written to \code{output_dir} as \code{.csv} files.}
+
+\item{output_dir}{Path to save the data. Defaults to a temporary directory
+if not specified.}
 }
 \value{
 A list of the processed data which is also saved to the output directory specified.

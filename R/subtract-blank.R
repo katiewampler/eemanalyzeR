@@ -20,7 +20,8 @@
 #'
 #' @examples
 #' eem <- add_metadata(metadata, example_eems)
-#' eem <- add_blanks(eem, validate = FALSE)
+#' blanklist <- subset_type(eem, "iblank")
+#' eem <- add_blanks(eem, blanklist)
 #'
 #' # Subtract blank from a single EEM
 #' eem_sub <- subtract_blank(eem[[1]])
@@ -41,21 +42,13 @@ subtract_blank <- function(eem) {
 
   if (.is_eemlist(eem)) {
     if (!any(.blk_added(eem))) {
-      warning("Missing blank data from eem or eemlist, attempting to add using 'add_blanks' function")
-      eem <- add_blanks(eem)
-      warn <- TRUE
-    } else {
-      warn <- FALSE
+      stop("Missing blank data from eem or eemlist, please add using 'add_blanks' function")
     }
     eem <- lapply(eem, .subtract)
     class(eem) <- "eemlist"
 
     # write processing to readme
     .write_readme_line("blanks were subtracted from data via 'subtract_blank' function", "eem_blank_corrected", NULL)
-
-    if (warn) {
-      .write_readme_line("   warning: added blanks via 'add_blanks' function\n", "eem_blank_corrected", NULL)
-    }
 
     return(eem)
   }

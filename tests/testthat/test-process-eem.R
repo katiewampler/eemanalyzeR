@@ -1,11 +1,11 @@
 test_that("processing works", {
   eemlist <- add_metadata(metadata,example_eems)
   abslist <- add_metadata(metadata, example_abs)
-  eemlist <- add_blanks(eemlist, validate=FALSE)
+  blanklist <- subset_type(eemlist, "iblank")
+  eemlist <- add_blanks(eemlist, blanklist)
 
 
-  expect_warning(correct_eem <- process_eem(eemlist, abslist), "trimmed EEM's to match absorbance data wavelengths")
-
+  correct_eem <- process_eem(eemlist, abslist)
   expect_s3_class(correct_eem, "eemlist")
 
   #check clipping

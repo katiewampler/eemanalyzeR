@@ -30,7 +30,7 @@
 #' *Procedures for using the Horiba Scientific Aqualog® fluorometer to measure absorbance
 #' and fluorescence from dissolved organic matter* (USGS Numbered Series No. 2018-1096).
 #' U.S. Geological Survey.
-#' <https://doi.org/10.3133/ofr20181096>
+#' <doi:10.3133/ofr20181096>
 
 #' @examples
 #' indices <- usgs_indices(
@@ -41,17 +41,12 @@
 usgs_indices <- function(eemlist, abslist, cuvle = 1, qaqc_dir = NULL) {
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized")) == FALSE)
 
-  # specify qaqc dir if not specified
-  if (is.null(qaqc_dir)) {
-    qaqc_dir <- .qaqc_dir()
-  }
-
   # get mdl data
   mdls <- .check_mdl_file(qaqc_dir)
   eem_mdl <- mdls$eem_mdl
   abs_mdl <- mdls$abs_mdl
 
-  # get fluoresence peaks
+  # get fluorescence peaks
   # define wavelengths for peaks and metrics to check if there are missing wavelengths
   # format: index = list(excitation wavelengths, emission wavelengths)
   peaks <- list(

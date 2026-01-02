@@ -4,10 +4,13 @@
 \alias{meta_read}
 \title{Read metadata from a file}
 \usage{
-meta_read(input, sheet = NULL, validate_metadata = TRUE)
+meta_read(input_dir, meta_file = NA, sheet = NA, validate_metadata = TRUE)
 }
 \arguments{
-\item{input}{Path to the metadata file or the folder containing it.}
+\item{input_dir}{Path to the metadata file or the folder containing it.}
+
+\item{meta_file}{Optional: Filename of the metadata file. If left as NA,
+the metadata file will be guessed from files in the input directory.}
 
 \item{sheet}{Name of the sheet containing metadata (only required if the
 metadata is not on the first sheet of an \code{.xlsx} file).}

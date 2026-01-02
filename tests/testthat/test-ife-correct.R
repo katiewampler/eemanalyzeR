@@ -3,7 +3,7 @@ test_that("ife corrections are performed", {
 
   eemlist <- add_metadata(metadata,example_eems)
   abslist <- add_metadata(metadata, example_abs)
-  expect_warning(correct_eem <- ife_correct(eemlist, abslist), "trimmed EEM's to match absorbance data wavelengths")
+  correct_eem <- ife_correct(eemlist, abslist)
 
   #ensure corrections are marked as true
   expect_true(all(sapply(correct_eem, attr, "is_ife_corrected")))

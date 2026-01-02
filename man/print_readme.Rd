@@ -6,8 +6,14 @@
 \usage{
 print_readme()
 }
+\value{
+None (invisible NULL).
+}
 \description{
 Nicely print the processing documentation readme file with proper formatting.
 The readme tracks the processing steps applied to the dataset and is stored
 as an object called `readme` in the package environment.
+}
+\examples{
+print_readme()
 }

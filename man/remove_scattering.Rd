@@ -53,10 +53,6 @@ from the \code{staRdom} package, allowing selective interpolation instead of all
 eemlist <- remove_scattering(example_eems)
 plot(eemlist[[6]])
 
-# interpolate all
-eemlist <- remove_scattering(example_eems, interpolate = c(TRUE, TRUE, TRUE, TRUE))
-plot(eemlist[[6]])
-
 # only remove only rayleigh lines
 eemlist <- remove_scattering(example_eems, type = c(FALSE, FALSE, TRUE, TRUE))
 plot(eemlist[[6]])
@@ -69,5 +65,5 @@ plot(eemlist[[6]])
 Gilchrist, J. R., & Reynolds, D. M. (2014). Optical Spectroscopy Instrumentation Design,
 Quality Assurance, and Control: Bench-Top Fluorimetry. In A. Baker, D. M. Reynolds, J. Lead, P. G. Coble,
 & R. G. M. Spencer (Eds.), Aquatic Organic Matter Fluorescence (pp. 147-189).
-Cambridge: Cambridge University Press. \url{https://doi.org/10.1017/CBO9781139045452.009}
+Cambridge: Cambridge University Press. \url{doi:10.1017/CBO9781139045452.009}
 }

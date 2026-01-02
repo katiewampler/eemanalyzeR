@@ -9,9 +9,9 @@ get_indices(
   abslist,
   index_method = "eemanalyzeR",
   tolerance = 0.2,
-  return = "long",
+  return = "wide",
   cuvle = 1,
-  qaqc_dir = NULL,
+  qaqc_dir = NA,
   arg_names = NULL
 )
 }

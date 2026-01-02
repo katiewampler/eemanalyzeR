@@ -16,6 +16,7 @@
 #' @param vals If `TRUE`, returns actual values, otherwise returns just flags.
 #'
 #' @name check_mdl
+#' @rdname check_mdl
 #'
 #' @returns
 #'

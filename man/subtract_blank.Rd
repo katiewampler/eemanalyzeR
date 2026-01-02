@@ -24,7 +24,8 @@ via \code{\link[=add_metadata]{add_metadata()}}.
 }
 \examples{
 eem <- add_metadata(metadata, example_eems)
-eem <- add_blanks(eem, validate = FALSE)
+blanklist <- subset_type(eem, "iblank")
+eem <- add_blanks(eem, blanklist)
 
 # Subtract blank from a single EEM
 eem_sub <- subtract_blank(eem[[1]])

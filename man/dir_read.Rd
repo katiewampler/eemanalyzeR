@@ -8,19 +8,21 @@
 \usage{
 eem_dir_read(
   input_dir,
-  pattern = NULL,
+  pattern = NA,
   skip = "(?i)abs",
   file_ext = "dat",
   recursive = FALSE,
-  import_function = "aqualog"
+  import_function = "aqualog",
+  verbose = TRUE
 )
 
 abs_dir_read(
   input_dir,
-  pattern = NULL,
+  pattern = NA,
   skip = "SEM|BEM|Waterfall",
   file_ext = "dat",
-  recursive = FALSE
+  recursive = FALSE,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -38,6 +40,8 @@ to match files in \code{input_dir} that should be ignored.}
 
 \item{import_function}{Character or a user-defined function to import an EEM.
 For more details, see \href{../doc/custom-indices.html}{\code{vignette("custom-indices")}}.}
+
+\item{verbose}{Logical. Should the function return notes about resetting the readme file?}
 }
 \value{
 \itemize{

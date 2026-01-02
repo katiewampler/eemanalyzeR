@@ -1,6 +1,8 @@
 #' @keywords internal
 "_PACKAGE"
 
+utils::globalVariables(c(".pkgenv", "value", "env"))
+
 ## usethis namespace: start
 
 #' @importFrom dplyr across
@@ -21,10 +23,13 @@
 #' @importFrom eemR eem_humification_index
 #' @importFrom eemR eem_inner_filter_effect
 #' @importFrom eemR eem_read
+#' @importFrom fs dir_tree
+#' @importFrom fs path_norm
 #' @importFrom ggplot2 aes
 #' @importFrom ggplot2 annotate
 #' @importFrom ggplot2 coord_cartesian
 #' @importFrom ggplot2 element_text
+#' @importFrom ggplot2 facet_wrap
 #' @importFrom ggplot2 geom_contour
 #' @importFrom ggplot2 geom_contour_filled
 #' @importFrom ggplot2 geom_line
@@ -48,6 +53,7 @@
 #' @importFrom pracma interp2
 #' @importFrom purrr discard
 #' @importFrom purrr list_transpose
+#' @importFrom purrr quietly
 #' @importFrom purrr reduce
 #' @importFrom rappdirs user_data_dir
 #' @importFrom rlang .data
@@ -67,16 +73,19 @@
 #' @importFrom staRdom ggeem
 #' @importFrom stats na.omit
 #' @importFrom stats sd
+#' @importFrom stringr str_replace_all
 #' @importFrom stringr str_split
 #' @importFrom stringr str_split_i
 #' @importFrom tidyr pivot_longer
 #' @importFrom tidyr pivot_wider
 #' @importFrom tools file_ext
 #' @importFrom utils capture.output
+#' @importFrom utils file.edit
 #' @importFrom utils file_test
 #' @importFrom utils read.csv
 #' @importFrom utils write.csv
 #' @importFrom utils write.table
+#' @importFrom yaml read_yaml
 #' @importFrom zoo na.approx
 #' @importFrom zoo na.spline
 ## usethis namespace: end
