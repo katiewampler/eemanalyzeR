@@ -21,8 +21,7 @@ get_indices(
 \item{abslist}{An \code{abslist} object.}
 
 \item{index_method}{Either "eemanalyzeR", "eemR", "usgs", or a custom
-function. See \strong{Details}.
-#TODO I don't think the package environment has support for index_method to be a function yet}
+function. See \strong{Details}.}
 
 \item{tolerance}{Maximum percent deviation that the check standard can vary
 from the long-term values without being flagged.}

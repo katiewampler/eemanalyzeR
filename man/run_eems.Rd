@@ -23,8 +23,8 @@ run_eems(
 
 \item{interactive}{Logical, used to determine if user input should be used.}
 
-\item{blanklist}{\code{eemlist} of blank files to subtract from samples. A
-utomatically uses instrument blanks if not provided.}
+\item{blanklist}{\code{eemlist} of blank files to subtract from samples.
+Automatically uses instrument blanks if not provided.}
 
 \item{qaqc_checks}{Logical, should user QA/QC files be used to check data?}
 
@@ -73,4 +73,7 @@ back to the package defaults or (if they exist) user defaults.
 configuration options will not persist across multiple tries of \code{run_eems} and must be specified each time,
 but the argument values will be reported in the readme file.
 }
+}
+\note{
+Currently \code{run_eems} does not allow for custom import or index functions.
 }

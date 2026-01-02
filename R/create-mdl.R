@@ -103,7 +103,8 @@ create_mdl <- function(dir, meta_name = NULL, sheet = NULL, iblank = "BEM",
     }
 
     # blank correct blanks
-    # TODO: What does this mean? Does it just do iblanks?
+      #analytical blanks still need to be blank
+      #subtracted to be consistent with sample data
     iblanks <- subset_type(blank, "iblank")
     blank_eems <- add_blanks(blank, iblanks)
 

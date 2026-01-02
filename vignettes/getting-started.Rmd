@@ -113,15 +113,15 @@ the following arguments:
 -   **filename:** the name of your project, used to name your exported
     files.
 
-```{r eval=FALSE, message=FALSE, warning=FALSE}
+```{r eval=TRUE, message=FALSE, warning=FALSE}
   run_eems(input_dir = system.file("extdata", package = "eemanalyzeR"),
-           filename = "eemanalyzeR-example")
+           filename = "eemanalyzeR-example", interactive = FALSE)
 ```
 
 This function will export the processed data, indices calculations, and
 plots by defaults we can look at the function outputs.
 
-```{r eval=FALSE, echo=FALSE}
+```{r eval=TRUE, echo=FALSE}
 tree_output <- capture.output(fs::dir_tree(file.path(tempdir(), "eemanalyzeR-example")))
 tree_output[1] <- "~/"
 
@@ -173,24 +173,24 @@ Use the following code to create the method detection limit (MDL) files.
 These by default will be stored in your user-specific data directory and
 loaded when needed to process samples.
 
-```{r, eval=TRUE}
+```{r, eval=FALSE}
 #specify where the long-term blank files live
 dir <- file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks")
 
 #generate mdl file
-eem_mdl <- create_mdl(dir, type = "eem", qaqc_dir = tempdir()) 
-abs_mdl <- create_mdl(dir, type = "abs", qaqc_dir = tempdir())
+eem_mdl <- create_mdl(dir, type = "eem") 
+abs_mdl <- create_mdl(dir, type = "abs")
 ```
 
 We can use a similar process to create the check standard files.
 
-```{r, eval=TRUE}
+```{r, eval=FALSE}
 #specify where the long-term blank files live
 dir <- file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-std")
 
 #generate mdl file
-eem_std <- create_std(dir, type = "eem", abs_pattern = "ABS", qaqc_dir = tempdir()) 
-abs_std <- create_std(dir, type = "abs", abs_pattern = "ABS", qaqc_dir = tempdir())
+eem_std <- create_std(dir, type = "eem", abs_pattern = "ABS") 
+abs_std <- create_std(dir, type = "abs", abs_pattern = "ABS")
 ```
 
 These files will be used when calculating absorbance and fluorescence
@@ -207,7 +207,7 @@ indices to ensure:
         calculation issues)
 
 ```{r, include=FALSE, eval=TRUE}
-#clean up temp files from vignette 
-
+#clean up temp files from vignette
+unlink(file.path(tempdir(), "eemanalyzeR-example"),recursive = TRUE)
 ```
 

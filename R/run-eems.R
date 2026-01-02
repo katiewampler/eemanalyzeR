@@ -18,6 +18,8 @@
 #' to modify within the processing are located in [default_config]. See details
 #' for more info on modifying processing configuration.
 #'
+#' @note Currently `run_eems` does not allow for custom import or index functions.
+#'
 #' @return The following files are saved to the output directory specified.
 #' The list contains:
 #'  - **eemlist:** the `eemlist`
@@ -153,7 +155,6 @@ run_eems <- function(
   eems <- correct_dilution(eems)
   processed_abs <- correct_dilution(abs)
 
-  # TODO print a message that processing is happening for user
   # Subtract the Blank
   eems <- subtract_blank(eem = eems)
   # Remove Scattering

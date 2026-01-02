@@ -7,7 +7,6 @@
 #' @param abslist An `abslist` object.
 #' @param index_method Either "eemanalyzeR", "eemR", "usgs", or a custom
 #'   function. See **Details**.
-#' #TODO I don't think the package environment has support for index_method to be a function yet
 #' @param tolerance Maximum percent deviation that the check standard can vary
 #'   from the long-term values without being flagged.
 #' @param return Output format: "long" or "wide".
