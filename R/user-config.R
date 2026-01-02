@@ -61,13 +61,13 @@ load_user_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR"
   # load built-in defaults
   config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"))
   # try to load user file
-  user_defaults_file <- file.path(config_path, "user-config.yaml")
+  user_defaults_file <- fs::path_norm(file.path(config_path, "user-config.yaml"))
   if(file.exists(user_defaults_file)){
     user_config <- yaml::read_yaml(user_defaults_file)
     modified_config <- utils::modifyList(config, user_config, keep.null = TRUE)
     #modify in this session
     modify_config(!!!modified_config, env = env)
-    packageStartupMessage("User configuration loaded from file: ", user_defaults_file)
+    packageStartupMessage("User configuration loaded from file:\n", user_defaults_file)
   } else {
     packageStartupMessage("User configuration not found. If eemanalyzeR package defaults are not ok, create user configuration with edit_config()")
 

@@ -64,9 +64,14 @@
 #' @noRd
 #'
 .check_mdl_file <- function(qaqc_dir){
-  #get mdl data
-  check_eem <- file.exists(file.path(qaqc_dir, "eem-mdl.rds"))
-  check_abs <- file.exists(file.path(qaqc_dir, "abs-mdl.rds"))
+  if(is.null(qaqc_dir)){
+    check_eem <- FALSE
+    check_abs <- FALSE
+  }else{
+    #get mdl data
+    check_eem <- file.exists(file.path(qaqc_dir, "eem-mdl.rds"))
+    check_abs <- file.exists(file.path(qaqc_dir, "abs-mdl.rds"))
+  }
 
   #load mdl data or warn
   if(!check_eem){

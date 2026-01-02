@@ -54,7 +54,7 @@
   # indices arguments from get_indices()
   index_method: "eemanalyzeR"
   tolerance: 0.2
-  return: "long"
+  return: "wide"
   qaqc_dir: .na.character
 
   # exporting the data arguments using export_data()

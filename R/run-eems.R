@@ -3,44 +3,56 @@
 #' The main high-level function of the [eemanalyzeR] package.
 #' It is designed for users who want a fast, automated workflow without needing
 #' to write complex R code or string together a bunch of processing functions.
-#' By pointing the function to a folder of raw EEMs or absorbance data,
-#' specifying an output directory, and providing a file prefix for naming
-#' outputs, the function performs the full processing pipeline from start to finish.
+#' By pointing the function to a folder of raw EEMs and absorbance data,
+#' the function performs the full processing pipeline from start to finish.
 #'
 #' @param input_dir Path to folder containing raw EEMs and/or absorbance files.
 #' @param output_dir Path to save the processed data.
 #' @param filename A character string, used for file names.
 #' @param interactive Logical, used to determine if user input should be used.
-#' @param blanklist eemslist of blank files to subtract from samples. Automatically uses instrument blanks if not provided
-#' @param ... additional arguments used to make one time modifications to processing arguments. List of optional arguments 
-#' to modify within the processing are located in the default_config. See details for more info on modifying processing configuration.
+#' @param blanklist `eemlist` of blank files to subtract from samples.
+#' Automatically uses instrument blanks if not provided.
+#' @param qaqc_checks Logical, should user QA/QC files be used to check data?
+#' @param ... additional arguments used to make one time modifications to processing
+#' arguments and plotting ([plot.eemlist]). List of optional arguments
+#' to modify within the processing are located in [default_config]. See details
+#' for more info on modifying processing configuration.
 #'
-#' @inherit export_data return
+#' @return The following files are saved to the output directory specified.
+#' The list contains:
+#'  - **eemlist:** the `eemlist`
+#'  - **abslist:** the `abslist`
+#'  - **readme:** a character vector containing information about the data processing steps
+#'  - **meta:** the metadata associated with the samples, may be `NULL` if not provided
+#'  - **indices:** a list of EEMs and absorbance indices, may be `NULL` if not provided
+#'  - **eem_plot:** a list of EEMs plots, may be `NULL` if not provided
+#'  - **abs_plot:** a ggplot2 object of the absorbance data, may be `NULL` if not provided
+
 #' @md
 #'
-#' @details The only requirement to use this wrapper function to process EEMs and Absorbance data is an input directory
-#' containing the raw data files and a metadata spreadsheet. However, there are many optional arguments for the
-#' user to modify the EEMs and Absorbance processing. The names and default values for these arguements can be
-#' found in the documentation for the default_config. # TODO can I link this here?
-#' 
-#' There are four ways for user to use and modify the processing configuration defaults. 
-#' 
-#' Option 1: User doesn't change anything then the package defaults are used by run_eems.
-#' 
-#' Option 2: User creates a file (stored on their computer) that has processing defaults that
-#' eemanalyzer pulls from at load time. This is created using the edit_user_config function # TODO link documenation
-#' 
-#' Option 3: User modifies the defaults BEFORE using the run_eems function using modify_config function.
-#' This modifies the settings for the R session and will be applied to any data processing that occurs until 
+#' @details The only requirement to use this wrapper function to process EEMs
+#' and absorbance data is an **input directory** containing the raw data files and
+#' a metadata spreadsheet. However, there are many optional arguments for the
+#' user to modify the EEMs and absorbance processing. The names and default values
+#' for these arguments can be found in the documentation for the [default_config].
+#'
+#' There are four ways for user to use and modify the processing configuration defaults.
+#'
+#' - **Option 1:** User doesn't change anything, the package defaults are used by `run_eems`.
+#'
+#' - **Option 2:** User creates a file (stored on their computer) that has processing defaults that
+#' eemanalyzeR pulls from at load time. This is created using the [edit_user_config()] function.
+#'
+#' - **Option 3:** User modifies the defaults *BEFORE* using the `run_eems` function using [modify_config()] function.
+#' This modifies the settings for the R session and will be applied to any data processing that occurs until
 #' the package is reloaded or the R session is restarted. After the package is reloaded the defaults revert
 #' back to the package defaults or (if they exist) user defaults.
-#' 
-#' Option 4: User supplies arguments to run_eems function that modify processing ONLY during that run. These
-#' configuration options will not persist across multiple tries of run_eems and must be specified each time.
 #'
-#' @returns Processed data files are saved to the specified `output_dir`. See
-#' [export_data] for more details on exports. #TODO: also return outputs as object like export-data?
+#' - **Option 4:** User supplies arguments to `run_eems` function that modify processing *ONLY* during that run. These
+#' configuration options will not persist across multiple tries of `run_eems` and must be specified each time,
+#' but the argument values will be reported in the readme file.
 #'
+#' @inherit export_data return
 #' @export
 #'
 run_eems <- function(
@@ -49,10 +61,11 @@ run_eems <- function(
   # REQUIRED ARGUMENTS (bare minimum)
   input_dir,
   # Optional arguments
-  output_dir,
-  filename,
+  output_dir = NA,
+  filename = NA,
   interactive = TRUE,
   blanklist = NULL,
+  qaqc_checks = TRUE,
   ...
     )
 
@@ -65,7 +78,7 @@ run_eems <- function(
   parameters_to_modify <- varargs[which(names(varargs) %in% names(.pkgenv$config))]
   # Modify the output_dir and filename if it exists in the function call
   if(!missing("output_dir")) parameters_to_modify$output_dir <- output_dir
-  if(!missing("filename"))   parameters_to_modify$filename   <- filename 
+  if(!missing("filename"))   parameters_to_modify$filename   <- filename
 
   # Clone the package environment - Everything below should use  .fnenv
   .fnenv <- rlang::env_clone(.pkgenv, parent = rlang::caller_env())
@@ -131,11 +144,10 @@ run_eems <- function(
     # If we aren't validating then use only the iblank
     blanklist <- subset_type(blanklist, "iblank")
   }
+
   # Add the correct blanks to the eemlist
-  eems <- add_blanks(
-    eems,
-    blanklist
-  )
+    #will remove blanks from eems in the add_blanks function
+  eems <- add_blanks(eems, blanklist)
 
   # Correct the eems and absorbance for dilutions
   eems <- correct_dilution(eems)
@@ -191,11 +203,22 @@ run_eems <- function(
 
   # Report the data ----
   # create plots
-  processed_eems_plots <- plot(processed_eems)
-  processed_abs_plots <- plot(processed_abs)
+  processed_eems_plots <- plot(processed_eems, ...)
+  processed_abs_plots <- plot(processed_abs, ...)
   message("EEMs and absorbance successfully plotted.")
 
   # Save indices
+    #Get QAQC directory
+      #if FALSE, will put as NULL with get-indices will know to ignore files
+      #if TRUE, will get user_config file value, if NA will use default
+      #this value is passed to get-indices
+    if(qaqc_checks){
+      qaqc_dir <-  get_qaqc_dir(.fnenv)
+      qaqc_dir <- ifelse(is.na(qaqc_dir), .qaqc_dir(), qaqc_dir)
+    }else{
+      qaqc_dir <-  NULL
+    }
+
   # Check MDLS are in the get_indices function
   indices <- get_indices(processed_eems,
     processed_abs,
@@ -204,7 +227,7 @@ run_eems <- function(
     tolerance = get_tolerance(.fnenv),
     return = get_return(.fnenv),
     cuvle = get_cuvle(.fnenv),
-    qaqc_dir = get_qaqc_dir(.fnenv)
+    qaqc_dir = qaqc_dir
   )
   message("Calculated absorbance and fluorescence indices.")
 

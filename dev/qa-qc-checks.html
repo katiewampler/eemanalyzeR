@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Interpreting eemanalyzeR Outputs</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Interpreting eemanalyzeR Outputs</h1>
+
+
+
+<div id="readme.txt" class="section level1">
+<h1>readme.txt</h1>
+<p>Every data export from <code>eemanalyzeR</code> using the <a href="../html/export_data.html">export_data</a> or <a href="../html/run_eems.html">run_eems</a> functions contains a file
+named <code>readme_*.txt</code> where <strong><code>*</code></strong> is
+the project name.</p>
+<p><strong>This file contains information about:</strong></p>
+<ul>
+<li>the processing steps performed including the function arguments</li>
+<li>any warnings that occurred</li>
+<li>information about the QA/QC checks performed</li>
+</ul>
+<p><br></p>
+</div>
+<div id="qaqc-checks" class="section level1">
+<h1>QA/QC Checks</h1>
+<div id="visual-validation-of-instrument-blank" class="section level2">
+<h2>Visual Validation of Instrument Blank</h2>
+<p>The instrument blank can be plotted and visually validated by the
+user. This step is used to visually look for blank contamination or
+errant peaks that could impact data during blank subtraction.</p>
+<ul>
+<li><p>If this step is performed the <strong>readme</strong> will
+contain a line that this visual check occurred and the user processing
+the data accepted the data.</p></li>
+<li><p>The <a href="../html/validate_blanks.html">validate_blanks</a>
+function also has the option that if the user does <strong>not</strong>
+accept the instrument blank, it may be replaced with one of the
+analytical blanks. In this case the <strong>readme</strong> will note
+the blank that was used instead of the instrument blank.</p></li>
+</ul>
+<p><br></p>
+</div>
+<div id="method-detection-limits" class="section level2">
+<h2>Method Detection Limits</h2>
+<p>Absorbance and fluorescence indices can be compared to method
+detection limits (MDL). The MDL is the minimum signal at which we can
+confidently distinguish a measurement from zero and from analytical
+blanks. Here, the MDL is calculated using the approach proposed by
+Hansen et al. (2018):</p>
+<p><span class="math display">\[ \text{MDL} =
+\text{mean}(\text{long-term blank}) + 3 × \text{SD}(\text{long-term
+blank})\]</span>where <strong>long-term blank</strong> is the
+fluoresence for a specific wavelength pair or absorbance at a specific
+wavelength, <strong>mean</strong> is the average signal, and
+<strong>SD</strong> is the standard deviation.</p>
+<p>To use the MDL checks, the user must create MDL files for both
+absorbance and fluorescence data using the <a href="../html/create_mdl.html">create_mdl</a> function. If no MDL files
+are found, a warning will appear in the <strong>readme</strong>
+file.</p>
+<p><br></p>
+</div>
+<div id="check-standards" class="section level2">
+<h2>Check Standards</h2>
+<p>Samples of sample type <code>check</code>can also be checked against
+a long-term average for consistency.</p>
+<p>To use the check standard checks, the user must create average
+standard files for both absorbance and fluorescence data using the <a href="../html/create_std.html">create_std</a> function.</p>
+<ul>
+<li><p><strong>If no standard files are found</strong>: a warning will
+appear in the <strong>readme</strong> file.</p></li>
+<li><p><strong>If a standard file exists</strong>: all available index
+values will be compared between the check standards within the run and
+the long term standard. If the value is outside the tolerance range
+(default is 20%), it will be flagged in the index file. Additionally the
+<strong>readme</strong> file will contain a summary of the number of
+indices outside the tolerance range across the entire run and the
+tolerance used.</p></li>
+</ul>
+<p><br></p>
+</div>
+<div id="index-qaqc-flags" class="section level2">
+<h2>Index QA/QC Flags</h2>
+<p><strong>The following flags may appear in the indices output
+files:</strong></p>
+<ul>
+<li><strong>DATA01</strong>: Missing data required for calculation</li>
+<li><strong>DATA02</strong>: Missing required wavelengths; value may be
+inaccurate</li>
+<li><strong>DATA03</strong>: Ratio denominator was zero</li>
+<li><strong>DATA04</strong>: Spectral slope could not be calculated</li>
+<li><strong>DOC01</strong>: Missing dissolved organic carbon (DOC)
+data</li>
+<li><strong>INF01</strong>: Infinite value</li>
+<li><strong>MDL01</strong>: All values below MDL</li>
+<li><strong>MDL02</strong>: One or more values below MDL; use
+cautiously</li>
+<li><strong>MDL03</strong>: Ratio index where numerator or denominator
+was entirely below MDL</li>
+<li><strong>NEG01</strong>: Negative value</li>
+<li><strong>STD01</strong>: Check standard value outside tolerance</li>
+<li><strong>VAL01</strong>: Value below typical range</li>
+<li><strong>VAL02</strong>: Value above typical range</li>
+</ul>
+<p><br></p>
+</div>
+</div>
+<div id="indices" class="section level1">
+<h1>Indices</h1>
+<p>The absorbance indices reported by the default index method
+(<code>eemanalyzeR</code>) and their <strong>typical</strong>
+interpretations are:</p>
+<table>
+<colgroup>
+<col width="28%" />
+<col width="21%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Index Name</th>
+<th align="left">Index Abbreviation</th>
+<th align="left">Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">SUVA 254</td>
+<td align="left">SUVA254</td>
+<td align="left">Proxy for aromaticity</td>
+</tr>
+<tr class="even">
+<td align="left">SUVA 280</td>
+<td align="left">SUVA280</td>
+<td align="left">Proxy for aromaticity</td>
+</tr>
+<tr class="odd">
+<td align="left">SVA 412</td>
+<td align="left">SVA412</td>
+<td align="left">Proxy for aromaticity</td>
+</tr>
+<tr class="even">
+<td align="left">Spectral Slope (275-295)</td>
+<td align="left">S275_295</td>
+<td align="left">Related to molecular weight and aromaticity</td>
+</tr>
+<tr class="odd">
+<td align="left">Spectral Slope (350-400)</td>
+<td align="left">S350_400</td>
+<td align="left">Related to molecular weight and aromaticity</td>
+</tr>
+<tr class="even">
+<td align="left">Spectral Slope Ratio</td>
+<td align="left">SR</td>
+<td align="left">Related to molecular weight</td>
+</tr>
+<tr class="odd">
+<td align="left">E<sub>2</sub>/E<sub>3</sub></td>
+<td align="left">E2_E3</td>
+<td align="left">Related to molecular weight and aromaticity</td>
+</tr>
+<tr class="even">
+<td align="left">E<sub>4</sub>/E<sub>6</sub></td>
+<td align="left">E4_E6</td>
+<td align="left">Related to humic-like organic matter</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p>The fluoresence indices reported by the default index method
+(<code>eemanalyzeR</code>) and their <strong>typical</strong>
+interpretations are:</p>
+<table>
+<colgroup>
+<col width="28%" />
+<col width="19%" />
+<col width="52%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Index Name</th>
+<th align="left">Index Abbreviation</th>
+<th align="left">Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Peak B</td>
+<td align="left">pB</td>
+<td align="left">tyrosine-like, protein-like organic matter</td>
+</tr>
+<tr class="even">
+<td align="left">Peak T</td>
+<td align="left">pT</td>
+<td align="left">tryptophan-like, protein-like organic matter</td>
+</tr>
+<tr class="odd">
+<td align="left">Peak A</td>
+<td align="left">pA</td>
+<td align="left">UV humic-like organic matter</td>
+</tr>
+<tr class="even">
+<td align="left">Peak M</td>
+<td align="left">pM</td>
+<td align="left">marine humic-like organic matter</td>
+</tr>
+<tr class="odd">
+<td align="left">Peak C</td>
+<td align="left">pC</td>
+<td align="left">visible humic-like organic matter</td>
+</tr>
+<tr class="even">
+<td align="left">Peak D</td>
+<td align="left">pD</td>
+<td align="left">soil fulvic acid-like organic matter</td>
+</tr>
+<tr class="odd">
+<td align="left">Peak E</td>
+<td align="left">pE</td>
+<td align="left">soil fulvic acid-like organic matter</td>
+</tr>
+<tr class="even">
+<td align="left">Peak N</td>
+<td align="left">pN</td>
+<td align="left">related to phytoplankton productivity</td>
+</tr>
+<tr class="odd">
+<td align="left">Ratio of Peak A to Peak T</td>
+<td align="left">rAT</td>
+<td align="left">ratio of humic-like to fresh organic matter</td>
+</tr>
+<tr class="even">
+<td align="left">Ratio of Peak C to Peak A</td>
+<td align="left">rCA</td>
+<td align="left">ratio of humic-like to fulvic-like organic matter</td>
+</tr>
+<tr class="odd">
+<td align="left">Ratio of Peak C to Peak M</td>
+<td align="left">rCM</td>
+<td align="left">amount of blueshifted organic matter</td>
+</tr>
+<tr class="even">
+<td align="left">Ratio of Peak C to Peak T</td>
+<td align="left">rCT</td>
+<td align="left">related to biochemical oxygen demand</td>
+</tr>
+<tr class="odd">
+<td align="left">Fluorescence Index</td>
+<td align="left">FI</td>
+<td align="left">terrestrial versus microbial sources</td>
+</tr>
+<tr class="even">
+<td align="left">Humification Index-Zsolnay</td>
+<td align="left">HIX</td>
+<td align="left">indication of humic substances</td>
+</tr>
+<tr class="odd">
+<td align="left">Humification Index-Ohno</td>
+<td align="left">HIX_ohno</td>
+<td align="left">indication of humic substances</td>
+</tr>
+<tr class="even">
+<td align="left">Freshness Index</td>
+<td align="left">fresh</td>
+<td align="left">indication of recently produced organic matter</td>
+</tr>
+<tr class="odd">
+<td align="left">Biological Index</td>
+<td align="left">BIX</td>
+<td align="left">indicator of autotrophic activity</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p>For more details on interpretation and sources see the vignette <a href="../doc/eemanalyzeR-indices.html">eemanalyzeR-indices</a>.</p>
+<p><br></p>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<p>Hansen, A. M., Fleck, J., Kraus, T. E. C., Downing, B. D., von
+Dessonneck, T., &amp; Bergamaschi, B. (2018). <em>Procedures for using
+the Horiba Scientific Aqualog® fluorometer to measure absorbance and
+fluorescence from dissolved organic matter</em> (USGS Numbered Series
+No. 2018-1096). U.S. Geological Survey. <a href="https://doi.org/10.3133/ofr20181096" class="uri">https://doi.org/10.3133/ofr20181096</a></p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

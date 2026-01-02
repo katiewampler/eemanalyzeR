@@ -51,8 +51,7 @@
       export_data(eems, abs, "devtest1", meta, indices, plots)
 
   #try with run_eems function
-    run_eems(input_dir, output_dir=tempdir(), filename="devtest1_auto")
-
+    run_eems(input_dir, filename="devtest1_auto", qaqc_checks = FALSE)
 
     #example 2: Hohner-Lab-2025-01-08
     input_dir <- here("dev/dev-examples/Hohner-Lab-2025-01-08")
@@ -84,8 +83,8 @@
       export_data(eems, abs, "devtest2", meta, indices, plots)
 
       #try with run_eems function
-      run_eems(input_dir, output_dir=tempdir(),
-               filename="devtest2_auto", ) ##errors on config
+      run_eems(input_dir, filename="devtest2_auto",
+               qaqc_checks = FALSE, meta_file = "good_meta.csv")
 
   #example 3: PNNL-2022-11-10
     input_dir <- here("dev/dev-examples/PNNL-2022-11-10")
@@ -121,7 +120,7 @@
       export_data(eems, abs, "devtest3", meta, indices, plots)
 
       #try with run_eems function
-      run_eems(input_dir, output_dir=tempdir(), abs_pattern="Abs",
+      run_eems(input_dir, abs_pattern="Abs", qaqc_checks = FALSE,
                iblank_pattern = "blank$", filename="devtest3_auto")
 
   #example 4: Vick-Majors-Lab-2024-11-04
@@ -153,7 +152,8 @@
       export_data(eems, abs, "devtest4", meta, indices, plots)
 
     #try with run_eems function
-      run_eems(input_dir, output_dir=NULL, filename="devtest4_auto") ##errors on config
+      run_eems(input_dir, filename="devtest4_auto", qaqc_checks = FALSE,
+               remove_lower = TRUE)
 
   #example 5: Bladon-Lab-2024-08-19
     input_dir <- here("dev/dev-examples/Bladon-Lab-2024-08-19")
@@ -184,7 +184,7 @@
       export_data(eems, abs, "devtest5", meta, indices, plots)
 
     #try with run_eems function
-      run_eems(input_dir, output_dir=NULL, filename="devtest5_auto") ##errors on config
+      run_eems(input_dir, filename="devtest5_auto")
 
   #example 6: Bladon-Lab-2024-08-22
     input_dir <- here("dev/dev-examples/Bladon-Lab-2024-08-22")
@@ -215,7 +215,7 @@
       export_data(eems, abs, "devtest6", meta, indices, plots)
 
     #try with run_eems function
-      run_eems(input_dir, output_dir=NULL, filename="devtest6_auto") ##errors on config
+      run_eems(input_dir, filename="devtest6_auto")
 
   #example 7: Bladon-Lab-2024-11-01
     input_dir <- here("dev/dev-examples/Bladon-Lab-2024-11-01")
@@ -245,6 +245,6 @@
       export_data(eems, abs, "devtest7", meta, indices, plots)
 
     #try with run_eems function
-      run_eems(input_dir, output_dir=NULL, filename="devtest7_auto") ##errors on config
+      run_eems(input_dir, filename="devtest7_auto")
 
 

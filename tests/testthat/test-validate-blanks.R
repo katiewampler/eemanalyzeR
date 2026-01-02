@@ -8,7 +8,10 @@ test_that("Instrument blank is accepted and valid blanklist returned", {
 
   # Check the object's class and names
   expect_true(class(valid_blanklist) == "eemlist")
-  expect_true(all(get_sample_info(valid_blanklist, "sample") == c("B1S1ExampleBlankBEM", "ManualExampleTeaWaterfallPlotBlank")))
+  expect_true(all(get_sample_info(valid_blanklist, "sample") ==
+                    c("B1S1ExampleBlankBEM", "B1S2ExampleTeaStdBEM",
+                      "B1S3ExampleSampleBEM",
+                      "ManualExampleTeaWaterfallPlotBlank")))
 
 
 })

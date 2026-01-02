@@ -82,12 +82,12 @@
 #'   qaqc_dir = system.file("extdata", package = "eemanalyzeR")
 #' )
 get_indices <- function(eemlist, abslist, index_method = "eemanalyzeR",
-                        tolerance = 0.2, return = "long",
+                        tolerance = 0.2, return = "wide",
                         cuvle = 1, qaqc_dir = NA, arg_names = NULL) {
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist))
 
   #specify qaqc dir if not specified
-  if(is.na(qaqc_dir)){qaqc_dir = .qaqc_dir()}
+  if(!is.null(qaqc_dir) && is.na(qaqc_dir)){qaqc_dir = .qaqc_dir()}
 
   # check if processing has been done, not warn that indices may be unreliable
   steps <- check_processing(eemlist)

@@ -14,13 +14,12 @@
 #' eems <- subset_type(eems, type = "iblank")
 #' valid_blanklist <- validate_blanks(eems)
 validate_blanks <- function(blanklist) {
-
   # Split the blanklist into iblanks and sblank
-  iblank <- unique(subset_type(blanklist, "iblank"))
-  sblank <- unique(subset_type(blanklist, "sblank"))
+  iblank <- subset_type(blanklist, "iblank")
+  sblank <- subset_type(blanklist, "sblank")
 
   # Instrument blank - First check it is valid by plotting
-  iblank_valid <- plot_blank_and_ask(iblank)
+  iblank_valid <- plot_blank_and_ask(unique(iblank))
 
   # if iblank is NOT valid try the sblanks (in sequence)
   if(!iblank_valid) {

@@ -55,7 +55,7 @@ check_std <- function(eemlist, abslist, qaqc_dir = .qaqc_dir(), tolerance = 0.2,
   }
 
   # get eem_std and abs_std
-  if (!file.exists(file.path(qaqc_dir, "eem-check-std.rds")) | !file.exists(file.path(qaqc_dir, "abs-check-std.rds"))) {
+  if (is.null(qaqc_dir) || (!file.exists(file.path(qaqc_dir, "eem-check-std.rds")) | !file.exists(file.path(qaqc_dir, "abs-check-std.rds")))) {
     warning("tea check standard files are missing, check standards will not be checked against the long-term standard")
     .write_readme_line("Long-term standards were not provided, thus the check standards for this run were not checked\n", "check_std")
 

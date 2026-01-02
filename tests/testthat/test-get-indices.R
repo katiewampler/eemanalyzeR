@@ -5,7 +5,7 @@
     qaqc_dir <- system.file("extdata", package = "eemanalyzeR")
     eemlist <- eemR::eem_cut(eemlist, ex=400:900, em=400:900, exact=F) #cut down so there's missing wavelengths
 
-    expect_no_error(indices <- get_indices(eemlist, abslist, qaqc_dir=qaqc_dir))
+    expect_no_error(indices <- get_indices(eemlist, abslist, qaqc_dir=qaqc_dir, return = "long"))
 
           })
 
@@ -21,18 +21,18 @@
 
     expect_false(.eem_equal(eemlist[[3]]$x, eemlist_doc[[3]]$x)) #ensure normalization is done
 
-    indices <- get_indices(eemlist, abslist, qaqc_dir=qaqc_dir)
-    indices2 <- get_indices(eemlist_doc, abslist, qaqc_dir=qaqc_dir)
+    indices <- get_indices(eemlist, abslist, qaqc_dir=qaqc_dir, return = "long")
+    indices2 <- get_indices(eemlist_doc, abslist, qaqc_dir=qaqc_dir, return = "long")
 
     expect_equal(indices$eem_index, indices2$eem_index)
   })
 
-  test_that("format is correct", {
+  test_that("return is correct", {
     abslist <- example_processed_abs
     eemlist <- example_processed_eems
     qaqc_dir <- system.file("extdata", package = "eemanalyzeR")
 
-    indices <- get_indices(eemlist, abslist, qaqc_dir=qaqc_dir)
+    indices <- get_indices(eemlist, abslist, qaqc_dir=qaqc_dir, return = "long")
     expect_length(indices, 2)
     expect_s3_class(indices$abs_index, "data.frame")
     expect_s3_class(indices$eem_index, "data.frame")
@@ -72,8 +72,10 @@
 
     qaqc_dir <- system.file("extdata", package = "eemanalyzeR")
 
-    expect_no_error(get_indices(example_processed_eems, example_processed_abs, index_method=return_NA, qaqc_dir = qaqc_dir))
-    expect_no_error(get_indices(example_processed_eems, example_processed_abs, index_method=return_NA, qaqc_dir = qaqc_dir))
+    expect_no_error(get_indices(example_processed_eems, example_processed_abs,
+                                index_method=return_NA, qaqc_dir = qaqc_dir, return = "long"))
+    expect_no_error(get_indices(example_processed_eems, example_processed_abs,
+                                index_method=return_NA, qaqc_dir = qaqc_dir, return = "long"))
 
   })
 
@@ -82,7 +84,8 @@
     eemlist <- raman_normalize(eemlist)
     qaqc_dir <- system.file("extdata", package = "eemanalyzeR")
 
-    expect_warning(expect_error(get_indices(eemlist, example_abs, qaqc_dir = qaqc_dir), "is_blank_corrected"),"Data has not been fully processed" )
+    expect_warning(expect_error(get_indices(eemlist, example_abs, qaqc_dir = qaqc_dir, return = "long"),
+                                "is_blank_corrected"),"Data has not been fully processed" )
   })
 
   test_that("flags are correct", {
@@ -90,7 +93,7 @@
     eemlist <- eemR::eem_cut(example_processed_eems, ex=500:900, em=500:900, exact=F) #cut down so there's missing wavelengths
     abslist <- example_processed_abs
 
-    indices <- get_indices(eemlist, abslist, qaqc_dir=qaqc_dir)
+    indices <- get_indices(eemlist, abslist, qaqc_dir=qaqc_dir, return = "long")
 
     #ensuring flags aren't duplicated
     flags <- stringr::str_split(indices$eem_index$QAQC_flag, "_")
@@ -114,7 +117,7 @@
                                            meta_name="test_samp",
                                            index="DOC_test",
                                            value=NA), eem_index=NA))}
-      indices <- get_indices(eemlist, abslist, qaqc_dir=qaqc_dir, index_method = doc_index)
+      indices <- get_indices(eemlist, abslist, qaqc_dir=qaqc_dir, index_method = doc_index, return = "long")
       expect_equal(indices$abs_index$QAQC_flag, "DOC01")
 
     #check for flag on negative values
@@ -123,7 +126,7 @@
                                            meta_name="test_samp",
                                            index="test",
                                            value=-1), eem_index=NA))}
-      indices <- get_indices(eemlist, abslist, qaqc_dir=qaqc_dir, index_method = neg_index)
+      indices <- get_indices(eemlist, abslist, qaqc_dir=qaqc_dir, index_method = neg_index, return = "long")
       expect_equal(indices$abs_index$QAQC_flag, "NEG01")
 
     #check for flag on infinite
@@ -132,12 +135,13 @@
                                            meta_name="test_samp",
                                            index="test",
                                            value=Inf), eem_index=NA))}
-      indices <- get_indices(eemlist, abslist, qaqc_dir=qaqc_dir, index_method = inf_index)
+      indices <- get_indices(eemlist, abslist, qaqc_dir=qaqc_dir, index_method = inf_index,
+                             return = "long")
       expect_equal(indices$abs_index$QAQC_flag, "INF01")
 
     #check for flag on tea standard
       abslist[[2]]$data[,2] <- rep(1,  abslist[[1]]$n)
-      indices <- get_indices(eemlist, abslist, qaqc_dir=qaqc_dir)
+      indices <- get_indices(eemlist, abslist, qaqc_dir=qaqc_dir, return="long")
       expect_equal(sum(grepl("STD01", indices$abs_index$QAQC_flag)), 3)
 
     #check for flagged values outside the normal range

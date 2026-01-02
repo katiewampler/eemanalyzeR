@@ -4,7 +4,7 @@
 #' EEM data. See [eemanalyzeR::metadata] for required columns and structure.
 #'
 #' @param input_dir Path to the metadata file or the folder containing it.
-#' @param meta_file Optional: Filename of the metadata file. If left as NA, 
+#' @param meta_file Optional: Filename of the metadata file. If left as NA,
 #'   the metadata file will be guessed from files in the input directory.
 #' @param sheet Name of the sheet containing metadata (only required if the
 #'   metadata is not on the first sheet of an `.xlsx` file).
@@ -24,12 +24,12 @@ meta_read <- function(input_dir,
                       meta_file = NA,
                       sheet = NA,
                       validate_metadata = TRUE) {
-  
+
   # 1) If NOT given meta_file, it searches input_dir and if it finds only one csv/xlsx file, it assumes that's metadata and chugs along (with a message)
   # 2) If NOT given meta_file, it searches input_dir it finds >1 csv/xlsx file, it stops and warns the user to provide a meta_file argument that specifies which metadata to use
   # 3) If given a meta file argument, it tries to find that file and if it does, then it chugs along (no message), otherwise it errors
   if(!is.na(meta_file)) {
-    message("Using metadata in file: ", meta_file)
+    message("Using metadata in file:\n", meta_file)
     meta_file <- .find_meta_file(file.path(input_dir, meta_file))
   } else {
     meta_file <- .find_meta_file(input_dir)
@@ -71,7 +71,7 @@ meta_read <- function(input_dir,
     } else if (length(meta_file) == 0) {
       stop("Unable to locate metadata in: ", dir, "\nplease ensure metadata is .csv or .xlsx file.")
     }
-    message("No Meta file specified, using: ", meta_file)
+    message("No Meta file specified, using:\n", meta_file)
   }
   # Do this if the User specifies a file
   else if (file_test("-f", dir)) {

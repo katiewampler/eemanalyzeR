@@ -173,24 +173,24 @@ Use the following code to create the method detection limit (MDL) files.
 These by default will be stored in your user-specific data directory and
 loaded when needed to process samples.
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 #specify where the long-term blank files live
 dir <- file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks")
 
 #generate mdl file
-eem_mdl <- create_mdl(dir, type = "eem") 
-abs_mdl <- create_mdl(dir, type = "abs")
+eem_mdl <- create_mdl(dir, type = "eem", qaqc_dir = tempdir()) 
+abs_mdl <- create_mdl(dir, type = "abs", qaqc_dir = tempdir())
 ```
 
 We can use a similar process to create the check standard files.
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 #specify where the long-term blank files live
 dir <- file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-std")
 
 #generate mdl file
-eem_std <- create_std(dir, type = "eem") 
-abs_std <- create_std(dir, type = "abs")
+eem_std <- create_std(dir, type = "eem", abs_pattern = "ABS", qaqc_dir = tempdir()) 
+abs_std <- create_std(dir, type = "abs", abs_pattern = "ABS", qaqc_dir = tempdir())
 ```
 
 These files will be used when calculating absorbance and fluorescence
@@ -205,3 +205,9 @@ indices to ensure:
     long-term standard (within 20 % of mean standard)
     -   Checks for potential run issues (air bubbles, equipment issues,
         calculation issues)
+
+```{r, include=FALSE, eval=TRUE}
+#clean up temp files from vignette 
+
+```
+
