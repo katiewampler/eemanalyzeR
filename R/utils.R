@@ -5,7 +5,7 @@
 #' @param eemlist the eemlist to subset
 #' @param i the index for subsetting
 #'
-#' @noRd
+#' @export
 #' @method [ eemlist
 #'
 `[.eemlist` <- function(eemlist, i) {
@@ -21,7 +21,7 @@
 #' @param abslist the abslist to subset
 #' @param i the index for subsetting
 #'
-#' @noRd
+#' @export
 #' @method [ abslist
 #'
 `[.abslist` <- function(abslist, i) {
