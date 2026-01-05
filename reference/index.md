@@ -163,7 +163,7 @@ Helper functions and internal utilities.
 
 ## Datasets
 
-Functions to plot and export data.
+Example datasets.
 
 - [`default_config`](https://katiewampler.github.io/eemanalyzeR/reference/default_config.md)
   : Default configuration of arguments for eemanalyzeR

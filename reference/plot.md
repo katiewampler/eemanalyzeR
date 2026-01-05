@@ -126,13 +126,7 @@ plots <- plot(abs)
 plot(eems, pal = c("darkblue", "lightblue"))
 
 # make color bar consistent across all plots
-plot(eems, equal_scale = TRUE)
-#> Warning: `stat_contour()`: Zero contours were generated
-#> Warning: no non-missing arguments to min; returning Inf
-#> Warning: no non-missing arguments to max; returning -Inf
-#> Warning: `stat_contour()`: Zero contours were generated
-#> Warning: no non-missing arguments to min; returning Inf
-#> Warning: no non-missing arguments to max; returning -Inf
+plot(eems[2:4], equal_scale = TRUE)
 
 # customize using ggplot2 commands
 plot(eems[[2]]) + ggplot2::labs(title = "Test EEM")
