@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{[.eemlist}
 \alias{[.eemlist}
-\title{Subsetting using `[` for eemlist}
+\title{Subsetting using \code{[} for eemlist}
 \usage{
 \method{[}{eemlist}(eemlist, i)
 }
@@ -11,6 +11,10 @@
 
 \item{i}{the index for subsetting}
 }
-\description{
-Subsetting using `[` for eemlist
+\value{
+an object of class \code{eemlist}
 }
+\description{
+Subsetting using \code{[} for eemlist
+}
+\keyword{internal}

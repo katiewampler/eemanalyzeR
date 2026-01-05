@@ -93,7 +93,7 @@ reference:
   - unique.abslist
 - title: Datasets
   desc: |
-    Functions to plot and export data.
+    Example datasets.
   contents:
   - default_config
   - example_abs

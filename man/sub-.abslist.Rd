@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{[.abslist}
 \alias{[.abslist}
-\title{Subsetting using `[` for an abslist}
+\title{Subsetting using \code{[} for an abslist}
 \usage{
 \method{[}{abslist}(abslist, i)
 }
@@ -11,6 +11,10 @@
 
 \item{i}{the index for subsetting}
 }
-\description{
-Subsetting using `[` for an abslist
+\value{
+an object of class \code{abslist}
 }
+\description{
+Subsetting using \code{[} for an abslist
+}
+\keyword{internal}
