@@ -91,13 +91,5 @@ eem_list <- eem_dir_read(system.file("extdata", package = "eemanalyzeR"), patter
 abs <- abs_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern = "abs|ABS")
 
 # Load absorbance samples while skipping EEMs and other files
-abs <- abs_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "SEM|BEM|waterfall")
-#> Warning: Unable to import file: /home/runner/work/_temp/Library/eemanalyzeR/extdata/ManualExampleTeaWaterfallPlotBlank.dat.
-#> Please use the 'pattern' and 'skip' arguments to ensure only absorbance files are selected.
-#> Warning: Unable to import file: /home/runner/work/_temp/Library/eemanalyzeR/extdata/ManualExampleTeaWaterfallPlotBlank.dat.
-#> Please use the 'pattern' and 'skip' arguments to ensure only absorbance files are selected.
-#> Warning: Unable to import file: /home/runner/work/_temp/Library/eemanalyzeR/extdata/ManualExampleTeaWaterfallPlotSample.dat.
-#> Please use the 'pattern' and 'skip' arguments to ensure only absorbance files are selected.
-#> Warning: Unable to import file: /home/runner/work/_temp/Library/eemanalyzeR/extdata/ManualExampleTeaWaterfallPlotSample.dat.
-#> Please use the 'pattern' and 'skip' arguments to ensure only absorbance files are selected.
+abs <- abs_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "SEM|BEM|Waterfall")
 ```

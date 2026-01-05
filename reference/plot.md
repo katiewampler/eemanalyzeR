@@ -124,8 +124,6 @@ plots <- plot(abs)
 
 # change color scale
 plot(eems, pal = c("darkblue", "lightblue"))
-plot(abs, pal = c("darkblue", "lightblue"))
-
 
 # make color bar consistent across all plots
 plot(eems, equal_scale = TRUE)
