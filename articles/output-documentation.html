@@ -75,7 +75,7 @@
 <div class="section level2">
 <h2 id="exported-data">Exported Data<a class="anchor" aria-label="anchor" href="#exported-data"></a>
 </h2>
-<p>Every data export from <code>eemanalyzeR</code> using the <a href="../html/export_data.html">export_data</a> or <a href="../html/run_eems.html">run_eems</a> functions contains the
+<p>Every data export from <code>eemanalyzeR</code> using the <a href="../reference/export_data.html">export_data</a> or <a href="../reference/run_eems.html">run_eems</a> functions contains the
 following files:</p>
 <ul>
 <li>
@@ -112,11 +112,11 @@ errant peaks that could impact data during blank subtraction.</p>
 <li><p>If this step is performed the <strong>readme</strong> will
 contain a line that this visual check occurred and the user processing
 the data accepted the data.</p></li>
-<li><p>The <a href="../html/validate_blanks.html">validate_blanks</a>
-function also has the option that if the user does <strong>not</strong>
-accept the instrument blank, it may be replaced with one of the
-analytical blanks. In this case the <strong>readme</strong> will note
-the blank that was used instead of the instrument blank.</p></li>
+<li><p>The <a href="../reference/validate_blanks.html">validate_blanks</a> function
+also has the option that if the user does <strong>not</strong> accept
+the instrument blank, it may be replaced with one of the analytical
+blanks. In this case the <strong>readme</strong> will note the blank
+that was used instead of the instrument blank.</p></li>
 </ul>
 <p><br></p>
 </div>
@@ -134,8 +134,8 @@ wavelength pair or absorbance at a specific wavelength,
 <strong>mean</strong> is the average signal, and <strong>SD</strong> is
 the standard deviation.</p>
 <p>To use the MDL checks, the user must create MDL files for both
-absorbance and fluorescence data using the <a href="../html/create_mdl.html">create_mdl</a> function. If no MDL files
-are found, a warning will appear in the <strong>readme</strong>
+absorbance and fluorescence data using the <a href="../reference/create_mdl.html">create_mdl</a> function. If no MDL
+files are found, a warning will appear in the <strong>readme</strong>
 file.</p>
 <p><br></p>
 </div>
@@ -145,7 +145,7 @@ file.</p>
 <p>Samples of sample type <code>check</code> can also be checked against
 a long-term average for consistency.</p>
 <p>To use the check standard checks, the user must create average
-standard files for both absorbance and fluorescence data using the <a href="../html/create_std.html">create_std</a> function.</p>
+standard files for both absorbance and fluorescence data using the <a href="../reference/create_std.html">create_std</a> function.</p>
 <ul>
 <li><p><strong>If no standard files are found</strong>: a warning will
 appear in the <strong>readme</strong> file.</p></li>

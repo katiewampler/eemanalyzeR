@@ -3,9 +3,9 @@
 ## Exported Data
 
 Every data export from `eemanalyzeR` using the
-[export_data](https://katiewampler.github.io/eemanalyzeR/html/export_data.md)
+[export_data](https://katiewampler.github.io/eemanalyzeR/reference/export_data.md)
 or
-[run_eems](https://katiewampler.github.io/eemanalyzeR/html/run_eems.md)
+[run_eems](https://katiewampler.github.io/eemanalyzeR/reference/run_eems.md)
 functions contains the following files:
 
 - **\*\_indices_filename.csv**:The absorbance and fluorescence indices
@@ -33,7 +33,7 @@ peaks that could impact data during blank subtraction.
   data.
 
 - The
-  [validate_blanks](https://katiewampler.github.io/eemanalyzeR/html/validate_blanks.md)
+  [validate_blanks](https://katiewampler.github.io/eemanalyzeR/reference/validate_blanks.md)
   function also has the option that if the user does **not** accept the
   instrument blank, it may be replaced with one of the analytical
   blanks. In this case the **readme** will note the blank that was used
@@ -56,7 +56,7 @@ and **SD** is the standard deviation.
 
 To use the MDL checks, the user must create MDL files for both
 absorbance and fluorescence data using the
-[create_mdl](https://katiewampler.github.io/eemanalyzeR/html/create_mdl.md)
+[create_mdl](https://katiewampler.github.io/eemanalyzeR/reference/create_mdl.md)
 function. If no MDL files are found, a warning will appear in the
 **readme** file.
 
@@ -69,7 +69,7 @@ average for consistency.
 
 To use the check standard checks, the user must create average standard
 files for both absorbance and fluorescence data using the
-[create_std](https://katiewampler.github.io/eemanalyzeR/html/create_std.md)
+[create_std](https://katiewampler.github.io/eemanalyzeR/reference/create_std.md)
 function.
 
 - **If no standard files are found**: a warning will appear in the

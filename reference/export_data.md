@@ -109,5 +109,5 @@ data <- export_data(
   abs_plot = abs_plot,
   meta = metadata
 )
-#> Data successfully exported to: /tmp/RtmpFuwViA/eemanalyzeR_example
+#> Data successfully exported to: /tmp/Rtmp8cDpLf/eemanalyzeR_example
 ```
