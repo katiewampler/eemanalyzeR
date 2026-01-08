@@ -150,7 +150,7 @@ The fluorescence indices reported by the default index method
   
 
 For more details on interpretation and sources see the vignette
-[`vignette("eemanalyzeR-indices")`](https://katiewampler.github.io/eemanalyzeR/doc/eemanalyzeR-indices.md).
+[`eemanalyzeR-indices`](https://katiewampler.github.io/eemanalyzeR/articles/eemanalyzeR-indices.md).
 
   
 

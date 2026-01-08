@@ -77,7 +77,7 @@ Instrumentation Design, Quality Assurance, and Control: Bench-Top
 Fluorimetry. In A. Baker, D. M. Reynolds, J. Lead, P. G. Coble, & R. G.
 M. Spencer (Eds.), Aquatic Organic Matter Fluorescence (pp. 147-189).
 Cambridge: Cambridge University Press.
-https://doi.org/10.1017/CBO9781139045452.009
+[doi:10.1017/CBO9781139045452.009](https://doi.org/10.1017/CBO9781139045452.009)
 
 ## Examples
 

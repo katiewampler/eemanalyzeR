@@ -96,18 +96,13 @@ specified. The list contains:
 eem_plots <- plot(example_processed_eems)
 abs_plot <- plot(example_processed_abs)
 
-indices <- get_indices(example_processed_eems, example_processed_abs)
-#> Warning: fluorescence MDL is missing, indices will not be checked for MDLs
-#> Warning: absorbance MDL is missing, indices will not be checked for MDLs
-#> Warning: tea check standard files are missing, check standards will not be checked against the long-term standard
 data <- export_data(
   eemlist = example_processed_eems,
   abslist = example_processed_abs,
   filename = "eemanalyzeR_example",
-  indices = indices,
   eem_plot = eem_plots,
   abs_plot = abs_plot,
   meta = metadata
 )
-#> Data successfully exported to: /tmp/Rtmp9vgNdz/eemanalyzeR_example
+#> Data successfully exported to: /tmp/RtmpEQDBR6/eemanalyzeR_example
 ```
