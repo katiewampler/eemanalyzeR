@@ -91,7 +91,6 @@ While the `get_indices()` function includes some QA/QC checks (negative numbers,
 
 There are a few rules to follow with flags:
 
-1.  Flags should have the form text## (DOC01, DATA04, etc.)
 
 2.  If an index value is NA and you want to flag with a reason why it is NA, replace the NA value with that flag value.
 
@@ -216,7 +215,7 @@ Once we've gotten the values and the flags, the data needs to be formatted in a 
 
 ## Example 1
 
-Alright, now that we've reviewed all the helper functions and the requirements for the custom function let's do an example. Let's create a custom function to calculate some new fluorescence indices presented in **Zhang et al. 2025:**
+Alright, now that we've reviewed all the helper functions and the requirements for the custom function let's do an example. Let's create a custom function to calculate some new fluorescence indices presented in [**Zhang et al. 2025:**](https://doi.org/10.1016/j.psep.2025.107553)
 
 $$ \text{U-SoI} =\frac{U1_{ex:245, em:440}}{U2_{ex:230, em:260}}  $$ 
 
@@ -359,7 +358,7 @@ indices$eem_index
 
 ## Example 2
 
-The last example only used fluorescence data. Let's create another custom function focused on absorbance indices. We'll create a function to calculate the indices used in **Erlandsson et al. 2012:**
+The last example only used fluorescence data. Let's create another custom function focused on absorbance indices. We'll create a function to calculate the indices used in [**Erlandsson et al. 2012:**](https://doi.org/10.1039/C2EM30266G)
 
 ```{r echo=FALSE, include=TRUE}
 indices <- data.frame(index=c("a254", "a420", "a220_a254", "a250_a364", "a300_a400",
@@ -442,7 +441,7 @@ ratios <- lapply(names(erlandsson_index[3:5]), function(index_name){
      })
 ```
 
-While we're calculating each index, let's also use the `flag_missing()` function to see if there's any data missing. Lastly, we'll use the `format_index()` function to make sure everything is correctly formatted. We'll use `do.call` to bind all the lists of indices together.
+While we're calculating each index, let's also use the `flag_missing()` function to see if there's any data missing. Lastly, we'll use the `format_index()` function to make sure everything is correctly formatted. We'll use `base::do.call()` to bind all the lists of indices together.
 
 ```{r}
 ratios <- lapply(names(erlandsson_index[3:5]), function(index_name){
@@ -613,6 +612,6 @@ indices$abs_index
 
 ## References
 
-Zhang, H., Hou, J., Nie, L., Hao, Y., Gao, H., & Yu, H. (2025). Developing new spectral indices for identifying DOM sources in Liaohe River in a large-scale river basin by fluorescence spectroscopy and random forest model. Process Safety and Environmental Protection, 201, 107553. <doi:10.1016/j.psep.2025.107553>
+Zhang, H., Hou, J., Nie, L., Hao, Y., Gao, H., & Yu, H. (2025). Developing new spectral indices for identifying DOM sources in Liaohe River in a large-scale river basin by fluorescence spectroscopy and random forest model. Process Safety and Environmental Protection, 201, 107553. https://doi.org/10.1016/j.psep.2025.107553
 
-Erlandsson, M., N. Futter, M., N. Kothawala, D., & J. Köhler, S. (2012). Variability in spectral absorbance metrics across boreal lake waters. Journal of Environmental Monitoring, 14(10), 2643-2652. <doi:10.1039/C2EM30266G>
+Erlandsson, M., N. Futter, M., N. Kothawala, D., & J. Köhler, S. (2012). Variability in spectral absorbance metrics across boreal lake waters. Journal of Environmental Monitoring, 14(10), 2643-2652. https://doi.org/10.1039/C2EM30266G

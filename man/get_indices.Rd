@@ -79,8 +79,8 @@ Three preset index sets are available:
 \item \strong{usgs}: \code{\link[=usgs_indices]{usgs_indices()}}
 }
 
-You may also pass a custom index-generating function. See the
-\href{../doc/custom-indices.html}{custom-indices vignette} for
+You may also pass a custom index-generating function. See
+\href{../doc/custom-indices.html}{\code{vignette("custom-indices")}} for
 instructions.
 }
 

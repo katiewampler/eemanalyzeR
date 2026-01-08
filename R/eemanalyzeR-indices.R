@@ -2,7 +2,7 @@
 #'
 #' Calculates commonly used absorbance and fluorescence optical indices from `eemlist` and `abslist`.
 #' For detailed descriptions and references for indices, see the vignette
-#' [eemanalyzeR-indices](../doc/eemanalyzeR-indices.html).
+#' [`vignette("eemanalyzeR-indices")`](../doc/eemanalyzeR-indices.html).
 #'
 #' @param eemlist An `eemlist` object.
 #' @param abslist An `abslist` object.

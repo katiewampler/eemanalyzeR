@@ -40,7 +40,6 @@ reference:
   - get_absorbance
   - get_fluorescence
   - get_indices
-  - get_indices_function
   - get_ratios
   - usgs_indices
 - title: Exporting Data

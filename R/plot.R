@@ -23,7 +23,7 @@
 #' - If `x` is an `eem`, `abs`, or `abslist`: a single `ggplot2` object.
 #' - If `x` is an `eemlist`: a list of `ggplot2` objects.
 #'
-#' @seealso [ggplot2]
+#' @seealso [ggplot2::ggplot()]
 #'
 #' @details
 #' Single EEM plots return a `ggplot2` object, compatible with other `ggplot2`

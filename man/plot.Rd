@@ -113,5 +113,5 @@ plot(eems[[3]], annotate = TRUE)
 
 }
 \seealso{
-\link[ggplot2:ggplot2-package]{ggplot2::ggplot2}
+\code{\link[ggplot2:ggplot]{ggplot2::ggplot()}}
 }

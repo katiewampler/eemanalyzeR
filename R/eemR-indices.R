@@ -21,7 +21,7 @@
 #' **Absorbance indices** (a254, a300, E2_E3, E4_E6, S275_295, S350_400, S300_700, SR)
 #' are calculated using [staRdom::abs_parms()].
 #'
-#' **Fluorescence indices** are calculated using the following [eemR] functions:
+#' **Fluorescence indices** are calculated using the following `eemR` functions:
 #'
 #' * Coble peaks (b, t, a, m, c): [eemR::eem_coble_peaks()]
 #' * fi (fluorescence index): [eemR::eem_fluorescence_index()]

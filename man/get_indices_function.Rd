@@ -24,3 +24,4 @@ Preset methods correspond to the following functions:
 \item \strong{usgs}: \code{\link[=usgs_indices]{usgs_indices()}}
 }
 }
+\keyword{internal}

@@ -11,7 +11,7 @@
 #'
 #' If the wavelength requested is not
 #' in the absorbance data, it will be interpolated first using
-#' \link[eemanalyzeR]{abs_interp}.
+#' [abs_interp()].
 #'
 #' @param abs An `abs` or `abslist` object.
 #' @param wl A vector of absorbance wavelengths.

@@ -40,7 +40,7 @@ using functions from the \href{https://CRAN.R-project.org/package=eemR}{eemR} an
 \strong{Absorbance indices} (a254, a300, E2_E3, E4_E6, S275_295, S350_400, S300_700, SR)
 are calculated using \code{\link[staRdom:abs_parms]{staRdom::abs_parms()}}.
 
-\strong{Fluorescence indices} are calculated using the following \link[eemR:eemR-package]{eemR::eemR} functions:
+\strong{Fluorescence indices} are calculated using the following \code{eemR} functions:
 \itemize{
 \item Coble peaks (b, t, a, m, c): \code{\link[eemR:eem_coble_peaks]{eemR::eem_coble_peaks()}}
 \item fi (fluorescence index): \code{\link[eemR:eem_fluorescence_index]{eemR::eem_fluorescence_index()}}
