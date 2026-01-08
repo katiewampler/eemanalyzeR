@@ -156,9 +156,9 @@ is stored on your computer will be read when you load the package.
 One of the goals with the `eemanalyzeR` package was to build in QA/QC
 checks to ensure data quality. While not required to use the package,
 you can use the
-[create_mdl](https://katiewampler.github.io/eemanalyzeR/reference/create_mdl.md)
+[`create_mdl()`](https://katiewampler.github.io/eemanalyzeR/reference/create_mdl.md)
 and
-[create_std](https://katiewampler.github.io/eemanalyzeR/reference/create_std.md)
+[`create_std()`](https://katiewampler.github.io/eemanalyzeR/reference/create_std.md)
 functions. These function requires a directory of analytical blanks and
 check standards (for instance the [tea
 standard](doi:10.3133/ofr20181096) recommended by the USGS). While you

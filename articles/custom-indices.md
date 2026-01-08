@@ -3,7 +3,7 @@
 ## Introduction
 
 To maximum flexibility in calculating indices, we’ve enabled the
-[get_indices](https://katiewampler.github.io/eemanalyzeR/reference/get-indices.md)
+[`get_indices()`](https://katiewampler.github.io/eemanalyzeR/reference/get_indices.md)
 function to accept custom written functions, allowing users to create
 their own function and calculate indices that may not be included in
 existing methods.
@@ -15,6 +15,7 @@ existing methods.
     2.  `abslist`: an abslist object containing absorbance data.
     3.  `cuvle`: the cuvette (path) length in cm.
     4.  `qaqc_dir`: the file path to the mdl files generated with
+        [`create_mdl()`](https://katiewampler.github.io/eemanalyzeR/reference/create_mdl.md)
 2.  **The function must return a list with the following items:**
     1.  `abs_index`: the indices calculated from the absorbance data
     2.  `eem_index`: the indices calculated from the EEMs data
@@ -38,7 +39,7 @@ following columns:
 creating custom indices.**
 
 To get the absorbance values at a certain wavelength the
-[get_absorbance](https://katiewampler.github.io/eemanalyzeR/reference/get-absorbance.md)
+[`get_absorbance()`](https://katiewampler.github.io/eemanalyzeR/reference/get_absorbance.md)
 function can be used. This function can additionally provide specific
 absorbance (like SUVA 254).
 
@@ -59,7 +60,7 @@ suva254
 
 A similar function exists for getting fluorescence values from EEMs
 data:
-[get_fluorescence](https://katiewampler.github.io/eemanalyzeR/reference/get-fluorescence.md).
+[`get_fluorescence()`](https://katiewampler.github.io/eemanalyzeR/reference/get_fluorescence.md).
 Here, you can specify a range of excitation and/or emission wavelengths.
 If stat is set to `sum` the sum of fluorescence will be returned,
 otherwise if `max` is used the maximum fluorescence across that range
@@ -72,22 +73,22 @@ eemlist <- example_processed_eems
 #get maximum fluorescence across ranges for Peak A and D
 pA <- get_fluorescence(eemlist, ex=250:260, em=380:480, stat="max")
 pA
-#> [1] "0.0103767473213219" "0.280569719363854"  "0.340345670357128" 
+#> [1] "0.0103767473213219" "0.280569719363857"  "0.340345670357128" 
 #> [4] "0.721431003125204"
 pD <- get_fluorescence(eemlist, ex=390, em=509, stat="max")
 pD 
-#> [1] "0.000304395508989419" "0.0199829245761789"   "0.0978435434033769"  
+#> [1] "0.000304395508989419" "0.0199829245761789"   "0.0978435434033764"  
 #> [4] "0.0372706531424358"
 
 #get sum of fluorescence across range of Peak A
 pA_sum <- get_fluorescence(eemlist, ex=250:260, em=380:480, stat="sum")
 pA_sum
-#> [1] "0.398846395176876" "15.4652173718784"  "29.1296537896885" 
+#> [1] "0.398846395176868" "15.4652173718784"  "29.1296537896885" 
 #> [4] "34.0595693438647"
 ```
 
 Lastly, we have a function for getting spectral slopes:
-[get_abs_slope](https://katiewampler.github.io/eemanalyzeR/reference/get-abs-slope.md)
+[`get_abs_slope()`](https://katiewampler.github.io/eemanalyzeR/reference/get_abs_slope.md)
 which will convert the absorbance to absorption, interpolate the data if
 needed, and return the spectral slope within a wavelength range.
 
@@ -98,7 +99,7 @@ S275_295 <- get_abs_slope(abslist, lim=c(275,295))
 ## QA/QC Flags
 
 While the
-[get_indices](https://katiewampler.github.io/eemanalyzeR/reference/get-indices.md)
+[`get_indices()`](https://katiewampler.github.io/eemanalyzeR/reference/get_indices.md)
 function includes some QA/QC checks (negative numbers, missing values,
 below noise, outside expected range, etc.), there are some checks that
 are easier to do when calculating the indices, or you may wish to
@@ -122,7 +123,7 @@ There are few helper functions within the **eemanalyzeR** package that
 will provide some common flags.
 
 First is the
-[get_ratios](https://katiewampler.github.io/eemanalyzeR/reference/get-ratios.md)
+[`get_ratios()`](https://katiewampler.github.io/eemanalyzeR/reference/get_ratios.md)
 function. This can be helpful when calculating things like peak ratios,
 where a missing value will result in an `NA` or a value of 0 in the
 denominator will result in an infinite value.
@@ -133,7 +134,7 @@ denominator will result in an infinite value.
  pT <- get_fluorescence(eemlist, ex=270:280, em=320:350)
  rAT <- get_ratios(pA, pT)
  rAT
-#> [1] "1.72750162152656"  "0.423565751341601" "4.07129094367473" 
+#> [1] "1.72750162152655"  "0.423565751341601" "4.07129094367473" 
 #> [4] "0.450601408727671"
  
   #if Peak T is all 0, will return DATA_03 flag, indicating index couldn't 
@@ -158,7 +159,7 @@ denominator will result in an infinite value.
 
 There’s also a function that will flag indices that can’t be calculated
 because data didn’t exist for the requested wavelengths:
-[flag_missing](https://katiewampler.github.io/eemanalyzeR/reference/flag-missing.md).
+[`flag_missing()`](https://katiewampler.github.io/eemanalyzeR/reference/flag_missing.md).
 This is useful to check when calculating indices to flag why certain
 indices might be returning `NA` values.
 
@@ -192,7 +193,9 @@ indices might be returning `NA` values.
 
 You may also want to flag values below the method detection limit (MDL)
 this can be done with:
-[check\_\*\_mdl](https://katiewampler.github.io/eemanalyzeR/reference/check_mdl.md).
+[`check_eem_mdl()`](https://katiewampler.github.io/eemanalyzeR/reference/check_mdl.md)
+and
+[`check_abs_mdl()`](https://katiewampler.github.io/eemanalyzeR/reference/check_mdl.md).
 This is useful to ensure that the blanks are actually blank and ratio
 values that are returned are based on “real” data.
 
@@ -231,7 +234,7 @@ values that are returned are based on “real” data.
 
 If your function generates more than one flag (say a flag for missing
 data and an MDL flag) you can use the
-[.combine_flags](https://katiewampler.github.io/eemanalyzeR/reference/dot-combine-flags.md)
+[`.combine_flags()`](https://katiewampler.github.io/eemanalyzeR/reference/dot-combine_flags.md)
 function to nicely combine the flags.
 
 ``` r
@@ -263,9 +266,9 @@ function to nicely combine the flags.
 
 Once we’ve gotten the values and the flags, the data needs to be
 formatted in a specific way to input into the
-[get_indices](https://katiewampler.github.io/eemanalyzeR/reference/get-indices.md)
+[`get_indices()`](https://katiewampler.github.io/eemanalyzeR/reference/get_indices.md)
 function. To do this we can use the
-[format_index](https://katiewampler.github.io/eemanalyzeR/reference/format-index.md)
+[`format_index()`](https://katiewampler.github.io/eemanalyzeR/reference/format_index.md)
 function.
 
 ``` r
@@ -281,8 +284,8 @@ function.
 #> 3                B1S3ExampleSampleSEM    ExampleSample test_index
 #> 4 ManualExampleTeaWaterfallPlotSample ManualExampleTea test_index
 #>                         value
-#> 1 0.000532084537187422_DATA02
-#> 2    0.520903992822657_DATA02
+#> 1 0.000532084537187436_DATA02
+#> 2    0.520903992822664_DATA02
 #> 3   0.0851942070835534_DATA02
 #> 4     1.48625281995149_DATA02
 ```
@@ -310,10 +313,10 @@ zhang_indices <- list(USoI = list(ex=c(245,230), em=c(440,260)),
 ```
 
 We can use the
-[get_fluorescence](https://katiewampler.github.io/eemanalyzeR/reference/get-fluorescence.md)
+[`get_fluorescence()`](https://katiewampler.github.io/eemanalyzeR/reference/get_fluorescence.md)
 helper function to calculate the fluorescence for the numerator and
 denominator of the ratio. Then we can use the
-[get_ratios](https://katiewampler.github.io/eemanalyzeR/reference/get-ratios.md)
+[`get_ratios()`](https://katiewampler.github.io/eemanalyzeR/reference/get_ratios.md)
 helper function to get the ratio. For a single index this would look
 like:
 
@@ -321,8 +324,8 @@ like:
 eemlist <- example_processed_eems
 get_ratios(get_fluorescence(eemlist, zhang_indices$TSoI$ex[1], zhang_indices$TSoI$em[1]), 
            get_fluorescence(eemlist, zhang_indices$TSoI$ex[2], zhang_indices$TSoI$em[2]))
-#> [1] "4.93586355290875"  "0.528716173072758" "3.87515734359415" 
-#> [4] "0.486202102785104"
+#> [1] "4.93586355290846"  "0.528716173072744" "3.87515734359415" 
+#> [4] "0.48620210278511"
 ```
 
 To get all the indices let’s use the lapply function.
@@ -337,14 +340,14 @@ results <- lapply(names(zhang_indices), function(index_name) {
 ```
 
 While we’re calculating each index, let’s also use the
-[flag_missing](https://katiewampler.github.io/eemanalyzeR/reference/flag-missing.md)
+[`flag_missing()`](https://katiewampler.github.io/eemanalyzeR/reference/flag_missing.md)
 function to see if there’s any data missing. Since we’re finding the
 maximum value, we’ll set `all` to `FALSE` so it will report a value if
 there’s some data. We’ll also check to see if any of the data is below
 the MDL, since we have two discrete values we can use
-[.combine_flags](https://katiewampler.github.io/eemanalyzeR/reference/dot-combine-flags.md)
+[`.combine_flags()`](https://katiewampler.github.io/eemanalyzeR/reference/dot-combine_flags.md)
 to combine the returned MDL flags. Lastly, we’ll use the
-[format_index](https://katiewampler.github.io/eemanalyzeR/reference/format-index.md)
+[`format_index()`](https://katiewampler.github.io/eemanalyzeR/reference/format_index.md)
 function to make sure everything is correctly formatted.
 
 ``` r
@@ -406,9 +409,9 @@ have any absorbance data we’ll just make it NA.
 #> 7                 B1S3ExampleSampleSEM    ExampleSample  ASoI            DATA01
 #> 8  ManualExampleTeaWaterfallPlotSample ManualExampleTea  ASoI            DATA01
 #> 9                  B1S1ExampleBlankSEM     ExampleBlank  TSoI             MDL01
-#> 10                B1S2ExampleTeaStdSEM    ExampleTeaStd  TSoI 0.528716173072758
+#> 10                B1S2ExampleTeaStdSEM    ExampleTeaStd  TSoI 0.528716173072744
 #> 11                B1S3ExampleSampleSEM    ExampleSample  TSoI  3.87515734359415
-#> 12 ManualExampleTeaWaterfallPlotSample ManualExampleTea  TSoI 0.486202102785104
+#> 12 ManualExampleTeaWaterfallPlotSample ManualExampleTea  TSoI  0.48620210278511
 ```
 
 Great, that all looks good, now we just need to combine all that code to
@@ -459,7 +462,7 @@ zhang2025 <- function(eemlist, abslist, cuvle=1, qaqc_dir){
 ```
 
 Now let’s test our custom function with the
-[get_indices](https://katiewampler.github.io/eemanalyzeR/reference/get-indices.md)
+[`get_indices()`](https://katiewampler.github.io/eemanalyzeR/reference/get_indices.md)
 function. Note that we get a warning about the indices because the EEMs
 data hasn’t gone through any processing steps.
 
@@ -514,7 +517,7 @@ erlandsson_index <- list(a254=254,
 ```
 
 We can use the
-[get_absorbance](https://katiewampler.github.io/eemanalyzeR/reference/get-absorbance.md)
+[`get_absorbance()`](https://katiewampler.github.io/eemanalyzeR/reference/get_absorbance.md)
 helper function to calculate the absorbance at 254 and 420. For a single
 wavelength that looks like:
 
@@ -527,8 +530,9 @@ a254
 ```
 
 Let’s use lapply to get the absorbance, add any flags, and format it
-correctly. We’ll use `do.call` to bind all the lists of indices
-together.
+correctly. We’ll use
+[`base::do.call()`](https://rdrr.io/r/base/do.call.html) to bind all the
+lists of indices together.
 
 ``` r
 abs_data <- lapply(names(erlandsson_index[1:2]), function(index_name){
@@ -552,10 +556,10 @@ abs_data <- do.call(rbind, abs_data)
 ```
 
 Next lets get the ratios, we can still use the
-[get_absorbance](https://katiewampler.github.io/eemanalyzeR/reference/get-absorbance.md)
+[`get_absorbance()`](https://katiewampler.github.io/eemanalyzeR/reference/get_absorbance.md)
 helper function to get the absorbance at the wavelengths, and then use
 the
-[get_ratios](https://katiewampler.github.io/eemanalyzeR/reference/get-ratios.md)
+[`get_ratios()`](https://katiewampler.github.io/eemanalyzeR/reference/get_ratios.md)
 helper function to get the ratio with any flags. In the case below, we
 don’t have absorbance at 220 nm, so we get flags of DATA01
 
@@ -567,8 +571,9 @@ a220_a254
 #> [1] "DATA01" "DATA01" "DATA01" "DATA01"
 ```
 
-Since we’re getting multiple different sets of ratios, let’s use lapply
-to get all of the ratios at once.
+Since we’re getting multiple different sets of ratios, let’s use
+[`base::lapply()`](https://rdrr.io/r/base/lapply.html) to get all of the
+ratios at once.
 
 ``` r
 ratios <- lapply(names(erlandsson_index[3:5]), function(index_name){
@@ -582,9 +587,9 @@ ratios <- lapply(names(erlandsson_index[3:5]), function(index_name){
 ```
 
 While we’re calculating each index, let’s also use the
-[flag_missing](https://katiewampler.github.io/eemanalyzeR/reference/flag-missing.md)
+[`flag_missing()`](https://katiewampler.github.io/eemanalyzeR/reference/flag_missing.md)
 function to see if there’s any data missing. Lastly, we’ll use the
-[format_index](https://katiewampler.github.io/eemanalyzeR/reference/format-index.md)
+[`format_index()`](https://katiewampler.github.io/eemanalyzeR/reference/format_index.md)
 function to make sure everything is correctly formatted. We’ll use
 `do.call` to bind all the lists of indices together.
 
@@ -613,7 +618,7 @@ ratios <- do.call(rbind, ratios)
 
 Lastly we need to get the spectral slopes and spectral ratio. For these
 we’ll use the
-[get_abs_slope](https://katiewampler.github.io/eemanalyzeR/reference/get-abs-slope.md)
+[`get_abs_slope()`](https://katiewampler.github.io/eemanalyzeR/reference/get_abs_slope.md)
 function.
 
 ``` r
@@ -650,7 +655,8 @@ still run.
 ```
 
 Lastly, we just need to combine all the indices into a data.frame and
-return the results as a list using another `do.call`. Since we don’t
+return the results as a list using another
+[`base::do.call()`](https://rdrr.io/r/base/do.call.html). Since we don’t
 have any EEMs data we’ll just make it NA.
 
 ``` r
@@ -816,7 +822,7 @@ erlandsson2012 <- function(eemlist, abslist, cuvle=1, qaqc_dir){
 ```
 
 Now let’s test our custom function with the
-[get_indices](https://katiewampler.github.io/eemanalyzeR/reference/get-indices.md)
+[`get_indices()`](https://katiewampler.github.io/eemanalyzeR/reference/get_indices.md)
 function. Once again note that we get a warning about the indices
 because the EEMs data hasn’t gone through any processing steps.
 

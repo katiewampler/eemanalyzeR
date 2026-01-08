@@ -95,7 +95,7 @@ head(indices$eem_index)
 #> 3                B1S3ExampleSampleSEM    ExampleSample     b            DATA01
 #> 4 ManualExampleTeaWaterfallPlotSample ManualExampleTea     b            DATA01
 #> 5                 B1S1ExampleBlankSEM     ExampleBlank     t             MDL01
-#> 6                B1S2ExampleTeaStdSEM    ExampleTeaStd     t 0.589498543201255
+#> 6                B1S2ExampleTeaStdSEM    ExampleTeaStd     t 0.589498543201252
 
 # View absorbance indices
 head(indices$abs_index)
