@@ -162,8 +162,8 @@ will be read when you load the package.
 
 One of the goals with the `eemanalyzeR` package was to build in QA/QC
 checks to ensure data quality. While not required to use the package,
-you can use the [create_mdl](../reference/create_mdl.html) and
-[create_std](../reference/create_std.html) functions. These function requires
+you can use the `create_mdl()` and
+`create_std()` functions. These function requires
 a directory of analytical blanks and check standards (for instance the
 [tea standard](<doi:10.3133/ofr20181096>)
 recommended by the USGS). While you can create these standards with any

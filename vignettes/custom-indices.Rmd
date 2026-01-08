@@ -20,7 +20,7 @@ library(eemanalyzeR)
 
 ## Introduction
 
-To maximum flexibility in calculating indices, we've enabled the [get_indices](../reference/get-indices.html) function to accept custom written functions, allowing users to create their own function and calculate indices that may not be included in existing methods.
+To maximum flexibility in calculating indices, we've enabled the `get_indices()` function to accept custom written functions, allowing users to create their own function and calculate indices that may not be included in existing methods.
 
 ## Function Requirements
 
@@ -28,7 +28,7 @@ To maximum flexibility in calculating indices, we've enabled the [get_indices](.
     a.  `eemlist`: an eemlist object containing EEM's data.
     b.  `abslist`: an abslist object containing absorbance data.
     c.  `cuvle`: the cuvette (path) length in cm.
-    d.  `qaqc_dir`: the file path to the mdl files generated with \link[eemanalyzeR]{create_mdl}
+    d.  `qaqc_dir`: the file path to the mdl files generated with `create_mdl()`
 2.  **The function must return a list with the following items:**
     a.  `abs_index`: the indices calculated from the absorbance data
     b.  `eem_index`: the indices calculated from the EEMs data
@@ -47,7 +47,7 @@ To maximum flexibility in calculating indices, we've enabled the [get_indices](.
 
 **The eemanalyzeR package contains a number of functions helpful in creating custom indices.**
 
-To get the absorbance values at a certain wavelength the [get_absorbance](../reference/get-absorbance.html) function can be used. This function can additionally provide specific absorbance (like SUVA 254).
+To get the absorbance values at a certain wavelength the `get_absorbance()` function can be used. This function can additionally provide specific absorbance (like SUVA 254).
 
 ```{r}
 abslist <- example_processed_abs
@@ -61,7 +61,7 @@ suva254 <- eemanalyzeR::get_absorbance(abslist, 254, suva=TRUE)
 suva254
 ```
 
-A similar function exists for getting fluorescence values from EEMs data: [get_fluorescence](../reference/get-fluorescence.html). Here, you can specify a range of excitation and/or emission wavelengths. If stat is set to `sum` the sum of fluorescence will be returned, otherwise if `max` is used the maximum fluorescence across that range will be returned.
+A similar function exists for getting fluorescence values from EEMs data: `get_fluorescence()`. Here, you can specify a range of excitation and/or emission wavelengths. If stat is set to `sum` the sum of fluorescence will be returned, otherwise if `max` is used the maximum fluorescence across that range will be returned.
 
 ```{r}
 
@@ -78,7 +78,7 @@ pA_sum <- get_fluorescence(eemlist, ex=250:260, em=380:480, stat="sum")
 pA_sum
 ```
 
-Lastly, we have a function for getting spectral slopes: [get_abs_slope](../reference/get-abs-slope.html) which will convert the absorbance to absorption, interpolate the data if needed, and return the spectral slope within a wavelength range.
+Lastly, we have a function for getting spectral slopes: `get_abs_slope()` which will convert the absorbance to absorption, interpolate the data if needed, and return the spectral slope within a wavelength range.
 
 ```{r}
 S275_295 <- get_abs_slope(abslist, lim=c(275,295))
@@ -87,7 +87,7 @@ S275_295 <- get_abs_slope(abslist, lim=c(275,295))
 
 ## QA/QC Flags
 
-While the [get_indices](../reference/get-indices.html) function includes some QA/QC checks (negative numbers, missing values, below noise, outside expected range, etc.), there are some checks that are easier to do when calculating the indices, or you may wish to include custom flags or checks. To pass flags from your index function to the output, they need to get put in the `value` column of the index data.frames.
+While the `get_indices()` function includes some QA/QC checks (negative numbers, missing values, below noise, outside expected range, etc.), there are some checks that are easier to do when calculating the indices, or you may wish to include custom flags or checks. To pass flags from your index function to the output, they need to get put in the `value` column of the index data.frames.
 
 There are a few rules to follow with flags:
 
@@ -101,7 +101,7 @@ There are a few rules to follow with flags:
 
 There are few helper functions within the **eemanalyzeR** package that will provide some common flags.
 
-First is the [get_ratios](../reference/get-ratios.html) function. This can be helpful when calculating things like peak ratios, where a missing value will result in an `NA` or a value of 0 in the denominator will result in an infinite value.
+First is the `get_ratios()` function. This can be helpful when calculating things like peak ratios, where a missing value will result in an `NA` or a value of 0 in the denominator will result in an infinite value.
 
 ```{r}
 #calculate the ratio of Peak A to Peak T
@@ -128,7 +128,7 @@ First is the [get_ratios](../reference/get-ratios.html) function. This can be he
 
 ```
 
-There's also a function that will flag indices that can't be calculated because data didn't exist for the requested wavelengths: [flag_missing](../reference/flag-missing.html). This is useful to check when calculating indices to flag why certain indices might be returning `NA` values.
+There's also a function that will flag indices that can't be calculated because data didn't exist for the requested wavelengths: `flag_missing()`. This is useful to check when calculating indices to flag why certain indices might be returning `NA` values.
 
 ```{r}
 #checking absorbance data
@@ -151,7 +151,7 @@ There's also a function that will flag indices that can't be calculated because 
   #some data exists, still calculate
   flag_missing(eemlist, ex=100:350, em=300:320, all=FALSE) 
 ```
-You may also want to flag values below the method detection limit (MDL) this can be done with: [check_*_mdl](../reference/check_mdl.html). This is useful to ensure that the blanks are actually blank and ratio values that are returned are based on "real" data. 
+You may also want to flag values below the method detection limit (MDL) this can be done with: `check_eem_mdl()` and `check_abs_mdl()`. This is useful to ensure that the blanks are actually blank and ratio values that are returned are based on "real" data. 
 
 ```{r}
 #checking absorbance data
@@ -182,7 +182,7 @@ You may also want to flag values below the method detection limit (MDL) this can
 
 
 ```
-If your function generates more than one flag (say a flag for missing data and an MDL flag) you can use the [.combine_flags](../reference/dot-combine-flags.html) function to nicely combine the flags. 
+If your function generates more than one flag (say a flag for missing data and an MDL flag) you can use the `.combine_flags()` function to nicely combine the flags. 
 
 ```{r}
   #works with a single set of flags 
@@ -203,7 +203,7 @@ If your function generates more than one flag (say a flag for missing data and a
     #this function is useful for indices using ratios
     .combine_flags("MDL01", "MDL02", mdl=TRUE)
 ```
-Once we've gotten the values and the flags, the data needs to be formatted in a specific way to input into the [get_indices](../reference/get-indices.html) function. To do this we can use the [format_index](../reference/format-index.html) function.
+Once we've gotten the values and the flags, the data needs to be formatted in a specific way to input into the `get_indices()` function. To do this we can use the `format_index()` function.
 
 ```{r}
   ex <- 240:260
@@ -232,7 +232,7 @@ zhang_indices <- list(USoI = list(ex=c(245,230), em=c(440,260)),
                      TSoI = list(ex=c(260,285), em=c(430,365)))
 ```
 
-We can use the [get_fluorescence](../reference/get-fluorescence.html) helper function to calculate the fluorescence for the numerator and denominator of the ratio. Then we can use the [get_ratios](../reference/get-ratios.html) helper function to get the ratio. For a single index this would look like:
+We can use the `get_fluorescence()` helper function to calculate the fluorescence for the numerator and denominator of the ratio. Then we can use the `get_ratios()` helper function to get the ratio. For a single index this would look like:
 
 ```{r}
 eemlist <- example_processed_eems
@@ -253,7 +253,7 @@ results <- lapply(names(zhang_indices), function(index_name) {
 
 ```
 
-While we're calculating each index, let's also use the [flag_missing](../reference/flag-missing.html) function to see if there's any data missing. Since we're finding the maximum value, we'll set `all` to `FALSE` so it will report a value if there's some data. We'll also check to see if any of the data is below the MDL, since we have two discrete values we can use [.combine_flags](../reference/dot-combine-flags.html) to combine the returned MDL flags. Lastly, we'll use the [format_index](../reference/format-index.html) function to make sure everything is correctly formatted.
+While we're calculating each index, let's also use the `flag_missing()` function to see if there's any data missing. Since we're finding the maximum value, we'll set `all` to `FALSE` so it will report a value if there's some data. We'll also check to see if any of the data is below the MDL, since we have two discrete values we can use `.combine_flags()` to combine the returned MDL flags. Lastly, we'll use the `format_index()` function to make sure everything is correctly formatted.
 
 ```{r}
 results <- lapply(names(zhang_indices), function(index_name){
@@ -345,7 +345,7 @@ zhang2025 <- function(eemlist, abslist, cuvle=1, qaqc_dir){
 }
 ```
 
-Now let's test our custom function with the [get_indices](../reference/get-indices.html) function. Note that we get a warning about the indices because the EEMs data hasn't gone through any processing steps.
+Now let's test our custom function with the `get_indices()` function. Note that we get a warning about the indices because the EEMs data hasn't gone through any processing steps.
 
 ```{r}
 indices <- get_indices(example_processed_eems, 
@@ -387,7 +387,7 @@ erlandsson_index <- list(a254=254,
                          SR=c(275:295, 350:400))
 ```
 
-We can use the [get_absorbance](../reference/get-absorbance.html) helper function to calculate the absorbance at 254 and 420. For a single wavelength that looks like:
+We can use the `get_absorbance()` helper function to calculate the absorbance at 254 and 420. For a single wavelength that looks like:
 
 ```{r}
 abslist <- example_processed_abs
@@ -396,7 +396,7 @@ a254
 
 ```
 
-Let's use lapply to get the absorbance, add any flags, and format it correctly. We'll use `do.call` to bind all the lists of indices together.
+Let's use lapply to get the absorbance, add any flags, and format it correctly. We'll use `base::do.call()` to bind all the lists of indices together.
 
 ```{r}
 abs_data <- lapply(names(erlandsson_index[1:2]), function(index_name){
@@ -419,7 +419,7 @@ abs_data <- lapply(names(erlandsson_index[1:2]), function(index_name){
 abs_data <- do.call(rbind, abs_data)
 ```
 
-Next lets get the ratios, we can still use the [get_absorbance](../reference/get-absorbance.html) helper function to get the absorbance at the wavelengths, and then use the [get_ratios](../reference/get-ratios.html) helper function to get the ratio with any flags. In the case below, we don't have absorbance at 220 nm, so we get flags of DATA01
+Next lets get the ratios, we can still use the `get_absorbance()` helper function to get the absorbance at the wavelengths, and then use the `get_ratios()` helper function to get the ratio with any flags. In the case below, we don't have absorbance at 220 nm, so we get flags of DATA01
 
 ```{r}
 a220 <- get_absorbance(abslist, wl=220) 
@@ -429,7 +429,7 @@ a220_a254
 
 ```
 
-Since we're getting multiple different sets of ratios, let's use lapply to get all of the ratios at once.
+Since we're getting multiple different sets of ratios, let's use `base::lapply()` to get all of the ratios at once.
 
 ```{r}
 ratios <- lapply(names(erlandsson_index[3:5]), function(index_name){
@@ -442,7 +442,7 @@ ratios <- lapply(names(erlandsson_index[3:5]), function(index_name){
      })
 ```
 
-While we're calculating each index, let's also use the [flag_missing](../reference/flag-missing.html) function to see if there's any data missing. Lastly, we'll use the [format_index](../reference/format-index.html) function to make sure everything is correctly formatted. We'll use `do.call` to bind all the lists of indices together.
+While we're calculating each index, let's also use the `flag_missing()` function to see if there's any data missing. Lastly, we'll use the `format_index()` function to make sure everything is correctly formatted. We'll use `do.call` to bind all the lists of indices together.
 
 ```{r}
 ratios <- lapply(names(erlandsson_index[3:5]), function(index_name){
@@ -467,7 +467,7 @@ ratios <- lapply(names(erlandsson_index[3:5]), function(index_name){
 ratios <- do.call(rbind, ratios)
 ```
 
-Lastly we need to get the spectral slopes and spectral ratio. For these we'll use the [get_abs_slope](../reference/get-abs-slope.html) function.
+Lastly we need to get the spectral slopes and spectral ratio. For these we'll use the `get_abs_slope()` function.
 
 ```{r}
 index <- "S275_295"
@@ -501,7 +501,7 @@ Now we need to make sure to add in the MDL data so we can use it to check our va
 ```
 
 
-Lastly, we just need to combine all the indices into a data.frame and return the results as a list using another `do.call`. Since we don't have any EEMs data we'll just make it NA.
+Lastly, we just need to combine all the indices into a data.frame and return the results as a list using another `base::do.call()`. Since we don't have any EEMs data we'll just make it NA.
 
 ```{r}
  results <- do.call(rbind, list(abs_data, ratios, S275_295, SR))
@@ -602,7 +602,7 @@ erlandsson2012 <- function(eemlist, abslist, cuvle=1, qaqc_dir){
 }
 ```
 
-Now let's test our custom function with the [get_indices](../reference/get-indices.html) function. Once again note that we get a warning about the indices because the EEMs data hasn't gone through any processing steps.
+Now let's test our custom function with the `get_indices()` function. Once again note that we get a warning about the indices because the EEMs data hasn't gone through any processing steps.
 
 ```{r}
 indices <- get_indices(example_processed_eems, example_processed_abs, index_method = erlandsson2012, 

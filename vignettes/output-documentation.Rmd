@@ -17,8 +17,7 @@ knitr::opts_chunk$set(
 # Exported Data
 
 Every data export from `eemanalyzeR` using the
-[export_data](../reference/export_data.html) or
-[run_eems](../reference/run_eems.html) functions contains the following
+`export_data()` or `run_eems()` functions contains the following
 files:
 
 -   **\*\_indices_filename.csv**:The absorbance and fluorescence indices
@@ -47,7 +46,7 @@ peaks that could impact data during blank subtraction.
     this visual check occurred and the user processing the data accepted
     the data.
 
--   The [validate_blanks](../reference/validate_blanks.html) function also
+-   The `validate_blanks()` function also
     has the option that if the user does **not** accept the instrument
     blank, it may be replaced with one of the analytical blanks. In this
     case the **readme** will note the blank that was used instead of the
@@ -70,7 +69,7 @@ absorbance at a specific wavelength, **mean** is the average signal, and
 
 To use the MDL checks, the user must create MDL files for both
 absorbance and fluorescence data using the
-[create_mdl](../reference/create_mdl.html) function. If no MDL files are
+`create_mdl()` function. If no MDL files are
 found, a warning will appear in the **readme** file.
 
 <br>
@@ -82,7 +81,7 @@ average for consistency.
 
 To use the check standard checks, the user must create average standard
 files for both absorbance and fluorescence data using the
-[create_std](../reference/create_std.html) function.
+`create_std()` function.
 
 -   **If no standard files are found**: a warning will appear in the
     **readme** file.
@@ -189,7 +188,7 @@ knitr::kable(eem_index)
 <br>
 
 For more details on interpretation and sources see the vignette
-[eemanalyzeR-indices](../doc/eemanalyzeR-indices.html).
+vignette("eemanalyzeR-indices").
 
 <br>
 
