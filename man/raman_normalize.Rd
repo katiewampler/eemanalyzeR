@@ -6,7 +6,7 @@
 \source{
 Lawaetz, A. J., & Stedmon, C. A. (2009). Fluorescence Intensity Calibration Using
 the Raman Scatter Peak of Water. Applied Spectroscopy, 63(8), 936-940.
-https://doi.org/10.1366/000370209788964548
+\doi{10.1366/000370209788964548}
 }
 \usage{
 raman_normalize(eemlist)

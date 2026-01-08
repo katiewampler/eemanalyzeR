@@ -43,29 +43,25 @@
 #' plot(abs[[3]])
 #'
 #' # plot all in an eemlist or abslist
-#' plots <- plot(eems)
-#' plots <- plot(abs)
+#' eem_plots <- plot(eems)
+#' abs_plots <- plot(abs)
 #'
 #' # change color scale
 #' plot(eems, pal = c("darkblue", "lightblue"))
 #'
 #' # make color bar consistent across all plots
-#' plot(eems[2:4], equal_scale = TRUE)
+#' plot(eems[2:3], equal_scale = TRUE)
 #'
 #' # customize using ggplot2 commands
 #' plot(eems[[2]]) + ggplot2::labs(title = "Test EEM")
-#' plot(eems)[[3]] + ggplot2::labs(title = "Test EEM")
+#' eem_plots[[3]] + ggplot2::labs(title = "Test EEM")
 #'
 #' # modify then arrange together
-#' plots <- plot(eems)
-#' plots[[3]] <- plots[[3]] + ggplot2::labs(title = "Test EEM")
-#' print(ggpubr::ggarrange(plotlist = plots))
+#' eem_plots[[3]] <- eem_plots[[3]] + ggplot2::labs(title = "Test EEM")
+#' print(ggpubr::ggarrange(plotlist = eem_plots))
 #'
 #' # remove lower area below rayleigh line
-#' plots <- plot(eems, remove_lower = TRUE)
-#'
-#' # annotate the plot with the peaks
-#' plot(eems[[3]], annotate = TRUE)
+#' plots <- plot(eems[[3]], remove_lower = TRUE)
 #'
 #' @export
 #' @method plot eem

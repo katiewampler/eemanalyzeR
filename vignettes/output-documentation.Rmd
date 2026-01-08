@@ -188,7 +188,7 @@ knitr::kable(eem_index)
 <br>
 
 For more details on interpretation and sources see the vignette
-[`vignette("eemanalyzeR-indices")`](../doc/eemanalyzeR-indices.html).
+[`eemanalyzeR-indices`](eemanalyzeR-indices.html).
 
 <br>
 

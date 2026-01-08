@@ -324,7 +324,7 @@ Serène, L., Mazzilli, N., Batiot-Guilhe, C., Emblanch, C., Gillon, M., Babic, M
 
 Stedmon, C. A., Markager, S., & Bro, R. (2003). Tracing dissolved organic matter in aquatic environments using a new approach to fluorescence spectroscopy. Marine Chemistry, 82(3), 239-254. https://doi.org/10.1016/S0304-4203(03)00072-0
 
-Weishaar, J. L., Aiken, G. R., Bergamaschi, B. A., Fram, M. S., Fujii, R., & Mopper, K. (2003). Evaluation of Specific Ultraviolet Absorbance as an Indicator of the Chemical Composition and Reactivity of Dissolved Organic Carbon. Environmental Science & Technology, 37(20), 4702-4708. https://doi.org/doi.org:10.1021/es030360x
+Weishaar, J. L., Aiken, G. R., Bergamaschi, B. A., Fram, M. S., Fujii, R., & Mopper, K. (2003). Evaluation of Specific Ultraviolet Absorbance as an Indicator of the Chemical Composition and Reactivity of Dissolved Organic Carbon. Environmental Science & Technology, 37(20), 4702-4708. https://doi.org/10.1021/es030360x
 
 Wilson, H. F., & Xenopoulos, M. A. (2009). Effects of agricultural land use on the composition of fluvial dissolved organic matter. Nature Geoscience, 2(1), 37-41. https://doi.org/10.1038/ngeo391
 

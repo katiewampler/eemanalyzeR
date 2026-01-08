@@ -29,7 +29,7 @@
 #' @references Gilchrist, J. R., & Reynolds, D. M. (2014). Optical Spectroscopy Instrumentation Design,
 #' Quality Assurance, and Control: Bench-Top Fluorimetry. In A. Baker, D. M. Reynolds, J. Lead, P. G. Coble,
 #' & R. G. M. Spencer (Eds.), Aquatic Organic Matter Fluorescence (pp. 147-189).
-#' Cambridge: Cambridge University Press. https://doi.org/10.1017/CBO9781139045452.009
+#' Cambridge: Cambridge University Press. \doi{10.1017/CBO9781139045452.009}
 #'
 #' @examples
 #' # default settings (remove all, interpolate only raman lines)
