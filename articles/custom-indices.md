@@ -73,17 +73,17 @@ eemlist <- example_processed_eems
 #get maximum fluorescence across ranges for Peak A and D
 pA <- get_fluorescence(eemlist, ex=250:260, em=380:480, stat="max")
 pA
-#> [1] "0.0103767473213219" "0.280569719363857"  "0.340345670357128" 
+#> [1] "0.0103767473213219" "0.280569719363854"  "0.340345670357128" 
 #> [4] "0.721431003125204"
 pD <- get_fluorescence(eemlist, ex=390, em=509, stat="max")
 pD 
-#> [1] "0.000304395508989419" "0.0199829245761789"   "0.0978435434033764"  
+#> [1] "0.000304395508989419" "0.0199829245761789"   "0.0978435434033769"  
 #> [4] "0.0372706531424358"
 
 #get sum of fluorescence across range of Peak A
 pA_sum <- get_fluorescence(eemlist, ex=250:260, em=380:480, stat="sum")
 pA_sum
-#> [1] "0.398846395176868" "15.4652173718784"  "29.1296537896885" 
+#> [1] "0.398846395176876" "15.4652173718784"  "29.1296537896885" 
 #> [4] "34.0595693438647"
 ```
 
@@ -109,8 +109,6 @@ data.frames.
 
 There are a few rules to follow with flags:
 
-1.  Flags should have the form text## (DOC01, DATA04, etc.)
-
 2.  If an index value is NA and you want to flag with a reason why it is
     NA, replace the NA value with that flag value.
 
@@ -134,7 +132,7 @@ denominator will result in an infinite value.
  pT <- get_fluorescence(eemlist, ex=270:280, em=320:350)
  rAT <- get_ratios(pA, pT)
  rAT
-#> [1] "1.72750162152655"  "0.423565751341601" "4.07129094367473" 
+#> [1] "1.72750162152656"  "0.423565751341601" "4.07129094367473" 
 #> [4] "0.450601408727671"
  
   #if Peak T is all 0, will return DATA_03 flag, indicating index couldn't 
@@ -284,8 +282,8 @@ function.
 #> 3                B1S3ExampleSampleSEM    ExampleSample test_index
 #> 4 ManualExampleTeaWaterfallPlotSample ManualExampleTea test_index
 #>                         value
-#> 1 0.000532084537187436_DATA02
-#> 2    0.520903992822664_DATA02
+#> 1 0.000532084537187422_DATA02
+#> 2    0.520903992822657_DATA02
 #> 3   0.0851942070835534_DATA02
 #> 4     1.48625281995149_DATA02
 ```
@@ -295,7 +293,7 @@ function.
 Alright, now that we’ve reviewed all the helper functions and the
 requirements for the custom function let’s do an example. Let’s create a
 custom function to calculate some new fluorescence indices presented in
-**Zhang et al. 2025:**
+[**Zhang et al. 2025:**](https://doi.org/10.1016/j.psep.2025.107553)
 
 $$\text{U-SoI} = \frac{U1_{ex:245,em:440}}{U2_{ex:230,em:260}}$$
 
@@ -324,8 +322,8 @@ like:
 eemlist <- example_processed_eems
 get_ratios(get_fluorescence(eemlist, zhang_indices$TSoI$ex[1], zhang_indices$TSoI$em[1]), 
            get_fluorescence(eemlist, zhang_indices$TSoI$ex[2], zhang_indices$TSoI$em[2]))
-#> [1] "4.93586355290846"  "0.528716173072744" "3.87515734359415" 
-#> [4] "0.48620210278511"
+#> [1] "4.93586355290875"  "0.528716173072758" "3.87515734359415" 
+#> [4] "0.486202102785104"
 ```
 
 To get all the indices let’s use the lapply function.
@@ -409,9 +407,9 @@ have any absorbance data we’ll just make it NA.
 #> 7                 B1S3ExampleSampleSEM    ExampleSample  ASoI            DATA01
 #> 8  ManualExampleTeaWaterfallPlotSample ManualExampleTea  ASoI            DATA01
 #> 9                  B1S1ExampleBlankSEM     ExampleBlank  TSoI             MDL01
-#> 10                B1S2ExampleTeaStdSEM    ExampleTeaStd  TSoI 0.528716173072744
+#> 10                B1S2ExampleTeaStdSEM    ExampleTeaStd  TSoI 0.528716173072758
 #> 11                B1S3ExampleSampleSEM    ExampleSample  TSoI  3.87515734359415
-#> 12 ManualExampleTeaWaterfallPlotSample ManualExampleTea  TSoI  0.48620210278511
+#> 12 ManualExampleTeaWaterfallPlotSample ManualExampleTea  TSoI 0.486202102785104
 ```
 
 Great, that all looks good, now we just need to combine all that code to
@@ -487,7 +485,8 @@ indices$eem_index
 
 The last example only used fluorescence data. Let’s create another
 custom function focused on absorbance indices. We’ll create a function
-to calculate the indices used in **Erlandsson et al. 2012:**
+to calculate the indices used in [**Erlandsson et
+al. 2012:**](https://doi.org/10.1039/C2EM30266G)
 
 | Index     | Description                          |
 |:----------|:-------------------------------------|
@@ -591,7 +590,8 @@ While we’re calculating each index, let’s also use the
 function to see if there’s any data missing. Lastly, we’ll use the
 [`format_index()`](https://katiewampler.github.io/eemanalyzeR/reference/format_index.md)
 function to make sure everything is correctly formatted. We’ll use
-`do.call` to bind all the lists of indices together.
+[`base::do.call()`](https://rdrr.io/r/base/do.call.html) to bind all the
+lists of indices together.
 
 ``` r
 ratios <- lapply(names(erlandsson_index[3:5]), function(index_name){
@@ -846,9 +846,9 @@ Zhang, H., Hou, J., Nie, L., Hao, Y., Gao, H., & Yu, H. (2025).
 Developing new spectral indices for identifying DOM sources in Liaohe
 River in a large-scale river basin by fluorescence spectroscopy and
 random forest model. Process Safety and Environmental Protection, 201,
-107553. <doi:10.1016/j.psep.2025.107553>
+107553. <https://doi.org/10.1016/j.psep.2025.107553>
 
 Erlandsson, M., N. Futter, M., N. Kothawala, D., & J. Köhler, S. (2012).
 Variability in spectral absorbance metrics across boreal lake waters.
 Journal of Environmental Monitoring, 14(10), 2643-2652.
-<doi:10.1039/C2EM30266G>
+<https://doi.org/10.1039/C2EM30266G>

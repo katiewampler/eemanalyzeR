@@ -8,16 +8,18 @@ index method ‘eemanalyzeR’.
 
 Excitation emission matrices (EEMs) and absorbance spectra can be large,
 unwieldy datasets which can be challenging to interpret. While
-procedures like parallel factor analysis (PARAFAC) can be used (Stedmon
-et al. 2003), these analyses can be complex, time consuming, and require
-substantial computing power. An alternative method of interpreting
-optical data is to use absorbance and fluorescence indices which are a
-single value calculated from the absorbance or fluorescence spectra. The
-benefit is a single value which is easily derived and plotted. However,
+procedures like parallel factor analysis (PARAFAC) can be used ([Stedmon
+et al. 2003](https://doi.org/10.1016/S0304-4203(03)00072-0)), these
+analyses can be complex, time consuming, and require substantial
+computing power. An alternative method of interpreting optical data is
+to use absorbance and fluorescence indices which are a single value
+calculated from the absorbance or fluorescence spectra. The benefit is a
+single value which is easily derived and plotted. However,
 interpretation can be challenging as many of these metrics were derived
 in specific environments, and the interpretation may not be transferable
-to other environments or sample types (Gabor et al. 2014, Serène et
-al. 2025).
+to other environments or sample types ([Gabor et
+al. 2014](https://doi.org/10.1017/CBO9781139045452.015), [Serène et
+al. 2025](https://doi.org/10.1016/j.jhydrol.2024.132524)).
 
 ## Absorbance Indices
 
@@ -42,9 +44,10 @@ index units of L mg-C⁻¹ m⁻¹.
 **Interpretation:** SUVA 254 is considered an proxy for aromatic content
 of the dissolved organic matter, where higher values indicate higher
 aromaticity. It has also been found to be correlated with some
-disinfection by-product precursors (Rostad et al. 2000).
+disinfection by-product precursors ([Rostad et
+al. 2000](https://doi.org/10.1021/es9900407)).
 
-**Source(s):** Weishaar et al. 2003
+**Source(s):** [Weishaar et al. 2003](https://doi.org/10.1021/es030360x)
 
 ### SUVA 280 (SUVA280)
 
@@ -56,9 +59,12 @@ for aromatic content of the dissolved organic matter, where higher
 values indicate higher aromaticity. This index has been proposed as an
 alternative to SUVA 254, with some evidence that 280 nm may be a better
 wavelength to determine aromaticity at since $\pi$ to $\pi*$ transitions
-occur here for many aromatic molecules (Chin et al. 1994).
+occur here for many aromatic molecules ([Chin et
+al. 1994](https://doi.org/10.2136/sssaj1977.03615995004100020037x)).
 
-**Source(s):** Chin et al. 1994, Hansen et al. 2016
+**Source(s):** [Chin et
+al. 1994](https://doi.org/10.2136/sssaj1977.03615995004100020037x),
+[Hansen et al. 2016](https://doi.org/10.1002/lno.10270)
 
 ### SVA 412 (SVA412)
 
@@ -69,7 +75,7 @@ index units of L mg-C⁻¹ m⁻¹.
 can be used as a proxy for aromatic content of DOM where higher values
 indicate a higher amount of aromaticity.
 
-**Source(s):** Hansen et al. 2016
+**Source(s):** [Hansen et al. 2016](https://doi.org/10.1002/lno.10270)
 
 ### Spectral Slope Between 275 to 295 nm (S275_295)
 
@@ -79,7 +85,9 @@ the absorbance spectrum between 275-295 nm.
 **Interpretation:** Higher values are typically associated with lower
 molecular weight materials and/or lower aromaticity.
 
-**Source(s):** Helms et al. 2008, Hansen et al. 2016
+**Source(s):** [Helms et
+al. 2008](https://doi.org/10.4319/lo.2008.53.3.0955), [Hansen et
+al. 2016](https://doi.org/10.1002/lno.10270)
 
 ### Spectral Slope Between 350 to 400 nm (S350_400)
 
@@ -89,7 +97,9 @@ the absorbance spectrum between 350-400 nm
 **Interpretation:** Higher values are typically associated with lower
 molecular weight materials and/or lower aromaticity.
 
-**Source(s):** Helms et al. 2008, Hansen et al. 2016
+**Source(s):** [Helms et
+al. 2008](https://doi.org/10.4319/lo.2008.53.3.0955), [Hansen et
+al. 2016](https://doi.org/10.1002/lno.10270)
 
 ### Spectral Slope Ratio (SR)
 
@@ -99,7 +109,9 @@ slope between 350 to 400 nm.
 **Interpretation:** Negatively correlated to molecular weight and
 generally increases on irradiation.
 
-**Source(s):** Helms et al. 2008, Hansen et al. 2016
+**Source(s):** [Helms et
+al. 2008](https://doi.org/10.4319/lo.2008.53.3.0955), [Hansen et
+al. 2016](https://doi.org/10.1002/lno.10270)
 
 ### E₂/E₃ Ratio (E2_E3)
 
@@ -110,7 +122,8 @@ nm.
 aromaticity where, as E₂/E₃ increases, the aromaticity and molecular
 weight decreases.
 
-**Source(s):** Peuravuori and Pihlaja 1997
+**Source(s):** [Peuravuori and Pihlaja
+1997](https://doi.org/10.1016/S0003-2670(96)00412-6)
 
 ### E₄/E₆ Ratio (E4_E6)
 
@@ -121,7 +134,9 @@ nm.
 aromaticity of organic matter, it’s been found that this metric is a
 better descriptor of the amount of humic-like organic matter.
 
-**Source(s):** Helms et al. 2008, Chen et al. 1977
+**Source(s):** [Helms et
+al. 2008](https://doi.org/10.4319/lo.2008.53.3.0955), [Chen et
+al. 1977](https://doi.org/10.2136/sssaj1977.03615995004100020037x)
 
 ## Fluorescence Indices
 
@@ -155,7 +170,9 @@ and em: 300-320 nm.
 **Interpretation:** This peak is typically associated with
 tyrosine-like, protein-like organic matter.
 
-**Source(s):** Coble 1996, Gabor et al. 2014
+**Source(s):** [Coble
+1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et
+al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
 
 ### Peak T (pT)
 
@@ -165,7 +182,9 @@ and em: 320-350 nm.
 **Interpretation:** This peak is typically associated with
 tryptophan-like, protein-like organic matter.
 
-**Source(s):** Coble 1996, Gabor et al. 2014
+**Source(s):** [Coble
+1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et
+al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
 
 ### Peak A (pA)
 
@@ -175,7 +194,9 @@ and em: 380-480 nm.
 **Interpretation:** This peak is typically associated with UV humic-like
 organic matter.
 
-**Source(s):** Coble 1996, Gabor et al. 2014
+**Source(s):** [Coble
+1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et
+al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
 
 ### Peak M (pM)
 
@@ -186,7 +207,9 @@ and em: 380-420 nm.
 humic-like organic matter. However, this component has been observed in
 non-humic environments.
 
-**Source(s):** Coble 1996, Gabor et al. 2014
+**Source(s):** [Coble
+1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et
+al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
 
 ### Peak C (pC)
 
@@ -196,7 +219,9 @@ and em: 420-480 nm.
 **Interpretation:** This peak is typically associated with visible
 humic-like organic matter.
 
-**Source(s):** Coble 1996, Gabor et al. 2014
+**Source(s):** [Coble
+1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et
+al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
 
 ### Peak D (pD)
 
@@ -205,7 +230,9 @@ humic-like organic matter.
 **Interpretation:** This peak is typically associated with soil fulvic
 acid-like organic matter.
 
-**Source(s):** Stedmon et al. 2003, Aiken, 2014
+**Source(s):** [Stedmon et
+al. 2003](https://doi.org/10.1016/S0304-4203(03)00072-0), [Aiken,
+2014](https://doi.org/10.1017/CBO9781139045452.005)
 
 ### Peak E (pE)
 
@@ -214,7 +241,9 @@ acid-like organic matter.
 **Interpretation:** This peak is typically associated with soil fulvic
 acid-like organic matter.
 
-**Source(s):** Stedmon et al. 2003, Aiken, 2014
+**Source(s):** [Stedmon et
+al. 2003](https://doi.org/10.1016/S0304-4203(03)00072-0), [Aiken,
+2014](https://doi.org/10.1017/CBO9781139045452.005)
 
 ### Peak N (pN)
 
@@ -223,7 +252,9 @@ acid-like organic matter.
 **Interpretation:** This peak is typically associated with associated
 with phytoplankton productivity.
 
-**Source(s):** Stedmon et al. 2003, Aiken, 2014
+**Source(s):** [Stedmon et
+al. 2003](https://doi.org/10.1016/S0304-4203(03)00072-0), [Aiken,
+2014](https://doi.org/10.1017/CBO9781139045452.005)
 
 ### Ratio of Peak A to Peak T (rAT)
 
@@ -232,7 +263,7 @@ with phytoplankton productivity.
 **Interpretation:** Related to the amount of humic-like (recalcitrant)
 to fresh (liable) dissolved organic matter.
 
-**Source(s):** Hansen et al. 2016
+**Source(s):** [Hansen et al. 2016](https://doi.org/10.1002/lno.10270)
 
 ### Ratio of Peak C to Peak A (rCA)
 
@@ -241,7 +272,7 @@ to fresh (liable) dissolved organic matter.
 **Interpretation:** Related to the amount of the amount of humic-like to
 fulvic-like dissolved organic matter.
 
-**Source(s):** Hansen et al. 2016
+**Source(s):** [Hansen et al. 2016](https://doi.org/10.1002/lno.10270)
 
 ### Ratio of Peak C to Peak M (rCM)
 
@@ -250,7 +281,7 @@ fulvic-like dissolved organic matter.
 **Interpretation:** Related to the amount of diagenetically altered
 (blue shifted) dissolved organic matter.
 
-**Source(s):** Hansen et al. 2016
+**Source(s):** [Hansen et al. 2016](https://doi.org/10.1002/lno.10270)
 
 ### Ratio of Peak C to Peak T (rCT)
 
@@ -260,7 +291,8 @@ fulvic-like dissolved organic matter.
 to fresh (liable) dissolved organic matter. Can be used to identify
 sewage effluents and may indicate biochemical oxygen demand.
 
-**Source(s):** Baker 2001, Hansen et al. 2016
+**Source(s):** [Baker 2001](https://doi.org/10.1021/es000177t), [Hansen
+et al. 2016](https://doi.org/10.1002/lno.10270)
 
 ### Fluorescence Index (FI)
 
@@ -276,8 +308,10 @@ this metric can also be used to assess the complexity and aromaticity of
 humic-like dissolved organic matter, with lower values indicating more
 complex and aromatic organic matter.
 
-**Source(s):** McKnight et al. 2001, Cory and McKnight 2005, Serène et
-al. 2025
+**Source(s):** [McKnight et
+al. 2001](https://doi.org/10.4319/lo.2001.46.1.0038), [Cory and McKnight
+2005](https://doi.org/10.1021/es0506962), [Serène et
+al. 2025](https://doi.org/10.1016/j.jhydrol.2024.132524)
 
 ### Humification Index-Zsolnay (HIX)
 
@@ -292,7 +326,9 @@ to the ratio of complex, aromatic molecules to simple, less aromatic
 molecules, where higher values indicate more aromatic and polycondensed
 organic matter.
 
-**Source(s):** Zsolnay et al. 1999, Serène et al. 2025
+**Source(s):** [Zsolnay et
+al. 1999](https://doi.org/10.1016/S0045-6535(98)00166-0), [Serène et
+al. 2025](https://doi.org/10.1016/j.jhydrol.2024.132524)
 
 ### Humification Index-Ohno (HIX_ohno)
 
@@ -305,7 +341,8 @@ literature. The version proposed by Ohno is better when samples have
 higher absorbance because it accounts for inner filter effects more
 effectively.
 
-**Source(s):** Ohno et al. 2002, Gabor et al. 2014
+**Source(s):** [Ohno et al. 2002](https://doi.org/10.1021/es0155276),
+[Gabor et al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
 
 ### Freshness Index or β/α (fresh)
 
@@ -316,7 +353,8 @@ of em: 420-435 nm at ex: 310 nm.
 biological activity, where higher values indicate more recently produced
 DOM.
 
-**Source(s):** Wilson and Xenopoulos 2009
+**Source(s):** [Wilson and Xenopoulos
+2009](https://doi.org/10.1038/ngeo391)
 
 ### Biological Index (BIX)
 
@@ -330,7 +368,9 @@ that the biological index should be used as an indicator of humic
 origin, were higher values indicate more microbial origins while lower
 values indicate more lignin or soil derived organic matter.
 
-**Source(s):** Huguet et al. 2009, Serène et al. 2025
+**Source(s):** [Huguet et
+al. 2009](https://doi.org/10.1016/j.orggeochem.2009.03.002), [Serène et
+al. 2025](https://doi.org/10.1016/j.jhydrol.2024.132524)
 
 ## References
 
@@ -338,86 +378,96 @@ Aiken, G. (2014). Fluorescence and Dissolved Organic Matter: A Chemist’s
 Perspective. In A. Baker, D. M. Reynolds, J. Lead, P. G. Coble, & R. G.
 M. Spencer (Eds.), Aquatic Organic Matter Fluorescence (pp. 35-74).
 Cambridge: Cambridge University Press.
-<doi:10.1017/CBO9781139045452.005>
+<https://doi.org/10.1017/CBO9781139045452.005>
 
 Baker, A. (2001). Fluorescence Excitation−Emission Matrix
 Characterization of Some Sewage-Impacted Rivers. Environmental Science &
-Technology, 35(5), 948-953. <doi:10.1021/es000177t>
+Technology, 35(5), 948-953. <https://doi.org/10.1021/es000177t>
 
 Chen, Y., Senesi, N., & Schnitzer, M. (1977). Information Provided on
 Humic Substances by E4/E6 Ratios. Soil Science Society of America
-Journal, 41(2), 352-358. <doi:10.2136/sssaj1977.03615995004100020037x>
+Journal, 41(2), 352-358.
+<https://doi.org/10.2136/sssaj1977.03615995004100020037x>
 
 Chin, Y.-Ping., Aiken, George., & O’Loughlin, Edward. (1994). Molecular
 Weight, Polydispersity, and Spectroscopic Properties of Aquatic Humic
 Substances. Environmental Science & Technology, 28(11), 1853-1858.
-<doi:10.1021/es00060a015>
+<https://doi.org/10.1021/es00060a015>
 
 Coble, P. G. (1996). Characterization of marine and terrestrial DOM in
 seawater using excitation-emission matrix spectroscopy. Marine
-Chemistry, 51(4), 325-346. <doi:10.1016/0304-4203(95)00062-3>
+Chemistry, 51(4), 325-346.
+<https://doi.org/10.1016/0304-4203(95)00062-3>
 
 Cory, R. M., & McKnight, D. M. (2005). Fluorescence Spectroscopy Reveals
 Ubiquitous Presence of Oxidized and Reduced Quinones in Dissolved
 Organic Matter. Environmental Science & Technology, 39(21), 8142–8149.
-<doi:10.1021/es0506962>
+<https://doi.org/10.1021/es0506962>
 
 Gabor, R. S., Baker, A., McKnight, D. M., & Miller, M. P. (2014).
 Fluorescence Indices and Their Interpretation. In Aquatic Organic Matter
 Fluorescence (pp. 303-338). Cambridge University Press.
-<doi:10.1017/CBO9781139045452.015>
+<https://doi.org/10.1017/CBO9781139045452.015>
 
 Hansen, A. M., Kraus, T. E. C., Pellerin, B. A., Fleck, J. A., Downing,
 B. D., & Bergamaschi, B. A. (2016). Optical properties of dissolved
 organic matter (DOM): Effects of biological and photolytic degradation.
-Limnology and Oceanography, 61(3), 1015-1032. <doi:10.1002/lno.10270>
+Limnology and Oceanography, 61(3), 1015-1032.
+<https://doi.org/10.1002/lno.10270>
 
 Helms, J. R., Stubbins, A., Ritchie, J. D., Minor, E. C., Kieber, D. J.,
 & Mopper, K. (2008). Absorption spectral slopes and slope ratios as
 indicators of molecular weight, source, and photobleaching of
 chromophoric dissolved organic matter. Limnology and Oceanography,
-53(3), 955-969. <doi:10.4319/lo.2008.53.3.0955>
+53(3), 955-969. <https://doi.org/10.4319/lo.2008.53.3.0955>
 
 Huguet, A., Vacher, L., Relexans, S., Saubusse, S., Froidefond, J. M., &
 Parlanti, E. (2009). Properties of fluorescent dissolved organic matter
 in the Gironde Estuary. Organic Geochemistry, 40(6), 706-719.
-<doi:10.1016/j.orggeochem.2009.03.002>
+<https://doi.org/10.1016/j.orggeochem.2009.03.002>
 
 McKnight, D. M., Boyer, E. W., Westerhoff, P. K., Doran, P. T., Kulbe,
 T., & Andersen, D. T. (2001). Spectrofluorometric characterization of
 dissolved organic matter for indication of precursor organic material
 and aromaticity. Limnology and Oceanography, 46(1), 38-48.
-<doi:10.4319/lo.2001.46.1.0038>
+<https://doi.org/10.4319/lo.2001.46.1.0038>
 
 Ohno, T. (2002). Fluorescence inner-filtering correction for determining
 the humification index of dissolved organic matter. Environmental
-Science & Technology, 36(4), 742-746. <doi:10.1021/es0155276>
+Science & Technology, 36(4), 742-746.
+<https://doi.org/10.1021/es0155276>
 
 Peuravuori, J., & Pihlaja, K. (1997). Molecular size distribution and
 spectroscopic properties of aquatic humic substances. Analytica Chimica
-Acta, 337(2), 133-149. <doi:10.1016/S0003-2670(96)00412-6>
+Acta, 337(2), 133-149. <https://doi.org/10.1016/S0003-2670(96)00412-6>
+
+Rostad, C. E., Martin, B. S., Barber, L. B., Leenheer, J. A., & Daniel,
+S. R. (2000). Effect of a Constructed Wetland on Disinfection
+Byproducts:  Removal Processes and Production of Precursors.
+Environmental Science & Technology, 34(13), 2703–2710.
+<https://doi.org/10.1021/es9900407>
 
 Serène, L., Mazzilli, N., Batiot-Guilhe, C., Emblanch, C., Gillon, M.,
 Babic, M., et al. (2025). Questioning calculation and interpretation of
 fluorescence indices in natural waters studies. Journal of Hydrology,
-650, 132524. <doi:10.1016/j.jhydrol.2024.132524>
+650, 132524. <https://doi.org/10.1016/j.jhydrol.2024.132524>
 
 Stedmon, C. A., Markager, S., & Bro, R. (2003). Tracing dissolved
 organic matter in aquatic environments using a new approach to
-fluorescence spectroscopy. Marine Chemistry, 82(3),
-239-254.<doi:10.1016/S0304-4203(03)00072-0>
+fluorescence spectroscopy. Marine Chemistry, 82(3), 239-254.
+<https://doi.org/10.1016/S0304-4203(03)00072-0>
 
 Weishaar, J. L., Aiken, G. R., Bergamaschi, B. A., Fram, M. S., Fujii,
 R., & Mopper, K. (2003). Evaluation of Specific Ultraviolet Absorbance
 as an Indicator of the Chemical Composition and Reactivity of Dissolved
 Organic Carbon. Environmental Science & Technology, 37(20), 4702-4708.
-\<doi.org:10.1021/es030360x\>
+<https://doi.org/doi.org:10.1021/es030360x>
 
 Wilson, H. F., & Xenopoulos, M. A. (2009). Effects of agricultural land
 use on the composition of fluvial dissolved organic matter. Nature
-Geoscience, 2(1), 37-41. <doi:10.1038/ngeo391>
+Geoscience, 2(1), 37-41. <https://doi.org/10.1038/ngeo391>
 
 Zsolnay, A., Baigar, E., Jimenez, M., Steinweg, B., & Saccomandi, F.
 (1999). Differentiating with fluorescence spectroscopy the sources of
 dissolved organic matter in soils subjected to drying. Chemosphere,
-38(1), 45-50. <doi:10.1016/S0045-6535(98)00166-0>
+38(1), 45-50. <https://doi.org/10.1016/S0045-6535(98)00166-0>

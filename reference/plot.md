@@ -104,7 +104,7 @@ guidance.
 
 ## See also
 
-[ggplot2::ggplot2](https://ggplot2.tidyverse.org/reference/ggplot2-package.html)
+[`ggplot2::ggplot()`](https://ggplot2.tidyverse.org/reference/ggplot.html)
 
 ## Examples
 

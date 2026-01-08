@@ -156,8 +156,9 @@ of <code>eemanalyzeR</code> from GitHub by running</p>
 <div class="section level2">
 <h2 id="processing-data">Processing Data<a class="anchor" aria-label="anchor" href="#processing-data"></a>
 </h2>
-<p>To go from raw data to processed and clean data use the <a href="../reference/run_eems.html">run_eems</a> function. At a minimum
-this requires the following arguments:</p>
+<p>To go from raw data to processed and clean data use the
+<code><a href="../reference/run_eems.html">run_eems()</a></code> function. At a minimum this requires the
+following arguments:</p>
 <ul>
 <li>
 <strong>input_dir:</strong> the file path to the folder containing
@@ -215,10 +216,10 @@ containing all of the exported data</li>
 <p><code>eemanalyzeR</code> will process files directly “out of the
 box”, but specific research projects may have differing processing
 needs. If you would like to consistently modify the defaults used in the
-<a href="../reference/run_eems.html">run_eems</a> function you can use
-the <a href="../reference/user_config.html">edit_user_config</a>
-function. This will create a YAML file with your selected defaults which
-is stored on your computer will be read when you load the package.</p>
+<code><a href="../reference/run_eems.html">run_eems()</a></code> function you can use the
+<code><a href="../reference/user_config.html">edit_user_config()</a></code> function. This will create a YAML file
+with your selected defaults which is stored on your computer will be
+read when you load the package.</p>
 <hr>
 </div>
 <div class="section level2">
@@ -228,9 +229,9 @@ is stored on your computer will be read when you load the package.</p>
 build in QA/QC checks to ensure data quality. While not required to use
 the package, you can use the <code><a href="../reference/create_mdl.html">create_mdl()</a></code> and
 <code><a href="../reference/create_std.html">create_std()</a></code> functions. These function requires a directory
-of analytical blanks and check standards (for instance the <a href="doi:10.3133/ofr20181096">tea standard</a> recommended by the
-USGS). While you can create these standards with any number of samples,
-its recommended to use at least 20 for stability.</p>
+of analytical blanks and check standards (for instance the <a href="https://doi.org/10.3133/ofr20181096" class="external-link">tea standard</a> recommended
+by the USGS). While you can create these standards with any number of
+samples, its recommended to use at least 20 for stability.</p>
 <p>Use the following code to create the method detection limit (MDL)
 files. These by default will be stored in your user-specific data
 directory and loaded when needed to process samples.</p>

@@ -59,8 +59,6 @@ Functions to generate EEMs and absorbance indices.
   : Get fluorescence within a specified range
 - [`get_indices()`](https://katiewampler.github.io/eemanalyzeR/reference/get_indices.md)
   : Get fluorescence and absorbance indices
-- [`get_indices_function()`](https://katiewampler.github.io/eemanalyzeR/reference/get_indices_function.md)
-  : Get function to generate fluorescence and absorbance indices
 - [`get_ratios()`](https://katiewampler.github.io/eemanalyzeR/reference/get_ratios.md)
   : Safely return ratios values
 - [`usgs_indices()`](https://katiewampler.github.io/eemanalyzeR/reference/usgs_indices.md)

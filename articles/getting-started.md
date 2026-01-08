@@ -96,7 +96,7 @@ library(eemanalyzeR)
 ## Processing Data
 
 To go from raw data to processed and clean data use the
-[run_eems](https://katiewampler.github.io/eemanalyzeR/reference/run_eems.md)
+[`run_eems()`](https://katiewampler.github.io/eemanalyzeR/reference/run_eems.md)
 function. At a minimum this requires the following arguments:
 
 - **input_dir:** the file path to the folder containing the raw EEMs and
@@ -143,9 +143,9 @@ plots by defaults we can look at the function outputs.
 `eemanalyzeR` will process files directly “out of the box”, but specific
 research projects may have differing processing needs. If you would like
 to consistently modify the defaults used in the
-[run_eems](https://katiewampler.github.io/eemanalyzeR/reference/run_eems.md)
+[`run_eems()`](https://katiewampler.github.io/eemanalyzeR/reference/run_eems.md)
 function you can use the
-[edit_user_config](https://katiewampler.github.io/eemanalyzeR/reference/user_config.md)
+[`edit_user_config()`](https://katiewampler.github.io/eemanalyzeR/reference/user_config.md)
 function. This will create a YAML file with your selected defaults which
 is stored on your computer will be read when you load the package.
 
@@ -161,9 +161,9 @@ and
 [`create_std()`](https://katiewampler.github.io/eemanalyzeR/reference/create_std.md)
 functions. These function requires a directory of analytical blanks and
 check standards (for instance the [tea
-standard](doi:10.3133/ofr20181096) recommended by the USGS). While you
-can create these standards with any number of samples, its recommended
-to use at least 20 for stability.
+standard](https://doi.org/10.3133/ofr20181096) recommended by the USGS).
+While you can create these standards with any number of samples, its
+recommended to use at least 20 for stability.
 
 Use the following code to create the method detection limit (MDL) files.
 These by default will be stored in your user-specific data directory and

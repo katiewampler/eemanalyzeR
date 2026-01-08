@@ -161,17 +161,17 @@ be returned.</p>
 <span><span class="co">#get maximum fluorescence across ranges for Peak A and D</span></span>
 <span><span class="va">pA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_fluorescence.html">get_fluorescence</a></span><span class="op">(</span><span class="va">eemlist</span>, ex<span class="op">=</span><span class="fl">250</span><span class="op">:</span><span class="fl">260</span>, em<span class="op">=</span><span class="fl">380</span><span class="op">:</span><span class="fl">480</span>, stat<span class="op">=</span><span class="st">"max"</span><span class="op">)</span></span>
 <span><span class="va">pA</span></span>
-<span><span class="co">#&gt; [1] "0.0103767473213219" "0.280569719363857"  "0.340345670357128" </span></span>
+<span><span class="co">#&gt; [1] "0.0103767473213219" "0.280569719363854"  "0.340345670357128" </span></span>
 <span><span class="co">#&gt; [4] "0.721431003125204"</span></span>
 <span><span class="va">pD</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_fluorescence.html">get_fluorescence</a></span><span class="op">(</span><span class="va">eemlist</span>, ex<span class="op">=</span><span class="fl">390</span>, em<span class="op">=</span><span class="fl">509</span>, stat<span class="op">=</span><span class="st">"max"</span><span class="op">)</span></span>
 <span><span class="va">pD</span> </span>
-<span><span class="co">#&gt; [1] "0.000304395508989419" "0.0199829245761789"   "0.0978435434033764"  </span></span>
+<span><span class="co">#&gt; [1] "0.000304395508989419" "0.0199829245761789"   "0.0978435434033769"  </span></span>
 <span><span class="co">#&gt; [4] "0.0372706531424358"</span></span>
 <span></span>
 <span><span class="co">#get sum of fluorescence across range of Peak A</span></span>
 <span><span class="va">pA_sum</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_fluorescence.html">get_fluorescence</a></span><span class="op">(</span><span class="va">eemlist</span>, ex<span class="op">=</span><span class="fl">250</span><span class="op">:</span><span class="fl">260</span>, em<span class="op">=</span><span class="fl">380</span><span class="op">:</span><span class="fl">480</span>, stat<span class="op">=</span><span class="st">"sum"</span><span class="op">)</span></span>
 <span><span class="va">pA_sum</span></span>
-<span><span class="co">#&gt; [1] "0.398846395176868" "15.4652173718784"  "29.1296537896885" </span></span>
+<span><span class="co">#&gt; [1] "0.398846395176876" "15.4652173718784"  "29.1296537896885" </span></span>
 <span><span class="co">#&gt; [4] "34.0595693438647"</span></span></code></pre></div>
 <p>Lastly, we have a function for getting spectral slopes:
 <code><a href="../reference/get_abs_slope.html">get_abs_slope()</a></code> which will convert the absorbance to
@@ -191,8 +191,7 @@ checks. To pass flags from your index function to the output, they need
 to get put in the <code>value</code> column of the index
 data.frames.</p>
 <p>There are a few rules to follow with flags:</p>
-<ol style="list-style-type: decimal">
-<li><p>Flags should have the form text## (DOC01, DATA04, etc.)</p></li>
+<ol start="2" style="list-style-type: decimal">
 <li><p>If an index value is NA and you want to flag with a reason why it
 is NA, replace the NA value with that flag value.</p></li>
 <li><p>If you wish to report a value, but still include a flag, report
@@ -215,7 +214,7 @@ result in an infinite value.</p>
 <span> <span class="va">pT</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_fluorescence.html">get_fluorescence</a></span><span class="op">(</span><span class="va">eemlist</span>, ex<span class="op">=</span><span class="fl">270</span><span class="op">:</span><span class="fl">280</span>, em<span class="op">=</span><span class="fl">320</span><span class="op">:</span><span class="fl">350</span><span class="op">)</span></span>
 <span> <span class="va">rAT</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_ratios.html">get_ratios</a></span><span class="op">(</span><span class="va">pA</span>, <span class="va">pT</span><span class="op">)</span></span>
 <span> <span class="va">rAT</span></span>
-<span><span class="co">#&gt; [1] "1.72750162152655"  "0.423565751341601" "4.07129094367473" </span></span>
+<span><span class="co">#&gt; [1] "1.72750162152656"  "0.423565751341601" "4.07129094367473" </span></span>
 <span><span class="co">#&gt; [4] "0.450601408727671"</span></span>
 <span> </span>
 <span>  <span class="co">#if Peak T is all 0, will return DATA_03 flag, indicating index couldn't </span></span>
@@ -348,8 +347,8 @@ function.</p>
 <span><span class="co">#&gt; 3                B1S3ExampleSampleSEM    ExampleSample test_index</span></span>
 <span><span class="co">#&gt; 4 ManualExampleTeaWaterfallPlotSample ManualExampleTea test_index</span></span>
 <span><span class="co">#&gt;                         value</span></span>
-<span><span class="co">#&gt; 1 0.000532084537187436_DATA02</span></span>
-<span><span class="co">#&gt; 2    0.520903992822664_DATA02</span></span>
+<span><span class="co">#&gt; 1 0.000532084537187422_DATA02</span></span>
+<span><span class="co">#&gt; 2    0.520903992822657_DATA02</span></span>
 <span><span class="co">#&gt; 3   0.0851942070835534_DATA02</span></span>
 <span><span class="co">#&gt; 4     1.48625281995149_DATA02</span></span></code></pre></div>
 </div>
@@ -360,7 +359,8 @@ function.</p>
 <p>Alright, now that we’ve reviewed all the helper functions and the
 requirements for the custom function let’s do an example. Let’s create a
 custom function to calculate some new fluorescence indices presented in
-<strong>Zhang et al. 2025:</strong></p>
+<a href="https://doi.org/10.1016/j.psep.2025.107553" class="external-link"><strong>Zhang et
+al. 2025:</strong></a></p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">U-SoI</mtext><mo>=</mo><mfrac><mrow><mi>U</mi><msub><mn>1</mn><mrow><mi>e</mi><mi>x</mi><mo>:</mo><mn>245</mn><mo>,</mo><mi>e</mi><mi>m</mi><mo>:</mo><mn>440</mn></mrow></msub></mrow><mrow><mi>U</mi><msub><mn>2</mn><mrow><mi>e</mi><mi>x</mi><mo>:</mo><mn>230</mn><mo>,</mo><mi>e</mi><mi>m</mi><mo>:</mo><mn>260</mn></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex"> \text{U-SoI} =\frac{U1_{ex:245, em:440}}{U2_{ex:230, em:260}}  </annotation></semantics></math></p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">A-SoI</mtext><mo>=</mo><mfrac><mrow><mi>A</mi><msub><mn>1</mn><mrow><mi>e</mi><mi>x</mi><mo>:</mo><mn>245</mn><mo>,</mo><mi>e</mi><mi>m</mi><mo>:</mo><mn>325</mn></mrow></msub></mrow><mrow><mi>A</mi><msub><mn>2</mn><mrow><mi>e</mi><mi>x</mi><mo>:</mo><mn>260</mn><mo>,</mo><mi>e</mi><mi>m</mi><mo>:</mo><mn>430</mn></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex"> \text{A-SoI} =\frac{A1_{ex:245, em:325}}{A2_{ex:260, em:430}}  </annotation></semantics></math></p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">T-SoI</mtext><mo>=</mo><mfrac><mrow><mi>T</mi><msub><mn>1</mn><mrow><mi>e</mi><mi>x</mi><mo>:</mo><mn>260</mn><mo>,</mo><mi>e</mi><mi>m</mi><mo>:</mo><mn>430</mn></mrow></msub></mrow><mrow><mi>T</mi><msub><mn>2</mn><mrow><mi>e</mi><mi>x</mi><mo>:</mo><mn>285</mn><mo>,</mo><mi>e</mi><mi>m</mi><mo>:</mo><mn>365</mn></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex"> \text{T-SoI} =\frac{T1_{ex:260, em:430}}{T2_{ex:285, em:365}}  </annotation></semantics></math></p>
@@ -378,8 +378,8 @@ get the ratio. For a single index this would look like:</p>
 <code class="sourceCode R"><span><span class="va">eemlist</span> <span class="op">&lt;-</span> <span class="va">example_processed_eems</span></span>
 <span><span class="fu"><a href="../reference/get_ratios.html">get_ratios</a></span><span class="op">(</span><span class="fu"><a href="../reference/get_fluorescence.html">get_fluorescence</a></span><span class="op">(</span><span class="va">eemlist</span>, <span class="va">zhang_indices</span><span class="op">$</span><span class="va">TSoI</span><span class="op">$</span><span class="va">ex</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">zhang_indices</span><span class="op">$</span><span class="va">TSoI</span><span class="op">$</span><span class="va">em</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>, </span>
 <span>           <span class="fu"><a href="../reference/get_fluorescence.html">get_fluorescence</a></span><span class="op">(</span><span class="va">eemlist</span>, <span class="va">zhang_indices</span><span class="op">$</span><span class="va">TSoI</span><span class="op">$</span><span class="va">ex</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="va">zhang_indices</span><span class="op">$</span><span class="va">TSoI</span><span class="op">$</span><span class="va">em</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "4.93586355290846"  "0.528716173072744" "3.87515734359415" </span></span>
-<span><span class="co">#&gt; [4] "0.48620210278511"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "4.93586355290875"  "0.528716173072758" "3.87515734359415" </span></span>
+<span><span class="co">#&gt; [4] "0.486202102785104"</span></span></code></pre></div>
 <p>To get all the indices let’s use the lapply function.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">zhang_indices</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">index_name</span><span class="op">)</span> <span class="op">{</span></span>
@@ -449,9 +449,9 @@ have any absorbance data we’ll just make it NA.</p>
 <span><span class="co">#&gt; 7                 B1S3ExampleSampleSEM    ExampleSample  ASoI            DATA01</span></span>
 <span><span class="co">#&gt; 8  ManualExampleTeaWaterfallPlotSample ManualExampleTea  ASoI            DATA01</span></span>
 <span><span class="co">#&gt; 9                  B1S1ExampleBlankSEM     ExampleBlank  TSoI             MDL01</span></span>
-<span><span class="co">#&gt; 10                B1S2ExampleTeaStdSEM    ExampleTeaStd  TSoI 0.528716173072744</span></span>
+<span><span class="co">#&gt; 10                B1S2ExampleTeaStdSEM    ExampleTeaStd  TSoI 0.528716173072758</span></span>
 <span><span class="co">#&gt; 11                B1S3ExampleSampleSEM    ExampleSample  TSoI  3.87515734359415</span></span>
-<span><span class="co">#&gt; 12 ManualExampleTeaWaterfallPlotSample ManualExampleTea  TSoI  0.48620210278511</span></span></code></pre></div>
+<span><span class="co">#&gt; 12 ManualExampleTeaWaterfallPlotSample ManualExampleTea  TSoI 0.486202102785104</span></span></code></pre></div>
 <p>Great, that all looks good, now we just need to combine all that code
 to a custom function.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -521,8 +521,8 @@ steps.</p>
 </h2>
 <p>The last example only used fluorescence data. Let’s create another
 custom function focused on absorbance indices. We’ll create a function
-to calculate the indices used in <strong>Erlandsson et
-al. 2012:</strong></p>
+to calculate the indices used in <a href="https://doi.org/10.1039/C2EM30266G" class="external-link"><strong>Erlandsson et
+al. 2012:</strong></a></p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Index</th>
@@ -629,8 +629,9 @@ have absorbance at 220 nm, so we get flags of DATA01</p>
 <p>While we’re calculating each index, let’s also use the
 <code><a href="../reference/flag_missing.html">flag_missing()</a></code> function to see if there’s any data missing.
 Lastly, we’ll use the <code><a href="../reference/format_index.html">format_index()</a></code> function to make sure
-everything is correctly formatted. We’ll use <code>do.call</code> to
-bind all the lists of indices together.</p>
+everything is correctly formatted. We’ll use
+<code><a href="https://rdrr.io/r/base/do.call.html" class="external-link">base::do.call()</a></code> to bind all the lists of indices
+together.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ratios</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">erlandsson_index</span><span class="op">[</span><span class="fl">3</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">index_name</span><span class="op">)</span><span class="op">{</span></span>
 <span>       <span class="va">index</span> <span class="op">&lt;-</span> <span class="va">erlandsson_index</span><span class="op">[[</span><span class="va">index_name</span><span class="op">]</span><span class="op">]</span></span>
@@ -866,10 +867,10 @@ processing steps.</p>
 Developing new spectral indices for identifying DOM sources in Liaohe
 River in a large-scale river basin by fluorescence spectroscopy and
 random forest model. Process Safety and Environmental Protection, 201,
-107553. <a href="doi:10.1016/j.psep.2025.107553" class="uri">doi:10.1016/j.psep.2025.107553</a></p>
+107553. <a href="https://doi.org/10.1016/j.psep.2025.107553" class="external-link uri">https://doi.org/10.1016/j.psep.2025.107553</a></p>
 <p>Erlandsson, M., N. Futter, M., N. Kothawala, D., &amp; J. Köhler, S.
 (2012). Variability in spectral absorbance metrics across boreal lake
-waters. Journal of Environmental Monitoring, 14(10), 2643-2652. <a href="doi:10.1039/C2EM30266G" class="uri">doi:10.1039/C2EM30266G</a></p>
+waters. Journal of Environmental Monitoring, 14(10), 2643-2652. <a href="https://doi.org/10.1039/C2EM30266G" class="external-link uri">https://doi.org/10.1039/C2EM30266G</a></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

@@ -62,8 +62,8 @@ Each `data.frame` contains the following columns:
 S300_700, SR) are calculated using
 [`staRdom::abs_parms()`](https://rdrr.io/pkg/staRdom/man/abs_parms.html).
 
-**Fluorescence indices** are calculated using the following
-[eemR::eemR](https://rdrr.io/pkg/eemR/man/eemR-package.html) functions:
+**Fluorescence indices** are calculated using the following `eemR`
+functions:
 
 - Coble peaks (b, t, a, m, c):
   [`eemR::eem_coble_peaks()`](https://rdrr.io/pkg/eemR/man/eem_coble_peaks.html)
@@ -95,7 +95,7 @@ head(indices$eem_index)
 #> 3                B1S3ExampleSampleSEM    ExampleSample     b            DATA01
 #> 4 ManualExampleTeaWaterfallPlotSample ManualExampleTea     b            DATA01
 #> 5                 B1S1ExampleBlankSEM     ExampleBlank     t             MDL01
-#> 6                B1S2ExampleTeaStdSEM    ExampleTeaStd     t 0.589498543201252
+#> 6                B1S2ExampleTeaStdSEM    ExampleTeaStd     t 0.589498543201255
 
 # View absorbance indices
 head(indices$abs_index)

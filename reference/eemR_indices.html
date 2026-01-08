@@ -88,7 +88,7 @@ Default is a user-specific data directory <code><a href="https://rappdirs.r-lib.
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p><strong>Absorbance indices</strong> (a254, a300, E2_E3, E4_E6, S275_295, S350_400, S300_700, SR)
 are calculated using <code><a href="https://rdrr.io/pkg/staRdom/man/abs_parms.html" class="external-link">staRdom::abs_parms()</a></code>.</p>
-<p><strong>Fluorescence indices</strong> are calculated using the following <a href="https://rdrr.io/pkg/eemR/man/eemR-package.html" class="external-link">eemR::eemR</a> functions:</p><ul><li><p>Coble peaks (b, t, a, m, c): <code><a href="https://rdrr.io/pkg/eemR/man/eem_coble_peaks.html" class="external-link">eemR::eem_coble_peaks()</a></code></p></li>
+<p><strong>Fluorescence indices</strong> are calculated using the following <code>eemR</code> functions:</p><ul><li><p>Coble peaks (b, t, a, m, c): <code><a href="https://rdrr.io/pkg/eemR/man/eem_coble_peaks.html" class="external-link">eemR::eem_coble_peaks()</a></code></p></li>
 <li><p>fi (fluorescence index): <code><a href="https://rdrr.io/pkg/eemR/man/eem_fluorescence_index.html" class="external-link">eemR::eem_fluorescence_index()</a></code></p></li>
 <li><p>hix (humification index): <code><a href="https://rdrr.io/pkg/eemR/man/eem_humification_index.html" class="external-link">eemR::eem_humification_index()</a></code> (use <code>scale = TRUE</code> for <code>hix_scaled</code>)</p></li>
 <li><p>bix (biological index): <code><a href="https://rdrr.io/pkg/eemR/man/eem_biological_index.html" class="external-link">eemR::eem_biological_index()</a></code></p></li>
@@ -110,7 +110,7 @@ are calculated using <code><a href="https://rdrr.io/pkg/staRdom/man/abs_parms.ht
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3                B1S3ExampleSampleSEM    ExampleSample     b            DATA01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 ManualExampleTeaWaterfallPlotSample ManualExampleTea     b            DATA01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5                 B1S1ExampleBlankSEM     ExampleBlank     t             MDL01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                B1S2ExampleTeaStdSEM    ExampleTeaStd     t 0.589498543201252</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                B1S2ExampleTeaStdSEM    ExampleTeaStd     t 0.589498543201255</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># View absorbance indices</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">indices</span><span class="op">$</span><span class="va">abs_index</span><span class="op">)</span></span></span>

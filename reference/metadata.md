@@ -15,7 +15,7 @@ metadata
 
 ## Format
 
-A data.frame with 3 rows and 11 columns:
+A data.frame with 4 rows and 11 columns:
 
 - **index**: Numeric order of entry (e.g., 1, 2, 3, etc.)
 

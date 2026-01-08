@@ -107,9 +107,8 @@ Three preset index sets are available:
 - **usgs**:
   [`usgs_indices()`](https://katiewampler.github.io/eemanalyzeR/reference/usgs_indices.md)
 
-You may also pass a custom index-generating function. See the
-[custom-indices
-vignette](https://katiewampler.github.io/eemanalyzeR/doc/custom-indices.md)
+You may also pass a custom index-generating function. See
+[[`vignette("custom-indices")`](https://katiewampler.github.io/eemanalyzeR/articles/custom-indices.md)](https://katiewampler.github.io/eemanalyzeR/doc/custom-indices.md)
 for instructions.
 
 ### QA/QC flags

@@ -38,8 +38,7 @@ If metadata is not present, SUVA cannot be calculated and \`NA\` will be
 returned. To add metadata, use \[add_metadata()\].
 
 If the wavelength requested is not in the absorbance data, it will be
-interpolated first using
-[abs_interp](https://katiewampler.github.io/eemanalyzeR/reference/abs_interp.md).
+interpolated first using \[abs_interp()\].
 
 ## Examples
 

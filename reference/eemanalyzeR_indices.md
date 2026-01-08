@@ -3,7 +3,7 @@
 Calculates commonly used absorbance and fluorescence optical indices
 from `eemlist` and `abslist`. For detailed descriptions and references
 for indices, see the vignette
-[eemanalyzeR-indices](https://katiewampler.github.io/eemanalyzeR/doc/eemanalyzeR-indices.md).
+[[`vignette("eemanalyzeR-indices")`](https://katiewampler.github.io/eemanalyzeR/articles/eemanalyzeR-indices.md)](https://katiewampler.github.io/eemanalyzeR/doc/eemanalyzeR-indices.md).
 
 ## Usage
 

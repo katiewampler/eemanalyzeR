@@ -150,7 +150,7 @@ The fluorescence indices reported by the default index method
   
 
 For more details on interpretation and sources see the vignette
-vignette(“eemanalyzeR-indices”).
+[`vignette("eemanalyzeR-indices")`](https://katiewampler.github.io/eemanalyzeR/doc/eemanalyzeR-indices.md).
 
   
 
@@ -160,4 +160,5 @@ Hansen, A. M., Fleck, J., Kraus, T. E. C., Downing, B. D., von
 Dessonneck, T., & Bergamaschi, B. (2018). *Procedures for using the
 Horiba Scientific Aqualog® fluorometer to measure absorbance and
 fluorescence from dissolved organic matter* (USGS Numbered Series No.
-2018-1096). U.S. Geological Survey. <doi:10.3133/ofr20181096>
+2018-1096). U.S. Geological Survey.
+<https://doi.org/10.3133/ofr20181096>
