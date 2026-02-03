@@ -62,22 +62,11 @@ Install and load the most recent version of `eemanalyzeR` from GitHub by
 running
 
 ``` r
-# Installing from GitHub requires you first install the remotes package
-install.packages("remotes")
-
-# install the most recent version from GitHub
-remotes::install_github("katiewampler/eemanalyzeR", ref = "master")
-```
-
-Install and load the most recent **development** version of
-`eemanalyzeR` from GitHub by running
-
-``` r
-# Installing from GitHub requires you first install the remotes package
-install.packages("remotes")
+# Installing from GitHub requires you first install the pak package
+install.packages("pak")
 
 # install the most recent development version from GitHub
-remotes::install_github("katiewampler/eemanalyzeR", ref = "dev")
+pak::pkg_install("katiewampler/eemanalyzeR")
 ```
 
 Load the package
