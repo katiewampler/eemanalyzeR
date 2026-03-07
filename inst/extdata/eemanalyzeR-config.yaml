@@ -3,13 +3,13 @@
 
   # arguments for reading in absorbance data from abs_dir_read()
   abs_pattern: .na.character #pattern in function
-  abs_skip: "SEM|BEM|Waterfall" #skip in function
+  abs_skip: "B\\d{1,2}S\\d{1,2}\\w*(SEM|BEM).dat$|^.*Waterfall( ?)Plot( ?)(Blank|Sample).dat$" #skip in function
   abs_file_ext: "dat" #file_ext in function
   abs_recurse_read: FALSE #recursive in function
 
   # arguments for reading in absorbance data from eem_dir_read()
   eem_pattern: .na.character #pattern in function
-  eem_skip: "(?i)abs" #skip in function
+  eem_skip: "B\\d{1,2}S\\d{1,2}\\w*ABS.dat$|.*Abs( ?)Spectra( ?)Graphs.dat$" #skip in function
   eem_file_ext: "dat" #file_ext in function
   eem_recurse_read: FALSE #recursive in function
   eem_import_func: "aqualog" #import_function in function

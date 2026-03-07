@@ -38,7 +38,7 @@
 #' abs <- abs_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "SEM|BEM|Waterfall")
 eem_dir_read <- function(input_dir,
                          pattern = NA,
-                         skip = "(?i)abs",
+                         skip = "B\\d{1,2}S\\d{1,2}\\w*ABS.dat$|.*Abs( ?)Spectra( ?)Graphs.dat$",
                          file_ext = "dat",
                          recursive = FALSE,
                          import_function = "aqualog",
@@ -125,7 +125,7 @@ eem_dir_read <- function(input_dir,
 #' @export
 abs_dir_read <- function(input_dir,
                          pattern = NA,
-                         skip = "SEM|BEM|Waterfall",
+                         skip = "B\\dS\\d{1,2}\\w*(SEM|BEM).dat$|^.*Waterfall( ?)Plot( ?)(Blank|Sample).dat$",
                          file_ext = "dat",
                          recursive = FALSE,
                          verbose = TRUE) {
