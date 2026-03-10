@@ -113,9 +113,12 @@ reset_user_config <- function() {
 
 # Load the user config on package load
 rlang::on_load({
+  # Load the user config and print a message if loading the config fails
   tryCatch(load_user_config(),
   error = function(e) {
     packageStartupMessage("Warning: Malformed User Configuration File stored on disk. User Configuration not loaded.\n",
-    "Please edit user config or reset to defaults using reset_user_config")
+    "Please edit user config using edit_user_config or reset to defaults using reset_user_config")
   })
 })
+
+# 
