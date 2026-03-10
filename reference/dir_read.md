@@ -12,7 +12,7 @@ the directory contains other files.
 eem_dir_read(
   input_dir,
   pattern = NA,
-  skip = "(?i)abs",
+  skip = get_eem_skip(),
   file_ext = "dat",
   recursive = FALSE,
   import_function = "aqualog",
@@ -22,7 +22,7 @@ eem_dir_read(
 abs_dir_read(
   input_dir,
   pattern = NA,
-  skip = "SEM|BEM|Waterfall",
+  skip = get_abs_skip(),
   file_ext = "dat",
   recursive = FALSE,
   verbose = TRUE

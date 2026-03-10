@@ -9,7 +9,7 @@ files in a directory into R, even when the directory contains other files."><met
 
     <a class="navbar-brand me-2" href="../index.html">eemanalyzeR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,7 +51,7 @@ files in a directory into R, even when the directory contains other files.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">eem_dir_read</span><span class="op">(</span></span>
 <span>  <span class="va">input_dir</span>,</span>
 <span>  pattern <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  skip <span class="op">=</span> <span class="st">"(?i)abs"</span>,</span>
+<span>  skip <span class="op">=</span> <span class="fu">get_eem_skip</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  file_ext <span class="op">=</span> <span class="st">"dat"</span>,</span>
 <span>  recursive <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  import_function <span class="op">=</span> <span class="st">"aqualog"</span>,</span>
@@ -61,7 +61,7 @@ files in a directory into R, even when the directory contains other files.</p>
 <span><span class="fu">abs_dir_read</span><span class="op">(</span></span>
 <span>  <span class="va">input_dir</span>,</span>
 <span>  pattern <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  skip <span class="op">=</span> <span class="st">"SEM|BEM|Waterfall"</span>,</span>
+<span>  skip <span class="op">=</span> <span class="fu">get_abs_skip</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  file_ext <span class="op">=</span> <span class="st">"dat"</span>,</span>
 <span>  recursive <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>

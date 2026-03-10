@@ -100,6 +100,18 @@ eem_mdl <- create_mdl(
 #> No Meta file specified, using:
 #> /home/runner/work/_temp/Library/eemanalyzeR/extdata/long-term-blanks/longtermblank-metadata.csv
 #> NOTE: removed previous 'readme' file
+#> Warning: Unable to import file: /home/runner/work/_temp/Library/eemanalyzeR/extdata/long-term-blanks/longtermblank1ABS.dat.
+#> Please use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.
+#> Warning: Unable to import file: /home/runner/work/_temp/Library/eemanalyzeR/extdata/long-term-blanks/longtermblank2ABS.dat.
+#> Please use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.
+#> Warning: Unable to import file: /home/runner/work/_temp/Library/eemanalyzeR/extdata/long-term-blanks/longtermblank3ABS.dat.
+#> Please use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.
+#> Warning: Unable to import file: /home/runner/work/_temp/Library/eemanalyzeR/extdata/long-term-blanks/longtermblank4ABS.dat.
+#> Please use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.
+#> Warning: Unable to import file: /home/runner/work/_temp/Library/eemanalyzeR/extdata/long-term-blanks/longtermblank5ABS.dat.
+#> Please use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.
+#> Warning: Unable to import file: /home/runner/work/_temp/Library/eemanalyzeR/extdata/long-term-blanks/longtermblank6ABS.dat.
+#> Please use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.
 #> Warning: Calculating MDL based on less than 20 samples, MDL may be unreliable
 
 plot(eem_mdl)
