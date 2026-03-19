@@ -56,7 +56,7 @@
 
 #' Just a nicer way to get the directory where the QAQC files should live
 #' @noRd
-.qaqc_dir <- function(){
+.default_local_qaqc_dir <- function(){
   return(file.path(fs::path_norm(rappdirs::user_data_dir(appname = "eemanalyzeR")), "qaqc-stds"))
 }
 
@@ -68,13 +68,14 @@
 #' @param qaqc_dir file path to the mdl files generated with \link[eemanalyzeR]{create_mdl}
 #'
 #' @noRd
-#'
+# TODO - can I change the name of this?
 .check_mdl_file <- function(qaqc_dir){
-  if(is.null(qaqc_dir)){
+  if(is.na(qaqc_dir)){
     check_eem <- FALSE
     check_abs <- FALSE
   }else{
     #get mdl data
+    # TODO - make it so there are multiple options for MDL files
     check_eem <- file.exists(file.path(qaqc_dir, "eem-mdl.rds"))
     check_abs <- file.exists(file.path(qaqc_dir, "abs-mdl.rds"))
   }

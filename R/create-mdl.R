@@ -16,6 +16,7 @@
 #'   [base::regular expression] used to identify instrument blanks.
 #' @param type Which MDL to calculate: either "eem" or "abs".
 #' @param recursive Logical. Should the function recursively search directories?
+#' TODO - update the default qaqc-dir
 #' @param qaqc_dir Directory in which to save the QAQC `.rds` file.
 #'   Default: a user-specific data directory via [rappdirs::user_data_dir()].
 #'   If `FALSE`, the function returns the MDL object instead of saving it.
@@ -51,13 +52,15 @@
 #' )
 #'
 #' plot(eem_mdl)
+#' 
+# TODO - add functionality for user to name the mdl file
 create_mdl <- function(dir, meta_name = NULL, sheet = NULL, iblank = "BEM",
-                       type = "eem", recursive = FALSE, qaqc_dir = NULL) {
+                       type = "eem", recursive = FALSE, qaqc_dir = get_qaqc_dir()) {
 
   stopifnot(type %in% c("eem", "abs"), dir.exists(dir))
 
   # set up file structure for saving mdl data
-  if (is.null(qaqc_dir)) {
+  if (is.na(qaqc_dir)) {
     qaqc_dir <- file.path(rappdirs::user_data_dir(appname = "eemanalyzeR"), "qaqc-stds")
   }
   if (qaqc_dir != FALSE) {
@@ -150,6 +153,7 @@ create_mdl <- function(dir, meta_name = NULL, sheet = NULL, iblank = "BEM",
     names(mdl_eem) <- names(blank_eems[[1]])[-c(15:16)]
 
     # cache mdl data
+    # TODO
     if (qaqc_dir != FALSE) {
       saveRDS(mdl_eem, file.path(qaqc_dir, "eem-mdl.rds"))
     } else {
@@ -228,6 +232,7 @@ create_mdl <- function(dir, meta_name = NULL, sheet = NULL, iblank = "BEM",
     names(mdl_abs) <- names(blank[[1]])
 
     # cache mdl data
+    # TODO
     if (qaqc_dir != FALSE) {
       saveRDS(mdl_abs, file.path(qaqc_dir, "abs-mdl.rds"))
     } else {

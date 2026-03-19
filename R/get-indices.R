@@ -80,13 +80,19 @@
 #'   example_processed_abs,
 #'   qaqc_dir = system.file("extdata", package = "eemanalyzeR")
 #' )
-get_indices <- function(eemlist, abslist, index_method = "eemanalyzeR",
-                        tolerance = 0.2, return = "wide",
-                        cuvle = 1, qaqc_dir = NA, arg_names = NULL) {
+get_indices <- function(eemlist, 
+  abslist, 
+  index_method = "eemanalyzeR",
+  tolerance = 0.2, 
+  return = "wide",
+  cuvle = 1, 
+  qaqc_dir = NA, 
+  arg_names = NULL) {
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist))
 
-  #specify qaqc dir if not specified
-  if(!is.null(qaqc_dir) && is.na(qaqc_dir)){qaqc_dir = .qaqc_dir()}
+  # if QAQC directory not specified in arguments, check the loaded config for QAQC directory
+  # TODO - or should we just not try to qaqc if NA is given
+  if(is.na(qaqc_dir)){qaqc_dir = get_qaqc_dir()}
 
   # check if processing has been done, not warn that indices may be unreliable
   steps <- check_processing(eemlist)

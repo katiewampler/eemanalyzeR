@@ -1,5 +1,7 @@
 test_that("tea checks work", {
 
+  # TODO - check what happens if qaqc directory has two tea check files
+  
   #check that error is thrown if processing is different
     expect_warning(flags <- check_std(example_eems, example_abs, qaqc_dir = system.file("extdata", package = "eemanalyzeR")),
                    "No check standard samples found")

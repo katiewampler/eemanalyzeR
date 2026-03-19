@@ -59,7 +59,8 @@
 #'
 #' plot(eem_std)
 #'
-
+#' 
+# TODO - add functionality for user to name the check standard file
 create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblank="BEM",
                         type = "eem", recursive=FALSE, qaqc_dir=NULL){
   stopifnot(type %in% c("eem", "abs"), dir.exists(dir))
@@ -153,6 +154,7 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
 
     #cache tea data
     if(qaqc_dir != FALSE){
+      # TODO
       saveRDS(tea_eem, file.path(qaqc_dir, "eem-check-std.rds"))
     }else{
       return(tea_eem)
@@ -208,6 +210,7 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
 
     #cache tea data
     if(qaqc_dir != FALSE){
+      # TODO
       saveRDS(tea_abs, file.path(qaqc_dir, "abs-check-std.rds"))
     }else{
       return(tea_abs)

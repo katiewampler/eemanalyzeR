@@ -7,6 +7,7 @@
 #' @param eemlist An `eemlist` object.
 #' @param abslist An `abslist` object.
 #' @param cuvle Cuvette (path) length in cm.
+#' TODO update qaqc_dir documentation with new defaults
 #' @param qaqc_dir File path to the QAQC files generated with [create_mdl()] and [create_std()].
 #' Default is a user-specific data directory [rappdirs::user_data_dir()].
 #'
@@ -35,7 +36,7 @@
 #'   example_processed_abs,
 #'   qaqc_dir = system.file("extdata", package = "eemanalyzeR")
 #' )
-eemanalyzeR_indices <- function(eemlist, abslist, cuvle = 1, qaqc_dir = NULL) {
+eemanalyzeR_indices <- function(eemlist, abslist, cuvle = 1, qaqc_dir = NA) {
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized")) == FALSE)
 
   # get mdl data

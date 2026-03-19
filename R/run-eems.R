@@ -214,8 +214,8 @@ run_eems <- function(
       #if TRUE, will get user_config file value, if NA will use default
       #this value is passed to get-indices
     if(qaqc_checks){
-      qaqc_dir <-  get_qaqc_dir(.fnenv)
-      qaqc_dir <- ifelse(is.na(qaqc_dir), .qaqc_dir(), qaqc_dir)
+      qaqc_dir <-  get_qaqc_dir(.fnenv) # returns NA if no qaqc_dir specified in config
+      #qaqc_dir <- ifelse(is.na(qaqc_dir), .qaqc_dir(), qaqc_dir)
     }else{
       qaqc_dir <-  NULL
     }

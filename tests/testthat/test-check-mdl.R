@@ -1,4 +1,6 @@
 test_that("we can get the mdl for eems data", {
+
+  # TODO - figure out what happens if there are multiple check std files in directory
   #set up testing data
   mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),"eem-mdl.rds"))
   abslist <- add_metadata(metadata, example_abs)

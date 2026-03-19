@@ -23,7 +23,7 @@ validate_std <- function(abslist, qaqc_dir=NULL, tolerance=0.2){
   stopifnot(.is_abslist(abslist))
 
   #specify qaqc dir if not specified
-  if(is.null(qaqc_dir)){qaqc_dir = .qaqc_dir()}
+  if(is.null(qaqc_dir)){qaqc_dir = get_qaqc_dir()}
 
   #check if sample has any check standards if not warning
     check <- subset_type(abslist, type="check")

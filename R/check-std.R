@@ -42,7 +42,11 @@
 #'   example_processed_abs,
 #'   qaqc_dir = system.file("extdata", package = "eemanalyzeR")
 #' )
-check_std <- function(eemlist, abslist, qaqc_dir = .qaqc_dir(), tolerance = 0.2,
+
+# TODO - figure out why we have two ways to get qaqc dirctory - .qaqc_dir() and get_qaqc_dir()
+# Which should we actually use and streamline?
+
+check_std <- function(eemlist, abslist, qaqc_dir = get_qaqc_dir(), tolerance = 0.2,
                       index_method = "eemanalyzeR", vals = FALSE) {
   stopifnot(is.numeric(tolerance), .is_eemlist(eemlist) | .is_abslist(abslist))
 
@@ -62,6 +66,7 @@ check_std <- function(eemlist, abslist, qaqc_dir = .qaqc_dir(), tolerance = 0.2,
     names <- get_sample_info(subset_type(eemlist, type = "check"), "meta_name")
     return(data.frame(meta_name = rep(names, each = 2), index = NA, type = c("abs", "eem"), flag = NA))
   } else {
+    # TODO - fix these after we handle qaqc_dir
     eem_std <- readRDS(file.path(qaqc_dir, "eem-check-std.rds"))
     abs_std <- readRDS(file.path(qaqc_dir, "abs-check-std.rds"))
   }
