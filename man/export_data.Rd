@@ -61,12 +61,10 @@ specified output directory. Creates a folder named by \code{filename} and saves 
 eem_plots <- plot(example_processed_eems)
 abs_plot <- plot(example_processed_abs)
 
-indices <- get_indices(example_processed_eems, example_processed_abs)
 data <- export_data(
   eemlist = example_processed_eems,
   abslist = example_processed_abs,
   filename = "eemanalyzeR_example",
-  indices = indices,
   eem_plot = eem_plots,
   abs_plot = abs_plot,
   meta = metadata

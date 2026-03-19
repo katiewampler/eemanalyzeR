@@ -6,6 +6,9 @@
 #' @param i the index for subsetting
 #'
 #' @export
+#' @keywords internal
+#' @md
+#' @returns an object of class `eemlist`
 #' @method [ eemlist
 #'
 `[.eemlist` <- function(eemlist, i) {
@@ -22,6 +25,9 @@
 #' @param i the index for subsetting
 #'
 #' @export
+#' @keywords internal
+#' @md
+#' @returns an object of class `abslist`
 #' @method [ abslist
 #'
 `[.abslist` <- function(abslist, i) {

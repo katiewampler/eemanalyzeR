@@ -52,8 +52,8 @@
 #' - **eemR**: [eemR_indices()]
 #' - **usgs**: [usgs_indices()]
 #'
-#' You may also pass a custom index-generating function. See the
-#' [custom-indices vignette](../doc/custom-indices.html) for
+#' You may also pass a custom index-generating function. See
+#' [`vignette("custom-indices")`](../doc/custom-indices.html) for
 #' instructions.
 #'
 #' ## QA/QC flags

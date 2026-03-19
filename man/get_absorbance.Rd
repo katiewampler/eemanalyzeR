@@ -31,7 +31,7 @@ To add metadata, use [add_metadata()].
 
 If the wavelength requested is not
 in the absorbance data, it will be interpolated first using
-\link[eemanalyzeR]{abs_interp}.
+[abs_interp()].
 }
 \examples{
 abslist <- add_metadata(metadata, example_abs)

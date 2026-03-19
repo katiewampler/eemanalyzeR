@@ -7,10 +7,10 @@
 #'
 #' @param meta A `data.frame` containing metadata.
 #' @param x An `eemlist` or `abslist` object.
-#' @param iblank_pattern a character vector of length 1 with a regular expression that matches sample names of instrument blanks. Default is "BEM$|Waterfall ?Plot ?Blank" 
+#' @param iblank_pattern a character vector of length 1 with a regular expression that matches sample names of instrument blanks. Default is "BEM$|Waterfall ?Plot ?Blank"
 #' @param sblank_pattern a character vector of length 1 with a regular expression that matches sample names of sample blanks. Default is "Blank|blank|BLK"
 #' @param check_pattern  a character vector of length 1 with a regular expression that matches sample names of check standards. Default is "Tea|tea"
-#' 
+#'
 #' @note
 #' If an `eemlist` contains blanks, the blanks automatically inherit metadata from their
 #' corresponding sample.
@@ -27,7 +27,7 @@
 #' - **sample_type**: optional flag (e.g., `sample` for a sample,
 #'    `sblank` for an analytical blank, `check` for a check standard).
 #'   Default values match Horiba Aqualog exports.
-#' - **doc_mgL**: dissolved organic carbon concentration in mg L⁻¹
+#' - **doc_mgL**: dissolved organic carbon concentration in mg/L
 #' - **notes**: optional notes on sample or sampling conditions
 #'
 #' If `x` is an `eemlist`, two additional items are added:

@@ -35,7 +35,7 @@ For each sample, the following fields may be added (if present in the metadata):
 \item \strong{sample_type}: optional flag (e.g., \code{sample} for a sample,
 \code{sblank} for an analytical blank, \code{check} for a check standard).
 Default values match Horiba Aqualog exports.
-\item \strong{doc_mgL}: dissolved organic carbon concentration in mg L⁻¹
+\item \strong{doc_mgL}: dissolved organic carbon concentration in mg/L
 \item \strong{notes}: optional notes on sample or sampling conditions
 }
 

@@ -5,7 +5,7 @@
 \alias{metadata}
 \title{Example metadata}
 \format{
-A data.frame with 3 rows and 11 columns:
+A data.frame with 4 rows and 11 columns:
 \itemize{
 \item \strong{index}: Numeric order of entry (e.g., 1, 2, 3, etc.)
 \item \strong{analysis_date}: Optional, date samples were run on instrument (not collected in the field)

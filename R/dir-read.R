@@ -35,10 +35,10 @@
 #' abs <- abs_dir_read(system.file("extdata", package = "eemanalyzeR"), pattern = "abs|ABS")
 #'
 #' # Load absorbance samples while skipping EEMs and other files
-#' abs <- abs_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "SEM|BEM|waterfall")
+#' abs <- abs_dir_read(system.file("extdata", package = "eemanalyzeR"), skip = "SEM|BEM|Waterfall")
 eem_dir_read <- function(input_dir,
                          pattern = NA,
-                         skip = "(?i)abs",
+                         skip = get_eem_skip(),
                          file_ext = "dat",
                          recursive = FALSE,
                          import_function = "aqualog",
@@ -125,7 +125,7 @@ eem_dir_read <- function(input_dir,
 #' @export
 abs_dir_read <- function(input_dir,
                          pattern = NA,
-                         skip = "SEM|BEM|Waterfall",
+                         skip = get_abs_skip(),
                          file_ext = "dat",
                          recursive = FALSE,
                          verbose = TRUE) {

@@ -6,7 +6,7 @@
 #' @param index_method Either "eemanalyzeR", "eemR", "usgs", or a custom function.
 #'
 #' @return A function used to generate indices.
-#'
+#' @keywords internal
 #' @details
 #' Preset methods correspond to the following functions:
 #'

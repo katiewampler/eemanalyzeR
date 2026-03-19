@@ -34,7 +34,7 @@ Each \code{data.frame} contains the following columns:
 \description{
 Calculates commonly used absorbance and fluorescence optical indices from \code{eemlist} and \code{abslist}.
 For detailed descriptions and references for indices, see the vignette
-\href{../doc/eemanalyzeR-indices.html}{eemanalyzeR-indices}.
+\href{../doc/eemanalyzeR-indices.html}{\code{vignette("eemanalyzeR-indices")}}.
 }
 \note{
 \itemize{

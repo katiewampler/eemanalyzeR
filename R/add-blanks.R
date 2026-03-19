@@ -95,7 +95,6 @@ add_blanks <- function(eemlist,
     }
   } else {
     # if not, stop and give error
-    browser()
     stop("more than one blank was provided, but blank names do not match samples")
   }
 
