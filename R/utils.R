@@ -68,7 +68,6 @@
 #' @param qaqc_dir file path to the mdl files generated with \link[eemanalyzeR]{create_mdl}
 #'
 #' @noRd
-# TODO - can I change the name of this?
 .check_mdl_file <- function(qaqc_dir){
   if(is.na(qaqc_dir)){
     check_eem <- FALSE
@@ -79,6 +78,8 @@
     check_eem <- file.exists(file.path(qaqc_dir, "eem-mdl.rds"))
     check_abs <- file.exists(file.path(qaqc_dir, "abs-mdl.rds"))
   }
+  # TODO potential modification to provide an interactive way to select the wanted mdl files if 
+  # there are multiple directories in the provided qaqc_dir.
 
   #load mdl data or warn
   if(!check_eem){

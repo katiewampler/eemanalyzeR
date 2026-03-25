@@ -19,11 +19,12 @@
 #' @examples
 #' abslist <- add_metadata(metadata, example_abs)
 #' validate_std(abslist, system.file("extdata", package = "eemanalyzeR"))
-validate_std <- function(abslist, qaqc_dir=NULL, tolerance=0.2){
+validate_std <- function(abslist, qaqc_dir=NA, tolerance=0.2){
   stopifnot(.is_abslist(abslist))
 
+  # TODO do we want to find default qaqc dir if none specified?
   #specify qaqc dir if not specified
-  if(is.null(qaqc_dir)){qaqc_dir = get_qaqc_dir()}
+  if(is.na(qaqc_dir)){qaqc_dir = get_qaqc_dir()}
 
   #check if sample has any check standards if not warning
     check <- subset_type(abslist, type="check")
