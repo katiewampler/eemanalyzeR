@@ -18,8 +18,8 @@
 #' @param type Which MDL to calculate: either "eem" or "abs".
 #' @param recursive Logical. Should the function recursively search directories?
 #' @param qaqc_dir Directory in which to save the QAQC `.rds` file.
-#'   Default: a user-specific data directory via [rappdirs::user_data_dir()].
-#'   If `FALSE`, the function returns the MDL object instead of saving it.
+#'   Default: The QAQC directory in the current package environment, usually the user configured QAQC directory.
+#'   If `NA`, the function returns the MDL object instead of saving it.
 #'
 #' @returns
 #' - If `dir = FALSE`: an `eem` or `abs` object containing the averaged check standard values.
@@ -55,19 +55,21 @@
 #' @examples
 #' eem_std <- create_std(file.path(system.file("extdata", package = "eemanalyzeR"),"long-term-std"),
 #' meta_name="longterm-checkstd-metadata.csv", abs_pattern = "ABS",
-#' type="eem", qaqc_dir = FALSE)
+#' type="eem", qaqc_dir = NA)
 #'
 #' plot(eem_std)
 #'
 #' 
-# TODO - add functionality for user to name the check standard file
 create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblank="BEM",
-                        type = "eem", recursive=FALSE, qaqc_dir=NULL){
+                        type = "eem", recursive=FALSE, qaqc_dir= get_qaqc_dir()){
   stopifnot(type %in% c("eem", "abs"), dir.exists(dir))
 
-  #set up file structure for saving mdl data
-    if(is.null(qaqc_dir)){qaqc_dir <- file.path(rappdirs::user_data_dir(appname = "eemanalyzeR"), "qaqc-stds")}
-    if(qaqc_dir != FALSE){dir.create(qaqc_dir, showWarnings = FALSE, recursive = TRUE)}
+  #set up file structure for saving check std data
+  if (is.na(qaqc_dir)) {
+    warning("No QAQC directory specified. Returning check standard as R object to Global Environment")
+  } else{ 
+      dir.create(qaqc_dir, showWarnings = TRUE, recursive = TRUE)
+  }
 
   #get metadata
     if(!is.null(meta_name)){input <- file.path(dir, meta_name)}else{input <- dir}
@@ -153,14 +155,11 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
     names(tea_eem) <- names(tea_eems[[1]])[-c(15:16)]
 
     #cache tea data
-    if(qaqc_dir != FALSE){
-      # TODO
+    if(!is.na(qaqc_dir)){
       saveRDS(tea_eem, file.path(qaqc_dir, "eem-check-std.rds"))
     }else{
       return(tea_eem)
     }
-
-
   }
 
   if(type == "abs"){
@@ -209,12 +208,10 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
     names(tea_abs) <- names(tea[[1]])
 
     #cache tea data
-    if(qaqc_dir != FALSE){
-      # TODO
+    if(!is.na(qaqc_dir)){
       saveRDS(tea_abs, file.path(qaqc_dir, "abs-check-std.rds"))
     }else{
       return(tea_abs)
     }
-
   }
 }

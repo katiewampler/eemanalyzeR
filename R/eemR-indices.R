@@ -43,7 +43,7 @@
 #'
 #' @export
 #' @md
-eemR_indices <- function(eemlist, abslist, cuvle = 1, qaqc_dir = NULL) {
+eemR_indices <- function(eemlist, abslist, cuvle = 1, qaqc_dir = NA) {
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized")) == FALSE)
 
   # get mdl data

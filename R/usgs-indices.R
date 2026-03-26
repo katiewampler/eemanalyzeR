@@ -37,7 +37,7 @@
 #'   example_processed_abs,
 #'   qaqc_dir = system.file("extdata", package = "eemanalyzeR")
 #' )
-usgs_indices <- function(eemlist, abslist, cuvle = 1, qaqc_dir = NULL) {
+usgs_indices <- function(eemlist, abslist, cuvle = 1, qaqc_dir = NA) {
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized")) == FALSE)
 
   # get mdl data

@@ -4,7 +4,7 @@
 \alias{eemanalyzeR_indices}
 \title{Default package methods for fluorescence and absorbance indices}
 \usage{
-eemanalyzeR_indices(eemlist, abslist, cuvle = 1, qaqc_dir = NULL)
+eemanalyzeR_indices(eemlist, abslist, cuvle = 1, qaqc_dir = NA)
 }
 \arguments{
 \item{eemlist}{An \code{eemlist} object.}
@@ -14,7 +14,7 @@ eemanalyzeR_indices(eemlist, abslist, cuvle = 1, qaqc_dir = NULL)
 \item{cuvle}{Cuvette (path) length in cm.}
 
 \item{qaqc_dir}{File path to the QAQC files generated with \code{\link[=create_mdl]{create_mdl()}} and \code{\link[=create_std]{create_std()}}.
-Default is a user-specific data directory \code{\link[rappdirs:user_data_dir]{rappdirs::user_data_dir()}}.}
+Default is NA, which results in NO QAQC CHECKS.}
 }
 \value{
 A list with two elements:

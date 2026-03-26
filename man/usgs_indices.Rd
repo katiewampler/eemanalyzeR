@@ -10,7 +10,7 @@ and fluorescence from dissolved organic matter} (USGS Numbered Series No. 2018-1
 U.S. Geological Survey. \doi{10.3133/ofr20181096}
 }
 \usage{
-usgs_indices(eemlist, abslist, cuvle = 1, qaqc_dir = NULL)
+usgs_indices(eemlist, abslist, cuvle = 1, qaqc_dir = NA)
 }
 \arguments{
 \item{eemlist}{An \code{eemlist} object.}
@@ -20,7 +20,7 @@ usgs_indices(eemlist, abslist, cuvle = 1, qaqc_dir = NULL)
 \item{cuvle}{Cuvette (path) length in cm.}
 
 \item{qaqc_dir}{File path to the QAQC files generated with \code{\link[=create_mdl]{create_mdl()}} and \code{\link[=create_std]{create_std()}}.
-Default is a user-specific data directory \code{\link[rappdirs:user_data_dir]{rappdirs::user_data_dir()}}.}
+Default is NA, which results in NO QAQC CHECKS.}
 }
 \value{
 A list with two elements:

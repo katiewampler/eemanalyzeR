@@ -31,8 +31,7 @@ from the long-term values without being flagged.}
 \item{cuvle}{Cuvette (path) length in cm.}
 
 \item{qaqc_dir}{File path to the QAQC files generated with \code{\link[=create_mdl]{create_mdl()}}
-and \code{\link[=create_std]{create_std()}}. Default is a user-specific data directory
-\code{\link[rappdirs:user_data_dir]{rappdirs::user_data_dir()}}.}
+and \code{\link[=create_std]{create_std()}}. Default is NA, which results in NO QAQC CHECKS}
 
 \item{arg_names}{Optional list of arguments passed from higher-level
 functions for README generation.}

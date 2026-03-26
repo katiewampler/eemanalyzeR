@@ -12,8 +12,7 @@
 #' @param return Output format: "long" or "wide".
 #' @param cuvle Cuvette (path) length in cm.
 #' @param qaqc_dir File path to the QAQC files generated with [create_mdl()]
-#' and [create_std()]. Default is a user-specific data directory
-#' [rappdirs::user_data_dir()].
+#' and [create_std()]. Default is NA, which results in NO QAQC CHECKS
 #' @param arg_names Optional list of arguments passed from higher-level
 #'   functions for README generation.
 #'
@@ -92,7 +91,7 @@ get_indices <- function(eemlist,
 
   # if QAQC directory not specified in arguments, check the loaded config for QAQC directory
   # TODO - or should we just not try to qaqc if NA is given
-  if(is.na(qaqc_dir)){qaqc_dir = get_qaqc_dir()}
+   # if(is.na(qaqc_dir)){qaqc_dir = get_qaqc_dir()}
 
   # check if processing has been done, not warn that indices may be unreliable
   steps <- check_processing(eemlist)

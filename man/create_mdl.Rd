@@ -17,7 +17,7 @@ create_mdl(
   iblank = "BEM",
   type = "eem",
   recursive = FALSE,
-  qaqc_dir = NULL
+  qaqc_dir = get_qaqc_dir()
 )
 }
 \arguments{
@@ -39,8 +39,8 @@ if the metadata is not on the first sheet of an \code{.xlsx} file).}
 \item{recursive}{Logical. Should the function recursively search directories?}
 
 \item{qaqc_dir}{Directory in which to save the QAQC \code{.rds} file.
-Default: a user-specific data directory via \code{\link[rappdirs:user_data_dir]{rappdirs::user_data_dir()}}.
-If \code{FALSE}, the function returns the MDL object instead of saving it.}
+Default: The QAQC directory in the current package environment, usually the user configured QAQC directory.
+If \code{NA}, the function returns the MDL object instead of saving it.}
 }
 \value{
 \itemize{
@@ -68,8 +68,9 @@ and Raman area, formatted as a metadata file described in \link{metadata}.
 eem_mdl <- create_mdl(
   file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
   type = "eem",
-  qaqc_dir = FALSE
+  qaqc_dir = NA
 )
 
 plot(eem_mdl)
+
 }

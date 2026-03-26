@@ -74,7 +74,7 @@
     check_abs <- FALSE
   }else{
     #get mdl data
-    # TODO - make it so there are multiple options for MDL files
+    # TODO - potential future change - user can specify file names
     check_eem <- file.exists(file.path(qaqc_dir, "eem-mdl.rds"))
     check_abs <- file.exists(file.path(qaqc_dir, "abs-mdl.rds"))
   }

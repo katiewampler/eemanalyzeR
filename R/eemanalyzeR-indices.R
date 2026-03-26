@@ -7,9 +7,8 @@
 #' @param eemlist An `eemlist` object.
 #' @param abslist An `abslist` object.
 #' @param cuvle Cuvette (path) length in cm.
-#' TODO update qaqc_dir documentation with new defaults
 #' @param qaqc_dir File path to the QAQC files generated with [create_mdl()] and [create_std()].
-#' Default is a user-specific data directory [rappdirs::user_data_dir()].
+#' Default is NA, which results in NO QAQC CHECKS.
 #'
 #' @note
 #' - If absorbance is not at a 1 nm interval, it will be interpolated using [zoo::na.approx()], which fills in missing values using linear interpolation.
