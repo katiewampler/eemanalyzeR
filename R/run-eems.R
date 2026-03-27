@@ -241,7 +241,8 @@ run_eems <- function(
     indices = indices,
     eem_plot = processed_eems_plots,
     abs_plot = processed_abs_plots,
-    csv = get_csv(.fnenv)
+    csv = get_csv(.fnenv),
+    sum_plot = get_sum_plot(.fnenv)
   )
 
   # Done!

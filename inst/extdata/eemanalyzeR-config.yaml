@@ -61,3 +61,4 @@
   filename: "eemanalyzeR-output"
   output_dir: .na.character
   csv: FALSE
+  sum_plot: TRUE

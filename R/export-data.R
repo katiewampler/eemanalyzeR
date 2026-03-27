@@ -17,6 +17,8 @@
 #'   indices is provided, it is saved.
 #' @param csv Logical. If `TRUE`, processed EEM and absorbance data and metadata are
 #'   written to `output_dir` as `.csv` files.
+#' @param sum_plot Logical. If `TRUE`, individual plots are exported as a single large figure
+#'   along with the individual plots.
 #'
 #' @export
 #' @md
@@ -46,11 +48,12 @@
 export_data <- function(eemlist, abslist, filename,
                         meta = NULL, indices = NULL,
                         eem_plot = NULL, abs_plot = NULL, csv = FALSE,
-                        output_dir = NA) {
+                        sum_plot = TRUE, output_dir = NA) {
   stopifnot(
     .is_eemlist(eemlist), .is_abslist(abslist), is.data.frame(meta) | is.null(meta),
     is.list(indices) | is.null(indices), is.list(eem_plot) | is.null(eem_plot),
-    is.logical(csv), is.character(filename), inherits(abs_plot, "ggplot") | is.null(abs_plot)
+    is.logical(csv), is.character(filename), inherits(abs_plot, "ggplot") | is.null(abs_plot),
+    is.logical(sum_plot)
   )
 
   # check if processing has been done, not warn that indices may be unreliable
@@ -95,20 +98,27 @@ export_data <- function(eemlist, abslist, filename,
 
   # save eem plots as png
   if (!is.null(eem_plot)) {
-    # figure out dim for summary plot
-    height <- ceiling(length(eem_plot) / 4)
-    width <- ceiling(length(eem_plot) / height)
 
-    summary <- ggpubr::ggarrange(plotlist = eem_plot, nrow = height, ncol = width)
-    ggplot2::ggsave(
-      filename = paste0("summary_plots_", filename, ".png"),
-      path = output_dir,
-      plot = summary,
-      units = "cm",
-      height = height * 13,
-      width = 17 * width,
-      limitsize = FALSE
-    )
+    if(sum_plot){
+      # figure out dim for summary plot
+      height <- ceiling(length(eem_plot) / 4)
+      width <- ceiling(length(eem_plot) / height)
+
+      #create basic plots for summary with titles
+      all_plots <- plot(eemlist, title="sample")
+
+      summary <- ggpubr::ggarrange(plotlist = all_plots, nrow = height, ncol = width)
+      ggplot2::ggsave(
+        filename = paste0("summary_plots_", filename, ".png"),
+        path = output_dir,
+        plot = summary,
+        units = "cm",
+        height = height * 13,
+        width = 17 * width,
+        limitsize = FALSE
+      )
+    }
+
 
     lapply(names(eem_plot), function(name) {
       file <- paste0(name, ".png")
