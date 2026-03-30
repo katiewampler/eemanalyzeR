@@ -13,6 +13,7 @@ export_data(
   eem_plot = NULL,
   abs_plot = NULL,
   csv = FALSE,
+  sum_plot = TRUE,
   output_dir = NA
 )
 }
@@ -36,6 +37,9 @@ If a plot is provided, it is saved as a \code{.png} file. See \code{\link[=plot.
 
 \item{csv}{Logical. If \code{TRUE}, processed EEM and absorbance data and metadata are
 written to \code{output_dir} as \code{.csv} files.}
+
+\item{sum_plot}{Logical. If \code{TRUE}, individual plots are exported as a single large figure
+along with the individual plots.}
 
 \item{output_dir}{Path to save the data. Defaults to a temporary directory
 if not specified.}

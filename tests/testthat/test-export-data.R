@@ -88,3 +88,21 @@ test_that("data export works", {
 
 
 })
+
+test_that("summary plotting can be turned off", {
+  #create directory to write to
+  dir <- withr::local_tempfile()
+  prjname <- basename(dir)
+  dir <- dirname(dir)
+
+  expect_message(export_data(eemlist=example_processed_eems,
+                             abslist=example_processed_abs,
+                             filename=prjname,
+                             meta=metadata,
+                             output_dir = dir,
+                             sum_plot = FALSE), "Data successfully exported to")
+
+
+  expect_true(!file.exists(file.path(dir, paste0("summary_plots_", prjname, ".png"))))
+
+})

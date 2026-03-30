@@ -1,4 +1,4 @@
-# Testing MDL creation for EEMs 
+# Testing MDL creation for EEMs
 test_that("eem mdl is calculated and saved", {
   #create temp dir
   test_dir <- withr::local_tempfile()
@@ -22,9 +22,9 @@ test_that("eem mdl is calculated and saved", {
 
 test_that("eem mdl is calculated and exported to global environment when qaqc_dir = NA", {
   #ensure it returns warning with example data
-    expect_warning(eem_mdl <- create_mdl(dir=file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
+    expect_warning(expect_warning(eem_mdl <- create_mdl(dir=file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
                        meta_name="longtermblank-metadata.csv",
-                       type="eem", qaqc_dir = NA), "Calculating MDL based on less than 20 samples")
+                       type="eem", qaqc_dir = NA), "Calculating MDL based on less than 20 samples"), "No QAQC directory specified")
 
   #read in and make sure it's what we expect
     expect_equal(length(eem_mdl), 14)
@@ -56,9 +56,9 @@ test_that("abs mdl is calculated", {
 
 test_that("abs mdl is calculated and exported to global environment when qaqc_dir = NA", {
   #ensure it returns warning with example data
-    expect_warning(abs_mdl <- create_mdl(dir=file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
+    expect_warning(expect_warning(abs_mdl <- create_mdl(dir=file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
                        meta_name="longtermblank-metadata.csv",
-                       type="abs", qaqc_dir = NA), "Calculating MDL based on less than 20 samples")
+                       type="abs", qaqc_dir = NA), "Calculating MDL based on less than 20 samples"), "No QAQC directory specified")
 
   #read in and make sure it's what we expect
     expect_equal(length(abs_mdl), 11)
