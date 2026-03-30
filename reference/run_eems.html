@@ -15,7 +15,7 @@ the function performs the full processing pipeline from start to finish."><meta 
 
     <a class="navbar-brand me-2" href="../index.html">eemanalyzeR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -138,6 +138,21 @@ but the argument values will be reported in the readme file.</p></li>
     <p>Currently <code>run_eems</code> does not allow for custom import or index functions.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">run_eems</span><span class="op">(</span>input_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"eemanalyzeR"</span><span class="op">)</span>, interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading samples...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No Meta file specified, using:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> /home/runner/work/_temp/Library/eemanalyzeR/extdata/metadata_example.csv</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> All EEMs and Absorbance data successfully processed. See readme for notes and warnings.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> EEMs and absorbance successfully plotted.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>fluorescence MDL is missing, indices will not be checked for MDLs</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>absorbance MDL is missing, indices will not be checked for MDLs</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>tea check standard files are missing, check standards will not be checked against the long-term standard</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculated absorbance and fluorescence indices.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Data successfully exported to: /tmp/RtmpYZiHt0/eemanalyzeR-output</span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

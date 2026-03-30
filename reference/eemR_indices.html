@@ -11,7 +11,7 @@ staRdom packages. Can incorporate sample metadata if provided."><meta property="
 
     <a class="navbar-brand me-2" href="../index.html">eemanalyzeR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,7 +51,7 @@ using functions from the <a href="https://CRAN.R-project.org/package=eemR" class
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">eemR_indices</span><span class="op">(</span><span class="va">eemlist</span>, <span class="va">abslist</span>, cuvle <span class="op">=</span> <span class="fl">1</span>, qaqc_dir <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">eemR_indices</span><span class="op">(</span><span class="va">eemlist</span>, <span class="va">abslist</span>, cuvle <span class="op">=</span> <span class="fl">1</span>, qaqc_dir <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -72,7 +72,7 @@ using functions from the <a href="https://CRAN.R-project.org/package=eemR" class
 
 <dt id="arg-qaqc-dir">qaqc_dir<a class="anchor" aria-label="anchor" href="#arg-qaqc-dir"></a></dt>
 <dd><p>File path to the QAQC files generated with <code><a href="create_mdl.html">create_mdl()</a></code> and <code><a href="create_std.html">create_std()</a></code>.
-Default is a user-specific data directory <code><a href="https://rappdirs.r-lib.org/reference/user_data_dir.html" class="external-link">rappdirs::user_data_dir()</a></code>.</p></dd>
+Default is NA, which results in NO QAQC CHECKS.</p></dd>
 
 </dl></div>
     <div class="section level2">

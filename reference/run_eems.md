@@ -123,3 +123,19 @@ configuration defaults.
 
 Currently `run_eems` does not allow for custom import or index
 functions.
+
+## Examples
+
+``` r
+run_eems(input_dir = system.file("extdata", package = "eemanalyzeR"), interactive = FALSE)
+#> Loading samples...
+#> No Meta file specified, using:
+#> /home/runner/work/_temp/Library/eemanalyzeR/extdata/metadata_example.csv
+#> All EEMs and Absorbance data successfully processed. See readme for notes and warnings.
+#> EEMs and absorbance successfully plotted.
+#> Warning: fluorescence MDL is missing, indices will not be checked for MDLs
+#> Warning: absorbance MDL is missing, indices will not be checked for MDLs
+#> Warning: tea check standard files are missing, check standards will not be checked against the long-term standard
+#> Calculated absorbance and fluorescence indices.
+#> Data successfully exported to: /tmp/RtmpYZiHt0/eemanalyzeR-output
+```

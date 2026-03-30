@@ -16,6 +16,7 @@ export_data(
   eem_plot = NULL,
   abs_plot = NULL,
   csv = FALSE,
+  sum_plot = TRUE,
   output_dir = NA
 )
 ```
@@ -62,6 +63,11 @@ export_data(
   Logical. If `TRUE`, processed EEM and absorbance data and metadata are
   written to `output_dir` as `.csv` files.
 
+- sum_plot:
+
+  Logical. If `TRUE`, individual plots are exported as a single large
+  figure along with the individual plots.
+
 - output_dir:
 
   Path to save the data. Defaults to a temporary directory if not
@@ -104,5 +110,5 @@ data <- export_data(
   abs_plot = abs_plot,
   meta = metadata
 )
-#> Data successfully exported to: /tmp/RtmpTSFkJu/eemanalyzeR_example
+#> Data successfully exported to: /tmp/RtmpYZiHt0/eemanalyzeR_example
 ```

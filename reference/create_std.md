@@ -15,7 +15,7 @@ create_std(
   iblank = "BEM",
   type = "eem",
   recursive = FALSE,
-  qaqc_dir = NULL
+  qaqc_dir = get_qaqc_dir()
 )
 ```
 
@@ -69,10 +69,10 @@ fluorescence from dissolved organic matter* (USGS Numbered Series No.
 
 - qaqc_dir:
 
-  Directory in which to save the QAQC `.rds` file. Default: a
-  user-specific data directory via
-  [`rappdirs::user_data_dir()`](https://rappdirs.r-lib.org/reference/user_data_dir.html).
-  If `FALSE`, the function returns the MDL object instead of saving it.
+  Directory in which to save the QAQC `.rds` file. Default: The QAQC
+  directory in the current package environment, usually the user
+  configured QAQC directory. If `NA`, the function returns the MDL
+  object instead of saving it.
 
 ## Value
 
@@ -109,10 +109,12 @@ To calculate the average check standard you need:
 ``` r
 eem_std <- create_std(file.path(system.file("extdata", package = "eemanalyzeR"),"long-term-std"),
 meta_name="longterm-checkstd-metadata.csv", abs_pattern = "ABS",
-type="eem", qaqc_dir = FALSE)
+type="eem", qaqc_dir = NA)
+#> Warning: No QAQC directory specified. Returning check standard as R object to Global Environment
 #> NOTE: removed previous 'readme' file
 #> Warning: Calculating average check standard based on less than 20 samples, average may be unreliable
 
 plot(eem_std)
+
 
 ```

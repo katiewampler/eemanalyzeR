@@ -9,7 +9,7 @@ with the long-term standard values.
 check_std(
   eemlist,
   abslist,
-  qaqc_dir = .qaqc_dir(),
+  qaqc_dir = get_qaqc_dir(),
   tolerance = 0.2,
   index_method = "eemanalyzeR",
   vals = FALSE

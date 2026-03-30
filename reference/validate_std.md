@@ -6,7 +6,7 @@ the long-term standard.
 ## Usage
 
 ``` r
-validate_std(abslist, qaqc_dir = NULL, tolerance = 0.2)
+validate_std(abslist, qaqc_dir = NA, tolerance = 0.2)
 ```
 
 ## Arguments

@@ -53,8 +53,7 @@ get_indices(
   [`create_mdl()`](https://katiewampler.github.io/eemanalyzeR/reference/create_mdl.md)
   and
   [`create_std()`](https://katiewampler.github.io/eemanalyzeR/reference/create_std.md).
-  Default is a user-specific data directory
-  [`rappdirs::user_data_dir()`](https://rappdirs.r-lib.org/reference/user_data_dir.html).
+  Default is NA, which results in NO QAQC CHECKS
 
 - arg_names:
 

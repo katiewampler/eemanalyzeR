@@ -16,7 +16,7 @@ create_mdl(
   iblank = "BEM",
   type = "eem",
   recursive = FALSE,
-  qaqc_dir = NULL
+  qaqc_dir = get_qaqc_dir()
 )
 ```
 
@@ -64,10 +64,10 @@ fluorescence from dissolved organic matter* (USGS Numbered Series No.
 
 - qaqc_dir:
 
-  Directory in which to save the QAQC `.rds` file. Default: a
-  user-specific data directory via
-  [`rappdirs::user_data_dir()`](https://rappdirs.r-lib.org/reference/user_data_dir.html).
-  If `FALSE`, the function returns the MDL object instead of saving it.
+  Directory in which to save the QAQC `.rds` file. Default: The QAQC
+  directory in the current package environment, usually the user
+  configured QAQC directory. If `NA`, the function returns the MDL
+  object instead of saving it.
 
 ## Value
 
@@ -95,24 +95,14 @@ To calculate the MDL, you need:
 eem_mdl <- create_mdl(
   file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
   type = "eem",
-  qaqc_dir = FALSE
+  qaqc_dir = NA
 )
+#> Warning: No QAQC directory specified. Returning MDL as R object to Global Environment
 #> No Meta file specified, using:
 #> /home/runner/work/_temp/Library/eemanalyzeR/extdata/long-term-blanks/longtermblank-metadata.csv
 #> NOTE: removed previous 'readme' file
-#> Warning: Unable to import file: /home/runner/work/_temp/Library/eemanalyzeR/extdata/long-term-blanks/longtermblank1ABS.dat.
-#> Please use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.
-#> Warning: Unable to import file: /home/runner/work/_temp/Library/eemanalyzeR/extdata/long-term-blanks/longtermblank2ABS.dat.
-#> Please use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.
-#> Warning: Unable to import file: /home/runner/work/_temp/Library/eemanalyzeR/extdata/long-term-blanks/longtermblank3ABS.dat.
-#> Please use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.
-#> Warning: Unable to import file: /home/runner/work/_temp/Library/eemanalyzeR/extdata/long-term-blanks/longtermblank4ABS.dat.
-#> Please use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.
-#> Warning: Unable to import file: /home/runner/work/_temp/Library/eemanalyzeR/extdata/long-term-blanks/longtermblank5ABS.dat.
-#> Please use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.
-#> Warning: Unable to import file: /home/runner/work/_temp/Library/eemanalyzeR/extdata/long-term-blanks/longtermblank6ABS.dat.
-#> Please use the 'pattern' and 'skip' arguments to ensure only EEM's files are selected.
 #> Warning: Calculating MDL based on less than 20 samples, MDL may be unreliable
 
 plot(eem_mdl)
+
 ```

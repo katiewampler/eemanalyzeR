@@ -8,7 +8,7 @@ see Hansen et al. 2018 (Tables 1 and 8).
 ## Usage
 
 ``` r
-usgs_indices(eemlist, abslist, cuvle = 1, qaqc_dir = NULL)
+usgs_indices(eemlist, abslist, cuvle = 1, qaqc_dir = NA)
 ```
 
 ## Source
@@ -40,8 +40,7 @@ fluorescence from dissolved organic matter* (USGS Numbered Series No.
   [`create_mdl()`](https://katiewampler.github.io/eemanalyzeR/reference/create_mdl.md)
   and
   [`create_std()`](https://katiewampler.github.io/eemanalyzeR/reference/create_std.md).
-  Default is a user-specific data directory
-  [`rappdirs::user_data_dir()`](https://rappdirs.r-lib.org/reference/user_data_dir.html).
+  Default is NA, which results in NO QAQC CHECKS.
 
 ## Value
 

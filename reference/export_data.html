@@ -9,7 +9,7 @@ specified output directory. Creates a folder named by filename and saves all spe
 
     <a class="navbar-brand me-2" href="../index.html">eemanalyzeR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,6 +57,7 @@ specified output directory. Creates a folder named by <code>filename</code> and 
 <span>  eem_plot <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  abs_plot <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  csv <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  sum_plot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  output_dir <span class="op">=</span> <span class="cn">NA</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -101,6 +102,11 @@ If a plot is provided, it is saved as a <code>.png</code> file. See <code><a hre
 written to <code>output_dir</code> as <code>.csv</code> files.</p></dd>
 
 
+<dt id="arg-sum-plot">sum_plot<a class="anchor" aria-label="anchor" href="#arg-sum-plot"></a></dt>
+<dd><p>Logical. If <code>TRUE</code>, individual plots are exported as a single large figure
+along with the individual plots.</p></dd>
+
+
 <dt id="arg-output-dir">output_dir<a class="anchor" aria-label="anchor" href="#arg-output-dir"></a></dt>
 <dd><p>Path to save the data. Defaults to a temporary directory
 if not specified.</p></dd>
@@ -131,7 +137,7 @@ The list contains:</p><ul><li><p><strong>eemlist:</strong> the <code>eemlist</co
 <span class="r-in"><span>  abs_plot <span class="op">=</span> <span class="va">abs_plot</span>,</span></span>
 <span class="r-in"><span>  meta <span class="op">=</span> <span class="va">metadata</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Data successfully exported to: /tmp/RtmpTSFkJu/eemanalyzeR_example</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Data successfully exported to: /tmp/RtmpYZiHt0/eemanalyzeR_example</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
