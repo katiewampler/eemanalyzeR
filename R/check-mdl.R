@@ -96,6 +96,15 @@ check_eem_mdl <- function(eem, mdl = NULL, ex, em, vals = FALSE) {
     attr(eem, "is_blank_corrected")
   )
 
+  # provide warning if wavelengths between mdl and samples are different
+    std_em <- get_sample_info(mdl, "em")
+    samp_em <- unique(as.numeric(get_sample_info(eem, "em")))
+    std_ex <- get_sample_info(mdl, "ex")
+    samp_ex <- unique(as.numeric(get_sample_info(eem, "ex")))
+    if(length(base::setdiff(samp_em, std_em)) > 0 | length(base::setdiff(samp_ex, std_ex)) > 0){
+      warning("Wavelengths differ between MDL and eemlist, `check_mdl` may be unreliable.")
+    }
+
   # interpolate mdl to make sure it matches the sample and index requested
   if (all(eem$ex %in% mdl$ex) & all(eem$em %in% mdl$em) &
     all(ex %in% eem$ex) & all(em %in% eem$em)) {
@@ -166,6 +175,13 @@ check_abs_mdl <- function(abs, mdl = NULL, wl, vals = FALSE) {
   # return NA if no mdl data is provided
   if (is.null(mdl)) {
     return(NA)
+  }
+
+  # provide warning if wavelengths between mdl and samples are different
+  std_wave <- get_sample_info(mdl, "data")[,1]
+  samp_wave <- get_sample_info(abs, "data")[,1]
+  if(length(base::setdiff(samp_wave, std_wave)) > 0){
+    warning("Wavelengths differ between MDL and abslist, `check_mdl` may be unreliable.")
   }
 
   # interpolate mdl to make sure it matches the sample and index requested

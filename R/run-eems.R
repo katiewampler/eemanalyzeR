@@ -56,7 +56,9 @@
 #'
 #' @inherit export_data return
 #' @export
-#'
+#' @examples
+#' run_eems(input_dir = system.file("extdata", package = "eemanalyzeR"), interactive = FALSE)
+
 run_eems <- function(
 
 

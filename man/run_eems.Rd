@@ -77,3 +77,6 @@ but the argument values will be reported in the readme file.
 \note{
 Currently \code{run_eems} does not allow for custom import or index functions.
 }
+\examples{
+run_eems(input_dir = system.file("extdata", package = "eemanalyzeR"), interactive = FALSE)
+}

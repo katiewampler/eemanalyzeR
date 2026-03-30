@@ -115,6 +115,7 @@ eemR_indices <- function(eemlist, abslist, cuvle = 1, qaqc_dir = NA) {
 
   # absorbance peaks
   abslist <- abs_interp(abslist)
+  abs_mdl <- abs_interp(abs_mdl) #interpolate so we don't get a warning when checking wavelengths
   raw_abs <- get_sample_info(abslist, "data")
   raw_abs <- as.data.frame(raw_abs)
   abs_vals <- staRdom::abs_parms(raw_abs, cuvle = 1, unit = "absorbance", cores = 1)

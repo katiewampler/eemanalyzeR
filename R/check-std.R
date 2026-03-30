@@ -72,6 +72,21 @@ check_std <- function(eemlist, abslist, qaqc_dir = get_qaqc_dir(), tolerance = 0
     stop("processing steps are different between check standard and eemlist")
   }
 
+  #provide warning if wavelengths between std and samples are different
+    std_em <- get_sample_info(eem_std, "em")
+    samp_em <- unique(as.numeric(get_sample_info(eemlist, "em")))
+    std_ex <- get_sample_info(eem_std, "ex")
+    samp_ex <- unique(as.numeric(get_sample_info(eemlist, "ex")))
+    if(length(base::setdiff(samp_em, std_em)) > 0 | length(base::setdiff(samp_ex, std_ex)) > 0){
+      warning("Wavelengths differ between check standard and eemlist, `check_std` may be unreliable.")
+    }
+
+    std_wave <- get_sample_info(abs_std, "data")[,1]
+    samp_wave <- get_sample_info(abslist, "data")[,1]
+    if(length(base::setdiff(samp_wave, std_wave)) > 0){
+      warning("Wavelengths differ between check standard and abslist, `check_std` may be unreliable.")
+    }
+
   # get index function
   index_function <- get_indices_function(index_method)
 

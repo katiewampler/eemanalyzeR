@@ -1,7 +1,7 @@
 test_that("tea checks work", {
 
   # TODO - check what happens if qaqc directory has two tea check files
-  
+
   #check that error is thrown if processing is different
     expect_warning(flags <- check_std(example_eems, example_abs, qaqc_dir = system.file("extdata", package = "eemanalyzeR")),
                    "No check standard samples found")
@@ -46,6 +46,17 @@ test_that("tea checks work", {
 
   #check the readme
     expect_true(grepl("0% (n=8) of the absorbance indices", get_readme()$check_std, fixed=TRUE))
+
+  #check that warning is provided for differing wavelengths
+    eems <- example_processed_eems
+    eems[[1]]$ex <- c(eems[[1]]$ex[-1], 200)
+    abs <- example_processed_abs
+    abs[[1]]$data[1,1] <- 800.2
+
+    expect_warning(expect_warning(check <- check_std(eems, abs, qaqc_dir = system.file("extdata", package = "eemanalyzeR")),
+                   "Wavelengths differ between check standard and eemlist"), "Wavelengths differ between check standard and abslist")
+
+
 
 })
 
