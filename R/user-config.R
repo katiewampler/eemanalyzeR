@@ -107,8 +107,8 @@ reset_user_config <- function() {
   }
 
  message("User configuration reset.\n",
-         "Find reset conifg at ",
-         defaults_file)
+         "Find reset config at ",
+         normalizePath(defaults_file))
 }
 
 # Load the user config on package load
@@ -121,4 +121,4 @@ rlang::on_load({
   })
 })
 
-# 
+#

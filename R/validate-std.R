@@ -19,12 +19,12 @@
 #' @examples
 #' abslist <- add_metadata(metadata, example_abs)
 #' validate_std(abslist, system.file("extdata", package = "eemanalyzeR"))
-validate_std <- function(abslist, qaqc_dir=NA, tolerance=0.2){
+validate_std <- function(abslist, qaqc_dir=get_qaqc_dir(), tolerance=0.2){
   stopifnot(.is_abslist(abslist))
 
-  # TODO do we want to find default qaqc dir if none specified?
-  #specify qaqc dir if not specified
-  if(is.na(qaqc_dir)){qaqc_dir = get_qaqc_dir()}
+  # get std data
+  std <- get_qaqc(qaqc_dir, type = "check-std", quiet = TRUE)
+  abs_std <- std$abs_check_std
 
   #check if sample has any check standards if not warning
     check <- subset_type(abslist, type="check")
@@ -34,7 +34,7 @@ validate_std <- function(abslist, qaqc_dir=NA, tolerance=0.2){
     }
 
   #get long-term check standard
-    if(!file.exists(file.path(qaqc_dir, "abs-check-std.rds"))){
+    if(is.null(abs_std)){
       warning("Check standard files are missing, check standards will not be checked against the long-term standard")
 
       #prepare data for plotting
@@ -46,8 +46,6 @@ validate_std <- function(abslist, qaqc_dir=NA, tolerance=0.2){
         labs(x="Wavelength (nm)", y="Absorbance (AU)", color="Sample")
 
     }else{
-      abs_std <- readRDS(file.path(qaqc_dir, "abs-check-std.rds"))
-
       #prepare data for plotting
       std_plot <- as.data.frame(abs_std$data) %>% mutate(min = .data$V2*(1-tolerance), max=.data$V2*(1+tolerance))
       check_plot <- get_sample_info(check, "data") %>% as.data.frame() %>% pivot_longer(-"wavelength", names_to = "sample", values_to="abs")

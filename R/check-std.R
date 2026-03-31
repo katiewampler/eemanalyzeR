@@ -55,16 +55,14 @@ check_std <- function(eemlist, abslist, qaqc_dir = get_qaqc_dir(), tolerance = 0
     return(data.frame(meta_name = rep("notea", each = 2), index = NA, type = c("abs", "eem"), flag = NA))
   }
 
-  # get eem_std and abs_std
-  if (is.na(qaqc_dir) || (!file.exists(file.path(qaqc_dir, "eem-check-std.rds")) | !file.exists(file.path(qaqc_dir, "abs-check-std.rds")))) {
-    warning("tea check standard files are missing, check standards will not be checked against the long-term standard")
-    .write_readme_line("Long-term standards were not provided, thus the check standards for this run were not checked\n", "check_std")
+  # get std data
+  std <- get_qaqc(qaqc_dir, type = "check-std")
+  eem_std <- std$eem_check_std
+  abs_std <- std$abs_check_std
 
+  if(is.null(eem_std) | is.null(abs_std)){
     names <- get_sample_info(subset_type(eemlist, type = "check"), "meta_name")
     return(data.frame(meta_name = rep(names, each = 2), index = NA, type = c("abs", "eem"), flag = NA))
-  } else {
-    eem_std <- readRDS(file.path(qaqc_dir, "eem-check-std.rds"))
-    abs_std <- readRDS(file.path(qaqc_dir, "abs-check-std.rds"))
   }
 
   # get attributes to make sure they're processed the same as the standard

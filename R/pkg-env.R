@@ -40,9 +40,9 @@ list_config <- function(env = .pkgenv) {
 #' Checks that all settings in the eemanalyzeR config are valid options and warns user if not
 #'
 #' @param env environment where to find the config. Defaults to the package environment
-#' 
+#'
 #' @returns invisibly returns TRUE if the configuration is valid, otherwise returns an error
-#' 
+#'
 #' @export
 #' @examples
 #' # Example validation

@@ -12,18 +12,22 @@ U.S. Geological Survey. \doi{10.3133/ofr20181096}
 \usage{
 create_std(
   dir,
+  method = "default",
   meta_name = NULL,
   sheet = NULL,
   abs_pattern = "Abs",
   iblank = "BEM",
   type = "eem",
   recursive = FALSE,
-  qaqc_dir = get_qaqc_dir()
+  qaqc_dir = get_qaqc_dir(),
+  update_config = TRUE
 )
 }
 \arguments{
 \item{dir}{Path to a folder containing long-term EEMs and/or absorbance files.
 All files in this directory will be loaded.}
+
+\item{method}{A character string describing the method associated with the MDL files.}
 
 \item{meta_name}{Name of the metadata file. Optional if the metadata file is the
 only \code{.xlsx} or \code{.csv} file in \code{dir}. If not specified, the function attempts to find
@@ -45,6 +49,9 @@ if the metadata is not on the first sheet of an \code{.xlsx} file).}
 \item{qaqc_dir}{Directory in which to save the QAQC \code{.rds} file.
 Default: The QAQC directory in the current package environment, usually the user configured QAQC directory.
 If \code{NA}, the function returns the MDL object instead of saving it.}
+
+\item{update_config}{Logical. Should function ask to update user_config file with
+the default QAQC directory location?}
 }
 \value{
 \itemize{
@@ -79,7 +86,7 @@ formatted as a metadata file (see \link{metadata})
 \examples{
 eem_std <- create_std(file.path(system.file("extdata", package = "eemanalyzeR"),"long-term-std"),
 meta_name="longterm-checkstd-metadata.csv", abs_pattern = "ABS",
-type="eem", qaqc_dir = NA)
+type="eem", qaqc_dir = NA, update_config=FALSE)
 
 plot(eem_std)
 

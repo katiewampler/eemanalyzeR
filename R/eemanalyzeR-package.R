@@ -86,6 +86,7 @@ utils::globalVariables(c(".pkgenv", "value", "env"))
 #' @importFrom utils write.csv
 #' @importFrom utils write.table
 #' @importFrom yaml read_yaml
+#' @importFrom yaml write_yaml
 #' @importFrom zoo na.approx
 #' @importFrom zoo na.spline
 ## usethis namespace: end

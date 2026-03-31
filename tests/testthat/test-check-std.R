@@ -1,7 +1,4 @@
 test_that("tea checks work", {
-
-  # TODO - check what happens if qaqc directory has two tea check files
-
   #check that error is thrown if processing is different
     expect_warning(flags <- check_std(example_eems, example_abs, qaqc_dir = system.file("extdata", package = "eemanalyzeR")),
                    "No check standard samples found")
@@ -57,6 +54,42 @@ test_that("tea checks work", {
                    "Wavelengths differ between check standard and eemlist"), "Wavelengths differ between check standard and abslist")
 
 
+
+})
+
+#test that method selection works
+test_that("check works when there are multiple methods", {
+  #make sure we have a flag
+  abs <- example_processed_abs
+  abs[[2]]$data[,2] <- rep(1,  abs[[1]]$n)
+
+  #no dir -> skip QAQC checks
+    expect_warning(expect_warning(no_check <- check_std(example_processed_eems, abs, qaqc_dir = NA),
+                                  "Fluorescence long-term standards"),
+                                   "Absorbance long-term standards")
+
+    expect_true(all(is.na(no_check$flag)))
+
+
+  #only one set in dir -> return without anything
+    dummy_dir <- withr::local_tempfile()
+    dir.create(file.path(dummy_dir,"default"), showWarnings = FALSE, recursive = TRUE)
+    stds <- list.files(system.file("extdata", package = "eemanalyzeR"), pattern= "check-std.rds|mdl.rds", full.names = TRUE)
+    file.copy(stds, file.path(dummy_dir,"default"))
+
+    one_set <- check_std(example_processed_eems, abs, qaqc_dir = dummy_dir)
+
+    expect_equal(sum(one_set$flag == "STD01", na.rm = TRUE),9)
+
+  #multiple sets in dir -> return after asking in interactive, otherwise use default with warning
+    dir.create(file.path(dummy_dir,"method1"), showWarnings = FALSE, recursive = TRUE)
+    file.copy(stds, file.path(dummy_dir,"method1", gsub("default", "method1", basename(stds))))
+
+
+  ### !!!! currently check_std also run get_index which calls mdl check -> so we get extra warnings
+      #do we want quiet or to pass method?
+    expect_warning(expect_warning(expect_warning(multiple_methods <- check_std(example_processed_eems, abs, qaqc_dir = dummy_dir),
+                   "Running non-interactively; default QAQC method files were used.")))
 
 })
 

@@ -7,6 +7,7 @@
 #'
 #' @param dir Path to a folder containing long-term EEMs and/or absorbance files.
 #'   All files in this directory will be loaded.
+#' @param method A character string describing the method associated with the MDL files.
 #' @param meta_name Name of the metadata file. Optional if the metadata file is the
 #'   only `.xlsx` or `.csv` file in `dir`. If not specified, the function attempts to find
 #'   a single metadata file and errors if multiple files are present.
@@ -19,10 +20,12 @@
 #' @param qaqc_dir Directory in which to save the QAQC `.rds` file.
 #'   Default: The QAQC directory in the current package environment, usually the user configured QAQC directory.
 #'   If `NA`, the function returns the MDL object instead of saving it.
+#' @param update_config Logical. Should function ask to update user_config file with
+#'   the default QAQC directory location?
 #'
 #' @returns
 #' - If `qaqc_dir = FALSE`: returns an `eem` or `abs` object containing MDL values.
-#' - Otherwise: saves an `.rds` file containing the MDL object and invisibly returns the file path.
+#' - Otherwise: saves an `.rds` file containing the MDL object to the QAQC directory.
 #'
 #' @md
 #' @export
@@ -47,21 +50,27 @@
 #' eem_mdl <- create_mdl(
 #'   file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
 #'   type = "eem",
-#'   qaqc_dir = NA
+#'   qaqc_dir = NA,
+#'   update_config=FALSE
 #' )
 #'
 #' plot(eem_mdl)
-#' 
-create_mdl <- function(dir, meta_name = NULL, sheet = NULL, iblank = "BEM",
-                       type = "eem", recursive = FALSE, qaqc_dir = get_qaqc_dir()) {
+#'
+create_mdl <- function(dir, method="default", meta_name = NULL, sheet = NULL, iblank = "BEM",
+                       type = "eem", recursive = FALSE, qaqc_dir = get_qaqc_dir(),
+                       update_config = TRUE) {
 
   stopifnot(type %in% c("eem", "abs"), dir.exists(dir))
 
-  # set up file structure for saving mdl data
-  if (is.na(qaqc_dir)) {
-    warning("No QAQC directory specified. Returning MDL as R object to Global Environment")
-  } else{ 
-      dir.create(qaqc_dir, showWarnings = TRUE, recursive = TRUE)
+  # figure out where it's getting saved (default is to leave as NA where it's returned as object)
+  if (is.na(qaqc_dir) & update_config){
+    qaqc_dir <- update_qaqc_dir() #ask if we can update qaqc_dir
+    }
+
+  #create method specific directory
+  if(!is.na(qaqc_dir)){
+    qaqc_dir <- file.path(qaqc_dir, method)
+    dir.create(qaqc_dir, showWarnings = FALSE, recursive = TRUE)
   }
 
   # get metadata
@@ -124,7 +133,7 @@ create_mdl <- function(dir, meta_name = NULL, sheet = NULL, iblank = "BEM",
     # turn into a eem object
     dates <- get_sample_info(blank_eems, "analysis_date")
     mdl_eem <- list(
-      file = file.path(qaqc_dir, "eem-mdl.rds"),
+      file = file.path(qaqc_dir, paste0(method, "-eem-mdl.rds")),
       sample = "long-term-mdl",
       x = matrix(data = blank_df$mdl, nrow = length(unique(blank_df$em)), ncol = length(unique(blank_df$ex))),
       ex = unique(blank_df$ex, MARGIN=2),
@@ -151,7 +160,7 @@ create_mdl <- function(dir, meta_name = NULL, sheet = NULL, iblank = "BEM",
 
     # cache mdl data
     if (!is.na(qaqc_dir)) {
-      saveRDS(mdl_eem, file.path(qaqc_dir, "eem-mdl.rds"))
+      saveRDS(mdl_eem, file.path(qaqc_dir, paste0(method, "-eem-mdl.rds")))
     } else {
       return(mdl_eem)
     }
@@ -205,7 +214,7 @@ create_mdl <- function(dir, meta_name = NULL, sheet = NULL, iblank = "BEM",
     # turn into a abs object
     dates <- get_sample_info(blank, "analysis_date")
     mdl_abs <- list(
-      file = file.path(qaqc_dir, "abs-mdl.rds"),
+      file = file.path(qaqc_dir, paste0(method, "-abs-mdl.rds")),
       sample = "long-term-mdl",
       n = length(unique(blank_abs_df$wavelength)),
       data = unname(as.matrix(abs_mdls[order(abs_mdls$wavelength, decreasing = TRUE), ])),
@@ -229,7 +238,7 @@ create_mdl <- function(dir, meta_name = NULL, sheet = NULL, iblank = "BEM",
 
     # cache mdl data
     if (!is.na(qaqc_dir)) {
-      saveRDS(mdl_abs, file.path(qaqc_dir, "abs-mdl.rds"))
+      saveRDS(mdl_abs, file.path(qaqc_dir, paste0(method, "-abs-mdl.rds")))
     } else {
       return(mdl_abs)
     }

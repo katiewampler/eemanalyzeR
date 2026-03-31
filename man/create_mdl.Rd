@@ -12,17 +12,21 @@ U.S. Geological Survey. \doi{10.3133/ofr20181096}
 \usage{
 create_mdl(
   dir,
+  method = "default",
   meta_name = NULL,
   sheet = NULL,
   iblank = "BEM",
   type = "eem",
   recursive = FALSE,
-  qaqc_dir = get_qaqc_dir()
+  qaqc_dir = get_qaqc_dir(),
+  update_config = TRUE
 )
 }
 \arguments{
 \item{dir}{Path to a folder containing long-term EEMs and/or absorbance files.
 All files in this directory will be loaded.}
+
+\item{method}{A character string describing the method associated with the MDL files.}
 
 \item{meta_name}{Name of the metadata file. Optional if the metadata file is the
 only \code{.xlsx} or \code{.csv} file in \code{dir}. If not specified, the function attempts to find
@@ -41,11 +45,14 @@ if the metadata is not on the first sheet of an \code{.xlsx} file).}
 \item{qaqc_dir}{Directory in which to save the QAQC \code{.rds} file.
 Default: The QAQC directory in the current package environment, usually the user configured QAQC directory.
 If \code{NA}, the function returns the MDL object instead of saving it.}
+
+\item{update_config}{Logical. Should function ask to update user_config file with
+the default QAQC directory location?}
 }
 \value{
 \itemize{
 \item If \code{qaqc_dir = FALSE}: returns an \code{eem} or \code{abs} object containing MDL values.
-\item Otherwise: saves an \code{.rds} file containing the MDL object and invisibly returns the file path.
+\item Otherwise: saves an \code{.rds} file containing the MDL object to the QAQC directory.
 }
 }
 \description{
@@ -68,7 +75,8 @@ and Raman area, formatted as a metadata file described in \link{metadata}.
 eem_mdl <- create_mdl(
   file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
   type = "eem",
-  qaqc_dir = NA
+  qaqc_dir = NA,
+  update_config=FALSE
 )
 
 plot(eem_mdl)

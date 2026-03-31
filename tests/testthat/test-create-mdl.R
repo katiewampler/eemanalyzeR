@@ -1,5 +1,13 @@
-# Testing MDL creation for EEMs
-test_that("eem mdl is calculated and saved", {
+# qaqc creation:
+  #if qaqc is specified, creates files there, names files the method name
+  #if qaqc if NA
+    #asks if it can update directory to default
+      #if yes -> updates qaqc_dir in user config and .pkgenv to default rappdirs::user_data_dir(appname = "eemanalyzeR"), "qaqc-stds"
+      #if no leaves as NA -> returns object
+
+
+# Testing MDL creation when dir is specified
+test_that("mdls are calculated and saved when dir is specified", {
   #create temp dir
   test_dir <- withr::local_tempfile()
 
@@ -8,60 +16,72 @@ test_that("eem mdl is calculated and saved", {
                        meta_name="longtermblank-metadata.csv",
                        type="eem", qaqc_dir = test_dir), "Calculating MDL based on less than 20 samples")
 
+    #ensure it returns warning with example data
+    expect_warning(abs_mdl <- create_mdl(dir=file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
+                                         meta_name="longtermblank-metadata.csv",
+                                         type="abs", qaqc_dir =test_dir))
+
 
   #check it writes to tempdir
-    expect_true(file.exists(file.path(test_dir, "eem-mdl.rds")))
+    expect_true(file.exists(file.path(test_dir,  "default/default-eem-mdl.rds")))
+    expect_true(file.exists(file.path(test_dir, "default/default-abs-mdl.rds")))
 
   #read in and make sure it's what we expect
-    mdl <- readRDS(file.path(test_dir, "eem-mdl.rds"))
+    mdl <- readRDS(file.path(test_dir, "default/default-eem-mdl.rds"))
     expect_equal(length(mdl), 14)
     expect_equal(get_sample_info(mdl, "sample"), "long-term-mdl")
     expect_true(inherits(mdl$x, "matrix"))
 
+  #read in and make sure it's what we expect
+    mdl <- readRDS(file.path(test_dir, "default/default-abs-mdl.rds"))
+    expect_equal(length(mdl), 11)
+    expect_equal(get_sample_info(mdl, "sample"), "long-term-mdl")
+    expect_true(inherits(mdl$data, "matrix"))
 })
 
-test_that("eem mdl is calculated and exported to global environment when qaqc_dir = NA", {
-  #ensure it returns warning with example data
-    expect_warning(expect_warning(eem_mdl <- create_mdl(dir=file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
-                       meta_name="longtermblank-metadata.csv",
-                       type="eem", qaqc_dir = NA), "Calculating MDL based on less than 20 samples"), "No QAQC directory specified")
+# Testing MDL creation when qaqc is NA
+test_that("mdls are exported when dir is NA and not updated", {
+    #ensure it returns warning with example data
+    expect_warning(eem_mdl <- create_mdl(dir=file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
+                                         meta_name="longtermblank-metadata.csv",
+                                         type="eem", qaqc_dir = NA, update_config=FALSE), "Calculating MDL based on less than 20 samples")
 
-  #read in and make sure it's what we expect
+    #make sure it's returned and it's what we expect
     expect_equal(length(eem_mdl), 14)
     expect_equal(get_sample_info(eem_mdl, "sample"), "long-term-mdl")
     expect_true(inherits(eem_mdl$x, "matrix"))
-})
-
-# Testing MDL creation for ABS
-test_that("abs mdl is calculated", {
-  #create temp dir
-  test_dir <- withr::local_tempfile()
-
-  #ensure it returns warning with example data
-  expect_warning(eem_mdl <- create_mdl(dir=file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
-                                    meta_name="longtermblank-metadata.csv",
-                                    type="abs", qaqc_dir =test_dir))
-
-
-  #check it writes to tempdir
-  expect_true(file.exists(file.path(test_dir, "abs-mdl.rds")))
-
-  #read in and make sure it's what we expect
-  mdl <- readRDS(file.path(test_dir, "abs-mdl.rds"))
-  expect_equal(length(mdl), 11)
-  expect_equal(get_sample_info(mdl, "sample"), "long-term-mdl")
-  expect_true(inherits(mdl$data, "matrix"))
 
 })
 
-test_that("abs mdl is calculated and exported to global environment when qaqc_dir = NA", {
-  #ensure it returns warning with example data
-    expect_warning(expect_warning(abs_mdl <- create_mdl(dir=file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
-                       meta_name="longtermblank-metadata.csv",
-                       type="abs", qaqc_dir = NA), "Calculating MDL based on less than 20 samples"), "No QAQC directory specified")
+# Testing MDL creation when qaqc is NA and user wants to update
+test_that("mdls are exported when dir is NA and updated",{
+  dummy_dir <- withr::local_tempfile()
+  with_mocked_bindings(
+    .default_config_dir = function() dummy_dir,
+    {
+      #setting qaqc_dir to NA while creating should trigger asking to fill
+      #ensure it returns warning with example data
+      expect_warning(eem_mdl <- create_mdl(dir=file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
+                                           method = "testthat-checks",
+                                           meta_name="longtermblank-metadata.csv",
+                                           type="eem", qaqc_dir = NA),"Calculating MDL based on less than 20 samples")
 
-  #read in and make sure it's what we expect
-    expect_equal(length(abs_mdl), 11)
-    expect_equal(get_sample_info(abs_mdl, "sample"), "long-term-mdl")
-    expect_true(inherits(abs_mdl$data, "matrix"))
+      expect_warning(abs_mdl <- create_mdl(dir=file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
+                                           method = "testthat-checks",
+                                           meta_name="longtermblank-metadata.csv",
+                                           type="abs", qaqc_dir = NA),"Calculating MDL based on less than 20 samples")
+
+      })
+
+  #check it writes to local
+  expect_true(file.exists(file.path(dummy_dir, "qaqc-stds", "testthat-checks", "testthat-checks-eem-mdl.rds")))
+  expect_true(file.exists(file.path(dummy_dir, "qaqc-stds", "testthat-checks", "testthat-checks-abs-mdl.rds")))
+
+  #check that qaqc dir is updated
+  expect_equal(.pkgenv$config$qaqc_dir, normalizePath(file.path(dummy_dir, "qaqc-stds"), winslash = "/"))
+
+  config <- yaml::read_yaml(file.path(dummy_dir, "user-config.yaml"))
+  expect_equal(config$qaqc_dir,normalizePath(file.path(dummy_dir, "qaqc-stds"), winslash = "/") )
+  expect_equal(.pkgenv$config$qaqc_dir, normalizePath(file.path(dummy_dir, "qaqc-stds"), winslash = "/"))
+
 })

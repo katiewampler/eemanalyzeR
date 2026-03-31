@@ -6,6 +6,7 @@
 #'
 #' @param dir Path to a folder containing long-term EEMs and/or absorbance files.
 #'   All files in this directory will be loaded.
+#' @param method A character string describing the method associated with the MDL files.
 #' @param meta_name Name of the metadata file. Optional if the metadata file is the
 #'   only `.xlsx` or `.csv` file in `dir`. If not specified, the function attempts to find
 #'   a single metadata file and errors if multiple files are present.
@@ -20,7 +21,8 @@
 #' @param qaqc_dir Directory in which to save the QAQC `.rds` file.
 #'   Default: The QAQC directory in the current package environment, usually the user configured QAQC directory.
 #'   If `NA`, the function returns the MDL object instead of saving it.
-#'
+#' @param update_config Logical. Should function ask to update user_config file with
+#'   the default QAQC directory location?
 #' @returns
 #' - If `dir = FALSE`: an `eem` or `abs` object containing the averaged check standard values.
 #' - Otherwise: saves an `.rds` file containing the averaged check standard and
@@ -55,21 +57,34 @@
 #' @examples
 #' eem_std <- create_std(file.path(system.file("extdata", package = "eemanalyzeR"),"long-term-std"),
 #' meta_name="longterm-checkstd-metadata.csv", abs_pattern = "ABS",
-#' type="eem", qaqc_dir = NA)
+#' type="eem", qaqc_dir = NA, update_config=FALSE)
 #'
 #' plot(eem_std)
 #'
-#' 
-create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblank="BEM",
-                        type = "eem", recursive=FALSE, qaqc_dir= get_qaqc_dir()){
+#'
+create_std <- function(dir, method = "default", meta_name=NULL, sheet=NULL,
+                       abs_pattern="Abs", iblank="BEM",type = "eem",
+                       recursive=FALSE, qaqc_dir= get_qaqc_dir(),
+                       update_config = TRUE){
   stopifnot(type %in% c("eem", "abs"), dir.exists(dir))
 
-  #set up file structure for saving check std data
-  if (is.na(qaqc_dir)) {
-    warning("No QAQC directory specified. Returning check standard as R object to Global Environment")
-  } else{ 
-      dir.create(qaqc_dir, showWarnings = TRUE, recursive = TRUE)
+
+  # figure out where it's getting saved (default is to leave as NA where it's returned as object)
+  if (is.na(qaqc_dir) & update_config){
+    qaqc_dir <- update_qaqc_dir() #ask if we can update qaqc_dir
   }
+
+  #create method specific directory
+  if(!is.na(qaqc_dir)){
+    qaqc_dir <- file.path(qaqc_dir, method)
+    dir.create(qaqc_dir, showWarnings = FALSE, recursive = TRUE)
+  }
+
+  #create method specific directory
+  if(!is.na(qaqc_dir)){
+    dir.create(qaqc_dir, showWarnings = FALSE, recursive = TRUE)
+  }
+
 
   #get metadata
     if(!is.null(meta_name)){input <- file.path(dir, meta_name)}else{input <- dir}
@@ -132,7 +147,7 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
 
     #turn into a eem object
     dates <- get_sample_info(tea_eems, "analysis_date")
-    tea_eem <- list(file= file.path(qaqc_dir, "eem-check-std.rds"),
+    tea_eem <- list(file= file.path(qaqc_dir, paste0(method, "-eem-check-std.rds")),
                     sample="long-term-check-std",
                     x = mean,
                     ex = get_sample_info(tea_eems, "ex")[,1],
@@ -156,7 +171,7 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
 
     #cache tea data
     if(!is.na(qaqc_dir)){
-      saveRDS(tea_eem, file.path(qaqc_dir, "eem-check-std.rds"))
+      saveRDS(tea_eem, file.path(qaqc_dir, paste0(method, "-eem-check-std.rds")))
     }else{
       return(tea_eem)
     }
@@ -188,7 +203,7 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
 
     #turn into a abs object
     dates <- get_sample_info(tea, "analysis_date")
-    tea_abs <- list(file= file.path(qaqc_dir, "abs-check-std.rds"),
+    tea_abs <- list(file= file.path(qaqc_dir, paste0(method, "-abs-check-std.rds")),
                     sample="long-term-check-std",
                     n = length(unique(tea_abs_df$wavelength)),
                     data = unname(as.matrix(abs_tea[order(abs_tea$wavelength, decreasing=TRUE),])),
@@ -209,7 +224,7 @@ create_std <- function(dir, meta_name=NULL, sheet=NULL, abs_pattern="Abs", iblan
 
     #cache tea data
     if(!is.na(qaqc_dir)){
-      saveRDS(tea_abs, file.path(qaqc_dir, "abs-check-std.rds"))
+      saveRDS(tea_abs, file.path(qaqc_dir, paste0(method, "-abs-check-std.rds")))
     }else{
       return(tea_abs)
     }

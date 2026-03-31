@@ -4,7 +4,7 @@
 \alias{validate_std}
 \title{Visually validate the check standard}
 \usage{
-validate_std(abslist, qaqc_dir = NA, tolerance = 0.2)
+validate_std(abslist, qaqc_dir = get_qaqc_dir(), tolerance = 0.2)
 }
 \arguments{
 \item{abslist}{An \code{abslist} object.}

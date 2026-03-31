@@ -41,7 +41,7 @@ usgs_indices <- function(eemlist, abslist, cuvle = 1, qaqc_dir = NA) {
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist), is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized")) == FALSE)
 
   # get mdl data
-  mdls <- .check_mdl_file(qaqc_dir)
+  mdls <- get_qaqc(qaqc_dir, type = "mdl")
   eem_mdl <- mdls$eem_mdl
   abs_mdl <- mdls$abs_mdl
 
