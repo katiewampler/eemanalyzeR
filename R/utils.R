@@ -106,8 +106,9 @@ update_qaqc_dir <- function(){
 
     }
 
+    qaqc_dir <- ifelse(get_qaqc_dir() == "NA", NA, get_qaqc_dir())
 
-    return(get_qaqc_dir())
+    return(qaqc_dir)
 
 
 }
@@ -130,8 +131,8 @@ update_qaqc_dir <- function(){
 #' #Otherwise will try to return the requested QAQC files
 #' mdl <- get_qaqc(file.path(system.file("extdata", package = "eemanalyzeR")), type = "mdl")
 #' plot(mdl$eem_mdl)
-get_qaqc <- function(qaqc_dir, type, method=NULL, quiet = FALSE){
-  stopifnot(type %in% c("mdl", "check-std"), is.character(method) | is.null(method))
+get_qaqc <- function(qaqc_dir, type, method = get_qaqc_method(), quiet = FALSE){
+  stopifnot(type %in% c("mdl", "check-std"), is.character(method))
 
   readme_txt <- ifelse(type == "mdl", "method detection limits (MDL)", "long-term standards")
 
@@ -160,16 +161,18 @@ get_qaqc <- function(qaqc_dir, type, method=NULL, quiet = FALSE){
     }
 
     #if more than one detected ask, if non interactive use default with warning
-    if(length(eem_files) > 1 | length(abs_files) > 1 & is.null(method)){
-      if(rlang::is_interactive()){
+    if(length(eem_files) > 1 | length(abs_files) > 1){
+      if(rlang::is_interactive() & is.na(method)){
         methods <- unique(dirname(c(eem_files, abs_files)))
-        cat(paste0("Multiple ", type, " files found:\n",
+        cat(paste0("Multiple ", "QAQC", " files found:\n",
                    paste(paste0(1:length(methods), ": ", methods), collapse = "\n")))
         keep <- readline("Specify the number of the method to use: ")
 
         method <- methods[as.numeric(keep)]
 
-      }else{
+        modify_config(qaqc_method = method)
+
+      }else if(!rlang::is_interactive()){
         if(!quiet){warning("Running non-interactively; default QAQC method files were used.")}
         method <- "default"
       }
@@ -180,12 +183,15 @@ get_qaqc <- function(qaqc_dir, type, method=NULL, quiet = FALSE){
       abs <- abs_files
     }
 
-    #get files and write readme
-    eem_data <- readRDS(file.path(qaqc_dir, eem))
-    .write_readme_line(paste0("Fluorescence indices were checked against ", readme_txt, " using method ", dirname(eem)), gsub("-", "_", type), append=TRUE)
+    #get files and write readme (only write readme once)
+    if(is.null(get_readme()) || is.na(get_readme()$mdl)){
+      .write_readme_line(paste0("Fluorescence indices were checked against ", readme_txt, " using method ", dirname(eem)), gsub("-", "_", type))
+      .write_readme_line(paste0("Absorbance indices were checked against ", readme_txt, " using method ", dirname(abs), "\n"), gsub("-", "_", type), append=TRUE)
+    }
 
+    eem_data <- readRDS(file.path(qaqc_dir, eem))
     abs_data <- readRDS(file.path(qaqc_dir, abs))
-    .write_readme_line(paste0("Absorbance indices were checked against ", readme_txt, " using method ", dirname(abs), "\n"), gsub("-", "_", type), append=TRUE)
+
 
   }
 

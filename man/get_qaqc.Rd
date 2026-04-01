@@ -4,7 +4,7 @@
 \alias{get_qaqc}
 \title{Look for MDL files}
 \usage{
-get_qaqc(qaqc_dir, type, method = NULL, quiet = FALSE)
+get_qaqc(qaqc_dir, type, method = get_qaqc_method(), quiet = FALSE)
 }
 \arguments{
 \item{qaqc_dir}{file path to the mdl files generated with \link[eemanalyzeR]{create_mdl}}

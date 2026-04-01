@@ -78,6 +78,7 @@ add_blanks <- function(eemlist,
     return(eem)
   }
 
+
   if (length(blanklist) == 1) {
     # if only one eem, add to all eems
     eemlist <- lapply(eemlist, .add_x_blk, blanklist[[1]])

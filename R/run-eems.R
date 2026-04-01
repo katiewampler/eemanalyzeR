@@ -219,7 +219,7 @@ run_eems <- function(
       qaqc_dir <-  get_qaqc_dir(.fnenv) # returns NA if no qaqc_dir specified in config
       #qaqc_dir <- ifelse(is.na(qaqc_dir), .qaqc_dir(), qaqc_dir)
     }else{
-      qaqc_dir <-  NULL
+      qaqc_dir <- NA
     }
 
   # Check MDLS are in the get_indices function

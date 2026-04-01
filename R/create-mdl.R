@@ -59,8 +59,8 @@
 create_mdl <- function(dir, method="default", meta_name = NULL, sheet = NULL, iblank = "BEM",
                        type = "eem", recursive = FALSE, qaqc_dir = get_qaqc_dir(),
                        update_config = TRUE) {
-
   stopifnot(type %in% c("eem", "abs"), dir.exists(dir))
+  #if(!is.na(qaqc_dir) && qaqc_dir == "NA"){qaqc_dir <- NA} #default is character NA, not actual NA
 
   # figure out where it's getting saved (default is to leave as NA where it's returned as object)
   if (is.na(qaqc_dir) & update_config){
