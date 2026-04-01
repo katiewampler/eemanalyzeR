@@ -201,7 +201,7 @@ values that are returned are based on “real” data.
 #checking absorbance data
   #get mdl 
     abs_mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"), 
-                                 "abs-mdl.rds"))
+                                 "default-abs-mdl.rds"))
 
   #data is fully above the MDL so NA is returned 
     check_abs_mdl(abslist[[2]], abs_mdl, wl=254)
@@ -214,7 +214,7 @@ values that are returned are based on “real” data.
 #checking fluorescence data
   #get mdl 
     eem_mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"), 
-                                 "eem-mdl.rds"))
+                                 "default-eem-mdl.rds"))
     
   #data is completely above the MDL so NA is returned
    check_eem_mdl(eemlist[[2]], mdl = eem_mdl, ex=270:280, em=300:320)
@@ -373,18 +373,12 @@ results <- do.call(rbind, results)
 
 Now we need to make sure to add in the MDL data so we can use it to
 check our values. If the MDL is NULL, we want to have a warning, but
-still run.
+still run. We can use the
+[`get_qaqc()`](https://katiewampler.github.io/eemanalyzeR/reference/get_qaqc.md)
+function
 
 ``` r
- qaqc_dir <- file.path(system.file("extdata", package = "eemanalyzeR"))
- #get mdl data
-  check_eem <- file.exists(file.path(qaqc_dir, "eem-mdl.rds"))
-
-  #load mdl data or warn
-  if(!check_eem){
-    warning("fluorescence MDL is missing, indices will not be checked for MDLs")
-    eem_mdl <- NULL
-    }else{eem_mdl <- readRDS(file.path(qaqc_dir, "eem-mdl.rds"))}
+ mdl <- get_qaqc(file.path(system.file("extdata", package = "eemanalyzeR")), type = "mdl")
 ```
 
 Lastly, we just need to return the results as a list. Since we don’t
@@ -422,13 +416,8 @@ zhang2025 <- function(eemlist, abslist, cuvle=1, qaqc_dir){
               is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
   
   #get mdl data
-  check_eem <- file.exists(file.path(qaqc_dir, "eem-mdl.rds"))
-
-  #load mdl data or warn
-  if(!check_eem){
-    warning("fluorescence MDL is missing, indices will not be checked for MDLs")
-    eem_mdl <- NULL
-  }else{eem_mdl <- readRDS(file.path(qaqc_dir, "eem-mdl.rds"))}
+   mdl <- get_qaqc(qaqc_dir, type = "mdl")
+   eem_mdl <- mdl$eem_mdl
   
   #specify indices
     zhang_indices <- list(USoI = list(ex=c(245,230), em=c(440,260)),
@@ -643,15 +632,7 @@ check our values. If the MDL is NULL, we want to have a warning, but
 still run.
 
 ``` r
- qaqc_dir <- file.path(system.file("extdata", package = "eemanalyzeR"))
- #get mdl data
-  check_abs <- file.exists(file.path(qaqc_dir, "abs-mdl.rds"))
-
-  #load mdl data or warn
-  if(!check_abs){
-    warning("absorbance MDL is missing, indices will not be checked for MDLs")
-    abs_mdl <- NULL
-    }else{abs_mdl <- readRDS(file.path(qaqc_dir, "abs-mdl.rds"))}
+ mdl <- get_qaqc(file.path(system.file("extdata", package = "eemanalyzeR")), type = "mdl")
 ```
 
 Lastly, we just need to combine all the indices into a data.frame and
@@ -737,14 +718,9 @@ erlandsson2012 <- function(eemlist, abslist, cuvle=1, qaqc_dir){
     stopifnot(eemanalyzeR:::.is_eemlist(eemlist), eemanalyzeR:::.is_abslist(abslist), 
               is.numeric(cuvle), all(sapply(eemlist, attr, "is_doc_normalized"))==FALSE)
   
-  #get mdl 
-  check_abs <- file.exists(file.path(qaqc_dir, "abs-mdl.rds"))
-
-  #load mdl data or warn
-  if(!check_abs){
-    warning("absorbance MDL is missing, indices will not be checked for MDLs")
-    abs_mdl <- NULL
-  }else{abs_mdl <- readRDS(file.path(qaqc_dir, "abs-mdl.rds"))}
+  #get mdl data
+   mdl <- get_qaqc(qaqc_dir, type = "mdl")
+   abs_mdl <- mdl$abs_mdl
   
   #specify wavelengths
     erlandsson_index <- list(a254=254,

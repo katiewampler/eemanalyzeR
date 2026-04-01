@@ -11,12 +11,14 @@ blank)**.
 ``` r
 create_mdl(
   dir,
+  method = "default",
   meta_name = NULL,
   sheet = NULL,
   iblank = "BEM",
   type = "eem",
   recursive = FALSE,
-  qaqc_dir = get_qaqc_dir()
+  qaqc_dir = get_qaqc_dir(),
+  update_config = TRUE
 )
 ```
 
@@ -35,6 +37,11 @@ fluorescence from dissolved organic matter* (USGS Numbered Series No.
 
   Path to a folder containing long-term EEMs and/or absorbance files.
   All files in this directory will be loaded.
+
+- method:
+
+  A character string describing the method associated with the MDL
+  files.
 
 - meta_name:
 
@@ -69,13 +76,18 @@ fluorescence from dissolved organic matter* (USGS Numbered Series No.
   configured QAQC directory. If `NA`, the function returns the MDL
   object instead of saving it.
 
+- update_config:
+
+  Logical. Should function ask to update user_config file with the
+  default QAQC directory location?
+
 ## Value
 
 - If `qaqc_dir = FALSE`: returns an `eem` or `abs` object containing MDL
   values.
 
-- Otherwise: saves an `.rds` file containing the MDL object and
-  invisibly returns the file path.
+- Otherwise: saves an `.rds` file containing the MDL object to the QAQC
+  directory.
 
 ## Details
 
@@ -95,9 +107,9 @@ To calculate the MDL, you need:
 eem_mdl <- create_mdl(
   file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
   type = "eem",
-  qaqc_dir = NA
+  qaqc_dir = NA,
+  update_config=FALSE
 )
-#> Warning: No QAQC directory specified. Returning MDL as R object to Global Environment
 #> No Meta file specified, using:
 #> /home/runner/work/_temp/Library/eemanalyzeR/extdata/long-term-blanks/longtermblank-metadata.csv
 #> NOTE: removed previous 'readme' file

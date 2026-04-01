@@ -140,6 +140,8 @@ Functions to aid in QA/QC checks.
   : QA/QC flags for missing data
 - [`format_index()`](https://katiewampler.github.io/eemanalyzeR/reference/format_index.md)
   : Format index and flag data
+- [`get_qaqc()`](https://katiewampler.github.io/eemanalyzeR/reference/get_qaqc.md)
+  : Look for and load QAQC files
 - [`validate_blanks()`](https://katiewampler.github.io/eemanalyzeR/reference/validate_blanks.md)
   : Validate the instrument blank(s)
 - [`validate_std()`](https://katiewampler.github.io/eemanalyzeR/reference/validate_std.md)

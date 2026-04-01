@@ -106,7 +106,8 @@ function. At a minimum this requires the following arguments:
 
 ``` r
   run_eems(input_dir = system.file("extdata", package = "eemanalyzeR"),
-           filename = "eemanalyzeR-example", interactive = FALSE)
+           filename = "eemanalyzeR-example", interactive = FALSE,
+           qaqc_dir = system.file("extdata", package = "eemanalyzeR"))
 ```
 
 This function will export the processed data, indices calculations, and
@@ -174,7 +175,7 @@ loaded when needed to process samples.
 dir <- file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks")
 
 #generate mdl file
-eem_mdl <- create_mdl(dir, type = "eem") 
+eem_mdl <- create_mdl(dir, type = "eem")
 abs_mdl <- create_mdl(dir, type = "abs")
 ```
 

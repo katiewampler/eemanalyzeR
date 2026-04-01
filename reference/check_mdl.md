@@ -63,12 +63,12 @@ If `vals = TRUE`, returns:
 # Load MDL data
 eem_mdl <- readRDS(file.path(
   system.file("extdata", package = "eemanalyzeR"),
-  "eem-mdl.rds"
+  "default-eem-mdl.rds"
 ))
 
 abs_mdl <- readRDS(file.path(
   system.file("extdata", package = "eemanalyzeR"),
-  "abs-mdl.rds"
+  "default-abs-mdl.rds"
 ))
 
 # Single EEM sample

@@ -9,13 +9,15 @@ standard can be checked against for consistency.
 ``` r
 create_std(
   dir,
+  method = "default",
   meta_name = NULL,
   sheet = NULL,
   abs_pattern = "Abs",
   iblank = "BEM",
   type = "eem",
   recursive = FALSE,
-  qaqc_dir = get_qaqc_dir()
+  qaqc_dir = get_qaqc_dir(),
+  update_config = TRUE
 )
 ```
 
@@ -34,6 +36,11 @@ fluorescence from dissolved organic matter* (USGS Numbered Series No.
 
   Path to a folder containing long-term EEMs and/or absorbance files.
   All files in this directory will be loaded.
+
+- method:
+
+  A character string describing the method associated with the MDL
+  files.
 
 - meta_name:
 
@@ -74,6 +81,11 @@ fluorescence from dissolved organic matter* (USGS Numbered Series No.
   configured QAQC directory. If `NA`, the function returns the MDL
   object instead of saving it.
 
+- update_config:
+
+  Logical. Should function ask to update user_config file with the
+  default QAQC directory location?
+
 ## Value
 
 - If `dir = FALSE`: an `eem` or `abs` object containing the averaged
@@ -109,8 +121,7 @@ To calculate the average check standard you need:
 ``` r
 eem_std <- create_std(file.path(system.file("extdata", package = "eemanalyzeR"),"long-term-std"),
 meta_name="longterm-checkstd-metadata.csv", abs_pattern = "ABS",
-type="eem", qaqc_dir = NA)
-#> Warning: No QAQC directory specified. Returning check standard as R object to Global Environment
+type="eem", qaqc_dir = NA, update_config=FALSE)
 #> NOTE: removed previous 'readme' file
 #> Warning: Calculating average check standard based on less than 20 samples, average may be unreliable
 

@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">eemanalyzeR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -169,7 +169,8 @@ your exported files.</li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span>  <span class="fu"><a href="../reference/run_eems.html">run_eems</a></span><span class="op">(</span>input_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"eemanalyzeR"</span><span class="op">)</span>,</span>
-<span>           filename <span class="op">=</span> <span class="st">"eemanalyzeR-example"</span>, interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span>           filename <span class="op">=</span> <span class="st">"eemanalyzeR-example"</span>, interactive <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>           qaqc_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"eemanalyzeR"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>This function will export the processed data, indices calculations,
 and plots by defaults we can look at the function outputs.</p>
 <pre><code><span><span class="co">#&gt; ~/</span></span>
@@ -240,7 +241,7 @@ directory and loaded when needed to process samples.</p>
 <span><span class="va">dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"eemanalyzeR"</span><span class="op">)</span>, <span class="st">"long-term-blanks"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#generate mdl file</span></span>
-<span><span class="va">eem_mdl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_mdl.html">create_mdl</a></span><span class="op">(</span><span class="va">dir</span>, type <span class="op">=</span> <span class="st">"eem"</span><span class="op">)</span> </span>
+<span><span class="va">eem_mdl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_mdl.html">create_mdl</a></span><span class="op">(</span><span class="va">dir</span>, type <span class="op">=</span> <span class="st">"eem"</span><span class="op">)</span></span>
 <span><span class="va">abs_mdl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_mdl.html">create_mdl</a></span><span class="op">(</span><span class="va">dir</span>, type <span class="op">=</span> <span class="st">"abs"</span><span class="op">)</span></span></code></pre></div>
 <p>We can use a similar process to create the check standard files.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">

@@ -133,9 +133,10 @@ run_eems(input_dir = system.file("extdata", package = "eemanalyzeR"), interactiv
 #> /home/runner/work/_temp/Library/eemanalyzeR/extdata/metadata_example.csv
 #> All EEMs and Absorbance data successfully processed. See readme for notes and warnings.
 #> EEMs and absorbance successfully plotted.
-#> Warning: fluorescence MDL is missing, indices will not be checked for MDLs
-#> Warning: absorbance MDL is missing, indices will not be checked for MDLs
-#> Warning: tea check standard files are missing, check standards will not be checked against the long-term standard
+#> Warning: Fluorescence method detection limits (MDL) is missing and will not be used for checks
+#> Warning: Absorbance method detection limits (MDL) is missing and will not be used for checks
+#> Warning: Fluorescence long-term standards is missing and will not be used for checks
+#> Warning: Absorbance long-term standards is missing and will not be used for checks
 #> Calculated absorbance and fluorescence indices.
-#> Data successfully exported to: /tmp/RtmpYZiHt0/eemanalyzeR-output
+#> Data successfully exported to: /tmp/RtmpryutGR/eemanalyzeR-output
 ```

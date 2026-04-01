@@ -28,7 +28,7 @@ edit_user_config() #create a config file
 #> Changes to user configuration applied.
 reset_user_config() #reset config file
 #> User configuration reset.
-#> Find reset conifg at ~/.local/share/eemanalyzeR/user-config.yaml
+#> Find reset config at /home/runner/.local/share/eemanalyzeR/user-config.yaml
 load_user_config() #load config file
 #> User configuration loaded from file:
 #> ~/.local/share/eemanalyzeR/user-config.yaml
