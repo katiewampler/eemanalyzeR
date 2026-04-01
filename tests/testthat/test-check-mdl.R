@@ -35,12 +35,6 @@ test_that("we can get the mdl for eems data", {
     eemlist[[2]]$x[1,4] <- 0.000001 #set a low value so it spans the MDL in the region
     expect_equal(check_eem_mdl(eemlist, mdl, ex = 314, em=250:262)[2], "MDL02")
 
-  #check that warning is provided for differing wavelengths
-    eems <- example_processed_eems
-    eems[[1]]$ex <- c(200,eems[[1]]$ex[-1])
-    expect_warning(check <- check_eem_mdl(eems, mdl, ex = 270:280, em=300:320),
-                                  "Wavelengths differ between MDL and eemlist")
-
 
 })
 
@@ -71,13 +65,6 @@ test_that("we can get the mdl for abs data", {
   #check that a partial MDL is flagged
   abslist[[2]]$data[32,2] <- 0.000001 #set a low value so it spans the MDL in the region
   expect_equal(check_abs_mdl(abslist, mdl, wl=242:248)[2], "MDL02")
-
-  #check that warning is provided for differing wavelengths
-  abs <- example_processed_abs
-  abs[[1]]$data[1,1] <- 800.2
-
-  expect_warning(check <- check_abs_mdl(abs, mdl, wl=254:260),
-                                "Wavelengths differ between MDL and abslist")
 
 })
 

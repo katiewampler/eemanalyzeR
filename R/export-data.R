@@ -105,7 +105,7 @@ export_data <- function(eemlist, abslist, filename,
       width <- ceiling(length(eem_plot) / height)
 
       #create basic plots for summary with titles
-      all_plots <- plot(eemlist, title="sample")
+      invisible(all_plots <- plot(eemlist, title="sample"))
 
       summary <- ggpubr::ggarrange(plotlist = all_plots, nrow = height, ncol = width)
       ggplot2::ggsave(

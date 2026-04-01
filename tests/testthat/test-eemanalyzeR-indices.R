@@ -5,8 +5,7 @@ test_that("absorbance indices are correct", {
     eemlist <- example_processed_eems
     qaqc_dir <- system.file("extdata", package = "eemanalyzeR")
 
-    #should give warnings about not using mdl
-    expect_warning(expect_warning(indices <- eemanalyzeR_indices(eemlist, abslist, qaqc_dir = withr::local_tempfile()), "Fluorescence"), "Absorbance")
+    indices <- eemanalyzeR_indices(eemlist, abslist, qaqc_dir = withr::local_tempfile())
 
     indices <- eemanalyzeR_indices(eemlist, abslist, qaqc_dir = qaqc_dir)
     index <- indices$abs_index #get abs indices

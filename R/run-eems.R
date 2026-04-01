@@ -218,8 +218,14 @@ run_eems <- function(
     if(qaqc_checks){
       qaqc_dir <-  get_qaqc_dir(.fnenv) # returns NA if no qaqc_dir specified in config
       #qaqc_dir <- ifelse(is.na(qaqc_dir), .qaqc_dir(), qaqc_dir)
+
+      # Check QAQC files for missing wavelengths
+      check_qaqc_wave(processed_eems, processed_abs, qaqc_dir = qaqc_dir, type = "mdl")
+      check_qaqc_wave(processed_eems, processed_abs, qaqc_dir = qaqc_dir, type = "check-std")
     }else{
       qaqc_dir <- NA
+      .write_readme_line(paste0("Fluorescence indices were not checked against ", "method detection limits (MDL)"), "mdl")
+      .write_readme_line(paste0("Absorbance indices were not checked against ", "method detection limits (MDL)", "\n"), "mdl", append = TRUE)
     }
 
   # Check MDLS are in the get_indices function

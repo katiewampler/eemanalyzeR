@@ -44,17 +44,6 @@ test_that("tea checks work", {
   #check the readme
     expect_true(grepl("0% (n=8) of the absorbance indices", get_readme()$check_std, fixed=TRUE))
 
-  #check that warning is provided for differing wavelengths
-    eems <- example_processed_eems
-    eems[[1]]$ex <- c(eems[[1]]$ex[-1], 200)
-    abs <- example_processed_abs
-    abs[[1]]$data[1,1] <- 800.2
-
-    expect_warning(expect_warning(check <- check_std(eems, abs, qaqc_dir = system.file("extdata", package = "eemanalyzeR")),
-                   "Wavelengths differ between check standard and eemlist"), "Wavelengths differ between check standard and abslist")
-
-
-
 })
 
 #test that method selection works
@@ -64,10 +53,7 @@ test_that("check works when there are multiple methods", {
   abs[[2]]$data[,2] <- rep(1,  abs[[1]]$n)
 
   #no dir -> skip QAQC checks
-    expect_warning(expect_warning(no_check <- check_std(example_processed_eems, abs, qaqc_dir = NA),
-                                  "Fluorescence long-term standards"),
-                                   "Absorbance long-term standards")
-
+   no_check <- check_std(example_processed_eems, abs, qaqc_dir = NA)
     expect_true(all(is.na(no_check$flag)))
 
 

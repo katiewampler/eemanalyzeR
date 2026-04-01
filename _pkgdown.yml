@@ -65,6 +65,7 @@ reference:
   - .combine_flags
   - flag_missing
   - format_index
+  - get_qaqc
   - validate_blanks
   - validate_std
 - title: Configuration File

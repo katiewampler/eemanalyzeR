@@ -79,13 +79,13 @@
 #'   example_processed_abs,
 #'   qaqc_dir = system.file("extdata", package = "eemanalyzeR")
 #' )
-get_indices <- function(eemlist, 
-  abslist, 
+get_indices <- function(eemlist,
+  abslist,
   index_method = "eemanalyzeR",
-  tolerance = 0.2, 
+  tolerance = 0.2,
   return = "wide",
-  cuvle = 1, 
-  qaqc_dir = NA, 
+  cuvle = 1,
+  qaqc_dir = NA,
   arg_names = NULL) {
   stopifnot(.is_eemlist(eemlist), .is_abslist(abslist))
 
@@ -137,7 +137,6 @@ get_indices <- function(eemlist,
 
   # get indices
   indices <- index_function(eemlist, abslist, cuvle = cuvle, qaqc_dir = qaqc_dir)
-
 
   # initialize QAQC flag
   indices <- lapply(indices, function(x) {
