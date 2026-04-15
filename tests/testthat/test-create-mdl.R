@@ -57,7 +57,7 @@ test_that("mdls are exported when dir is NA and not updated", {
 test_that("mdls are exported when dir is NA and updated",{
   dummy_dir <- withr::local_tempfile()
   with_mocked_bindings(
-    .default_config_dir = function() dummy_dir,
+    .user_data_dir = function() dummy_dir,
     {
       #setting qaqc_dir to NA while creating should trigger asking to fill
       #ensure it returns warning with example data

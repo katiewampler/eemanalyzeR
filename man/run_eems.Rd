@@ -65,7 +65,7 @@ There are four ways for the user to use and modify the processing configuration 
 \item \strong{Option 1:} User doesn't change anything, the package defaults are used by \code{run_eems}.
 \item \strong{Option 2:} User creates a file (stored on their computer) that has processing defaults that
 eemanalyzeR pulls from at load time. This is created using the \code{\link[=edit_user_config]{edit_user_config()}} function.
-\item \strong{Option 3:} User modifies the defaults \emph{BEFORE} using the \code{run_eems} function using \code{\link[=modify_config]{modify_config()}} function.
+\item \strong{Option 3:} User modifies the defaults \emph{BEFORE} using the \code{run_eems} function using \code{\link[=modify_session_config]{modify_session_config()}} function.
 This modifies the settings for the R session and will be applied to any data processing that occurs until
 the package is reloaded or the R session is restarted. After the package is reloaded the defaults revert
 back to the package defaults or (if they exist) user defaults.

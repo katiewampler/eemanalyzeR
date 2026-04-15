@@ -1,12 +1,6 @@
-#' Just a nicer way to get the directory where the QAQC files should live
-#' @noRd
-.default_config_dir <- function(){
-  return(file.path(fs::path_norm(rappdirs::user_data_dir(appname = "eemanalyzeR"))))
-}
-
 #' Asks to update QAQC directory in config
 #'
-#' If `qaqc_dir` is `NA` in the user config file, this tells the code to not check for QAQC tests. However, we want to
+#' If `qaqc_dir` is `NA` in the user config file, the code will not check for QAQC tests. However, we want to
 #' automatically set the code to use the created QAQC standards. This will ask to update the user_config file, if `Y`,
 #' it will write the default storage location for the standards.
 #'
@@ -15,7 +9,7 @@
 #' @noRd
 update_qaqc_dir <- function(){
   #get paths
-  user_dir <- .default_config_dir()
+  user_dir <- .user_data_dir()
   defaults_file <- file.path(user_dir, "user-config.yaml")
   new_dir <- file.path(user_dir, "qaqc-stds")
 
@@ -36,13 +30,16 @@ update_qaqc_dir <- function(){
       if (!dir.exists(new_dir)) dir.create(new_dir, recursive = TRUE, showWarnings = FALSE)
 
       # if file doesn't exist, write template
+      # TODO simplify template writing to match 
       if (!file.exists(defaults_file)) {
         file.copy(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"),
                   defaults_file)}
 
       new_dir <- normalizePath(new_dir, winslash = "/")
 
-      modify_config(qaqc_dir = new_dir)
+      modify_session_config(qaqc_dir = new_dir)
+
+      # TODO - shouldn't need to use this to update config once we have new config interface
       user_config <- readLines(defaults_file)
       user_config[grepl("qaqc_dir:", user_config)] <- paste0('  qaqc_dir: "', new_dir,'"')
       writeLines(user_config, defaults_file)
@@ -50,6 +47,7 @@ update_qaqc_dir <- function(){
 
   }
 
+  # TODO - why are you comparint get_qaqc_dir to NA character insead of using is.na()?
   qaqc_dir <- ifelse(get_qaqc_dir() == "NA", NA, get_qaqc_dir())
 
   return(qaqc_dir)
@@ -123,7 +121,7 @@ get_qaqc <- function(qaqc_dir, type, method = get_qaqc_method(), quiet = TRUE){
 
         method <- methods[as.numeric(keep)]
 
-        modify_config(qaqc_method = method)
+        modify_session_config(qaqc_method = method)
 
       }else if(!rlang::is_interactive()){
         warning("Running non-interactively; default QAQC method files were used.")

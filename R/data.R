@@ -150,7 +150,7 @@
 #' @details
 #' These values can be edited by:
 #' - the user permanently using [edit_user_config()]
-#' - the user for the current R session using `modify_config()`
+#' - the user for the current R session using `modify_session_config()`
 #' - or within the [run_eems()] function itself by providing argument values
 #'
 #' @md

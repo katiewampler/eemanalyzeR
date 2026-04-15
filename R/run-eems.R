@@ -45,7 +45,7 @@
 #' - **Option 2:** User creates a file (stored on their computer) that has processing defaults that
 #' eemanalyzeR pulls from at load time. This is created using the [edit_user_config()] function.
 #'
-#' - **Option 3:** User modifies the defaults *BEFORE* using the `run_eems` function using [modify_config()] function.
+#' - **Option 3:** User modifies the defaults *BEFORE* using the `run_eems` function using [modify_session_config()] function.
 #' This modifies the settings for the R session and will be applied to any data processing that occurs until
 #' the package is reloaded or the R session is restarted. After the package is reloaded the defaults revert
 #' back to the package defaults or (if they exist) user defaults.
@@ -88,7 +88,7 @@ run_eems <- function(
   .fnenv <- rlang::env_clone(.pkgenv, parent = rlang::caller_env())
 
   # Modify the function environment processing parameters with any from varargs
-  modify_config(!!!parameters_to_modify, env = .fnenv)
+  modify_session_config(!!!parameters_to_modify, env = .fnenv)
 
   # Decide whether the script is running in interactive or batch mode
   rlang::local_interactive(value = interactive)

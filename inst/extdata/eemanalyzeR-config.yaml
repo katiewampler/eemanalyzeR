@@ -63,3 +63,6 @@
   output_dir: .na.character
   csv: FALSE
   sum_plot: TRUE
+
+  # Package version
+  package_version: .na.character

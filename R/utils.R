@@ -54,3 +54,9 @@
 }
 
 
+#' Just a nicer way to get the directory where the user config and QAQC files should live
+#' @noRd
+.user_data_dir <- function(){
+  return(file.path(fs::path_norm(rappdirs::user_data_dir(appname = "eemanalyzeR"))))
+}
+

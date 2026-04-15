@@ -26,7 +26,8 @@
 #'
 #' load_user_config()
 edit_user_config <- function() {
-  user_dir <- rappdirs::user_data_dir("eemanalyzeR")
+  user_dir <- .user_data_dir()
+  # TODO might have to modify this so we don't have multiple places that try to create the user config directory
   if (!dir.exists(user_dir)) dir.create(user_dir, recursive = TRUE)
 
   defaults_file <- file.path(user_dir, "user-config.yaml")
@@ -38,7 +39,11 @@ edit_user_config <- function() {
   }
 
   # Open in user's editor
-  if(is_interactive()){file.edit(defaults_file)}
+  if(is_interactive()){
+    file.edit(defaults_file)
+  } else {
+    # TODO Modify the config and write the yaml out
+  }
 
   #apply user edited configuration
   load_user_config()
@@ -46,36 +51,6 @@ edit_user_config <- function() {
   message("Changes to user configuration applied.")
 }
 
-#' @param config_path path the YAML file with user default values
-#' @param env the environment name to write to
-#'
-#' @export
-#' @rdname user_config
-#' @name user_config
-
-# NOTE: This effectively returns everything back to package defaults if the user config can't be found.
-# Is that what we want? It might overwrite settings if the user changed them before trying to load the user config.
-# I'm ok with this as long as it's documented behavior
-load_user_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR"),
-                        env = .pkgenv){
-  # load built-in defaults
-  config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"))
-  # try to load user file
-  user_defaults_file <- fs::path_norm(file.path(config_path, "user-config.yaml"))
-  if(file.exists(user_defaults_file)){
-    user_config <- yaml::read_yaml(user_defaults_file)
-    modified_config <- utils::modifyList(config, user_config, keep.null = TRUE)
-    #modify in this session
-    modify_config(!!!modified_config, env = env)
-    packageStartupMessage("User configuration loaded from file:\n", user_defaults_file)
-  } else {
-    packageStartupMessage("User configuration not found. If eemanalyzeR package defaults are not ok, create user configuration with edit_config()")
-
-  }
-  # Don't modify anything if the user config isn't found
-  # invisibly return the completed configuration
-  invisible(list_config())
-}
 
 #' Reset all eemanalyzeR settings in the user configuration file to package defaults
 #'
@@ -92,7 +67,8 @@ load_user_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR"
 #' reset_user_config() #reset config file
 #' load_user_config() #load config file
 reset_user_config <- function() {
-  user_dir <- rappdirs::user_data_dir("eemanalyzeR")
+  user_dir <- .user_data_dir()
+  # TODO - might have to change this here so we don't end up having multiple ways to create the user config directory
   if (!dir.exists(user_dir)) dir.create(user_dir, recursive = TRUE)
 
     defaults_file <- file.path(user_dir, "user-config.yaml")
@@ -111,14 +87,73 @@ reset_user_config <- function() {
          normalizePath(defaults_file))
 }
 
-# Load the user config on package load
-rlang::on_load({
-  # Load the user config and print a message if loading the config fails
-  tryCatch(load_user_config(),
-  error = function(e) {
-    packageStartupMessage("Warning: Malformed User Configuration File stored on disk. User Configuration not loaded.\n",
-    "Please edit user config using edit_user_config or reset to defaults using reset_user_config")
-  })
-})
+# Reads user config but doesn't apply to session. Returns as list or throws error if not found
+# TODO - should this take a file or a directory?
+read_user_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR")) {
+  user_config_file <- fs::path_norm(file.path(config_path, "user-config.yaml"))
+  if(file.exists(user_config_file)){
+    user_config <- yaml::read_yaml(user_config_file)
+    packageStartupMessage("User configuration read from file:\n", user_config_file)
+  } else {
+    stop("User configuration not found.")
+  }
+  return(user_config)
+}
 
-#
+#' Validate the eemanalyzeR configuration
+#'
+#' Checks that all settings in the eemanalyzeR user config are valid options that match the 
+#' template included with the package.
+#'
+#' @param config_path The path to the file that stores the user conig. Defaults to the yaml file in the default user data directory.
+#'
+#' @returns invisibly returns TRUE if the configuration is valid, otherwise returns an error
+#'
+#' @export
+#' @examples
+#' # Example validation
+#' validate_user_config()
+validate_user_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR")) {
+  # Get the default config template from the system files
+  default_user_config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"))
+  # Read in the config
+  current_user_config <- suppressMessages(read_user_config(config_path))
+
+  # Validate the config
+  problems <- validate_config(
+    current_user_config,
+    default_user_config
+  )
+
+  # TODO- what else do i need here?
+  invisible(problems)
+}
+
+
+#' @param config_path path the YAML file with user default values
+#' @param env the environment name to write to
+#'
+#' @export
+#' @rdname user_config
+#' @name user_config
+
+# NOTE: This effectively returns everything back to package defaults if the user config can't be found.
+# Is that what we want? It might overwrite settings if the user changed them before trying to load the user config.
+# I'm ok with this as long as it's documented behavior
+load_user_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR"),
+                        env = .pkgenv){
+  
+  # TODO
+  # Validate the user config
+  #problems <- validate_user_config(config_path)
+  
+  
+  # Read the user config and apply to session
+  # ONLY IF NO PROBLEMS
+  user_config <- read_user_config(config_path)    
+  # Bind the variables to the environment
+  rlang::env_bind(env, config = user_config)
+
+  # invisibly return the completed configuration
+  invisible(list_session_config())
+}

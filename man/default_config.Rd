@@ -74,7 +74,7 @@ in the case where a specific variable is not specified by the user.
 These values can be edited by:
 \itemize{
 \item the user permanently using \code{\link[=edit_user_config]{edit_user_config()}}
-\item the user for the current R session using \code{modify_config()}
+\item the user for the current R session using \code{modify_session_config()}
 \item or within the \code{\link[=run_eems]{run_eems()}} function itself by providing argument values
 }
 }

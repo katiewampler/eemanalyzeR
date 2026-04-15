@@ -1,21 +1,21 @@
 # BEFORE ANYTHING RESET THE EEMANALYZER TO DEFAULTS SO IT DOESN'T DEPEND ON ANY OTHER TESTS
 
 test_that("pkg environment gets created", {
-  reset_config()
+  resest_session_config()
   expect_true(rlang::is_environment(.pkgenv))
 })
 
 test_that("pkg environment has correct defaults", {
-  reset_config()
+  resest_session_config()
 
   # list of wanted defaults (have to make sure they are in the same order)
   package_default_list <- default_config[order(names(default_config))]
-  package_defaults_from_env <- list_config()[order(names(list_config()))]
+  package_defaults_from_env <- list_session_config()[order(names(list_session_config()))]
   expect_identical(package_default_list, package_defaults_from_env)
 })
 
 test_that("pkg environment can be modified by modify_defaults and then reset back to defaults", {
-  reset_config()
+  resest_session_config()
 
   new_default_list <- list(
     # Text
@@ -34,7 +34,7 @@ test_that("pkg environment can be modified by modify_defaults and then reset bac
   expect_true(rlang::is_environment(.pkgenv))
 
   # The function to modify the defaults
-  modify_config(!!!new_default_list, env = .pkgenv)
+  modify_session_config(!!!new_default_list, env = .pkgenv)
 
   expect_true(rlang::is_environment(.pkgenv))
 
@@ -51,14 +51,14 @@ test_that("pkg environment can be modified by modify_defaults and then reset bac
   # Check the package resets back to defaults
   package_default_list <- default_config[order(names(default_config))]
 
-  reset_config()
-  package_defaults_from_env <- list_config()[order(names(list_config()))]
+  resest_session_config()
+  package_defaults_from_env <- list_session_config()[order(names(list_session_config()))]
   expect_identical(package_default_list, package_defaults_from_env)
   }
 )
 
 test_that("modify_defaults can work inside function without modifying package environment", {
-  reset_config()
+  resest_session_config()
 
   .fnenv <- rlang::env_clone(.pkgenv)
   new_default_list <- list(
@@ -74,7 +74,7 @@ test_that("modify_defaults can work inside function without modifying package en
     check_pattern = "test_tea"
   )
   # The functio to modify the defaults
-  modify_config(!!!new_default_list, env = .fnenv)
+  modify_session_config(!!!new_default_list, env = .fnenv)
 
   expect_identical(list(
     abs_pattern = get_abs_pattern(.fnenv),

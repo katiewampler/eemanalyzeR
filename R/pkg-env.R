@@ -9,6 +9,7 @@ default_config <- yaml::read_yaml(file.path(
   "eemanalyzeR-config.yaml"
 ))
 
+# TODO get rid of this and replace with onload stuff
 .pkgenv <- rlang::new_environment(data = list(config = default_config), parent = rlang::empty_env())
 
 #' List current eemanalyzeR configuration
@@ -30,8 +31,8 @@ default_config <- yaml::read_yaml(file.path(
 #' @export
 #' @examples
 #' # Get current configuration options
-#' current_settings <- list_config()
-list_config <- function(env = .pkgenv) {
+#' current_settings <- list_session_config()
+list_session_config <- function(env = .pkgenv) {
   rlang::env_get(env, "config")
 }
 
@@ -46,28 +47,23 @@ list_config <- function(env = .pkgenv) {
 #' @export
 #' @examples
 #' # Example validation
-#' validate_config()
-validate_config <- function(env = .pkgenv) {
-  # Get the default config template
-  default_config_modes <- lapply(default_config, mode)
-  default_config_modes <- default_config_modes[order(names(default_config_modes))]
-  default_config_lengths <- lapply(default_config, length)
-  default_config_lengths <- default_config_lengths[order(names(default_config_lengths))]
-
+#' validate_session_config()
+# TODO - fix this
+validate_session_config <- function(env = .pkgenv) {
+    # Get the default config template from the system files
+  default_config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"))
   # Read in the config
-  current_config <- list_config(env)
-  # Get the current configuration modes
-  config_modes <- lapply(current_config, mode)
-  config_modes <- config_modes[order(names(config_modes))]
-  # Get the current configuration lengths
-  config_lengths <- lapply(current_config, length)
-  config_lengths <- config_lengths[order(names(config_lengths))]
+  current_session_config <- suppressMessages(list_session_config(env))
 
-  # Compare the Modes first then lengths
-  stopifnot(identical(default_config_modes, config_modes) &
-    identical(default_config_lengths, config_lengths))
+  # Validate the config
+  problems <- validate_config(
+    current_session_config,
+    default_config
+  )
 
-  invisible(TRUE)
+  # TODO -what next?
+  invisible(problems)
+
 }
 
 #' Reset all eemanalyzeR settings to package defaults
@@ -77,7 +73,7 @@ validate_config <- function(env = .pkgenv) {
 #' This allows the user to return the data processing settings back to the default configuration of the
 #' eemanalyzeR package. These defaults are documented in data.R under "default_config". This function is
 #' provided in case the user needs to return back to default processing settings after experimenting with
-#' modifying the settings using `modify_config`.
+#' modifying the settings using `modify_session_config`.
 #'
 #' @param env the environment that stores the processing settings. Defaults to the package environment.
 #'            It is not recommended the user modifies this argument.
@@ -87,10 +83,10 @@ validate_config <- function(env = .pkgenv) {
 #'
 #' @examples
 #' # Reset the configuration back to package defaults
-#' reset_config()
-reset_config <- function(env = .pkgenv) {
+#' resest_session_config()
+resest_session_config <- function(env = .pkgenv) {
   rlang::env_bind(env, config = default_config)
-  invisible(list_config(env = env))
+  invisible(list_session_config(env = env))
 }
 
 
@@ -118,26 +114,28 @@ reset_config <- function(env = .pkgenv) {
 #' @export
 #' @examples
 #' # Modify the cuvette length to two centimeters
-#' modify_config(cuvle = 2)
+#' modify_session_config(cuvle = 2)
 #'
 #' # Two methods to modify multiple defaults
 #' # 1) via multiple named arugments
-#' modify_config(cuvle = 2, eem_skip = "badeem")
+#' modify_session_config(cuvle = 2, eem_skip = "badeem")
 #'
 #' # 2) via a named list
 #' modifications <- list(cuvle = 2, eem_skip = "badeem")
-#' modify_config(!!!modifications)
+#' modify_session_config(!!!modifications)
 #'
-modify_config <- function(..., env = .pkgenv) {
+modify_session_config <- function(..., env = .pkgenv) {
   # Capture the varargs as a list
   newdefaults <- rlang::list2(...)
+
   # Assert the varargs the user wants to modify are valid names in the package environment
   not_matching_names <- names(newdefaults[which(!names(newdefaults) %in% .pkgenv_vars)])
   if (length(not_matching_names) > 0) {
     stop(simpleError(paste("Cannot modify default:", not_matching_names, " is not valid")))
   }
+
   # Add the new variables to the old config
-  old_config <- list_config(env)
+  old_config <- list_session_config(env)
   new_config <- utils::modifyList(old_config, newdefaults, keep.null = TRUE)
 
   # Bind the variables to the environment
@@ -145,11 +143,12 @@ modify_config <- function(..., env = .pkgenv) {
 
   # Validate the config
   tryCatch(
-    validate_config(env),
+    # TODO - make this work with new conditions
+    validate_session_config(env),
     error = function(e) {
       # Reset the config to the original values if not valid
       rlang::env_bind(env, config = old_config)
-      stop("New config not valid. Reset to package defaults.")
+      stop("New config not valid. Reset to orignal values.")
     }
   )
   invisible(newdefaults)

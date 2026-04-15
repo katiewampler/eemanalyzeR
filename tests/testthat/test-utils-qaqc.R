@@ -22,7 +22,7 @@ test_that("correct mdls are selected", {
   expect_equal(one_set$eem_check_std, readRDS(stds[3]))
   expect_equal(one_set$abs_check_std, readRDS(stds[1]))
 
-  reset_config()
+  resest_session_config()
   #multiple sets in dir -> return after asking in interactive, otherwise use default with warning
   dir.create(file.path(dummy_dir,"method1"), showWarnings = FALSE, recursive = TRUE)
   file.copy(stds, file.path(dummy_dir,"method1", gsub("default", "method1", basename(stds))))

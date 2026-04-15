@@ -1,6 +1,6 @@
 # Create all the getters and setters for the configuration
 # settings in the package environment
-.pkgenv_vars <- names(list_config())
+.pkgenv_vars <- names(list_session_config())
 
 # Template functions to create configuration setters
 # TODO: Might not need setters since modify config exists
