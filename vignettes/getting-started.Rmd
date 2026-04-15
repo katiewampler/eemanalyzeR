@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-`eemanalyzeR` is an R package used providing tools for processing and
+`eemanalyzeR` is an R package providing tools for processing and
 analyzing raw excitation-emission matrices (EEMs) and absorbance data.
 Includes functions for:
 
@@ -24,7 +24,7 @@ Includes functions for:
 -   generating visualizations
 -   exported cleaned data
 
-The package is designed to creates a streamlined and automated workflow
+The package is designed to create a streamlined and automated workflow
 that ensures consistent analysis and simplifies the coding required to
 process the data.
 
@@ -104,23 +104,27 @@ library(eemanalyzeR)
 
 # Processing Data
 
-To go from raw data to processed and clean data use the
-`run_eems()` function. At a minimum this requires
-the following arguments:
+To go from raw data to processed and clean data use the `run_eems()`
+function. At a minimum this requires the following arguments:
 
 -   **input_dir:** the file path to the folder containing the raw EEMs
     and absorbance files on your computer.
 -   **filename:** the name of your project, used to name your exported
     files.
 
-```{r eval=TRUE, message=FALSE, warning=FALSE}
+```{r eval=FALSE}
+  run_eems(input_dir = system.file("extdata", package = "eemanalyzeR"),
+           filename = "eemanalyzeR-example")
+```
+
+```{r eval=TRUE, message=FALSE, warning=FALSE, include=FALSE}
   run_eems(input_dir = system.file("extdata", package = "eemanalyzeR"),
            filename = "eemanalyzeR-example", interactive = FALSE,
            qaqc_dir = system.file("extdata", package = "eemanalyzeR"))
 ```
 
 This function will export the processed data, indices calculations, and
-plots by defaults we can look at the function outputs.
+plots by default. We can look at the function outputs:
 
 ```{r eval=TRUE, echo=FALSE}
 tree_output <- capture.output(fs::dir_tree(file.path(tempdir(), "eemanalyzeR-example")))
@@ -134,16 +138,46 @@ cat(tree_output, sep = "\n")
 
 ## The Outputs
 
--   **\*\_indices_filename.csv**:The absorbance and fluorescence indices
+-   **\* .png:** Plots of the individual EEMs
+
+    ![](eemanalyzeR-example/B1S2ExampleTeaStdSEM.png){width="500"}
+
 -   **absorbance_plot_filename.png:** Plot showing the absorbance
     spectra
--   **\* .png:** Plots of the individual EEMs
+
+    ![](eemanalyzeR-example/absorbance_plot_eemanalyzeR-example.png){width="500"}
+
 -   **summary_plots_filename.png:** Plot showing all of the EEMs
     together
+
+    ![](eemanalyzeR-example/summary_plots_eemanalyzeR-example.png){width="1000"}
+
+-   **\*\_indices_filename.csv**:The absorbance and fluorescence indices
+
+    ```{r echo=FALSE}
+    indices <- read.csv("eemanalyzeR-example/fluorindices_eemanalyzeR-example.csv")
+    head(indices)
+    ```
+
 -   **readme_filename.txt:** A text file detailing the processing steps
     and any warnings that occurred during data processing
+
+    ```{r echo=FALSE}
+    readme <- readLines("eemanalyzeR-example/readme_eemanalyzeR-example.txt")
+    head(readme)
+    ```
+
 -   **processed_data_filename.rds:** An R readable object containing all
-    of the exported data
+    of the exported data. Read in using `readRDS()` function.
+
+    ```{r echo=FALSE}
+    data_file <- readRDS("eemanalyzeR-example/processed_data_eemanalyzeR-example.rds")
+
+    if (requireNamespace("lobstr", quietly = TRUE)) {
+       lobstr::tree(data_file, max_depth = 1)
+    }
+
+    ```
 
 ------------------------------------------------------------------------
 
@@ -151,11 +185,10 @@ cat(tree_output, sep = "\n")
 
 `eemanalyzeR` will process files directly "out of the box", but specific
 research projects may have differing processing needs. If you would like
-to consistently modify the defaults used in the
-`run_eems()` function you can use the
-`edit_user_config()` function. This will create
-a YAML file with your selected defaults which is stored on your computer
-will be read when you load the package.
+to consistently modify the defaults used in the `run_eems()` function
+you can use the `edit_user_config()` function. This will create a YAML
+file with your selected defaults which is stored on your computer will
+be read when you load the package.
 
 ------------------------------------------------------------------------
 
@@ -163,12 +196,18 @@ will be read when you load the package.
 
 One of the goals with the `eemanalyzeR` package was to build in QA/QC
 checks to ensure data quality. While not required to use the package,
-you can use the `create_mdl()` and
-`create_std()` functions. These function requires
-a directory of analytical blanks and check standards (for instance the
-[tea standard](https://doi.org/10.3133/ofr20181096)
-recommended by the USGS). While you can create these standards with any
-number of samples, its recommended to use at least 20 for stability.
+you can use the `create_mdl()` and `create_std()` functions to create
+your QA/QC files. These functions require a directory of analytical
+blanks and check standards (for instance the [tea
+standard](https://doi.org/10.3133/ofr20181096) recommended by the USGS).
+While you can create these standards with any number of samples, its
+recommended to use at least 20 for stability.
+
+**QA/QC files should all come from the same instrument, using the same
+wavelength spacing. Differences in integration time is okay as the files
+are normalized for integration time.** To make multiple method based
+QAQC files, see the vignette
+[`creating-multiple-methods`](creating-multiple-methods.html).
 
 Use the following code to create the method detection limit (MDL) files.
 These by default will be stored in your user-specific data directory and
@@ -211,4 +250,3 @@ indices to ensure:
 #clean up temp files from vignette
 unlink(file.path(tempdir(), "eemanalyzeR-example"),recursive = TRUE)
 ```
-

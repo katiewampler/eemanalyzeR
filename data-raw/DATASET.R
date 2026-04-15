@@ -159,3 +159,9 @@ for(x in files){
               "eemanalyzeR-config.yaml"))
 
   usethis::use_data(default_config, overwrite = TRUE)
+
+#save processed outputs to use in vignettes (temp dir was causing issues)
+  run_eems(input_dir = system.file("extdata", package = "eemanalyzeR"),
+           filename = "eemanalyzeR-example", interactive = FALSE,
+           qaqc_dir = system.file("extdata", package = "eemanalyzeR"),
+           output_dir = "vignettes/eemanalyzeR-example")

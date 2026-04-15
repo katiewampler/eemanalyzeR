@@ -16,21 +16,49 @@ knitr::opts_chunk$set(
 
 # Exported Data
 
-Every data export from `eemanalyzeR` using the
-`export_data()` or `run_eems()` functions contains the following
-files:
+Every data export from `eemanalyzeR` using the `export_data()` or
+`run_eems()` functions contains the following files:
 
--   **\*\_indices_filename.csv**:The absorbance and fluorescence indices
+-   **\* .png:** Plots of the individual EEMs
+
+    ![](eemanalyzeR-example/B1S2ExampleTeaStdSEM.png){width="500"}
+
 -   **absorbance_plot_filename.png:** Plot showing the absorbance
     spectra
--   **\* .png:** Plots of the individual EEMs
+
+    ![](eemanalyzeR-example/absorbance_plot_eemanalyzeR-example.png){width="500"}
+
 -   **summary_plots_filename.png:** Plot showing all of the EEMs
     together
+
+    ![](eemanalyzeR-example/summary_plots_eemanalyzeR-example.png){width="1000"}
+
+-   **\*\_indices_filename.csv**:The absorbance and fluorescence indices
+
+    ```{r echo=FALSE}
+    indices <- read.csv("eemanalyzeR-example/fluorindices_eemanalyzeR-example.csv")
+    head(indices)
+    ```
+
+-   **readme_filename.txt:** A text file detailing the processing steps
+    and any warnings that occurred during data processing
+
+    ```{r echo=FALSE}
+    readme <- readLines("eemanalyzeR-example/readme_eemanalyzeR-example.txt")
+    head(readme)
+    ```
+
 -   **processed_data_filename.rds:** An R readable object containing all
-    of the exported data
--   **readme_filename.txt:** A text file detailing the processing steps,
-    any warnings that occurred during data processing, and information
-    about the QA/QC checks performed
+    of the exported data. Read in using `readRDS()` function.
+
+    ```{r echo=FALSE}
+    data_file <- readRDS("eemanalyzeR-example/processed_data_eemanalyzeR-example.rds")
+
+    if (requireNamespace("lobstr", quietly = TRUE)) {
+       lobstr::tree(data_file, max_depth = 1)
+    }
+
+    ```
 
 <br>
 
@@ -46,11 +74,10 @@ peaks that could impact data during blank subtraction.
     this visual check occurred and the user processing the data accepted
     the data.
 
--   The `validate_blanks()` function also
-    has the option that if the user does **not** accept the instrument
-    blank, it may be replaced with one of the analytical blanks. In this
-    case the **readme** will note the blank that was used instead of the
-    instrument blank.
+-   The `validate_blanks()` function also has the option that if the
+    user does **not** accept the instrument blank, it may be replaced
+    with one of the analytical blanks. In this case the **readme** will
+    note the blank that was used instead of the instrument blank.
 
 <br>
 
@@ -62,15 +89,14 @@ distinguish a measurement from zero and from analytical blanks. Here,
 the MDL is calculated using the approach proposed by Hansen et al.
 (2018):
 
-$$ \text{MDL} = \text{mean}(\text{long-term blank}) + 3 × \text{SD}(\text{long-term blank})$$where
-**long-term blank** is the fluorescence for a specific wavelength pair or
-absorbance at a specific wavelength, **mean** is the average signal, and
-**SD** is the standard deviation.
+$$ \text{MDL} = \text{mean}(\text{long-term blank}) + 3 × \text{SD}(\text{long-term blank})$$
+where **long-term blank** is the fluorescence for a specific wavelength
+pair or absorbance at a specific wavelength, **mean** is the average
+signal, and **SD** is the standard deviation.
 
 To use the MDL checks, the user must create MDL files for both
-absorbance and fluorescence data using the
-`create_mdl()` function. If no MDL files are
-found, a warning will appear in the **readme** file.
+absorbance and fluorescence data using the `create_mdl()` function. If
+no MDL files are found, a warning will appear in the **readme** file.
 
 <br>
 
@@ -80,8 +106,8 @@ Samples of sample type `check` can also be checked against a long-term
 average for consistency.
 
 To use the check standard checks, the user must create average standard
-files for both absorbance and fluorescence data using the
-`create_std()` function.
+files for both absorbance and fluorescence data using the `create_std()`
+function.
 
 -   **If no standard files are found**: a warning will appear in the
     **readme** file.
@@ -97,6 +123,14 @@ files for both absorbance and fluorescence data using the
 <br>
 
 ## Index QA/QC Flags
+
+Flags are used to indicate missing or potentially problematic indices.
+If the the issue is such that there's no value to report, only the flag
+will be returned (i.e., `DOC01`). If there's a value to report, but it
+should be used with knowledge there may be an issue with the value, the
+flag will append the value (i.e., `0.412_VAL01`) if the indices are in
+"wide" format (the default) or in a `QAQC_flag` column in a "long"
+format. See `get-indices()` for more details.
 
 **The following flags may appear in the indices output files:**
 
@@ -198,4 +232,5 @@ Hansen, A. M., Fleck, J., Kraus, T. E. C., Downing, B. D., von
 Dessonneck, T., & Bergamaschi, B. (2018). *Procedures for using the
 Horiba Scientific Aqualog® fluorometer to measure absorbance and
 fluorescence from dissolved organic matter* (USGS Numbered Series No.
-2018-1096). U.S. Geological Survey. https://doi.org/10.3133/ofr20181096
+2018-1096). U.S. Geological Survey.
+<https://doi.org/10.3133/ofr20181096>

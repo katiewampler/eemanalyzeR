@@ -58,6 +58,7 @@ knitr::kable(abs_index)
 
 **Source(s):** [Weishaar et al. 2003](https://doi.org/10.1021/es030360x)
 
+<br>
 
 ### SUVA 280 (SUVA280) 
 **Calculation:** The absorbance at 280 nm per unit of carbon, giving the index units of L mg-C^-1^ m^-1^.
@@ -65,6 +66,8 @@ knitr::kable(abs_index)
 **Interpretation:** Similar to SUVA 254, SUVA 280 is considered an proxy for aromatic content of the dissolved organic matter, where higher values indicate higher aromaticity. This index has been proposed as an alternative to SUVA 254, with some evidence that 280 nm may be a better wavelength to determine aromaticity at since $\pi$ to $\pi*$ transitions occur here for many aromatic molecules ([Chin et al. 1994](https://doi.org/10.2136/sssaj1977.03615995004100020037x)).
 
 **Source(s):** [Chin et al. 1994](https://doi.org/10.2136/sssaj1977.03615995004100020037x), [Hansen et al. 2016](https://doi.org/10.1002/lno.10270)
+
+<br>
 
 ### SVA 412 (SVA412)
 
@@ -74,6 +77,7 @@ knitr::kable(abs_index)
 
 **Source(s):** [Hansen et al. 2016](https://doi.org/10.1002/lno.10270)
 
+<br>
 
 ### Spectral Slope Between 275 to 295 nm (S275_295)
 **Calculation:** Found by fitting a non-linear exponential function to the absorbance spectrum between 275-295 nm. 
@@ -82,12 +86,16 @@ knitr::kable(abs_index)
 
 **Source(s):** [Helms et al. 2008](https://doi.org/10.4319/lo.2008.53.3.0955), [Hansen et al. 2016](https://doi.org/10.1002/lno.10270)
 
+<br>
+
 ### Spectral Slope Between 350 to 400 nm (S350_400) 
 **Calculation:** Found by fitting a non-linear exponential function to the absorbance spectrum between 350-400 nm
 
 **Interpretation:** Higher values are typically associated with lower molecular weight materials and/or lower aromaticity.
 
 **Source(s):** [Helms et al. 2008](https://doi.org/10.4319/lo.2008.53.3.0955), [Hansen et al. 2016](https://doi.org/10.1002/lno.10270)
+
+<br>
 
 ### Spectral Slope Ratio (SR)
 **Calculation:** The ratio of the slope between 275 to 295 nm to the slope between 350 to 400 nm.
@@ -96,12 +104,16 @@ knitr::kable(abs_index)
 
 **Source(s):** [Helms et al. 2008](https://doi.org/10.4319/lo.2008.53.3.0955), [Hansen et al. 2016](https://doi.org/10.1002/lno.10270)
 
+<br>
+
 ### E~2~/E~3~ Ratio (E2_E3)
 **Calculation:** The ratio of absorbance at 250 nm to absorbance at 365 nm.
 
 **Interpretation:** This metric has been related to molecular size and aromaticity where, as E~2~/E~3~ increases, the aromaticity and molecular weight decreases.
 
 **Source(s):** [Peuravuori and Pihlaja 1997](https://doi.org/10.1016/S0003-2670(96)00412-6)
+
+<br>
 
 ### E~4~/E~6~ Ratio (E4_E6)
 **Calculation:** The ratio of absorbance at 465 nm to absorbance at 665 nm.
@@ -110,6 +122,7 @@ knitr::kable(abs_index)
 
 **Source(s):** [Helms et al. 2008](https://doi.org/10.4319/lo.2008.53.3.0955), [Chen et al. 1977](https://doi.org/10.2136/sssaj1977.03615995004100020037x) 
 
+<br>
 
 ## Fluorescence Indices 
 
@@ -160,6 +173,8 @@ organic matter.
 
 **Source(s):** [Coble 1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
 
+<br>
+
 ### Peak T (pT)
 
 **Calculation:** Maximum fluorescence intensity between ex: 270-280 nm and em: 320-350 nm.
@@ -168,6 +183,8 @@ organic matter.
 organic matter.
 
 **Source(s):** [Coble 1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
+
+<br>
 
 ### Peak A (pA)
 
@@ -178,6 +195,8 @@ organic matter.
 
 **Source(s):** [Coble 1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
 
+<br>
+
 ### Peak M (pM)
 
 **Calculation:** Maximum fluorescence intensity between ex: 310-320 nm and em: 380-420 nm.
@@ -187,6 +206,8 @@ organic matter. However, this component has been observed in non-humic environme
 
 **Source(s):** [Coble 1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
 
+<br>
+
 ### Peak C (pC)
 
 **Calculation:** Maximum fluorescence intensity between ex: 330-350 nm and em: 420-480 nm.
@@ -194,6 +215,8 @@ organic matter. However, this component has been observed in non-humic environme
 **Interpretation:** This peak is typically associated with visible humic-like organic matter. 
 
 **Source(s):** [Coble 1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et al. 2014](https://doi.org/10.1017/CBO9781139045452.015) 
+
+<br>
 
 ### Peak D (pD)
 
@@ -203,6 +226,8 @@ organic matter. However, this component has been observed in non-humic environme
 
 **Source(s):** [Stedmon et al. 2003](https://doi.org/10.1016/S0304-4203(03)00072-0), [Aiken, 2014](https://doi.org/10.1017/CBO9781139045452.005) 
 
+<br>
+
 ### Peak E (pE)
 
 **Calculation:** Fluorescence intensity at ex: 455 nm, em: 521 nm.
@@ -210,6 +235,8 @@ organic matter. However, this component has been observed in non-humic environme
 **Interpretation:** This peak is typically associated with soil fulvic acid-like organic matter. 
 
 **Source(s):** [Stedmon et al. 2003](https://doi.org/10.1016/S0304-4203(03)00072-0), [Aiken, 2014](https://doi.org/10.1017/CBO9781139045452.005) 
+
+<br>
 
 ### Peak N (pN)
 
@@ -219,6 +246,8 @@ organic matter. However, this component has been observed in non-humic environme
 
 **Source(s):** [Stedmon et al. 2003](https://doi.org/10.1016/S0304-4203(03)00072-0), [Aiken, 2014](https://doi.org/10.1017/CBO9781139045452.005)
 
+<br>
+
 ### Ratio of Peak A to Peak T (rAT)
 
 **Calculation:** The ratio of Peak A to Peak T.
@@ -226,6 +255,8 @@ organic matter. However, this component has been observed in non-humic environme
 **Interpretation:** Related to the amount of humic-like (recalcitrant) to fresh (liable) dissolved organic matter.
 
 **Source(s):** [Hansen et al. 2016](https://doi.org/10.1002/lno.10270) 
+
+<br>
 
 ### Ratio of Peak C to Peak A (rCA)
 
@@ -235,6 +266,8 @@ organic matter. However, this component has been observed in non-humic environme
 
 **Source(s):** [Hansen et al. 2016](https://doi.org/10.1002/lno.10270)
 
+<br>
+
 ### Ratio of Peak C to Peak M (rCM)
 
 **Calculation:** The ratio of Peak C to Peak M.
@@ -242,6 +275,8 @@ organic matter. However, this component has been observed in non-humic environme
 **Interpretation:** Related to the amount of diagenetically altered (blue shifted) dissolved organic matter.
 
 **Source(s):** [Hansen et al. 2016](https://doi.org/10.1002/lno.10270)
+
+<br>
 
 ### Ratio of Peak C to Peak T (rCT)
 
@@ -251,6 +286,8 @@ organic matter. However, this component has been observed in non-humic environme
 
 **Source(s):** [Baker 2001](https://doi.org/10.1021/es000177t), [Hansen et al. 2016](https://doi.org/10.1002/lno.10270) 
 
+<br>
+
 ### Fluorescence Index (FI)
 
 **Calculation:** The ratio of fluorescence of em: 470 nm to em: 520 nm at ex: 370 nm.
@@ -259,6 +296,8 @@ organic matter. However, this component has been observed in non-humic environme
 
 **Source(s):** [McKnight et al. 2001](https://doi.org/10.4319/lo.2001.46.1.0038), [Cory and McKnight 2005](https://doi.org/10.1021/es0506962), [Serène et al. 2025](https://doi.org/10.1016/j.jhydrol.2024.132524) 
 
+<br>
+
 ### Humification Index-Zsolnay (HIX)
 
 **Calculation:** The ratio of the sum of fluorescence between em: 435-480 nm and em: 300-345 at ex: 254 nm.
@@ -266,6 +305,7 @@ organic matter. However, this component has been observed in non-humic environme
 **Interpretation:** Has typically been used as an indication of humic substances or extent of humification, described by the H/C ratio where a higher value indicates a lower H/C ratio and a higher degree of humification. However, more recent work suggests this metric is related to the ratio of complex, aromatic molecules to simple, less aromatic molecules, where higher values indicate more aromatic and polycondensed organic matter.
 
 **Source(s):** [Zsolnay et al. 1999](https://doi.org/10.1016/S0045-6535(98)00166-0), [Serène et al. 2025](https://doi.org/10.1016/j.jhydrol.2024.132524) 
+<br>
 
 ### Humification Index-Ohno (HIX_ohno)
 
@@ -275,6 +315,8 @@ organic matter. However, this component has been observed in non-humic environme
 
 **Source(s):** [Ohno et al. 2002](https://doi.org/10.1021/es0155276), [Gabor et al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
 
+<br>
+
 ### Freshness Index or β/α (fresh)
 
 **Calculation:** The ratio of the fluorescence at em: 380 nm and the sum of em: 420-435 nm at ex: 310 nm.
@@ -283,6 +325,8 @@ organic matter. However, this component has been observed in non-humic environme
 
 **Source(s):** [Wilson and Xenopoulos 2009](https://doi.org/10.1038/ngeo391)
 
+<br>
+
 ### Biological Index (BIX)
 
 **Calculation:** The ratio of the fluorescence at em: 380 nm and em: 430 nm at ex: 310 nm.
@@ -290,6 +334,8 @@ organic matter. However, this component has been observed in non-humic environme
 **Interpretation:** Traditionally used as an indicator of autotrophic productivity where values above 1 indicate recently produced autochthonous dissolved organic matter. However, recent work suggests that the biological index should be used as an indicator of humic origin, were higher values indicate more microbial origins while lower values indicate more lignin or soil derived organic matter.
 
 **Source(s):** [Huguet et al. 2009](https://doi.org/10.1016/j.orggeochem.2009.03.002), [Serène et al. 2025](https://doi.org/10.1016/j.jhydrol.2024.132524)
+
+<br>
 
 ## References 
 Aiken, G. (2014). Fluorescence and Dissolved Organic Matter: A Chemist’s Perspective. In A. Baker, D. M. Reynolds, J. Lead, P. G. Coble, & R. G. M. Spencer (Eds.), Aquatic Organic Matter Fluorescence (pp. 35-74). Cambridge: Cambridge University Press. https://doi.org/10.1017/CBO9781139045452.005
