@@ -79,6 +79,44 @@ peaks that could impact data during blank subtraction.
     with one of the analytical blanks. In this case the **readme** will
     note the blank that was used instead of the instrument blank.
 
+### What a Blank Should NOT Look Like 
+
+#### Broad Blank Contamination 
+
+There's a clear peak in the 300-400 nm emission range. This indicates
+likely contamination in the blank and it should not be used for blank
+subtraction.
+
+![](figures/blk-cont.png){width="500"}
+
+#### Narrow Blank Contamination 
+
+Around excitation 350 nm and emission 500 nm, there's black dot that
+sticks out. This is often caused by small particles in the sample
+causing small localized areas of high fluorescence. This blank should
+also not be used for blank subtraction.
+
+![](figures/point-blk-cont.png){width="500"}
+
+#### Weird Artifacts 
+
+Around emission 420 nm, there's a long "peak" and the intensity is fully
+negative. Both these issues indicate likely problems with the instrument
+blank and it should not be used for blank subtraction.
+
+![](figures/blk-artifact.png){width="500"}
+
+#### What a Blank Should Look Like 
+
+When you remove the scattering lines, the blank should look similar to
+the plot below. You're likely to see some random peaks due to noise, but
+the noise shouldn't resemble a peak. You might also see strong bars on
+the sides of the removed scattering regions. These are normal and just
+indicate that the scattering regions were perhaps wider than standard,
+but not cause to reject the blank.
+
+![](figures/good-blk.png){width="500"}
+
 <br>
 
 ## Method Detection Limits

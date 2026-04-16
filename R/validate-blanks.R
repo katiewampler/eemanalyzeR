@@ -93,10 +93,19 @@ validate_blanks <- function(blanklist) {
 #' @return TRUE if blank is valid, FALSE if not. Based on user input. If not run in interactive session returns TRUE
 #' @noRd
 plot_blank_and_ask <- function(blanklist) {
+
+  #clip blanklist so we can see area of interest better
+  ex_clip = get_ex_clip()
+  em_clip = get_em_clip()
+  ex_rm <- unique(get_sample_info(blanklist, "ex")[get_sample_info(blanklist, "ex") < ex_clip[1] | get_sample_info(blanklist, "ex") > ex_clip[2]])
+  em_rm <- unique(get_sample_info(blanklist, "em")[get_sample_info(blanklist, "em") < em_clip[1] | get_sample_info(blanklist, "em") > em_clip[2]])
+  blanklist <- eemR::eem_cut(blanklist, ex = ex_rm, em = em_rm, exact = T)
+
   blank_plot1 <- ggpubr::ggarrange(plotlist = plot(unique(blanklist), title="sample"), common.legend = T, legend = "right")
 
   blank_plot2 <- ggpubr::ggarrange(
-      plotlist = plot(remove_scattering(unique(blanklist, , title="sample"), type = c(T, T, T, T), interpolate = c(F, F, F, F))),
+      plotlist = plot(remove_scattering(unique(blanklist, title="sample"),
+                                        type = c(T, T, T, T), interpolate = c(F, F, F, F),width = c(16, 6, 30, 16))),
       common.legend = T, legend = "right"
     )
 
@@ -106,9 +115,12 @@ plot_blank_and_ask <- function(blanklist) {
     #only print if interactive, otherwise it will save a pdf we don't need
     if(rlang::is_interactive()){print(blank_plot)}
 
+  rlang::inform('See vignette("output-documentation", package = "eemanalyzeR") for details on blank validation',
+                .frequency = "once", .frequency_id="blk_vig")
+
    #Prompt user for input to accept or decline the warning
    continue <- .yesorno(
-     "After reviewing blank(s), do you want to continue processing samples",
+     "After reviewing blank(s), do you want to continue processing samples?",
      "Blank accepted and added to samples.",
      "Blank not accepted."
    )

@@ -165,3 +165,44 @@ for(x in files){
            filename = "eemanalyzeR-example", interactive = FALSE,
            qaqc_dir = system.file("extdata", package = "eemanalyzeR"),
            output_dir = "vignettes/eemanalyzeR-example")
+
+# find problem blanks for black documentation  -------
+  # pull all the blank plots from PNNL-DOM to get some examples of what to look for
+
+  #get only blank for tea since others should be dups
+  blk <- list.files("T:/Research/Aqualog_Data/2_PNNL_DOM", pattern = "preTea[0-9]{1,}_1_[1-9]s_blank.dat", recursive = TRUE)
+  file.copy(file.path("T:/Research/Aqualog_Data/2_PNNL_DOM", blk), file.path(fs::path_home(), "Downloads/blkdat"))
+
+  #read in so we can check
+  eem <- eem_dir_read(file.path(fs::path_home(), "Downloads/blkdat"))
+
+  #clip so we can see issues more clearly
+  ex_clip = c(247, 450)
+  em_clip = c(247, 600)
+  ex_rm <- unique(get_sample_info(eem, "ex")[get_sample_info(eem, "ex") < ex_clip[1] | get_sample_info(eem, "ex") > ex_clip[2]])
+  em_rm <- unique(get_sample_info(eem, "em")[get_sample_info(eem, "em") < em_clip[1] | get_sample_info(eem, "em") > em_clip[2]])
+
+  eem <- eemR::eem_cut(eem, ex = ex_rm, em = em_rm, exact = T)
+
+  #find problem ones
+  eemanalyzeR:::plot_blank_and_ask(eem[41:50])
+
+
+  #problem 1: blank contamination (broad)
+  p1 <- plot(remove_scattering(eem[39], type = c(T, T, T, T), interpolate = c(F, F, F, F),width = c(16, 6, 30, 16)))
+  ggsave("vignettes/figures/blk-cont.png", dpi=300, units="cm", height = 12, width=16)
+
+  #problem 2: single point contamination (could maybe find a better one?)
+  p2 <- plot(remove_scattering(eem[46], type = c(T, T, T, T), interpolate = c(F, F, F, F),width = c(16, 6, 30, 16)))
+  ggsave("vignettes/figures/point-blk-cont.png", dpi=300, units="cm", height = 12, width=16)
+
+  #problem 3: weird artifacts
+  p3 <- plot(remove_scattering(eem[6], type = c(T, T, T, T), interpolate = c(F, F, F, F),width = c(16, 6, 30, 16)))
+  ggsave("vignettes/figures/blk-artifact.png", dpi=300, units="cm", height = 12, width=16)
+
+  #a good blank
+  p4 <- plot(remove_scattering(eem[27], type = c(T, T, T, T), interpolate = c(F, F, F, F),width = c(16, 6, 30, 16)))
+  ggsave("vignettes/figures/good-blk.png", dpi=300, units="cm", height = 12, width=16)
+
+#remove directory
+  fs::dir_delete(file.path(fs::path_home(), "Downloads/blkdat"))
