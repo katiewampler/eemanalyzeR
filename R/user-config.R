@@ -25,24 +25,44 @@
 #' edit_user_config()
 #'
 #' load_user_config()
-edit_user_config <- function() {
+edit_user_config <- function(..., interactive = TRUE) {
   user_dir <- .user_data_dir()
+  default_user_config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"))
+
   # TODO might have to modify this so we don't have multiple places that try to create the user config directory
   if (!dir.exists(user_dir)) dir.create(user_dir, recursive = TRUE)
 
-  defaults_file <- file.path(user_dir, "user-config.yaml")
+  user_config_file <- file.path(user_dir, "user-config.yaml")
 
   # if file doesn't exist, write template
-  if (!file.exists(defaults_file)) {
+  if (!file.exists(user_config_file)) {
     file.copy(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"),
-              defaults_file)
+              user_config_file)
   }
 
   # Open in user's editor
-  if(is_interactive()){
-    file.edit(defaults_file)
+  if(interactive){
+    file.edit(user_config_file)
+    # TODO - figure out how to hold the script until the connection is closed
   } else {
-    # TODO Modify the config and write the yaml out
+    # Capture the varargs as a list
+    newdefaults <- rlang::list2(...)
+    # Add the new variables to the old config
+    old_config <- read_user_config()
+    new_config <- utils::modifyList(old_config, newdefaults, keep.null = TRUE)
+
+    # validate and then write the yaml out
+    problem_msg <- .validate_config(
+     new_config,
+     default_user_config
+    )
+    anyproblems <- any(!sapply(problem_msg, is.null, simplify = TRUE))
+    if(anyproblems) {
+      stop("Error: Bad options applied to config. New config not saved. See warning messages above for details.")
+    } else{ 
+      write_yaml(new_config, defaults_file)
+    }
+
   }
 
   #apply user edited configuration
@@ -67,11 +87,7 @@ edit_user_config <- function() {
 #' reset_user_config() #reset config file
 #' load_user_config() #load config file
 reset_user_config <- function() {
-  user_dir <- .user_data_dir()
-  # TODO - might have to change this here so we don't end up having multiple ways to create the user config directory
-  if (!dir.exists(user_dir)) dir.create(user_dir, recursive = TRUE)
-
-    defaults_file <- file.path(user_dir, "user-config.yaml")
+  defaults_file <- file.path(.user_data_dir(), "user-config.yaml")
   if (file.exists(defaults_file)) {
     # Save the old config as .backup just in case
     file.rename(defaults_file, paste0(defaults_file, ".old"))
@@ -117,16 +133,20 @@ validate_user_config <- function(config_path = rappdirs::user_data_dir("eemanaly
   # Get the default config template from the system files
   default_user_config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"))
   # Read in the config
-  current_user_config <- suppressMessages(read_user_config(config_path))
+  current_user_config <- read_user_config(config_path)
 
   # Validate the config
-  problems <- validate_config(
+  problem_msg <- .validate_config(
     current_user_config,
     default_user_config
   )
+  anyproblems <- any(!sapply(problem_msg, is.null, simplify = TRUE))
+  if(anyproblems) {
+    stop("Error: Malformed user configuration in ", config_path, "\nSee warning messages above for details.")
+  }  
+  # If it's valid, return the user config, otherwise print the error messages
+  invisible(current_user_config)
 
-  # TODO- what else do i need here?
-  invisible(problems)
 }
 
 
@@ -143,16 +163,12 @@ validate_user_config <- function(config_path = rappdirs::user_data_dir("eemanaly
 load_user_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR"),
                         env = .pkgenv){
   
-  # TODO
-  # Validate the user config
-  #problems <- validate_user_config(config_path)
-  
-  
-  # Read the user config and apply to session
+  # First Validate the user config
+  valid_user_config <- validate_user_config(config_path)
+
   # ONLY IF NO PROBLEMS
-  user_config <- read_user_config(config_path)    
   # Bind the variables to the environment
-  rlang::env_bind(env, config = user_config)
+  rlang::env_bind(env, config = valid_user_config)
 
   # invisibly return the completed configuration
   invisible(list_session_config())

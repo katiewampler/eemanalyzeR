@@ -22,16 +22,16 @@ rlang::on_load({
   }
 
   # 2) Check if the user data directory has a valid configuration file
-  withCallingHandlers(
+  tryCatch(
     load_user_config(
     config_path = .user_data_dir()),
-    warning = function(cnd) {
+    error = function(cnd) {
       packageStartupMessage(
-        "Invalid User Configuration Found.
-        Using eemanalyzeR default configuration.
-        Please see warnings and fix user configuration file."
+      "----STARTUP WARNING----\n",
+      "Invalid User Configuration Found.\n",
+      "Using eemanalyzeR default configuration.\n",
+      "Please see warnings and fix user configuration file."
       )
-      warnings()
     }
   )
 

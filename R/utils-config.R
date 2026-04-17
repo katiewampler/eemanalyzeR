@@ -23,22 +23,33 @@ t_config$eemm_skip <- "test"
 t_config$width <- c(1, 2, 3)
 
 # Compare configuration lists
-validate_config <- function(
+.validate_config <- function(
   config,
   template_config
 ) {
 
   # check all the options are valid
-  invalid_options <- .check_config_invalid_options(config, template_config)
+  invalid_options <- withCallingHandlers(
+    .check_config_invalid_options(config, template_config)
+  
+
+  )
+  
 
   # check all the required options are in the config
-  missing_options <- .check_config_missing_options(config, template_config)
+  missing_options <- withCallingHandlers(
+    .check_config_missing_options(config, template_config)
+  )
 
   # check all the matching options have the same type
-  invalid_types <- .check_config_option_types(config, template_config)
+  invalid_types <- withCallingHandlers(
+    .check_config_option_types(config, template_config)
+  )
 
   # check all the matching options have the same lengths (since some can be vectors)
-  invalid_lengths <- .check_config_option_lengths(config, template_config)
+  invalid_lengths <- withCallingHandlers(
+    .check_config_option_lengths(config, template_config)
+  )
 
   # Put them in a list?
   problem_list <- list(
@@ -61,9 +72,9 @@ validate_config <- function(
   ]
     # TODO - what to return?
   if(length(wrong_options_in_config) > 0) {
-    .config_option_invalid_msg(wrong_options_in_config)
+    return(.config_option_invalid_warn(wrong_options_in_config))
   }
-  invisible(wrong_options_in_config)
+  invisible(NULL)
 }
 
 .check_config_missing_options <- function(config, template_config) {
@@ -72,10 +83,10 @@ validate_config <- function(
     which(!names(template_config) %in% names(config))
   ]
   if(length(missing_options_from_config) > 0) {
-    .config_option_missing_msg(missing_options_from_config)
+    return(.config_option_missing_warn(missing_options_from_config))
   }
   # Signal some conditions?
-  invisible(missing_options_from_config)
+  invisible(NULL)
 }
 
 # Check that options are all valid types (ex: logical, numeric, text)
@@ -84,7 +95,7 @@ validate_config <- function(
   config_matches <-  .align_config_to_template(config, template_config)
   default_matches <- .align_config_to_template(template_config, config)
   # Further check the matches for the right type (storage mode)
-  # If modes are different, msg about improper options
+  # If modes are different, warn about improper options
   template_config_types <- lapply(default_matches, mode)
   config_types          <- lapply(config_matches, mode)
   type_comparisons <- all.equal(template_config_types, config_types)
@@ -95,10 +106,10 @@ validate_config <- function(
   )
   options_with_bad_types <- names(type_compare)[which(type_compare)]
   if(length(options_with_bad_types) != 0) {
-    .config_option_type_msg(options_with_bad_types)
+    return(.config_option_type_warn(options_with_bad_types))
   }
   # TODO - what should I return?
-  invisible(options_with_bad_types)
+  invisible(NULL)
 
 }
 
@@ -117,10 +128,10 @@ validate_config <- function(
   options_with_bad_lengths <- names(which(compare_lengths))
   #problems_list$length_mismatch <- options_with_bad_lengths
   if(length(options_with_bad_lengths) != 0) {
-    .config_option_lengths_msg(options_with_bad_lengths)
+    return(.config_option_lengths_warn(options_with_bad_lengths))
   }
   # TODO - what should I return?
-  invisible(options_with_bad_lengths)
+  invisible(NULL)
 }
 
 # Function to subset config to only those that match defaults
@@ -134,56 +145,61 @@ validate_config <- function(
   return(config_matches)
 }
 
-# Some custom msg message handling
-msg_config<- function(.subclass, message, call = NULL, ...) {
-  msg <- structure(
+# Some custom warn message handling
+warn_config<- function(.subclass, message, call = NULL, ...) {
+  warn <- structure(
     list(
       message = message,
       call = call,
       ...
     ),
-    class = c(.subclass, "message", "condition")
+    class = c(.subclass, "warning", "condition")
   )
-  message(msg)
+  warning(warn$message)
+  return(warn)
 }
 
-# Config msg for option lengths being wrong
-.config_option_lengths_msg <- function(char) {
+# Config warn for option lengths being wrong
+.config_option_lengths_warn <- function(char) {
   message <- c(
-        paste(char, collapse = ", "), 
-        "do not have the required length. Please check your config\n")
-  msg_config(
-    "config_option_lengths_msg",
+    "Warning! ",
+    paste(char, collapse = ", "), 
+    " do not have the required length in user config. Please check your config\n")
+  warn_config(
+    "config_option_lengths_warn",
     message = message
   )
 }
 
-.config_option_type_msg <- function(char) {
+.config_option_type_warn <- function(char) {
     message <- c(
+          "Warning! ",
         paste(char, collapse = ", "), 
-        "do not have the required type. Please check your config\n")
-  msg_config(
-    "config_option_type_msg",
+        " do not have the required type in user config. Please check your config\n")
+  warn_config(
+    "config_option_type_warn",
     message = message
   )
 }
 
-.config_option_invalid_msg <- function(char) {
+.config_option_invalid_warn <- function(char) {
     message <- c(
+          "Warning! ",
         paste(char, collapse = ", "), 
-        "are not valid options. Please check your config\n")
-  msg_config(
-    "config_option_invalid_msg",
+        " are not valid options in user config. Please check your config\n")
+  warn_config(
+    "config_option_invalid_warn",
     message = message
   )
 }
 
-.config_option_missing_msg <- function(char) {
+.config_option_missing_warn <- function(char) {
     message <- c(
+          "Warning! ",
         paste(char, collapse = ", "), 
-        "are missing from config. Please check your config\n")
-  msg_config(
-    "config_option_missing_msg",
+        " are missing from user config. Please check your config\n")
+  warn_config(
+    "config_option_missing_warn",
     message = message
   )
 }

@@ -48,21 +48,23 @@ list_session_config <- function(env = .pkgenv) {
 #' @examples
 #' # Example validation
 #' validate_session_config()
-# TODO - fix this
 validate_session_config <- function(env = .pkgenv) {
-    # Get the default config template from the system files
+  # Get the default config template from the system files
   default_config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"))
   # Read in the config
   current_session_config <- suppressMessages(list_session_config(env))
-
+  
   # Validate the config
-  problems <- validate_config(
+  problem_msg <- .validate_config(
     current_session_config,
     default_config
   )
-
-  # TODO -what next?
-  invisible(problems)
+  anyproblems <- any(!sapply(problem_msg, is.null, simplify = TRUE))
+  if(anyproblems) {
+    stop("Error: Malformed user configuration in ", config_path, "\nSee warning messages above for details.")
+  }  
+  # If it's valid, return the user config, otherwise print the error messages
+  invisible(current_session_config)
 
 }
 
@@ -128,28 +130,21 @@ modify_session_config <- function(..., env = .pkgenv) {
   # Capture the varargs as a list
   newdefaults <- rlang::list2(...)
 
-  # Assert the varargs the user wants to modify are valid names in the package environment
-  not_matching_names <- names(newdefaults[which(!names(newdefaults) %in% .pkgenv_vars)])
-  if (length(not_matching_names) > 0) {
-    stop(simpleError(paste("Cannot modify default:", not_matching_names, " is not valid")))
-  }
-
   # Add the new variables to the old config
   old_config <- list_session_config(env)
   new_config <- utils::modifyList(old_config, newdefaults, keep.null = TRUE)
 
-  # Bind the variables to the environment
-  rlang::env_bind(env, config = new_config)
-
-  # Validate the config
-  tryCatch(
-    # TODO - make this work with new conditions
-    validate_session_config(env),
-    error = function(e) {
-      # Reset the config to the original values if not valid
-      rlang::env_bind(env, config = old_config)
-      stop("New config not valid. Reset to orignal values.")
-    }
+  # Validate the new config
+  problem_msg <- .validate_config(
+    current_session_config,
+    default_config
   )
+  anyproblems <- any(!sapply(problem_msg, is.null, simplify = TRUE))
+  if(anyproblems) {
+    stop("Error: Bad options applied to session config. See warning messages above for details.")
+  }
+
+  # Bind the variables to the environment and return invisibly
+  rlang::env_bind(env, config = new_config)
   invisible(newdefaults)
 }
