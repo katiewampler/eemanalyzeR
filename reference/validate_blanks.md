@@ -25,4 +25,6 @@ selected
 eems <- add_metadata(metadata, example_eems)
 eems <- subset_type(eems, type = "iblank")
 valid_blanklist <- validate_blanks(eems)
+#> See vignette("output-documentation", package = "eemanalyzeR") for details on blank validation
+#> This message is displayed once per session.
 ```

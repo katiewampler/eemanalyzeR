@@ -92,7 +92,7 @@ default values for these arguments can be found in the documentation for
 the
 [default_config](https://katiewampler.github.io/eemanalyzeR/reference/default_config.md).
 
-There are four ways for user to use and modify the processing
+There are four ways for the user to use and modify the processing
 configuration defaults.
 
 - **Option 1:** User doesn't change anything, the package defaults are
@@ -138,5 +138,5 @@ run_eems(input_dir = system.file("extdata", package = "eemanalyzeR"), interactiv
 #> Warning: Fluorescence long-term standards is missing and will not be used for checks
 #> Warning: Absorbance long-term standards is missing and will not be used for checks
 #> Calculated absorbance and fluorescence indices.
-#> Data successfully exported to: /tmp/RtmpryutGR/eemanalyzeR-output
+#> Data successfully exported to: /tmp/RtmpbeMjPF/eemanalyzeR-output
 ```

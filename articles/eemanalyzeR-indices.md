@@ -49,6 +49,8 @@ al. 2000](https://doi.org/10.1021/es9900407)).
 
 **Source(s):** [Weishaar et al. 2003](https://doi.org/10.1021/es030360x)
 
+  
+
 ### SUVA 280 (SUVA280)
 
 **Calculation:** The absorbance at 280 nm per unit of carbon, giving the
@@ -66,6 +68,8 @@ al. 1994](https://doi.org/10.2136/sssaj1977.03615995004100020037x)).
 al. 1994](https://doi.org/10.2136/sssaj1977.03615995004100020037x),
 [Hansen et al. 2016](https://doi.org/10.1002/lno.10270)
 
+  
+
 ### SVA 412 (SVA412)
 
 **Calculation:** The absorbance at 412 nm per unit of carbon, giving the
@@ -76,6 +80,8 @@ can be used as a proxy for aromatic content of DOM where higher values
 indicate a higher amount of aromaticity.
 
 **Source(s):** [Hansen et al. 2016](https://doi.org/10.1002/lno.10270)
+
+  
 
 ### Spectral Slope Between 275 to 295 nm (S275_295)
 
@@ -89,6 +95,8 @@ molecular weight materials and/or lower aromaticity.
 al. 2008](https://doi.org/10.4319/lo.2008.53.3.0955), [Hansen et
 al. 2016](https://doi.org/10.1002/lno.10270)
 
+  
+
 ### Spectral Slope Between 350 to 400 nm (S350_400)
 
 **Calculation:** Found by fitting a non-linear exponential function to
@@ -100,6 +108,8 @@ molecular weight materials and/or lower aromaticity.
 **Source(s):** [Helms et
 al. 2008](https://doi.org/10.4319/lo.2008.53.3.0955), [Hansen et
 al. 2016](https://doi.org/10.1002/lno.10270)
+
+  
 
 ### Spectral Slope Ratio (SR)
 
@@ -113,6 +123,8 @@ generally increases on irradiation.
 al. 2008](https://doi.org/10.4319/lo.2008.53.3.0955), [Hansen et
 al. 2016](https://doi.org/10.1002/lno.10270)
 
+  
+
 ### E₂/E₃ Ratio (E2_E3)
 
 **Calculation:** The ratio of absorbance at 250 nm to absorbance at 365
@@ -124,6 +136,8 @@ weight decreases.
 
 **Source(s):** [Peuravuori and Pihlaja
 1997](https://doi.org/10.1016/S0003-2670(96)00412-6)
+
+  
 
 ### E₄/E₆ Ratio (E4_E6)
 
@@ -137,6 +151,8 @@ better descriptor of the amount of humic-like organic matter.
 **Source(s):** [Helms et
 al. 2008](https://doi.org/10.4319/lo.2008.53.3.0955), [Chen et
 al. 1977](https://doi.org/10.2136/sssaj1977.03615995004100020037x)
+
+  
 
 ## Fluorescence Indices
 
@@ -174,6 +190,8 @@ tyrosine-like, protein-like organic matter.
 1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et
 al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
 
+  
+
 ### Peak T (pT)
 
 **Calculation:** Maximum fluorescence intensity between ex: 270-280 nm
@@ -186,6 +204,8 @@ tryptophan-like, protein-like organic matter.
 1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et
 al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
 
+  
+
 ### Peak A (pA)
 
 **Calculation:** Maximum fluorescence intensity between ex: 250-260 nm
@@ -197,6 +217,8 @@ organic matter.
 **Source(s):** [Coble
 1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et
 al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
+
+  
 
 ### Peak M (pM)
 
@@ -211,6 +233,8 @@ non-humic environments.
 1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et
 al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
 
+  
+
 ### Peak C (pC)
 
 **Calculation:** Maximum fluorescence intensity between ex: 330-350 nm
@@ -223,6 +247,8 @@ humic-like organic matter.
 1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et
 al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
 
+  
+
 ### Peak D (pD)
 
 **Calculation:** Fluorescence intensity at ex: 390 nm and em: 509 nm.
@@ -233,6 +259,8 @@ acid-like organic matter.
 **Source(s):** [Stedmon et
 al. 2003](https://doi.org/10.1016/S0304-4203(03)00072-0), [Aiken,
 2014](https://doi.org/10.1017/CBO9781139045452.005)
+
+  
 
 ### Peak E (pE)
 
@@ -245,6 +273,8 @@ acid-like organic matter.
 al. 2003](https://doi.org/10.1016/S0304-4203(03)00072-0), [Aiken,
 2014](https://doi.org/10.1017/CBO9781139045452.005)
 
+  
+
 ### Peak N (pN)
 
 **Calculation:** Fluorescence intensity at ex: 280 nm, em: 370 nm.
@@ -256,6 +286,8 @@ with phytoplankton productivity.
 al. 2003](https://doi.org/10.1016/S0304-4203(03)00072-0), [Aiken,
 2014](https://doi.org/10.1017/CBO9781139045452.005)
 
+  
+
 ### Ratio of Peak A to Peak T (rAT)
 
 **Calculation:** The ratio of Peak A to Peak T.
@@ -264,6 +296,8 @@ al. 2003](https://doi.org/10.1016/S0304-4203(03)00072-0), [Aiken,
 to fresh (liable) dissolved organic matter.
 
 **Source(s):** [Hansen et al. 2016](https://doi.org/10.1002/lno.10270)
+
+  
 
 ### Ratio of Peak C to Peak A (rCA)
 
@@ -274,6 +308,8 @@ fulvic-like dissolved organic matter.
 
 **Source(s):** [Hansen et al. 2016](https://doi.org/10.1002/lno.10270)
 
+  
+
 ### Ratio of Peak C to Peak M (rCM)
 
 **Calculation:** The ratio of Peak C to Peak M.
@@ -282,6 +318,8 @@ fulvic-like dissolved organic matter.
 (blue shifted) dissolved organic matter.
 
 **Source(s):** [Hansen et al. 2016](https://doi.org/10.1002/lno.10270)
+
+  
 
 ### Ratio of Peak C to Peak T (rCT)
 
@@ -293,6 +331,8 @@ sewage effluents and may indicate biochemical oxygen demand.
 
 **Source(s):** [Baker 2001](https://doi.org/10.1021/es000177t), [Hansen
 et al. 2016](https://doi.org/10.1002/lno.10270)
+
+  
 
 ### Fluorescence Index (FI)
 
@@ -313,6 +353,8 @@ al. 2001](https://doi.org/10.4319/lo.2001.46.1.0038), [Cory and McKnight
 2005](https://doi.org/10.1021/es0506962), [Serène et
 al. 2025](https://doi.org/10.1016/j.jhydrol.2024.132524)
 
+  
+
 ### Humification Index-Zsolnay (HIX)
 
 **Calculation:** The ratio of the sum of fluorescence between em:
@@ -328,7 +370,7 @@ organic matter.
 
 **Source(s):** [Zsolnay et
 al. 1999](https://doi.org/10.1016/S0045-6535(98)00166-0), [Serène et
-al. 2025](https://doi.org/10.1016/j.jhydrol.2024.132524)
+al. 2025](https://doi.org/10.1016/j.jhydrol.2024.132524)  
 
 ### Humification Index-Ohno (HIX_ohno)
 
@@ -344,6 +386,8 @@ effectively.
 **Source(s):** [Ohno et al. 2002](https://doi.org/10.1021/es0155276),
 [Gabor et al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
 
+  
+
 ### Freshness Index or β/α (fresh)
 
 **Calculation:** The ratio of the fluorescence at em: 380 nm and the sum
@@ -355,6 +399,8 @@ DOM.
 
 **Source(s):** [Wilson and Xenopoulos
 2009](https://doi.org/10.1038/ngeo391)
+
+  
 
 ### Biological Index (BIX)
 
@@ -371,6 +417,8 @@ values indicate more lignin or soil derived organic matter.
 **Source(s):** [Huguet et
 al. 2009](https://doi.org/10.1016/j.orggeochem.2009.03.002), [Serène et
 al. 2025](https://doi.org/10.1016/j.jhydrol.2024.132524)
+
+  
 
 ## References
 

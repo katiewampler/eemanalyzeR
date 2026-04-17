@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">eemanalyzeR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,6 +41,7 @@
 <li><a class="dropdown-item" href="../articles/getting-started.html">Introduction to eemanalyzeR</a></li>
     <li><a class="dropdown-item" href="../articles/output-documentation.html">Interpreting eemanalyzeR Outputs</a></li>
     <li><a class="dropdown-item" href="../articles/eemanalyzeR-indices.html">Calculating Indices with eemanalyzeR Method</a></li>
+    <li><a class="dropdown-item" href="../articles/custom-process-steps.html">Customizing Processing Steps</a></li>
     <li><a class="dropdown-item" href="../articles/custom-indices.html">Creating a Custom Function to Calculate Indices</a></li>
   </ul>
 </li>
@@ -80,23 +81,77 @@
 the following files:</p>
 <ul>
 <li>
-<strong>*_indices_filename.csv</strong>:The absorbance and
-fluorescence indices</li>
+<p><strong>* .png:</strong> Plots of the individual EEMs</p>
+<p><img src="eemanalyzeR-example/B1S2ExampleTeaStdSEM.png" width="500"></p>
+</li>
 <li>
-<strong>absorbance_plot_filename.png:</strong> Plot showing the
-absorbance spectra</li>
+<p><strong>absorbance_plot_filename.png:</strong> Plot showing the
+absorbance spectra</p>
+<p><img src="eemanalyzeR-example/absorbance_plot_eemanalyzeR-example.png" width="500"></p>
+</li>
 <li>
-<strong>* .png:</strong> Plots of the individual EEMs</li>
+<p><strong>summary_plots_filename.png:</strong> Plot showing all of
+the EEMs together</p>
+<p><img src="eemanalyzeR-example/summary_plots_eemanalyzeR-example.png" width="1000"></p>
+</li>
 <li>
-<strong>summary_plots_filename.png:</strong> Plot showing all of the
-EEMs together</li>
+<p><strong>*_indices_filename.csv</strong>:The absorbance and
+fluorescence indices</p>
+<pre><code><span><span class="co">#&gt;                           sample_name        meta_name          pB          pT</span></span>
+<span><span class="co">#&gt; 1                 B1S1ExampleBlankSEM     ExampleBlank       MDL01       MDL01</span></span>
+<span><span class="co">#&gt; 2                B1S2ExampleTeaStdSEM    ExampleTeaStd      0.5991      0.6624</span></span>
+<span><span class="co">#&gt; 3                B1S3ExampleSampleSEM    ExampleSample     0.08022      0.0836</span></span>
+<span><span class="co">#&gt; 4 ManualExampleTeaWaterfallPlotSample ManualExampleTea 1.338_STD01 1.601_STD01</span></span>
+<span><span class="co">#&gt;              pA           pM           pC            pD     pE           pN</span></span>
+<span><span class="co">#&gt; 1  DATA02_MDL01        MDL01        MDL01         MDL01 DATA01        MDL01</span></span>
+<span><span class="co">#&gt; 2 0.2806_DATA02       0.1747       0.1453       0.01998 DATA01       0.2777</span></span>
+<span><span class="co">#&gt; 3 0.3403_DATA02       0.1875       0.1969       0.09784 DATA01       0.0901</span></span>
+<span><span class="co">#&gt; 4 0.7214_DATA02 0.3419_STD01 0.2801_STD01 0.03727_STD01 DATA01 0.6365_STD01</span></span>
+<span><span class="co">#&gt;             rAT           rCA    rCM    rCT pB_DOCnorm pT_DOCnorm    pA_DOCnorm</span></span>
+<span><span class="co">#&gt; 1 DATA01_DATA02 DATA01_DATA02 DATA01 DATA01      DOC01      DOC01  DOC01_DATA02</span></span>
+<span><span class="co">#&gt; 2 0.4236_DATA02  0.518_DATA02 0.8321 0.2194      DOC01      DOC01  DOC01_DATA02</span></span>
+<span><span class="co">#&gt; 3  4.071_DATA02 0.5786_DATA02   1.05  2.356    0.04135    0.04309 0.1754_DATA02</span></span>
+<span><span class="co">#&gt; 4 0.4506_DATA02 0.3883_DATA02 0.8192  0.175      DOC01      DOC01  DOC01_DATA02</span></span>
+<span><span class="co">#&gt;   pM_DOCnorm pC_DOCnorm pD_DOCnorm pE_DOCnorm pN_DOCnorm    FI    HIX HIX_ohno</span></span>
+<span><span class="co">#&gt; 1      DOC01      DOC01      DOC01     DATA01      DOC01 MDL01 DATA01   DATA01</span></span>
+<span><span class="co">#&gt; 2      DOC01      DOC01      DOC01     DATA01      DOC01 1.481 DATA01   DATA01</span></span>
+<span><span class="co">#&gt; 3    0.09663     0.1015    0.05043     DATA01    0.04645 1.435 DATA01   DATA01</span></span>
+<span><span class="co">#&gt; 4      DOC01      DOC01      DOC01     DATA01      DOC01 1.574 DATA01   DATA01</span></span>
+<span><span class="co">#&gt;    fresh    BIX</span></span>
+<span><span class="co">#&gt; 1  MDL01  MDL01</span></span>
+<span><span class="co">#&gt; 2 0.6044 0.6105</span></span>
+<span><span class="co">#&gt; 3 0.5385 0.5466</span></span>
+<span><span class="co">#&gt; 4 0.6591 0.6662</span></span></code></pre>
+</li>
 <li>
-<strong>processed_data_filename.rds:</strong> An R readable object
-containing all of the exported data</li>
+<p><strong>readme_filename.txt:</strong> A text file detailing the
+processing steps and any warnings that occurred during data
+processing</p>
+<pre><code><span><span class="co">#&gt; [1] "2026-04-15 15:34"                                                                                                                                                </span></span>
+<span><span class="co">#&gt; [2] "Data processed using eemanalyzeR 1.1.0 package in R."                                                                                                            </span></span>
+<span><span class="co">#&gt; [3] "For details on processing steps, indices, and QA/QC flags see the package website: https://katiewampler.github.io/eemanalyzeR/articles/output-documentation.html"</span></span>
+<span><span class="co">#&gt; [4] "______________________________"                                                                                                                                  </span></span>
+<span><span class="co">#&gt; [5] ""                                                                                                                                                                </span></span>
+<span><span class="co">#&gt; [6] "2026-04-15 15:34:50: blanks were subtracted from data via 'subtract_blank' function"</span></span></code></pre>
+</li>
 <li>
-<strong>readme_filename.txt:</strong> A text file detailing the
-processing steps, any warnings that occurred during data processing, and
-information about the QA/QC checks performed</li>
+<p><strong>processed_data_filename.rds:</strong> An R readable
+object containing all of the exported data. Read in using
+<code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS()</a></code> function.</p>
+<pre><code><span><span class="co">#&gt; Registered S3 method overwritten by 'eemanalyzeR':</span></span>
+<span><span class="co">#&gt;   method       from</span></span>
+<span><span class="co">#&gt;   plot.eemlist eemR</span></span>
+<span><span class="co">#&gt; User configuration loaded from file:</span></span>
+<span><span class="co">#&gt; ~/.local/share/eemanalyzeR/user-config.yaml</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">&lt;list&gt;</span></span></span>
+<span><span class="co">#&gt; ├─eemlist: <span style="color: #555555;">S3&lt;eemlist&gt;</span>...</span></span>
+<span><span class="co">#&gt; ├─abslist: <span style="color: #555555;">S3&lt;abslist&gt;</span>...</span></span>
+<span><span class="co">#&gt; ├─readme: <span style="color: #555555;">&lt;list&gt;</span>...</span></span>
+<span><span class="co">#&gt; ├─metadata: <span style="color: #555555;">S3&lt;data.frame&gt;</span>...</span></span>
+<span><span class="co">#&gt; ├─indices: <span style="color: #555555;">&lt;list&gt;</span>...</span></span>
+<span><span class="co">#&gt; ├─eem_plot: <span style="color: #555555;">&lt;list&gt;</span>...</span></span>
+<span><span class="co">#&gt; └─abs_plot: <span style="color: #555555;">S3&lt;ggplot2::ggplot/ggplot/ggplot2::gg/S7_object/gg&gt;</span></span></span></code></pre>
+</li>
 </ul>
 <p><br></p>
 </div>
@@ -119,7 +174,47 @@ it may be replaced with one of the analytical blanks. In this case the
 <strong>readme</strong> will note the blank that was used instead of the
 instrument blank.</p></li>
 </ul>
+<div class="section level4">
+<h4 id="what-a-blank-should-not-look-like">What a Blank Should NOT Look Like<a class="anchor" aria-label="anchor" href="#what-a-blank-should-not-look-like"></a>
+</h4>
+<div class="section level5">
+<h5 id="broad-blank-contamination">Broad Blank Contamination<a class="anchor" aria-label="anchor" href="#broad-blank-contamination"></a>
+</h5>
+<p>There’s a clear peak in the 300-400 nm emission range. This indicates
+likely contamination in the blank and it should not be used for blank
+subtraction.</p>
+<p><img src="figures/blk-cont.png" width="500"></p>
+</div>
+<div class="section level5">
+<h5 id="narrow-blank-contamination">Narrow Blank Contamination<a class="anchor" aria-label="anchor" href="#narrow-blank-contamination"></a>
+</h5>
+<p>Around excitation 350 nm and emission 500 nm, there’s black dot that
+sticks out. This is often caused by small particles in the sample
+causing small localized areas of high fluorescence. This blank should
+also not be used for blank subtraction.</p>
+<p><img src="figures/point-blk-cont.png" width="500"></p>
+</div>
+<div class="section level5">
+<h5 id="weird-artifacts">Weird Artifacts<a class="anchor" aria-label="anchor" href="#weird-artifacts"></a>
+</h5>
+<p>Around emission 420 nm, there’s a long “peak” and the intensity is
+fully negative. Both these issues indicate likely problems with the
+instrument blank and it should not be used for blank subtraction.</p>
+<p><img src="figures/blk-artifact.png" width="500"></p>
+</div>
+<div class="section level5">
+<h5 id="what-a-blank-should-look-like">What a Blank Should Look Like<a class="anchor" aria-label="anchor" href="#what-a-blank-should-look-like"></a>
+</h5>
+<p>When you remove the scattering lines, the blank should look similar
+to the plot below. You’re likely to see some random peaks due to noise,
+but the noise shouldn’t resemble a peak. You might also see strong bars
+on the sides of the removed scattering regions. These are normal and
+just indicate that the scattering regions were perhaps wider than
+standard, but not cause to reject the blank.</p>
+<p><img src="figures/good-blk.png" width="500"></p>
 <p><br></p>
+</div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="method-detection-limits">Method Detection Limits<a class="anchor" aria-label="anchor" href="#method-detection-limits"></a>
@@ -129,9 +224,9 @@ detection limits (MDL). The MDL is the minimum signal at which we can
 confidently distinguish a measurement from zero and from analytical
 blanks. Here, the MDL is calculated using the approach proposed by
 Hansen et al. (2018):</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">MDL</mtext><mo>=</mo><mtext mathvariant="normal">mean</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="normal">long-term blank</mtext><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mn>3</mn><mo>×</mo><mtext mathvariant="normal">SD</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="normal">long-term blank</mtext><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex"> \text{MDL} = \text{mean}(\text{long-term blank}) + 3 × \text{SD}(\text{long-term blank})</annotation></semantics></math>where
-<strong>long-term blank</strong> is the fluorescence for a specific
-wavelength pair or absorbance at a specific wavelength,
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">MDL</mtext><mo>=</mo><mtext mathvariant="normal">mean</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="normal">long-term blank</mtext><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mn>3</mn><mo>×</mo><mtext mathvariant="normal">SD</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="normal">long-term blank</mtext><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex"> \text{MDL} = \text{mean}(\text{long-term blank}) + 3 × \text{SD}(\text{long-term blank})</annotation></semantics></math>
+where <strong>long-term blank</strong> is the fluorescence for a
+specific wavelength pair or absorbance at a specific wavelength,
 <strong>mean</strong> is the average signal, and <strong>SD</strong> is
 the standard deviation.</p>
 <p>To use the MDL checks, the user must create MDL files for both
@@ -164,6 +259,14 @@ tolerance used.</p></li>
 <div class="section level3">
 <h3 id="index-qaqc-flags">Index QA/QC Flags<a class="anchor" aria-label="anchor" href="#index-qaqc-flags"></a>
 </h3>
+<p>Flags are used to indicate missing or potentially problematic
+indices. If the the issue is such that there’s no value to report, only
+the flag will be returned (i.e., <code>DOC01</code>). If there’s a value
+to report, but it should be used with knowledge there may be an issue
+with the value, the flag will append the value (i.e.,
+<code>0.412_VAL01</code>) if the indices are in “wide” format (the
+default) or in a <code>QAQC_flag</code> column in a “long” format. See
+<code>get-indices()</code> for more details.</p>
 <p><strong>The following flags may appear in the indices output
 files:</strong></p>
 <ul>

@@ -11,7 +11,7 @@ as an object called `readme` in the package environment."><meta property="og:ima
 
     <a class="navbar-brand me-2" href="../index.html">eemanalyzeR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,6 +25,7 @@ as an object called `readme` in the package environment."><meta property="og:ima
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/getting-started.html">Introduction to eemanalyzeR</a></li>
     <li><a class="dropdown-item" href="../articles/output-documentation.html">Interpreting eemanalyzeR Outputs</a></li>
     <li><a class="dropdown-item" href="../articles/eemanalyzeR-indices.html">Calculating Indices with eemanalyzeR Method</a></li>
+    <li><a class="dropdown-item" href="../articles/custom-process-steps.html">Customizing Processing Steps</a></li>
     <li><a class="dropdown-item" href="../articles/custom-indices.html">Creating a Custom Function to Calculate Indices</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -62,29 +63,29 @@ as an object called `readme` in the package environment.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">print_readme</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2026-04-01 17:04</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Data processed using eemanalyzeR 1.1.0 package in R.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2026-04-17 00:08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Data processed using eemanalyzeR 1.2.0 package in R.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> For details on processing steps, indices, and QA/QC flags see the package website: https://katiewampler.github.io/eemanalyzeR/articles/output-documentation.html</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ______________________________</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2026-04-01 17:04:51: data was corrected for inner filter effects via 'ife_correct' function</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2026-04-17 00:08:23: data was corrected for inner filter effects via 'ife_correct' function</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    function parameters:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	 cuvle: 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    warning: removed the following wavelengths in EEM's to match absorbance data wavelengths</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	excitation: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	emission: 806.452 - 820.768</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2026-04-01 17:04:50: Absorbance and fluorescence indices were calculated using the 'get_indices' function</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2026-04-17 00:08:21: Absorbance and fluorescence indices were calculated using the 'get_indices' function</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    function parameters:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	 index_method: eemanalyzeR</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	 return: wide</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	 cuvle: 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	 qaqc_dir: /home/runner/work/_temp/Library/eemanalyzeR/extdata</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2026-04-01 17:04:50: Fluorescence indices were not checked against method detection limits (MDL)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2026-04-17 00:08:21: Fluorescence indices were not checked against method detection limits (MDL)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Absorbance indices were not checked against method detection limits (MDL)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2026-04-01 17:04:50: 0% (n=8) of the absorbance indices were greater than 20% of the long-term check standard</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2026-04-17 00:08:21: 0% (n=8) of the absorbance indices were greater than 20% of the long-term check standard</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 27% (n=22) of the fluorescence indices were greater than 20% of the long-term check standard</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>

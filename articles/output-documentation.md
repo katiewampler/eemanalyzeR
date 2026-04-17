@@ -8,15 +8,73 @@ or
 [`run_eems()`](https://katiewampler.github.io/eemanalyzeR/reference/run_eems.md)
 functions contains the following files:
 
-- **\*\_indices_filename.csv**:The absorbance and fluorescence indices
-- **absorbance_plot_filename.png:** Plot showing the absorbance spectra
 - **\* .png:** Plots of the individual EEMs
+
+  ![](eemanalyzeR-example/B1S2ExampleTeaStdSEM.png)
+
+- **absorbance_plot_filename.png:** Plot showing the absorbance spectra
+
+  ![](eemanalyzeR-example/absorbance_plot_eemanalyzeR-example.png)
+
 - **summary_plots_filename.png:** Plot showing all of the EEMs together
+
+  ![](eemanalyzeR-example/summary_plots_eemanalyzeR-example.png)
+
+- **\*\_indices_filename.csv**:The absorbance and fluorescence indices
+
+      #>                           sample_name        meta_name          pB          pT
+      #> 1                 B1S1ExampleBlankSEM     ExampleBlank       MDL01       MDL01
+      #> 2                B1S2ExampleTeaStdSEM    ExampleTeaStd      0.5991      0.6624
+      #> 3                B1S3ExampleSampleSEM    ExampleSample     0.08022      0.0836
+      #> 4 ManualExampleTeaWaterfallPlotSample ManualExampleTea 1.338_STD01 1.601_STD01
+      #>              pA           pM           pC            pD     pE           pN
+      #> 1  DATA02_MDL01        MDL01        MDL01         MDL01 DATA01        MDL01
+      #> 2 0.2806_DATA02       0.1747       0.1453       0.01998 DATA01       0.2777
+      #> 3 0.3403_DATA02       0.1875       0.1969       0.09784 DATA01       0.0901
+      #> 4 0.7214_DATA02 0.3419_STD01 0.2801_STD01 0.03727_STD01 DATA01 0.6365_STD01
+      #>             rAT           rCA    rCM    rCT pB_DOCnorm pT_DOCnorm    pA_DOCnorm
+      #> 1 DATA01_DATA02 DATA01_DATA02 DATA01 DATA01      DOC01      DOC01  DOC01_DATA02
+      #> 2 0.4236_DATA02  0.518_DATA02 0.8321 0.2194      DOC01      DOC01  DOC01_DATA02
+      #> 3  4.071_DATA02 0.5786_DATA02   1.05  2.356    0.04135    0.04309 0.1754_DATA02
+      #> 4 0.4506_DATA02 0.3883_DATA02 0.8192  0.175      DOC01      DOC01  DOC01_DATA02
+      #>   pM_DOCnorm pC_DOCnorm pD_DOCnorm pE_DOCnorm pN_DOCnorm    FI    HIX HIX_ohno
+      #> 1      DOC01      DOC01      DOC01     DATA01      DOC01 MDL01 DATA01   DATA01
+      #> 2      DOC01      DOC01      DOC01     DATA01      DOC01 1.481 DATA01   DATA01
+      #> 3    0.09663     0.1015    0.05043     DATA01    0.04645 1.435 DATA01   DATA01
+      #> 4      DOC01      DOC01      DOC01     DATA01      DOC01 1.574 DATA01   DATA01
+      #>    fresh    BIX
+      #> 1  MDL01  MDL01
+      #> 2 0.6044 0.6105
+      #> 3 0.5385 0.5466
+      #> 4 0.6591 0.6662
+
+- **readme_filename.txt:** A text file detailing the processing steps
+  and any warnings that occurred during data processing
+
+      #> [1] "2026-04-15 15:34"                                                                                                                                                
+      #> [2] "Data processed using eemanalyzeR 1.1.0 package in R."                                                                                                            
+      #> [3] "For details on processing steps, indices, and QA/QC flags see the package website: https://katiewampler.github.io/eemanalyzeR/articles/output-documentation.html"
+      #> [4] "______________________________"                                                                                                                                  
+      #> [5] ""                                                                                                                                                                
+      #> [6] "2026-04-15 15:34:50: blanks were subtracted from data via 'subtract_blank' function"
+
 - **processed_data_filename.rds:** An R readable object containing all
-  of the exported data
-- **readme_filename.txt:** A text file detailing the processing steps,
-  any warnings that occurred during data processing, and information
-  about the QA/QC checks performed
+  of the exported data. Read in using
+  [`readRDS()`](https://rdrr.io/r/base/readRDS.html) function.
+
+      #> Registered S3 method overwritten by 'eemanalyzeR':
+      #>   method       from
+      #>   plot.eemlist eemR
+      #> User configuration loaded from file:
+      #> ~/.local/share/eemanalyzeR/user-config.yaml
+      #> <list>
+      #> ├─eemlist: S3<eemlist>...
+      #> ├─abslist: S3<abslist>...
+      #> ├─readme: <list>...
+      #> ├─metadata: S3<data.frame>...
+      #> ├─indices: <list>...
+      #> ├─eem_plot: <list>...
+      #> └─abs_plot: S3<ggplot2::ggplot/ggplot/ggplot2::gg/S7_object/gg>
 
   
 
@@ -39,6 +97,44 @@ peaks that could impact data during blank subtraction.
   blanks. In this case the **readme** will note the blank that was used
   instead of the instrument blank.
 
+#### What a Blank Should NOT Look Like
+
+##### Broad Blank Contamination
+
+There’s a clear peak in the 300-400 nm emission range. This indicates
+likely contamination in the blank and it should not be used for blank
+subtraction.
+
+![](figures/blk-cont.png)
+
+##### Narrow Blank Contamination
+
+Around excitation 350 nm and emission 500 nm, there’s black dot that
+sticks out. This is often caused by small particles in the sample
+causing small localized areas of high fluorescence. This blank should
+also not be used for blank subtraction.
+
+![](figures/point-blk-cont.png)
+
+##### Weird Artifacts
+
+Around emission 420 nm, there’s a long “peak” and the intensity is fully
+negative. Both these issues indicate likely problems with the instrument
+blank and it should not be used for blank subtraction.
+
+![](figures/blk-artifact.png)
+
+##### What a Blank Should Look Like
+
+When you remove the scattering lines, the blank should look similar to
+the plot below. You’re likely to see some random peaks due to noise, but
+the noise shouldn’t resemble a peak. You might also see strong bars on
+the sides of the removed scattering regions. These are normal and just
+indicate that the scattering regions were perhaps wider than standard,
+but not cause to reject the blank.
+
+![](figures/good-blk.png)
+
   
 
 ### Method Detection Limits
@@ -49,10 +145,10 @@ distinguish a measurement from zero and from analytical blanks. Here,
 the MDL is calculated using the approach proposed by Hansen et al.
 (2018):
 
-$$\text{MDL} = \text{mean}\left( \text{long-term blank} \right) + 3 \times \text{SD}\left( \text{long-term blank} \right)$$where
-**long-term blank** is the fluorescence for a specific wavelength pair
-or absorbance at a specific wavelength, **mean** is the average signal,
-and **SD** is the standard deviation.
+$$\text{MDL} = \text{mean}\left( \text{long-term blank} \right) + 3 \times \text{SD}\left( \text{long-term blank} \right)$$
+where **long-term blank** is the fluorescence for a specific wavelength
+pair or absorbance at a specific wavelength, **mean** is the average
+signal, and **SD** is the standard deviation.
 
 To use the MDL checks, the user must create MDL files for both
 absorbance and fluorescence data using the
@@ -86,6 +182,14 @@ function.
   
 
 ### Index QA/QC Flags
+
+Flags are used to indicate missing or potentially problematic indices.
+If the the issue is such that there’s no value to report, only the flag
+will be returned (i.e., `DOC01`). If there’s a value to report, but it
+should be used with knowledge there may be an issue with the value, the
+flag will append the value (i.e., `0.412_VAL01`) if the indices are in
+“wide” format (the default) or in a `QAQC_flag` column in a “long”
+format. See `get-indices()` for more details.
 
 **The following flags may appear in the indices output files:**
 

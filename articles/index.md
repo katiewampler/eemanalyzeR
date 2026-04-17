@@ -8,5 +8,7 @@
   Outputs](https://katiewampler.github.io/eemanalyzeR/articles/output-documentation.md):
 - [Calculating Indices with eemanalyzeR
   Method](https://katiewampler.github.io/eemanalyzeR/articles/eemanalyzeR-indices.md):
+- [Customizing Processing
+  Steps](https://katiewampler.github.io/eemanalyzeR/articles/custom-process-steps.md):
 - [Creating a Custom Function to Calculate
   Indices](https://katiewampler.github.io/eemanalyzeR/articles/custom-indices.md):

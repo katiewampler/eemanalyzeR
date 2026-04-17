@@ -15,7 +15,7 @@ the function performs the full processing pipeline from start to finish."><meta 
 
     <a class="navbar-brand me-2" href="../index.html">eemanalyzeR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,6 +29,7 @@ the function performs the full processing pipeline from start to finish."><meta 
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/getting-started.html">Introduction to eemanalyzeR</a></li>
     <li><a class="dropdown-item" href="../articles/output-documentation.html">Interpreting eemanalyzeR Outputs</a></li>
     <li><a class="dropdown-item" href="../articles/eemanalyzeR-indices.html">Calculating Indices with eemanalyzeR Method</a></li>
+    <li><a class="dropdown-item" href="../articles/custom-process-steps.html">Customizing Processing Steps</a></li>
     <li><a class="dropdown-item" href="../articles/custom-indices.html">Creating a Custom Function to Calculate Indices</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -122,7 +123,7 @@ and absorbance data is an <strong>input directory</strong> containing the raw da
 a metadata spreadsheet. However, there are many optional arguments for the
 user to modify the EEMs and absorbance processing. The names and default values
 for these arguments can be found in the documentation for the <a href="default_config.html">default_config</a>.</p>
-<p>There are four ways for user to use and modify the processing configuration defaults.</p><ul><li><p><strong>Option 1:</strong> User doesn't change anything, the package defaults are used by <code>run_eems</code>.</p></li>
+<p>There are four ways for the user to use and modify the processing configuration defaults.</p><ul><li><p><strong>Option 1:</strong> User doesn't change anything, the package defaults are used by <code>run_eems</code>.</p></li>
 <li><p><strong>Option 2:</strong> User creates a file (stored on their computer) that has processing defaults that
 eemanalyzeR pulls from at load time. This is created using the <code><a href="user_config.html">edit_user_config()</a></code> function.</p></li>
 <li><p><strong>Option 3:</strong> User modifies the defaults <em>BEFORE</em> using the <code>run_eems</code> function using <code><a href="modify_config.html">modify_config()</a></code> function.
@@ -151,7 +152,7 @@ but the argument values will be reported in the readme file.</p></li>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fluorescence long-term standards is missing and will not be used for checks</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Absorbance long-term standards is missing and will not be used for checks</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculated absorbance and fluorescence indices.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Data successfully exported to: /tmp/RtmpryutGR/eemanalyzeR-output</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Data successfully exported to: /tmp/RtmpbeMjPF/eemanalyzeR-output</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

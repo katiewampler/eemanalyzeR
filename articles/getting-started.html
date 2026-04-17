@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">eemanalyzeR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,6 +41,7 @@
 <li><a class="dropdown-item" href="../articles/getting-started.html">Introduction to eemanalyzeR</a></li>
     <li><a class="dropdown-item" href="../articles/output-documentation.html">Interpreting eemanalyzeR Outputs</a></li>
     <li><a class="dropdown-item" href="../articles/eemanalyzeR-indices.html">Calculating Indices with eemanalyzeR Method</a></li>
+    <li><a class="dropdown-item" href="../articles/custom-process-steps.html">Customizing Processing Steps</a></li>
     <li><a class="dropdown-item" href="../articles/custom-indices.html">Creating a Custom Function to Calculate Indices</a></li>
   </ul>
 </li>
@@ -72,7 +73,7 @@
 
     
     
-<p><code>eemanalyzeR</code> is an R package used providing tools for
+<p><code>eemanalyzeR</code> is an R package providing tools for
 processing and analyzing raw excitation-emission matrices (EEMs) and
 absorbance data. Includes functions for:</p>
 <ul>
@@ -82,7 +83,7 @@ absorbance data. Includes functions for:</p>
 <li>generating visualizations</li>
 <li>exported cleaned data</li>
 </ul>
-<p>The package is designed to creates a streamlined and automated
+<p>The package is designed to create a streamlined and automated
 workflow that ensures consistent analysis and simplifies the coding
 required to process the data.</p>
 <hr>
@@ -169,10 +170,9 @@ your exported files.</li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span>  <span class="fu"><a href="../reference/run_eems.html">run_eems</a></span><span class="op">(</span>input_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"eemanalyzeR"</span><span class="op">)</span>,</span>
-<span>           filename <span class="op">=</span> <span class="st">"eemanalyzeR-example"</span>, interactive <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>           qaqc_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"eemanalyzeR"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>           filename <span class="op">=</span> <span class="st">"eemanalyzeR-example"</span><span class="op">)</span></span></code></pre></div>
 <p>This function will export the processed data, indices calculations,
-and plots by defaults we can look at the function outputs.</p>
+and plots by default. We can look at the function outputs:</p>
 <pre><code><span><span class="co">#&gt; ~/</span></span>
 <span><span class="co">#&gt; ├── <span style="color: #BB00BB; font-weight: bold;">B1S1ExampleBlankSEM.png</span></span></span>
 <span><span class="co">#&gt; ├── <span style="color: #BB00BB; font-weight: bold;">B1S2ExampleTeaStdSEM.png</span></span></span>
@@ -190,23 +190,72 @@ and plots by defaults we can look at the function outputs.</p>
 </h3>
 <ul>
 <li>
-<strong>*_indices_filename.csv</strong>:The absorbance and
-fluorescence indices</li>
+<p><strong>* .png:</strong> Plots of the individual EEMs</p>
+<p><img src="eemanalyzeR-example/B1S2ExampleTeaStdSEM.png" width="500"></p>
+</li>
 <li>
-<strong>absorbance_plot_filename.png:</strong> Plot showing the
-absorbance spectra</li>
+<p><strong>absorbance_plot_filename.png:</strong> Plot showing the
+absorbance spectra</p>
+<p><img src="eemanalyzeR-example/absorbance_plot_eemanalyzeR-example.png" width="500"></p>
+</li>
 <li>
-<strong>* .png:</strong> Plots of the individual EEMs</li>
+<p><strong>summary_plots_filename.png:</strong> Plot showing all of
+the EEMs together</p>
+<p><img src="eemanalyzeR-example/summary_plots_eemanalyzeR-example.png" width="1000"></p>
+</li>
 <li>
-<strong>summary_plots_filename.png:</strong> Plot showing all of the
-EEMs together</li>
+<p><strong>*_indices_filename.csv</strong>:The absorbance and
+fluorescence indices</p>
+<pre><code><span><span class="co">#&gt;                           sample_name        meta_name          pB          pT</span></span>
+<span><span class="co">#&gt; 1                 B1S1ExampleBlankSEM     ExampleBlank       MDL01       MDL01</span></span>
+<span><span class="co">#&gt; 2                B1S2ExampleTeaStdSEM    ExampleTeaStd      0.5991      0.6624</span></span>
+<span><span class="co">#&gt; 3                B1S3ExampleSampleSEM    ExampleSample     0.08022      0.0836</span></span>
+<span><span class="co">#&gt; 4 ManualExampleTeaWaterfallPlotSample ManualExampleTea 1.338_STD01 1.601_STD01</span></span>
+<span><span class="co">#&gt;              pA           pM           pC            pD     pE           pN</span></span>
+<span><span class="co">#&gt; 1  DATA02_MDL01        MDL01        MDL01         MDL01 DATA01        MDL01</span></span>
+<span><span class="co">#&gt; 2 0.2806_DATA02       0.1747       0.1453       0.01998 DATA01       0.2777</span></span>
+<span><span class="co">#&gt; 3 0.3403_DATA02       0.1875       0.1969       0.09784 DATA01       0.0901</span></span>
+<span><span class="co">#&gt; 4 0.7214_DATA02 0.3419_STD01 0.2801_STD01 0.03727_STD01 DATA01 0.6365_STD01</span></span>
+<span><span class="co">#&gt;             rAT           rCA    rCM    rCT pB_DOCnorm pT_DOCnorm    pA_DOCnorm</span></span>
+<span><span class="co">#&gt; 1 DATA01_DATA02 DATA01_DATA02 DATA01 DATA01      DOC01      DOC01  DOC01_DATA02</span></span>
+<span><span class="co">#&gt; 2 0.4236_DATA02  0.518_DATA02 0.8321 0.2194      DOC01      DOC01  DOC01_DATA02</span></span>
+<span><span class="co">#&gt; 3  4.071_DATA02 0.5786_DATA02   1.05  2.356    0.04135    0.04309 0.1754_DATA02</span></span>
+<span><span class="co">#&gt; 4 0.4506_DATA02 0.3883_DATA02 0.8192  0.175      DOC01      DOC01  DOC01_DATA02</span></span>
+<span><span class="co">#&gt;   pM_DOCnorm pC_DOCnorm pD_DOCnorm pE_DOCnorm pN_DOCnorm    FI    HIX HIX_ohno</span></span>
+<span><span class="co">#&gt; 1      DOC01      DOC01      DOC01     DATA01      DOC01 MDL01 DATA01   DATA01</span></span>
+<span><span class="co">#&gt; 2      DOC01      DOC01      DOC01     DATA01      DOC01 1.481 DATA01   DATA01</span></span>
+<span><span class="co">#&gt; 3    0.09663     0.1015    0.05043     DATA01    0.04645 1.435 DATA01   DATA01</span></span>
+<span><span class="co">#&gt; 4      DOC01      DOC01      DOC01     DATA01      DOC01 1.574 DATA01   DATA01</span></span>
+<span><span class="co">#&gt;    fresh    BIX</span></span>
+<span><span class="co">#&gt; 1  MDL01  MDL01</span></span>
+<span><span class="co">#&gt; 2 0.6044 0.6105</span></span>
+<span><span class="co">#&gt; 3 0.5385 0.5466</span></span>
+<span><span class="co">#&gt; 4 0.6591 0.6662</span></span></code></pre>
+</li>
 <li>
-<strong>readme_filename.txt:</strong> A text file detailing the
+<p><strong>readme_filename.txt:</strong> A text file detailing the
 processing steps and any warnings that occurred during data
-processing</li>
+processing</p>
+<pre><code><span><span class="co">#&gt; [1] "2026-04-15 15:34"                                                                                                                                                </span></span>
+<span><span class="co">#&gt; [2] "Data processed using eemanalyzeR 1.1.0 package in R."                                                                                                            </span></span>
+<span><span class="co">#&gt; [3] "For details on processing steps, indices, and QA/QC flags see the package website: https://katiewampler.github.io/eemanalyzeR/articles/output-documentation.html"</span></span>
+<span><span class="co">#&gt; [4] "______________________________"                                                                                                                                  </span></span>
+<span><span class="co">#&gt; [5] ""                                                                                                                                                                </span></span>
+<span><span class="co">#&gt; [6] "2026-04-15 15:34:50: blanks were subtracted from data via 'subtract_blank' function"</span></span></code></pre>
+</li>
 <li>
-<strong>processed_data_filename.rds:</strong> An R readable object
-containing all of the exported data</li>
+<p><strong>processed_data_filename.rds:</strong> An R readable
+object containing all of the exported data. Read in using
+<code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS()</a></code> function.</p>
+<pre><code><span><span class="co">#&gt; <span style="color: #555555;">&lt;list&gt;</span></span></span>
+<span><span class="co">#&gt; ├─eemlist: <span style="color: #555555;">S3&lt;eemlist&gt;</span>...</span></span>
+<span><span class="co">#&gt; ├─abslist: <span style="color: #555555;">S3&lt;abslist&gt;</span>...</span></span>
+<span><span class="co">#&gt; ├─readme: <span style="color: #555555;">&lt;list&gt;</span>...</span></span>
+<span><span class="co">#&gt; ├─metadata: <span style="color: #555555;">S3&lt;data.frame&gt;</span>...</span></span>
+<span><span class="co">#&gt; ├─indices: <span style="color: #555555;">&lt;list&gt;</span>...</span></span>
+<span><span class="co">#&gt; ├─eem_plot: <span style="color: #555555;">&lt;list&gt;</span>...</span></span>
+<span><span class="co">#&gt; └─abs_plot: <span style="color: #555555;">S3&lt;ggplot2::ggplot/ggplot/ggplot2::gg/S7_object/gg&gt;</span></span></span></code></pre>
+</li>
 </ul>
 <hr>
 </div>
@@ -229,14 +278,20 @@ read when you load the package.</p>
 <p>One of the goals with the <code>eemanalyzeR</code> package was to
 build in QA/QC checks to ensure data quality. While not required to use
 the package, you can use the <code><a href="../reference/create_mdl.html">create_mdl()</a></code> and
-<code><a href="../reference/create_std.html">create_std()</a></code> functions. These function requires a directory
-of analytical blanks and check standards (for instance the <a href="https://doi.org/10.3133/ofr20181096" class="external-link">tea standard</a> recommended
-by the USGS). While you can create these standards with any number of
-samples, its recommended to use at least 20 for stability.</p>
+<code><a href="../reference/create_std.html">create_std()</a></code> functions to create your QA/QC files. These
+functions require a directory of analytical blanks and check standards
+(for instance the <a href="https://doi.org/10.3133/ofr20181096" class="external-link">tea
+standard</a> recommended by the USGS). While you can create these
+standards with any number of samples, its recommended to use at least 20
+for stability.</p>
+<p><strong>QA/QC files should all come from the same instrument, using
+the same wavelength spacing. Differences in integration time is okay as
+the files are normalized for integration time.</strong> To make multiple
+method based QAQC files, see the vignette <a href="creating-multiple-methods.html"><code>creating-multiple-methods</code></a>.</p>
 <p>Use the following code to create the method detection limit (MDL)
 files. These by default will be stored in your user-specific data
 directory and loaded when needed to process samples.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#specify where the long-term blank files live</span></span>
 <span><span class="va">dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"eemanalyzeR"</span><span class="op">)</span>, <span class="st">"long-term-blanks"</span><span class="op">)</span></span>
 <span></span>
@@ -244,7 +299,7 @@ directory and loaded when needed to process samples.</p>
 <span><span class="va">eem_mdl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_mdl.html">create_mdl</a></span><span class="op">(</span><span class="va">dir</span>, type <span class="op">=</span> <span class="st">"eem"</span><span class="op">)</span></span>
 <span><span class="va">abs_mdl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_mdl.html">create_mdl</a></span><span class="op">(</span><span class="va">dir</span>, type <span class="op">=</span> <span class="st">"abs"</span><span class="op">)</span></span></code></pre></div>
 <p>We can use a similar process to create the check standard files.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#specify where the long-term blank files live</span></span>
 <span><span class="va">dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"eemanalyzeR"</span><span class="op">)</span>, <span class="st">"long-term-std"</span><span class="op">)</span></span>
 <span></span>

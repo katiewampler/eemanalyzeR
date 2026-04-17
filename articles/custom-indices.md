@@ -2,25 +2,32 @@
 
 ## Introduction
 
-To maximum flexibility in calculating indices, we’ve enabled the
+To maximize flexibility in calculating indices, the
 [`get_indices()`](https://katiewampler.github.io/eemanalyzeR/reference/get_indices.md)
-function to accept custom written functions, allowing users to create
+function accepts custom written functions, allowing users to create
 their own function and calculate indices that may not be included in
 existing methods.
 
 ## Function Requirements
 
 1.  **The function needs to have the following arguments:**
+
     1.  `eemlist`: an eemlist object containing EEM’s data.
+
     2.  `abslist`: an abslist object containing absorbance data.
+
     3.  `cuvle`: the cuvette (path) length in cm.
+
     4.  `qaqc_dir`: the file path to the mdl files generated with
         [`create_mdl()`](https://katiewampler.github.io/eemanalyzeR/reference/create_mdl.md)
+
 2.  **The function must return a list with the following items:**
+
     1.  `abs_index`: the indices calculated from the absorbance data
+
     2.  `eem_index`: the indices calculated from the EEMs data
 
-`abs_index` and `eem_index` should both be a data.frame with the
+`abs_index` and `eem_index` should both be a `data.frame` with the
 following columns:
 
 - `sample_name`: a character, the name of the sample
@@ -87,14 +94,18 @@ pA_sum
 #> [4] "34.0595693438647"
 ```
 
-Lastly, we have a function for getting spectral slopes:
+Lastly, there is a function for getting spectral slopes:
 [`get_abs_slope()`](https://katiewampler.github.io/eemanalyzeR/reference/get_abs_slope.md)
 which will convert the absorbance to absorption, interpolate the data if
 needed, and return the spectral slope within a wavelength range.
 
 ``` r
 S275_295 <- get_abs_slope(abslist, lim=c(275,295))
+S275_295
+#> [1] 0.01654700 0.02306185 0.01302367 0.02306070
 ```
+
+  
 
 ## QA/QC Flags
 
@@ -450,8 +461,7 @@ zhang2025 <- function(eemlist, abslist, cuvle=1, qaqc_dir){
 
 Now let’s test our custom function with the
 [`get_indices()`](https://katiewampler.github.io/eemanalyzeR/reference/get_indices.md)
-function. Note that we get a warning about the indices because the EEMs
-data hasn’t gone through any processing steps.
+function.
 
 ``` r
 indices <- get_indices(example_processed_eems, 
@@ -470,12 +480,14 @@ indices$eem_index
 #> 4 ManualExampleTeaWaterfallPlotSample ManualExampleTea DATA01 DATA01       0.48…
 ```
 
+  
+
 ## Example 2
 
 The last example only used fluorescence data. Let’s create another
 custom function focused on absorbance indices. We’ll create a function
-to calculate the indices used in [**Erlandsson et
-al. 2012:**](https://doi.org/10.1039/C2EM30266G)
+to calculate the indices used in [**Erlandsson et al.
+2012:**](https://doi.org/10.1039/C2EM30266G)
 
 | Index     | Description                          |
 |:----------|:-------------------------------------|
@@ -799,8 +811,7 @@ erlandsson2012 <- function(eemlist, abslist, cuvle=1, qaqc_dir){
 
 Now let’s test our custom function with the
 [`get_indices()`](https://katiewampler.github.io/eemanalyzeR/reference/get_indices.md)
-function. Once again note that we get a warning about the indices
-because the EEMs data hasn’t gone through any processing steps.
+function.
 
 ``` r
 indices <- get_indices(example_processed_eems, example_processed_abs, index_method = erlandsson2012, 

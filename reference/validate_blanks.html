@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">eemanalyzeR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,6 +21,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/getting-started.html">Introduction to eemanalyzeR</a></li>
     <li><a class="dropdown-item" href="../articles/output-documentation.html">Interpreting eemanalyzeR Outputs</a></li>
     <li><a class="dropdown-item" href="../articles/eemanalyzeR-indices.html">Calculating Indices with eemanalyzeR Method</a></li>
+    <li><a class="dropdown-item" href="../articles/custom-process-steps.html">Customizing Processing Steps</a></li>
     <li><a class="dropdown-item" href="../articles/custom-indices.html">Creating a Custom Function to Calculate Indices</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -66,6 +67,8 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">eems</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_metadata.html">add_metadata</a></span><span class="op">(</span><span class="va">metadata</span>, <span class="va">example_eems</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">eems</span> <span class="op">&lt;-</span> <span class="fu"><a href="subset_type.html">subset_type</a></span><span class="op">(</span><span class="va">eems</span>, type <span class="op">=</span> <span class="st">"iblank"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">valid_blanklist</span> <span class="op">&lt;-</span> <span class="fu">validate_blanks</span><span class="op">(</span><span class="va">eems</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> See vignette("output-documentation", package = "eemanalyzeR") for details on blank validation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">This message is displayed once per session.</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
