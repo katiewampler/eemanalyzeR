@@ -39,7 +39,56 @@
       <small>Source: <a href="https://github.com/katiewampler/eemanalyzeR/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
-  </main></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.2.0" id="eemanalyzer-120">eemanalyzeR 1.2.0<a class="anchor" aria-label="anchor" href="#eemanalyzer-120"></a></h2>
+<p>(2026-04-16)</p>
+<ul><li><p>Moving some of the checks of the QA/QC samples to the <code>run_eems</code> function so they don’t warn the user multiple times as the <code>check_mdl</code> and <code>check_std</code> are run several times throughout <code>run_eems</code>.</p></li>
+<li>
+<p>Updated <code>validate_blanks</code></p>
+<ul><li><p>to clip to the area of interest before plotting so it is easier to see any issues</p></li>
+<li><p>increased the width of the scattering to remove a little to better see any issues</p></li>
+<li><p>added a message directing users to check out the <code>output-documentation</code> for checking the blank which prints once per session.</p></li>
+</ul></li>
+<li>
+<p><strong>Updating vignettes.</strong></p>
+<ul><li><p>Added <code>custom-process-steps</code> to describe how to update and save changes to defaults and use multiple methods.</p></li>
+<li><p>Added figures and snippets of the output files in <code>output-documentation</code> and <code>getting-started</code>.</p></li>
+<li><p>Added section in <code>output-documentation</code> to describe what to look for in the blank validation step. (<a href="https://github.com/katiewampler/eemanalyzeR/issues/19" class="external-link">#19</a>)</p></li>
+</ul></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.1.0" id="eemanalyzer-110">eemanalyzeR 1.1.0<a class="anchor" aria-label="anchor" href="#eemanalyzer-110"></a></h2>
+<p>(2026-03-31)</p>
+<ul><li><p>Updated <code>create_mdl</code> and <code>create_std</code> functions to ask to update the default qaqc_dir in the user_config if it’s NA and not directory is provided. This fixes the issue caused by version 1.0.2 which de-automated creating and then using the QA/QC standard files (<a href="https://github.com/katiewampler/eemanalyzeR/issues/22" class="external-link">#22</a>).</p></li>
+<li><p>Modified how mdl and std files are saved, adding an argument <code>method</code> to the functions which is used to give a unique name for different QA/QC methods (<a href="https://github.com/katiewampler/eemanalyzeR/issues/24" class="external-link">#24</a>).</p></li>
+<li><p>Created a new helper function <code>get_qaqc</code> which will look for QA/QC files, ask the user which set to use if there’s more than one set, update the readme with the files used, and return the QA/QC files (<a href="https://github.com/katiewampler/eemanalyzeR/issues/24" class="external-link">#24</a>).</p></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.3" id="eemanalyzer-103">eemanalyzeR 1.0.3<a class="anchor" aria-label="anchor" href="#eemanalyzer-103"></a></h2>
+<p>(2026-03-30)</p>
+<ul><li><p>Added an argument (<code>sum_plot</code>) to <code>export_data</code> to skip the summary plot to fix bug when processing a large (&gt;50) samples at a time (<a href="https://github.com/katiewampler/eemanalyzeR/issues/28" class="external-link">#28</a>).</p></li>
+<li><p>Added check when running <code>check_mdl</code> or <code>check_std</code> to warn if the wavelengths differ between the QA/QC file and the samples (<a href="https://github.com/katiewampler/eemanalyzeR/issues/24" class="external-link">#24</a>).</p></li>
+<li><p>Further updated the pattern defaults to be a little more flexible for <code>skip</code> in <code>dir_read</code> to work with our example data (<a href="https://github.com/katiewampler/eemanalyzeR/issues/20" class="external-link">#20</a>).</p></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.2" id="eemanalyzer-102">eemanalyzeR 1.0.2<a class="anchor" aria-label="anchor" href="#eemanalyzer-102"></a></h2>
+<p>(2026-03-26)</p>
+<ul><li><p>Updating all functions to remove the use of helper function <code>.qaqc_dir</code> and replace with <code>get_qaqc_dir</code> which pulls from the config file (<a href="https://github.com/katiewampler/eemanalyzeR/issues/22" class="external-link">#22</a>).</p></li>
+<li><p>Updated the default value for <code>qaqc_dir</code> in the config file to <code>.na.character</code>.</p></li>
+<li><p>When creating MDL and check standard files, if no <code>qaqc_dir</code> is specified it will return the file as an R object with a warning.</p></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.1" id="eemanalyzer-101">eemanalyzeR 1.0.1<a class="anchor" aria-label="anchor" href="#eemanalyzer-101"></a></h2>
+<p>(2026-03-09)</p>
+<ul><li>Updated defaults for <code>skip</code> in <code>dir_read</code> to be more robust and to skip samples with “abs” in the name (<a href="https://github.com/katiewampler/eemanalyzeR/issues/20" class="external-link">#20</a>).</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.0" id="eemanalyzer-100">eemanalyzeR 1.0.0<a class="anchor" aria-label="anchor" href="#eemanalyzer-100"></a></h2>
+<p>(2026-01-02)</p>
+<p>Initial publicly available version.</p>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

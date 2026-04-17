@@ -138,5 +138,5 @@ run_eems(input_dir = system.file("extdata", package = "eemanalyzeR"), interactiv
 #> Warning: Fluorescence long-term standards is missing and will not be used for checks
 #> Warning: Absorbance long-term standards is missing and will not be used for checks
 #> Calculated absorbance and fluorescence indices.
-#> Data successfully exported to: /tmp/RtmpbeMjPF/eemanalyzeR-output
+#> Data successfully exported to: /tmp/RtmpRncDmg/eemanalyzeR-output
 ```
