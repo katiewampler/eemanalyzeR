@@ -60,7 +60,7 @@ a metadata spreadsheet. However, there are many optional arguments for the
 user to modify the EEMs and absorbance processing. The names and default values
 for these arguments can be found in the documentation for the \link{default_config}.
 
-There are four ways for user to use and modify the processing configuration defaults.
+There are four ways for the user to use and modify the processing configuration defaults.
 \itemize{
 \item \strong{Option 1:} User doesn't change anything, the package defaults are used by \code{run_eems}.
 \item \strong{Option 2:} User creates a file (stored on their computer) that has processing defaults that

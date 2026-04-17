@@ -206,3 +206,6 @@ for(x in files){
 
 #remove directory
   fs::dir_delete(file.path(fs::path_home(), "Downloads/blkdat"))
+
+#create a copy of the config file for vignette -------
+  file.copy(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"), "vignettes/figures")

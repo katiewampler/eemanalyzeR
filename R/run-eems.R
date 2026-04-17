@@ -38,7 +38,7 @@
 #' user to modify the EEMs and absorbance processing. The names and default values
 #' for these arguments can be found in the documentation for the [default_config].
 #'
-#' There are four ways for user to use and modify the processing configuration defaults.
+#' There are four ways for the user to use and modify the processing configuration defaults.
 #'
 #' - **Option 1:** User doesn't change anything, the package defaults are used by `run_eems`.
 #'
