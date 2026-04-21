@@ -48,7 +48,7 @@ edit_user_config <- function(..., interactive = TRUE) {
     # Capture the varargs as a list
     newdefaults <- rlang::list2(...)
     # Add the new variables to the old config
-    old_config <- read_user_config()
+    old_config <- suppressPackageStartupMessages(read_user_config())
     new_config <- utils::modifyList(old_config, newdefaults, keep.null = TRUE)
 
     # validate and then write the yaml out
@@ -60,16 +60,14 @@ edit_user_config <- function(..., interactive = TRUE) {
     if(anyproblems) {
       stop("Error: Bad options applied to config. New config not saved. See warning messages above for details.")
     } else{ 
-      write_yaml(new_config, defaults_file)
+      write_yaml(new_config, user_config_file)
     }
 
   }
 
-  #apply user edited configuration
-  load_user_config()
-
-  message("Changes to user configuration applied.")
+  packageStartupMessage("Changes to user configuration applied, please re-load the new user config")
 }
+
 
 
 #' Reset all eemanalyzeR settings in the user configuration file to package defaults
@@ -172,4 +170,20 @@ load_user_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR"
 
   # invisibly return the completed configuration
   invisible(list_session_config())
+}
+
+# TODO - document this
+create_user_config <- function(config_path = rappdirs::user_data_dir("eemanalyzeR")) {
+  user_config_file <- file.path(config_path, "user-config.yaml")
+  # if file exists, back it up
+  if (file.exists(user_config_file)) {
+    file.rename(user_config_file, paste0(user_config_file, ".backup"))
+  }
+  file.copy(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"),
+          user_config_file)
+  # Copy the installed package version into the config
+  suppressPackageStartupMessages(edit_user_config(package_version = .eemanalyzeR_ver(), interactive = FALSE))
+
+  packageStartupMessage("Created user configuration file: ", user_config_file)
+
 }

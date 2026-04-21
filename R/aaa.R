@@ -1,47 +1,89 @@
-# # File to set up file structure and configuration during install/update
+# File to set up file structure and configuration during install/update
+
+.check_eemanalyzeR_install <- function(install_dir = .user_data_dir()) {
+
+  # Check if the directory exists and if it doesn't exist run the first install
+  if (!dir.exists(install_dir)) {
+    packageStartupMessage(
+      "Installing eemanalyzeR package into: ", install_dir
+    )
+    dir.create(install_dir, recursive = TRUE)
+    create_user_config(install_dir)
+  }
+  # We always return the install_dir
+  return(install_dir)
+}
 
 
-# TODO - how to tell if there's an install or an update?
+.check_user_config_exists <- function(install_dir = .user_data_dir()) {
+   user_config <- tryCatch(
+    suppressPackageStartupMessages(read_user_config(install_dir)),
+    error = function(cnd) {
+      packageStartupMessage(
+        "----STARTUP WARNING----\n",
+        "No User Configuration Found.\n",
+        "eemanalyzeR will use the default configuration.\n",
+        "Please create user configuration file using `create_user_config`"
+      )
+      return(FALSE)
+    }
+  )
+  return(is.list(user_config))
+}
 
+.check_user_config_version <- function(install_dir = .user_data_dir()) {
 
+  user_config <-  suppressPackageStartupMessages(read_user_config(install_dir))
 
+  # Logic for checking the user config package version
+  if(is.na(user_config$package_version) | user_config$package_version != .eemanalyzeR_ver()) {
+    packageStartupMessage(
+      "Your user configuration file is from an older version of eemanalyzeR. Processing options may have changed.\n",
+      "Would you like to update the user configuration file?"
+    )
+    # TODO - is a menu really necessary?
+    sel <- menu(c(
+      "yes - update my configuration to the new version (you will lose any modified config options!)",
+      "no - keep my configuration the same (this may result in a malformed configuration!)"
+    ))
+    if(sel == 1) create_user_config(install_dir)
+    if(sel == 2) invisible(NULL)
 
-
-
-
-rlang::on_load({
-
-  #browser()
-  # 1) Check if the user data directory exists
-  # I don't want to fail if it doesn't exist
-  if(!dir.exists(.user_data_dir())) {
-    packageStartupMessage("Can't find user data directory.\n",
-    .user_data_dir(), " does not exist")
-    # TODO - should I create the user data directory?
-    invisible(NULL)
+    # TODO - implement way to merge configs while keeping the old user values
   }
 
-  # 2) Check if the user data directory has a valid configuration file
+}
+
+.validate_and_load_user_config <- function(install_path = .user_data_dir()) {
   tryCatch(
     load_user_config(
-    config_path = .user_data_dir()),
+    config_path = install_path),
     error = function(cnd) {
       packageStartupMessage(
       "----STARTUP WARNING----\n",
       "Invalid User Configuration Found.\n",
-      "Using eemanalyzeR default configuration.\n",
+      "eemanalyzeR will use the default configuration.\n",
       "Please see warnings and fix user configuration file."
       )
     }
   )
 
+}
 
-  # )
-  # If it's valid, load it
-  # If there are any warnings, print them and message that the user config was not loaded
+rlang::on_load({
 
-  # 3) Check that the user configuration matches the package version
-  #trycatch()
+  # 1) Check if the user data directory exists
+  install_dir <- .check_eemanalyzeR_install()
+
+  # 2) Check the user config exists
+  user_config_exists <- .check_user_config_exists(install_dir)
+
+  if(user_config_exists) {
+  # 3) Check the user config has the right version
+  .check_user_config_version(install_dir)
+  # 4) Load and validate the user config
+  .validate_and_load_user_config(install_dir)
+  }
 
   # Future - maybe check on qaqc stds?
 
@@ -63,7 +105,7 @@ rlang::on_load({
   #   packageStartupMessage("Warning: Malformed User Configuration File stored on disk. User Configuration not loaded.\n",
   #   "Please edit user config using edit_user_config or reset to package defaults using reset_user_config")
   # })
-})
+  })
 
 
 
