@@ -1,27 +1,8 @@
-
-template_config <- yaml::read_yaml(file.path(
-  system.file("extdata", package = "eemanalyzeR"),
-  "eemanalyzeR-config.yaml"
-))
-
-# Test config code (TODO delete)
-t_config <- template_config
-# Change mode
-t_config$eem_import_func <- TRUE
-# Change text
-t_config$abs_file_ext <- "csv"
-# Change number
-t_config$tolerance <- 0.3
-# Change bool
-t_config$sum_plot <- 4
-# Change 1 value in list/vector
-t_config$ex_clip[1] <- 249
-t_config$eem_skip <- NULL
-# Make up option
-t_config$eemm_skip <- "test"
-# Change length of list option
-t_config$width <- c(1, 2, 3)
-
+# TODO - document all these functions a little more
+# Get the location of the user config file
+.user_config_path <- function() {
+  return(.pkgenv$user_config_path)
+}
 # Compare configuration lists
 .validate_config <- function(
   config,
@@ -31,11 +12,9 @@ t_config$width <- c(1, 2, 3)
   # check all the options are valid
   invalid_options <- withCallingHandlers(
     .check_config_invalid_options(config, template_config)
-  
 
   )
   
-
   # check all the required options are in the config
   missing_options <- withCallingHandlers(
     .check_config_missing_options(config, template_config)
@@ -58,11 +37,9 @@ t_config$width <- c(1, 2, 3)
     invalid_types   = invalid_types,
     invalid_lengths = invalid_lengths
   )
-  # TODO - what should this return?
 }
 
-# Bunch of helper functions that return conditions?
-
+# Bunch of helper functions that return conditions
 # Checking all the necessary options are in the config
 .check_config_invalid_options <- function(config, template_config) {
   

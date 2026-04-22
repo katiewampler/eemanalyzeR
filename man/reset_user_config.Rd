@@ -4,7 +4,10 @@
 \alias{reset_user_config}
 \title{Reset all eemanalyzeR settings in the user configuration file to package defaults}
 \usage{
-reset_user_config()
+reset_user_config(user_config_file = .user_config_path())
+}
+\arguments{
+\item{user_config_file}{The path to the file that stores the user config. Defaults to the yaml file in the default user data directory.}
 }
 \value{
 Invisibly returns the reset default configuration settings as a named list.
@@ -16,7 +19,6 @@ This function is provided in case the user has a malformed configuration file or
 settings after experimenting with modifying the settings using `edit_user_config`.
 }
 \examples{
-edit_user_config() #create a config file
 reset_user_config() #reset config file
 load_user_config() #load config file
 }

@@ -8,6 +8,7 @@ test_that("pkg environment gets created", {
 test_that("pkg environment has correct defaults", {
   resest_session_config()
 
+  # TODO - update the default comparisons using new functions
   # list of wanted defaults (have to make sure they are in the same order)
   package_default_list <- default_config[order(names(default_config))]
   package_defaults_from_env <- list_session_config()[order(names(list_session_config()))]

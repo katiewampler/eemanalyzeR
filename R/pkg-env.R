@@ -4,13 +4,19 @@
 
 
 # Create an environment to store EEMS processing arguments and parameters
+# TODO: Manually update the system file with the updated package version before moving to master
 default_config <- yaml::read_yaml(file.path(
   system.file("extdata", package = "eemanalyzeR"),
   "eemanalyzeR-config.yaml"
 ))
 
 # TODO get rid of this and replace with onload stuff
-.pkgenv <- rlang::new_environment(data = list(config = default_config), parent = rlang::empty_env())
+.pkgenv <- rlang::new_environment(
+  data = list(config = default_config,
+              user_config_path = file.path(fs::path_norm(rappdirs::user_data_dir("eemanalyzeR")), "user-config.yaml")),
+  parent = rlang::empty_env()
+)
+
 
 #' List current eemanalyzeR configuration
 #'
@@ -61,7 +67,7 @@ validate_session_config <- function(env = .pkgenv) {
   )
   anyproblems <- any(!sapply(problem_msg, is.null, simplify = TRUE))
   if(anyproblems) {
-    stop("Error: Malformed user configuration in ", config_path, "\nSee warning messages above for details.")
+    stop("Error: Malformed session configuration. See warning messages above for details.")
   }  
   # If it's valid, return the user config, otherwise print the error messages
   invisible(current_session_config)
@@ -136,7 +142,7 @@ modify_session_config <- function(..., env = .pkgenv) {
 
   # Validate the new config
   problem_msg <- .validate_config(
-    current_session_config,
+    new_config,
     default_config
   )
   anyproblems <- any(!sapply(problem_msg, is.null, simplify = TRUE))

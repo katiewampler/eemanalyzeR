@@ -6,15 +6,17 @@
 \alias{load_user_config}
 \title{Set up and apply user defaults for data processing}
 \usage{
-edit_user_config()
+edit_user_config(..., interactive = TRUE)
 
-load_user_config(
-  config_path = rappdirs::user_data_dir("eemanalyzeR"),
-  env = .pkgenv
-)
+load_user_config(user_config_file = .user_config_path(), env = .pkgenv)
 }
 \arguments{
-\item{config_path}{path the YAML file with user default values}
+\item{...}{potential paramater names and values to apply to the user config. Only if interactive = FALSE}
+
+\item{interactive}{defaults to TRUE, which will open the user config file for manual editing.
+If FALSE, it attempts to apply the values provided in \code{...}}
+
+\item{user_config_file}{The path to the file that stores the user config. Defaults to the yaml file in the default user data directory.}
 
 \item{env}{the environment name to write to}
 }
@@ -38,7 +40,6 @@ edit the file and save it. The arguments in this file will overwrite the default
 set in the package.
 }
 \examples{
-edit_user_config()
 
 load_user_config()
 }

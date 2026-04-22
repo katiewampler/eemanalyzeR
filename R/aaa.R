@@ -8,22 +8,22 @@
       "Installing eemanalyzeR package into: ", install_dir
     )
     dir.create(install_dir, recursive = TRUE)
-    create_user_config(install_dir)
+    reset_user_config(.user_config_path())
   }
   # We always return the install_dir
   return(install_dir)
 }
 
 
-.check_user_config_exists <- function(install_dir = .user_data_dir()) {
+.check_user_config_exists <- function(user_config_file = .user_config_path()) {
    user_config <- tryCatch(
-    suppressPackageStartupMessages(read_user_config(install_dir)),
+    suppressPackageStartupMessages(read_user_config(user_config_file)),
     error = function(cnd) {
       packageStartupMessage(
         "----STARTUP WARNING----\n",
         "No User Configuration Found.\n",
         "eemanalyzeR will use the default configuration.\n",
-        "Please create user configuration file using `create_user_config`"
+        "Please create user configuration file using `reset_user_config`"
       )
       return(FALSE)
     }
@@ -31,9 +31,9 @@
   return(is.list(user_config))
 }
 
-.check_user_config_version <- function(install_dir = .user_data_dir()) {
+.check_user_config_version <- function(user_config_file = .user_config_path()) {
 
-  user_config <-  suppressPackageStartupMessages(read_user_config(install_dir))
+  user_config <-  suppressPackageStartupMessages(read_user_config(user_config_file))
 
   # Logic for checking the user config package version
   if(is.na(user_config$package_version) | user_config$package_version != .eemanalyzeR_ver()) {
@@ -42,11 +42,11 @@
       "Would you like to update the user configuration file?"
     )
     # TODO - is a menu really necessary?
-    sel <- menu(c(
+    sel <- utils::menu(c(
       "yes - update my configuration to the new version (you will lose any modified config options!)",
       "no - keep my configuration the same (this may result in a malformed configuration!)"
     ))
-    if(sel == 1) create_user_config(install_dir)
+    if(sel == 1) reset_user_config(user_config_file)
     if(sel == 2) invisible(NULL)
 
     # TODO - implement way to merge configs while keeping the old user values
@@ -54,10 +54,10 @@
 
 }
 
-.validate_and_load_user_config <- function(install_path = .user_data_dir()) {
+.validate_and_load_user_config <- function(user_config_file = .user_config_path()) {
   tryCatch(
     load_user_config(
-    config_path = install_path),
+    user_config_file),
     error = function(cnd) {
       packageStartupMessage(
       "----STARTUP WARNING----\n",
@@ -76,13 +76,13 @@ rlang::on_load({
   install_dir <- .check_eemanalyzeR_install()
 
   # 2) Check the user config exists
-  user_config_exists <- .check_user_config_exists(install_dir)
+  user_config_exists <- .check_user_config_exists()
 
   if(user_config_exists) {
   # 3) Check the user config has the right version
-  .check_user_config_version(install_dir)
+  .check_user_config_version()
   # 4) Load and validate the user config
-  .validate_and_load_user_config(install_dir)
+  .validate_and_load_user_config()
   }
 
   # Future - maybe check on qaqc stds?

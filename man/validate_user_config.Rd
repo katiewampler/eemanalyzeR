@@ -4,10 +4,10 @@
 \alias{validate_user_config}
 \title{Validate the eemanalyzeR configuration}
 \usage{
-validate_user_config(config_path = rappdirs::user_data_dir("eemanalyzeR"))
+validate_user_config(user_config_file = .user_config_path())
 }
 \arguments{
-\item{config_path}{The path to the file that stores the user conig. Defaults to the yaml file in the default user data directory.}
+\item{user_config_file}{The path to the file that stores the user config. Defaults to the yaml file in the default user data directory.}
 }
 \value{
 invisibly returns TRUE if the configuration is valid, otherwise returns an error
