@@ -1,4 +1,5 @@
 # File to set up file structure and configuration during install/update
+# TODO reorganize these functions - maybe in another file?
 
 .check_eemanalyzeR_install <- function(install_dir = .user_data_dir()) {
 
@@ -36,18 +37,15 @@
   user_config <-  suppressPackageStartupMessages(read_user_config(user_config_file))
 
   # Logic for checking the user config package version
-  if(is.na(user_config$package_version) | user_config$package_version != .eemanalyzeR_ver()) {
+  if(is.null(user_config$package_version) ||
+    is.na(user_config$package_version)    || 
+    user_config$package_version != .eemanalyzeR_ver()) {
     packageStartupMessage(
-      "Your user configuration file is from an older version of eemanalyzeR. Processing options may have changed.\n",
-      "Would you like to update the user configuration file?"
+      "NOTE: Your user configuration file is from an older version of eemanalyzeR. Processing options may have changed.\n",
+      "Please update the user configuration file at:\n",
+      .user_config_path(),
+      "\nusing `edit_user_config` or `reset_user_config` then reload the package"
     )
-    # TODO - is a menu really necessary?
-    sel <- utils::menu(c(
-      "yes - update my configuration to the new version (you will lose any modified config options!)",
-      "no - keep my configuration the same (this may result in a malformed configuration!)"
-    ))
-    if(sel == 1) reset_user_config(user_config_file)
-    if(sel == 2) invisible(NULL)
 
     # TODO - implement way to merge configs while keeping the old user values
   }
@@ -86,73 +84,4 @@ rlang::on_load({
   }
 
   # Future - maybe check on qaqc stds?
-
-##   - eemanalyzeR_config.yaml
-# If these do exist, check the version match the package data.
-  # If these match, load the package as normal, nothing is out of place.
-  # If these don't match, that means you're probably installing a new version of the package,
-  # So we'll need to do some housekeeping like checking the config for updates to defaults or new values.
-# If these don't exist, write them from inst/extdata to the user app dir.
-  # During this, we need to add the version number to the config
-# TODO - we might be able to allow the user to install somewhere else in the future, but for now let's not
-
-
-
-
-  # Load the user config and print a message if loading the config fails
-  # tryCatch(load_user_config(),
-  # error = function(e) {
-  #   packageStartupMessage("Warning: Malformed User Configuration File stored on disk. User Configuration not loaded.\n",
-  #   "Please edit user config using edit_user_config or reset to package defaults using reset_user_config")
-  # })
-  })
-
-
-
-
-
-# # Ask the user if they want to install to the default eemanalyzeR directory
-# # if they don't, they must specify a directory to install.
-# test_install_dir <- "./install"
-
-# # Try to load the user config
-
-# # Check to see if the config has an install directory
-
-# # Check to see if the config is properly formed (matches template)
-
-# # Double check that the written install directory is actually in the right spot
-
-# # If there is not user config found
-# # Prompt on install to ask where to store user data
-# # Should default to rappdirs::user_data_dir()
-# choose_install_directory <- function(install_dir, overwrite = FALSE) {
-
-#   response <- menu(
-#     c("Accept Default Install Directory",
-#       "Input Custom Directory"),
-#       graphics = FALSE
-#     )
-#   if(response == 1) {
-#     # Check if the default directory exists
-
-#     # Warn user about overwriting
-
-#     # Create the directory dir
-#     #dir.create(install_dir)
-#   } else if(response == 2) {
-#     # Prompt user to input a directory as a text string
-#     print("You chose to input a custom directory to install")
-#     install_dir <- readline("Plase write your preferred install directory here: ")
-
-#     # Check if the directory exists and warn about overwriting
-
-#     # Create the directory where the user wants it
-#     message("Installing to: ", install_dir)
-#   }
-#   invisible(install_dir)
-# }
-  
-# eemanalyzeR_install_dir <- choose_install_directory(test_install_dir, overwrite = TRUE)
-
-# # Write the user config to the eemanalyzeR_install_dir
+})

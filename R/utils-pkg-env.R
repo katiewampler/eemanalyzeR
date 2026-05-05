@@ -3,7 +3,6 @@
 .pkgenv_vars <- names(list_session_config())
 
 # Template functions to create configuration setters
-# TODO: Might not need setters since modify config exists
 # create_setter_function <- function(parameter) {
 #   rlang::new_function(
 #     rlang::exprs(value = ,

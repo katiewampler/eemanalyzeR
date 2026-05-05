@@ -10,13 +10,11 @@ default_config <- yaml::read_yaml(file.path(
   "eemanalyzeR-config.yaml"
 ))
 
-# TODO get rid of this and replace with onload stuff
 .pkgenv <- rlang::new_environment(
   data = list(config = default_config,
               user_config_path = file.path(fs::path_norm(rappdirs::user_data_dir("eemanalyzeR")), "user-config.yaml")),
   parent = rlang::empty_env()
 )
-
 
 #' List current eemanalyzeR configuration
 #'

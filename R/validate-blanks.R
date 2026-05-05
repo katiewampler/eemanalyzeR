@@ -111,7 +111,6 @@ plot_blank_and_ask <- function(blanklist) {
 
   blank_plot <- ggpubr::ggarrange(blank_plot1, blank_plot2, ncol = 1, align = "h")
 
-  # TODO - why does plotting sometimes not happen until after accepting?
     #only print if interactive, otherwise it will save a pdf we don't need
     if(rlang::is_interactive()){print(blank_plot)}
 

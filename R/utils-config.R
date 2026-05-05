@@ -1,9 +1,8 @@
-# TODO - document all these functions a little more
 # Get the location of the user config file
 .user_config_path <- function() {
   return(.pkgenv$user_config_path)
 }
-# Compare configuration lists
+# Function that compares a list of configuration options to some template and returns warnings about different conditions
 .validate_config <- function(
   config,
   template_config
@@ -30,7 +29,7 @@
     .check_config_option_lengths(config, template_config)
   )
 
-  # Put them in a list?
+  # Put them in a list
   problem_list <- list(
     invalid_options = invalid_options,
     missing_options = missing_options,
@@ -47,7 +46,6 @@
   wrong_options_in_config <- names(config)[
     which(!names(config) %in% names(template_config))
   ]
-    # TODO - what to return?
   if(length(wrong_options_in_config) > 0) {
     return(.config_option_invalid_warn(wrong_options_in_config))
   }
@@ -85,7 +83,6 @@
   if(length(options_with_bad_types) != 0) {
     return(.config_option_type_warn(options_with_bad_types))
   }
-  # TODO - what should I return?
   invisible(NULL)
 
 }
@@ -107,7 +104,6 @@
   if(length(options_with_bad_lengths) != 0) {
     return(.config_option_lengths_warn(options_with_bad_lengths))
   }
-  # TODO - what should I return?
   invisible(NULL)
 }
 
@@ -136,7 +132,8 @@ warn_config<- function(.subclass, message, call = NULL, ...) {
   return(warn)
 }
 
-# Config warn for option lengths being wrong
+# Custom conditions for handling different problems with the user configuration:
+# Incorrect user config length
 .config_option_lengths_warn <- function(char) {
   message <- c(
     "Warning! ",
@@ -148,6 +145,7 @@ warn_config<- function(.subclass, message, call = NULL, ...) {
   )
 }
 
+# Incorrect user config data type
 .config_option_type_warn <- function(char) {
     message <- c(
           "Warning! ",
@@ -159,6 +157,7 @@ warn_config<- function(.subclass, message, call = NULL, ...) {
   )
 }
 
+# Invalid option supplied in user config
 .config_option_invalid_warn <- function(char) {
     message <- c(
           "Warning! ",
@@ -170,6 +169,7 @@ warn_config<- function(.subclass, message, call = NULL, ...) {
   )
 }
 
+# Missing options in the user config
 .config_option_missing_warn <- function(char) {
     message <- c(
           "Warning! ",
