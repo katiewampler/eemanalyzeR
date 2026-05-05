@@ -1,5 +1,4 @@
 # File to set up file structure and configuration during install/update
-# TODO reorganize these functions - maybe in another file?
 
 .check_eemanalyzeR_install <- function(install_dir = .user_data_dir()) {
 
