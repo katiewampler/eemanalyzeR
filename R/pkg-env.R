@@ -123,7 +123,7 @@ resest_session_config <- function(env = .pkgenv) {
 #' modify_session_config(cuvle = 2)
 #'
 #' # Two methods to modify multiple defaults
-#' # 1) via multiple named arugments
+#' # 1) via multiple named arguments
 #' modify_session_config(cuvle = 2, eem_skip = "badeem")
 #'
 #' # 2) via a named list

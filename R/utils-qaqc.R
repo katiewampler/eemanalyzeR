@@ -10,17 +10,17 @@
 update_qaqc_dir <- function(){
   #get paths
   user_dir <- .user_data_dir()
-  defaults_file <- file.path(user_dir, "user-config.yaml")
+  user_config_file <- .user_config_path()
   new_dir <- file.path(user_dir, "qaqc-stds")
 
   #see what is in file
-  if(file.exists(defaults_file)){
-    old_qaqc_dir <- yaml::read_yaml(defaults_file)$qaqc_dir
-  }
+  old_qaqc_dir <- read_user_config(user_config_file)$qaqc_dir
 
   #only ask if it would change what's there
-  if(!file.exists(defaults_file) || is.na(old_qaqc_dir) || old_qaqc_dir != new_dir){
-    if(!rlang::is_interactive()){update_path <- TRUE}else{
+  if(!file.exists(user_config_file) || is.na(old_qaqc_dir) || old_qaqc_dir != new_dir){
+    if(!rlang::is_interactive()) {
+      update_path <- TRUE
+    } else {
       update_path <- .yesorno("Update user config file with QAQC file path?",
                               paste0("qaqc_dir in user config has been updated to ", normalizePath(file.path(rappdirs::user_data_dir(appname = "eemanalyzeR"), "qaqc-stds"))),
                               "Warning: qaqc_dir must be manually specified using `qaqc_dir` to use QAQC files in processing.")
@@ -28,31 +28,18 @@ update_qaqc_dir <- function(){
 
     if(update_path){
       if (!dir.exists(new_dir)) dir.create(new_dir, recursive = TRUE, showWarnings = FALSE)
-
-      # if file doesn't exist, write template
-      # TODO simplify template writing to match 
-      if (!file.exists(defaults_file)) {
-        file.copy(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"),
-                  defaults_file)}
-
+      # Fix the slashes in the new directory
       new_dir <- normalizePath(new_dir, winslash = "/")
-
-      modify_session_config(qaqc_dir = new_dir)
-
-      # TODO - shouldn't need to use this to update config once we have new config interface
-      user_config <- readLines(defaults_file)
-      user_config[grepl("qaqc_dir:", user_config)] <- paste0('  qaqc_dir: "', new_dir,'"')
-      writeLines(user_config, defaults_file)
+      # Edit the qaqc_directory in the user config and re-load
+      edit_user_config(qaqc_dir = new_dir, interactive = FALSE)
+      load_user_config()
     }
 
   }
+  
+  qaqc_dir <- get_qaqc_dir()
 
-  # TODO - why are you comparint get_qaqc_dir to NA character insead of using is.na()?
-  qaqc_dir <- ifelse(get_qaqc_dir() == "NA", NA, get_qaqc_dir())
-
-  return(qaqc_dir)
-
-
+  invisible(qaqc_dir)
 }
 
 #' Look for and load QAQC files

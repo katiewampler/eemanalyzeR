@@ -3,43 +3,63 @@
 \name{user_config}
 \alias{user_config}
 \alias{edit_user_config}
+\alias{reset_user_config}
+\alias{read_user_config}
+\alias{validate_user_config}
 \alias{load_user_config}
 \title{Set up and apply user defaults for data processing}
 \usage{
 edit_user_config(..., interactive = TRUE)
 
+reset_user_config(user_config_file = .user_config_path())
+
+read_user_config(user_config_file = .user_config_path())
+
+validate_user_config(user_config_file = .user_config_path())
+
 load_user_config(user_config_file = .user_config_path(), env = .pkgenv)
 }
 \arguments{
-\item{...}{potential paramater names and values to apply to the user config. Only if interactive = FALSE}
+\item{...}{for \code{edit_user_config} potential parameter names and values to apply to the user config. Only if interactive = FALSE}
 
-\item{interactive}{defaults to TRUE, which will open the user config file for manual editing.
+\item{interactive}{for \code{edit_user_config} defaults to TRUE, which will open the user config file for manual editing.
 If FALSE, it attempts to apply the values provided in \code{...}}
 
 \item{user_config_file}{The path to the file that stores the user config. Defaults to the yaml file in the default user data directory.}
 
-\item{env}{the environment name to write to}
+\item{env}{the environment name to write to (defaults to the package environment)}
 }
 \value{
 \itemize{
-\item \strong{edit_user_config} opens up \code{user-config.yaml}.
-\item \strong{load_user_config} will apply the user defaults from \code{user-config.yaml}
-to the package environment
+\item \strong{edit_user_config} returns a message that the user configuration has been edited.
+\item \strong{reset_user_config} invisibly returns the reset default configuration settings as a named list.
+\item \strong{read_user_config} invisibly returns the current user configuration as a named list.
+\item \strong{validate_user_config} invisibly returns TRUE if the configuration is valid, otherwise returns an error
+\item \strong{load_user_config} will apply the options from \code{user-config.yaml} to the current session.
 }
 }
 \description{
 Reads the user generated YAML file (\code{user-config.yaml}) which stores the
 user specified values for the arguments in \code{\link[=run_eems]{run_eems()}} and applies them
-to the package environment (\code{.pkgenv}). This allows the user to specify
+to the processing session. This allows the user to specify
 processing parameters that are maintained across R sessions.
 }
 \details{
-The defaults are stored in a YAML configuration file on the user data directory.
-This function will open up the file so the text can be edited. To save new defaults simply
-edit the file and save it. The arguments in this file will overwrite the defaults
-set in the package.
+\itemize{
+\item \strong{edit_user_config} opens up \code{user-config.yaml} for manual editing or applies the named arguments supplied as \code{...} to the user config file.
+\item \strong{reset_user_config}  overwrites the data processing options in the user configuration file back to
+the default configuration of the eemanalyzeR package. These defaults are documented in data.R under "default_config".
+This function is provided in case the user has a malformed configuration file or wants to revert back to default processing
+settings after experimenting with modifying the settings using \code{edit_user_config}.
+\item \strong{read_user_config} will read the options from the user config path as an R object but does not apply to the session.
+This function is used as a helper to read what's in the stored user configuration file and return it as a
+list before validating the config and applying it to the current session. Usually the user wants to use
+\code{load_user_config} since that function reads the config, checks it, then applies it to the current session.
+\item \strong{validate_user_config} reads the user config and checks the options are valid and warns the user about invalid options. It checks that all settings
+in the eemanalyzeR user config are valid options that match the template included with the package.
+\item \strong{load_user_config} will apply the options from \code{user-config.yaml} to the current session.
+}
 }
 \examples{
-
 load_user_config()
 }

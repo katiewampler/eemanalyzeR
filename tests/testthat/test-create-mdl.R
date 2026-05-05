@@ -55,10 +55,13 @@ test_that("mdls are exported when dir is NA and not updated", {
 
 # Testing MDL creation when qaqc is NA and user wants to update
 test_that("mdls are exported when dir is NA and updated",{
-  dummy_dir <- withr::local_tempfile()
+  dummy_dir <- withr::local_tempdir()
+  dummy_config_path <- file.path(dummy_dir, "user-config.yaml")
+  file.copy(
+    file.path(system.file("extdata", package = "eemanalyzeR"),"eemanalyzeR-config.yaml"),
+    dummy_config_path)
   with_mocked_bindings(
-    .user_data_dir = function() dummy_dir,
-    {
+    code = {
       #setting qaqc_dir to NA while creating should trigger asking to fill
       #ensure it returns warning with example data
       expect_warning(eem_mdl <- create_mdl(dir=file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
@@ -70,8 +73,10 @@ test_that("mdls are exported when dir is NA and updated",{
                                            method = "testthat-checks",
                                            meta_name="longtermblank-metadata.csv",
                                            type="abs", qaqc_dir = NA),"Calculating MDL based on less than 20 samples")
-
-      })
+    },
+    .user_data_dir = function() dummy_dir,
+    .user_config_path = function() dummy_config_path,
+    )
 
   #check it writes to local
   expect_true(file.exists(file.path(dummy_dir, "qaqc-stds", "testthat-checks", "testthat-checks-eem-mdl.rds")))

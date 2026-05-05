@@ -7,12 +7,12 @@
 #'
 #' @param user_config_file The path to the file that stores the user config. Defaults to the yaml file in the default user data directory.
 #' @param env the environment name to write to (defaults to the package environment)
-#' @param ... for `edit_user_config` potential paramater names and values to apply to the user config. Only if interactive = FALSE
+#' @param ... for `edit_user_config` potential parameter names and values to apply to the user config. Only if interactive = FALSE
 #' @param interactive for `edit_user_config` defaults to TRUE, which will open the user config file for manual editing.
 #'                    If FALSE, it attempts to apply the values provided in `...`
 #' 
 #' @details
-#' - **edit_user_config** opens up `user-config.yaml` for manual editing or applies the named arugments supplied as `...` to the user config file.
+#' - **edit_user_config** opens up `user-config.yaml` for manual editing or applies the named arguments supplied as `...` to the user config file.
 #' - **reset_user_config**  overwrites the data processing options in the user configuration file back to
 #'                          the default configuration of the eemanalyzeR package. These defaults are documented in data.R under "default_config".
 #'                          This function is provided in case the user has a malformed configuration file or wants to revert back to default processing
@@ -72,7 +72,8 @@ edit_user_config <- function(..., interactive = TRUE) {
   }
   packageStartupMessage("Changes to user configuration applied, please re-load the new user config")
 }
-
+#' @rdname user_config
+#' @export
 reset_user_config <- function(user_config_file = .user_config_path()) {
   # if file exists, back it up
   if (file.exists(user_config_file)) {
@@ -86,7 +87,8 @@ reset_user_config <- function(user_config_file = .user_config_path()) {
   packageStartupMessage("Created user configuration file: ", user_config_file)
 
 }
-
+#' @rdname user_config
+#' @export
 read_user_config <- function(user_config_file = .user_config_path()) {
   if(file.exists(user_config_file)){
     user_config <- yaml::read_yaml(user_config_file)
@@ -96,7 +98,8 @@ read_user_config <- function(user_config_file = .user_config_path()) {
   }
   invisible(user_config)
 }
-
+#' @rdname user_config
+#' @export
 validate_user_config <- function(user_config_file = .user_config_path()) {
   # Get the default config template from the system files
   default_user_config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"))
@@ -116,7 +119,8 @@ validate_user_config <- function(user_config_file = .user_config_path()) {
   invisible(current_user_config)
 
 }
-
+#' @rdname user_config
+#' @export
 load_user_config <- function(user_config_file = .user_config_path(), env = .pkgenv) {
   
   # First Validate the user config
