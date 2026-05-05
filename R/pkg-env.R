@@ -89,8 +89,8 @@ validate_session_config <- function(env = .pkgenv) {
 #'
 #' @examples
 #' # Reset the configuration back to package defaults
-#' resest_session_config()
-resest_session_config <- function(env = .pkgenv) {
+#' reset_session_config()
+reset_session_config <- function(env = .pkgenv) {
   rlang::env_bind(env, config = default_config)
   invisible(list_session_config(env = env))
 }
