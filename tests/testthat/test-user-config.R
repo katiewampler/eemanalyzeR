@@ -40,45 +40,6 @@ test_that(
 
 )
 
-# Another way to test the config validation utils
-# test_that(
-#   "Config utilities can throw warnings about bad config options", 
-#   {
-#       # Make a test config with 4 problems
-#     template_config <- yaml::read_yaml(file.path(
-#       system.file("extdata", package = "eemanalyzeR"),
-#       "eemanalyzeR-config.yaml"
-#     ))
-# # Test config code
-#     # Change mode
-#     badmode_config <- template_config
-#     badmode_config$eem_import_func <- TRUE
-#     # Remove an option
-#     missingoption_config <- template_config
-#     missingoption_config$eem_skip <- NULL
-#     # Invalid option
-#     invalidoption_config <- template_config
-#     invalidoption_config$eemm_skip <- "test"
-#     # Change length of list option
-#     badlength_config <- template_config
-#     badlength_config$width <- c(1, 2, 3)
-
-#     # Test that we can detect invalid user config options
-#     expect_warning(.validate_config(invalidoption_config, template_config), 
-#                   "config_option_invalid_warn")
-#     # Test that we can detect missing user config options
-#     expect_warning(.validate_config(missingoption_config, template_config),
-#                   "config_option_missing_warn")
-#     # Test that we can detect invalid user config data types
-#     expect_warning(.validate_config(badmode_config, template_config), 
-#                   "config_option_type_warn")
-#     # Test that we can detect invalid user config option lengths
-#     expect_warning(.validate_config(badlength_config, template_config), 
-#                   "config_option_length_warn")
-#   }
-# )
-
-
 # Test loading the default user config
 test_that("User Config can be correctly loaded",
   {
@@ -93,25 +54,29 @@ test_that("User Config can be correctly loaded",
   badmode_config <- template_config
   badmode_config$eem_import_func <- TRUE
   yaml::write_yaml(badmode_config, 
-    file = file.path(dummy_dir, "badmode_config.yaml")
+    file = file.path(dummy_dir, "badmode_config.yaml",
+    handlers = list(logical = yaml::verbatim_logical))
   )
   # Remove an option
   missingoption_config <- template_config
   missingoption_config$eem_skip <- NULL
   yaml::write_yaml(missingoption_config, 
-    file = file.path(dummy_dir, "missingoption_config.yaml")
+    file = file.path(dummy_dir, "missingoption_config.yaml"),
+    handlers = list(logical = yaml::verbatim_logical)
   )
   # Invalid option
   invalidoption_config <- template_config
   invalidoption_config$eemm_skip <- "test"
   yaml::write_yaml(invalidoption_config, 
-    file = file.path(dummy_dir, "invalidoption_config.yaml")
+    file = file.path(dummy_dir, "invalidoption_config.yaml"),
+    handlers = list(logical = yaml::verbatim_logical)
   )
   # Change length of list option
   badlength_config <- template_config
   badlength_config$width <- c(1, 2, 3)
   yaml::write_yaml(badlength_config, 
-    file = file.path(dummy_dir, "badlength_config.yaml")
+    file = file.path(dummy_dir, "badlength_config.yaml"),
+    handlers = list(logical = yaml::verbatim_logical)
   )
 
   with_mocked_bindings(

@@ -40,10 +40,8 @@
     is.na(user_config$package_version)    || 
     user_config$package_version != .eemanalyzeR_ver()) {
     packageStartupMessage(
-      "NOTE: Your user configuration file is from an older version of eemanalyzeR. Processing options may have changed.\n",
-      "Please update the user configuration file at:\n",
-      .user_config_path(),
-      "\nusing `edit_user_config` or `reset_user_config` then reload the package"
+      "NOTE: Your user configuration file is from an older version of eemanalyzeR.\n",
+      "You may need to update your user config using `repair_user_config`"
     )
 
     # TODO - implement way to merge configs while keeping the old user values
@@ -58,9 +56,9 @@
     error = function(cnd) {
       packageStartupMessage(
       "----STARTUP WARNING----\n",
-      "Invalid User Configuration Found.\n",
-      "eemanalyzeR will use the default configuration.\n",
-      "Please see warnings and fix user configuration file."
+      "Invalid User Configuration at ", user_config_file,
+      ". eemanalyzeR will use the default configuration.\n",
+      "Please see warnings and repair user configuration file.\n"
       )
     }
   )
@@ -76,10 +74,10 @@ rlang::on_load({
   user_config_exists <- .check_user_config_exists()
 
   if(user_config_exists) {
-  # 3) Check the user config has the right version
-  .check_user_config_version()
-  # 4) Load and validate the user config
+  # 3) Load and validate the user config
   .validate_and_load_user_config()
+  # 4) Check the user config has the right version
+  .check_user_config_version()
   }
 
   # Future - maybe check on qaqc stds?

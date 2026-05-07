@@ -24,6 +24,7 @@
 #' - **validate_user_config** reads the user config and checks the options are valid and warns the user about invalid options. It checks that all settings 
 #'                            in the eemanalyzeR user config are valid options that match the template included with the package.
 #' - **load_user_config** will apply the options from `user-config.yaml` to the current session.
+#' - **repair_user_config** will attempt to repair the user configuration file by merging the valid user configuration file with the default configuration file.
 #'
 #' @returns
 #' - **edit_user_config** returns a message that the user configuration has been edited.
@@ -31,6 +32,7 @@
 #' - **read_user_config** invisibly returns the current user configuration as a named list.
 #' - **validate_user_config** invisibly returns TRUE if the configuration is valid, otherwise returns an error
 #' - **load_user_config** will apply the options from `user-config.yaml` to the current session.
+#' - **repair_user_config** invisibly returns the repaired user config
 #' 
 #' @export
 #' @md
@@ -39,9 +41,8 @@
 #'
 #' @examples
 #' load_user_config()
-edit_user_config <- function(..., interactive = TRUE) {
+edit_user_config <- function(..., interactive = TRUE, user_config_file = .user_config_path()) {
   default_user_config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"))
-  user_config_file <- .user_config_path()
 
   # if file doesn't exist, write template
   if (!file.exists(user_config_file)) {
@@ -67,7 +68,9 @@ edit_user_config <- function(..., interactive = TRUE) {
     if(anyproblems) {
       stop("Error: Bad options applied to config. New config not saved. See warning messages above for details.")
     } else{ 
-      write_yaml(new_config, user_config_file)
+      # TODO - writing the new yaml removes the nice comments in the config file - try to fix this
+      yaml::write_yaml(new_config, user_config_file,
+      handlers = list(logical = yaml::verbatim_logical))
     }
   }
   packageStartupMessage("Changes to user configuration applied, please re-load the new user config")
@@ -133,4 +136,55 @@ load_user_config <- function(user_config_file = .user_config_path(), env = .pkge
   # invisibly return the completed configuration
   invisible(list_session_config())
 }
+#' @rdname user_config
+#' @export
+repair_user_config <- function(user_config_file = .user_config_path()) {
+  default_user_config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"))
+  user_config <- suppressPackageStartupMessages(read_user_config(user_config_file))
 
+  # if file doesn't exist, write template
+  if (!file.exists(user_config_file)) {
+    reset_user_config()
+    invisible(NULL)
+  }
+
+  # The only things we can repair are:
+  # bad data types    - replace with default value
+  bad_types <- .compare_types(user_config, default_user_config)
+  # incorrect lenghts - replace with default value
+  bad_lengths <- .compare_lengths(user_config, default_user_config)
+  # invalid options   - remove them
+  invalid_options <- .find_invalid_options(user_config, default_user_config)
+  # missing options   - just go with the default option
+
+  # TODO - add messages about the repair
+
+  # In reality I want to subset the user config with the good options
+  # and then put them in the default config
+  drop_these_options <- c(
+    bad_types,
+    bad_lengths,
+    invalid_options,
+    "package_version" # Also want to update the package version
+  )
+  valid_user_config_subset <- user_config[!names(user_config) %in% drop_these_options]
+
+  # Modify the default config with the good user config options
+  new_config <- utils::modifyList(default_user_config, valid_user_config_subset, keep.null = TRUE)
+  # Update the package version
+  new_config$package_version <- .eemanalyzeR_ver()
+
+  # validate and then write the yaml out
+  problem_msg <- .validate_config(
+    new_config,
+    default_user_config
+  )
+  anyproblems <- any(!sapply(problem_msg, is.null, simplify = TRUE))
+  if(anyproblems) {
+    stop("Error: repairing config failed. New config not saved. See warning messages above for details and manually fix the config file.")
+  } else{ 
+    # TODO - writing the new yaml removes the nice comments in the config file - try to fix this
+    yaml::write_yaml(new_config, user_config_file, handlers = list(logical = yaml::verbatim_logical))
+  }
+  invisible(new_config)
+}
