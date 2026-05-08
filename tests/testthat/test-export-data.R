@@ -70,7 +70,8 @@ test_that("data export works", {
                                indices=indices,
                                eem_plot = eem_plots,
                                abs_plot = abs_plots,
-                               output_dir = dir, csv = TRUE), "Data successfully exported to")
+                               output_dir = dir, 
+                               spectra_to_csv = TRUE), "Data successfully exported to")
     files <- c(paste0(c("B1S1ExampleBlankSEM", "B1S2ExampleTeaStdSEM", "B1S3ExampleSampleSEM", "ManualExampleTeaWaterfallPlotSample"), "_processed.csv"),
                 paste0("absorbance_processed_", prjname, ".csv"), paste0("metadata_", prjname, ".csv"))
 

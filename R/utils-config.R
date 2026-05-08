@@ -2,6 +2,19 @@
 .user_config_path <- function() {
   return(.pkgenv$user_config_path)
 }
+# Helper function that wraps write_yaml but handles logical values and writes a header 
+.write_config_yaml <- function(config_list,
+                               config_path = .user_config_path()) {
+  # Create the raw yaml with the header comment prepended
+  raw_yaml_text <- paste(
+    "# For descriptons of configuration options see the custom-process-steps vignette or default_config documentation.",
+    yaml::as.yaml(config_list,
+                  handlers = list(logical = yaml::verbatim_logical)),
+    sep = "\n"
+  )
+  # Write the lines to a file
+  write(raw_yaml_text, file = config_path)
+}
 # Function that compares a list of configuration options to some template and returns warnings about different conditions
 .validate_config <- function(
   config,

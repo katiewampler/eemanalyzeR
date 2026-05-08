@@ -52,6 +52,7 @@ edit_user_config <- function(..., interactive = TRUE, user_config_file = .user_c
   # Open in user's editor
   if(interactive){
     file.edit(user_config_file)
+    packageStartupMessage("User configuration file edited manually.")
   } else {
     # Capture the varargs as a list
     newdefaults <- rlang::list2(...)
@@ -68,9 +69,7 @@ edit_user_config <- function(..., interactive = TRUE, user_config_file = .user_c
     if(anyproblems) {
       stop("Error: Bad options applied to config. New config not saved. See warning messages above for details.")
     } else{ 
-      # TODO - writing the new yaml removes the nice comments in the config file - try to fix this
-      yaml::write_yaml(new_config, user_config_file,
-      handlers = list(logical = yaml::verbatim_logical))
+      .write_config_yaml(new_config, user_config_file)
     }
   }
   packageStartupMessage("Changes to user configuration applied, please re-load the new user config")
@@ -86,8 +85,9 @@ reset_user_config <- function(user_config_file = .user_config_path()) {
           user_config_file)
   # Copy the installed package version into the config
   suppressPackageStartupMessages(edit_user_config(package_version = .eemanalyzeR_ver(), interactive = FALSE))
-
   packageStartupMessage("Created user configuration file: ", user_config_file)
+
+  return(invisible(suppressPackageStartupMessages(read_user_config(user_config_file))))
 
 }
 #' @rdname user_config
@@ -99,7 +99,7 @@ read_user_config <- function(user_config_file = .user_config_path()) {
   } else {
     stop("User configuration not found.")
   }
-  invisible(user_config)
+  return(invisible(user_config))
 }
 #' @rdname user_config
 #' @export
@@ -119,7 +119,7 @@ validate_user_config <- function(user_config_file = .user_config_path()) {
     stop("Error: Malformed user configuration in ", user_config_file, "\nSee warning messages above for details.")
   }  
   # If it's valid, return the user config, otherwise print the error messages
-  invisible(current_user_config)
+  return(invisible(current_user_config))
 
 }
 #' @rdname user_config
@@ -139,14 +139,24 @@ load_user_config <- function(user_config_file = .user_config_path(), env = .pkge
 #' @rdname user_config
 #' @export
 repair_user_config <- function(user_config_file = .user_config_path()) {
+  
+  # if user_config_file 
+  if (!file.exists(user_config_file)) {
+    reset_user_config()
+    return(invisible(NULL))
+  }
+
   default_user_config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"))
   user_config <- suppressPackageStartupMessages(read_user_config(user_config_file))
 
-  # if file doesn't exist, write template
-  if (!file.exists(user_config_file)) {
-    reset_user_config()
-    invisible(NULL)
-  }
+  # Test if the repair is even necessary
+
+  validation <- tryCatch(validate_user_config(user_config_file),
+                         error = function(e) NULL)
+  if(is.list(validation)) {
+    message("User config is valid, no repair needed.")
+    return(invisible(user_config))
+  }  
 
   # The only things we can repair are:
   # bad data types    - replace with default value
@@ -157,7 +167,8 @@ repair_user_config <- function(user_config_file = .user_config_path()) {
   invalid_options <- .find_invalid_options(user_config, default_user_config)
   # missing options   - just go with the default option
 
-  # TODO - add messages about the repair
+  # Messages about the repair
+  message("Attempting to repair configuration options: ", paste(bad_types, bad_lengths, invalid_options, collapse = ", "))
 
   # In reality I want to subset the user config with the good options
   # and then put them in the default config
@@ -183,8 +194,7 @@ repair_user_config <- function(user_config_file = .user_config_path()) {
   if(anyproblems) {
     stop("Error: repairing config failed. New config not saved. See warning messages above for details and manually fix the config file.")
   } else{ 
-    # TODO - writing the new yaml removes the nice comments in the config file - try to fix this
-    yaml::write_yaml(new_config, user_config_file, handlers = list(logical = yaml::verbatim_logical))
+    .write_config_yaml(new_config, user_config_file)
   }
-  invisible(new_config)
+  return(invisible(new_config))
 }

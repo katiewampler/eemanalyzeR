@@ -7,9 +7,14 @@
 \alias{read_user_config}
 \alias{validate_user_config}
 \alias{load_user_config}
+\alias{repair_user_config}
 \title{Set up and apply user defaults for data processing}
 \usage{
-edit_user_config(..., interactive = TRUE)
+edit_user_config(
+  ...,
+  interactive = TRUE,
+  user_config_file = .user_config_path()
+)
 
 reset_user_config(user_config_file = .user_config_path())
 
@@ -18,6 +23,8 @@ read_user_config(user_config_file = .user_config_path())
 validate_user_config(user_config_file = .user_config_path())
 
 load_user_config(user_config_file = .user_config_path(), env = .pkgenv)
+
+repair_user_config(user_config_file = .user_config_path())
 }
 \arguments{
 \item{...}{for \code{edit_user_config} potential parameter names and values to apply to the user config. Only if interactive = FALSE}
@@ -36,6 +43,7 @@ If FALSE, it attempts to apply the values provided in \code{...}}
 \item \strong{read_user_config} invisibly returns the current user configuration as a named list.
 \item \strong{validate_user_config} invisibly returns TRUE if the configuration is valid, otherwise returns an error
 \item \strong{load_user_config} will apply the options from \code{user-config.yaml} to the current session.
+\item \strong{repair_user_config} invisibly returns the repaired user config
 }
 }
 \description{
@@ -58,6 +66,7 @@ list before validating the config and applying it to the current session. Usuall
 \item \strong{validate_user_config} reads the user config and checks the options are valid and warns the user about invalid options. It checks that all settings
 in the eemanalyzeR user config are valid options that match the template included with the package.
 \item \strong{load_user_config} will apply the options from \code{user-config.yaml} to the current session.
+\item \strong{repair_user_config} will attempt to repair the user configuration file by merging the valid user configuration file with the default configuration file.
 }
 }
 \examples{

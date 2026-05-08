@@ -154,7 +154,7 @@
 #' - or within the [run_eems()] function itself by providing argument values
 #'
 #' @md
-#' @format A list of length 27:
+#' @format A list of length 33:
 #' - **abs_pattern**: Used by [abs_dir_read()]. A character string containing a [base::regular expression()]
 #'   to match files in `input_dir`. Only files matching the pattern will be loaded.
 #' - **abs_skip**: Used by [abs_dir_read()]. A character string containing a [base::regular expression()]
@@ -169,6 +169,8 @@
 #' - **eem_recurse_read**: Used by [eem_dir_read()]. Logical. Should the function recursively search directories?
 #' - **eem_import_func**: Used by [abs_dir_read()]. Character or a user-defined function to import an EEM.
 #'   For more details, see [`vignette("custom-indices")`](../doc/custom-indices.html).
+#' - **meta_file**: Used by [meta_read()]. Name of the metadata file the program is expecting. 
+#'   Defaults to NA, which auto-detects the metadata file in the data directory, for flexibility.
 #' - **meta_sheet**: Used by [meta_read()]. Name of the sheet containing metadata (only required if the
 #'   metadata is not on the first sheet of an `.xlsx` file).
 #' - **meta_validate**: Used by [meta_read()]. Logical. If `TRUE`, checks the metadata for
@@ -202,11 +204,16 @@
 #'   from the long-term values without being flagged.
 #' - **return**: Used by [get_indices()].Output format: "long" or "wide".
 #' - **qaqc_dir**: Used by [get_indices()]. File path to the QAQC files generated with [create_mdl()]
-#'     and [create_std()]. Default is a user-specific data directory
-#'     [rappdirs::user_data_dir()].
-#' - **filename**: Used by [export_data()]. A character string, used for file names.
-#' - **output_dir**: Used by [export_data()]. Path to save the data. Defaults to a temporary directory
+#'     and [create_std()]. Default is a platform- and user-dependent data directory
+#'     [rappdirs::user_data_dir()] created when QAQC files are generated.
+#' - **qaqc_method**: 
+#' - **filename**: Used by [export_data()]. A character string, used to write output file names.
+#' - **output_dir**: Used by [export_data()]. Path to save the data. Defaults to NA, which saves to a temporary directory
 #'   if not specified.
-#' - **readme**: Starts as NULL, used to store notes and warnings about processing.
+#' - **spectra_to_csv**: Used by [export_data()]. Logical. If `TRUE`, processed EEM and absorbance data and metadata are
+#'   written to `output_dir` as `.csv` files.
+#' - **sum_plot**: Used by [export_data()]. Logical. If `TRUE`, individual plots are exported as a single large figure
+#'   along with the individual plots.
+#' - **package_version**: the version of eemanalyzeR currently installed on the system.
 
 "default_config"

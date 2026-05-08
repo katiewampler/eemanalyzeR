@@ -2,7 +2,7 @@
 
 # eemanalyzeR 1.3.0
 
-(2026-05-05)
+(2026-05-07)
 
 -   Major updates to how the user interacts with the user and session
     configurations. Now there is a more unified vocabulary among the session
@@ -20,6 +20,8 @@
         by providing name-value pairs to the function arguments.
     -   `load_user_config` checks that the saved user configuration file is valid and, if so, applies
         these configuration options to the session.
+    -   `repair_user_config`  attempts to repair the user configuration by replacing any invalid options in the 
+        user configuration file with default options from the package.
 
 
 -   Package install, loading, and updates.

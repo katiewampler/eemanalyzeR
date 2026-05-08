@@ -24,7 +24,7 @@ test_that("pkg environment can be modified by modify_session_config and then res
     # Vector of numbers
     em_clip = c(300, 400),
     # Logical
-    csv = FALSE,
+    spectra_to_csv = FALSE,
     # Text
     iblank_pattern = "test_iblank",
     sblank_pattern = "test_sblank",
@@ -42,7 +42,7 @@ test_that("pkg environment can be modified by modify_session_config and then res
   expect_identical(list(
     abs_pattern = get_abs_pattern(),
     em_clip = get_em_clip(),
-    csv = get_csv(),
+    spectra_to_csv = get_spectra_to_csv(),
     iblank_pattern = get_iblank_pattern(),
     sblank_pattern = get_sblank_pattern(),
     check_pattern = get_check_pattern()
@@ -68,7 +68,7 @@ test_that("modify_session_config can work inside function without modifying pack
     # Vector of numbers
     em_clip = c(300, 400),
     # Logical
-    csv = FALSE,
+    spectra_to_csv = FALSE,
     # Text
     iblank_pattern = "test_iblank",
     sblank_pattern = "test_sblank",
@@ -80,7 +80,7 @@ test_that("modify_session_config can work inside function without modifying pack
   expect_identical(list(
     abs_pattern = get_abs_pattern(.fnenv),
     em_clip = get_em_clip(.fnenv),
-    csv = get_csv(.fnenv),
+    spectra_to_csv = get_spectra_to_csv(.fnenv),
     iblank_pattern = get_iblank_pattern(.fnenv),
     sblank_pattern = get_sblank_pattern(.fnenv),
     check_pattern = get_check_pattern(.fnenv)
@@ -90,7 +90,7 @@ test_that("modify_session_config can work inside function without modifying pack
   package_default_list <- list(
     abs_pattern = get_abs_pattern(),
     em_clip = get_em_clip(),
-    csv = get_csv(),
+    spectra_to_csv = get_spectra_to_csv(),
     iblank_pattern = get_iblank_pattern(),
     sblank_pattern = get_sblank_pattern(),
     check_pattern = get_check_pattern()

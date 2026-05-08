@@ -15,7 +15,7 @@
 #'   If a plot is provided, it is saved as a `.png` file. See [plot.abslist()] for plotting.
 #' @param indices If `NULL`, indices will not be exported. If a list of
 #'   indices is provided, it is saved.
-#' @param csv Logical. If `TRUE`, processed EEM and absorbance data and metadata are
+#' @param spectra_to_csv Logical. If `TRUE`, processed EEM and absorbance data and metadata are
 #'   written to `output_dir` as `.csv` files.
 #' @param sum_plot Logical. If `TRUE`, individual plots are exported as a single large figure
 #'   along with the individual plots.
@@ -47,12 +47,12 @@
 #' )
 export_data <- function(eemlist, abslist, filename,
                         meta = NULL, indices = NULL,
-                        eem_plot = NULL, abs_plot = NULL, csv = FALSE,
+                        eem_plot = NULL, abs_plot = NULL, spectra_to_csv = FALSE,
                         sum_plot = TRUE, output_dir = NA) {
   stopifnot(
     .is_eemlist(eemlist), .is_abslist(abslist), is.data.frame(meta) | is.null(meta),
     is.list(indices) | is.null(indices), is.list(eem_plot) | is.null(eem_plot),
-    is.logical(csv), is.character(filename), inherits(abs_plot, "ggplot") | is.null(abs_plot),
+    is.logical(spectra_to_csv), is.character(filename), inherits(abs_plot, "ggplot") | is.null(abs_plot),
     is.logical(sum_plot)
   )
 
@@ -160,7 +160,7 @@ export_data <- function(eemlist, abslist, filename,
   }
 
   # save eemlist and abslist as csv (default is no)
-  if (csv == TRUE) {
+  if (spectra_to_csv == TRUE) {
     lapply(eemlist, function(x) {
       name <- paste0(x$sample, "_processed.csv")
       data <- get_sample_info(x, "x")

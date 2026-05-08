@@ -5,7 +5,7 @@
 \alias{default_config}
 \title{Default configuration of arguments for eemanalyzeR}
 \format{
-A list of length 27:
+A list of length 33:
 \itemize{
 \item \strong{abs_pattern}: Used by \code{\link[=abs_dir_read]{abs_dir_read()}}. A character string containing a \code{\link[base:regex]{base::regular expression()}}
 to match files in \code{input_dir}. Only files matching the pattern will be loaded.
@@ -21,6 +21,8 @@ to match files in \code{input_dir} that should be ignored.
 \item \strong{eem_recurse_read}: Used by \code{\link[=eem_dir_read]{eem_dir_read()}}. Logical. Should the function recursively search directories?
 \item \strong{eem_import_func}: Used by \code{\link[=abs_dir_read]{abs_dir_read()}}. Character or a user-defined function to import an EEM.
 For more details, see \href{../doc/custom-indices.html}{\code{vignette("custom-indices")}}.
+\item \strong{meta_file}: Used by \code{\link[=meta_read]{meta_read()}}. Name of the metadata file the program is expecting.
+Defaults to NA, which auto-detects the metadata file in the data directory, for flexibility.
 \item \strong{meta_sheet}: Used by \code{\link[=meta_read]{meta_read()}}. Name of the sheet containing metadata (only required if the
 metadata is not on the first sheet of an \code{.xlsx} file).
 \item \strong{meta_validate}: Used by \code{\link[=meta_read]{meta_read()}}. Logical. If \code{TRUE}, checks the metadata for
@@ -54,12 +56,17 @@ function.
 from the long-term values without being flagged.
 \item \strong{return}: Used by \code{\link[=get_indices]{get_indices()}}.Output format: "long" or "wide".
 \item \strong{qaqc_dir}: Used by \code{\link[=get_indices]{get_indices()}}. File path to the QAQC files generated with \code{\link[=create_mdl]{create_mdl()}}
-and \code{\link[=create_std]{create_std()}}. Default is a user-specific data directory
-\code{\link[rappdirs:user_data_dir]{rappdirs::user_data_dir()}}.
-\item \strong{filename}: Used by \code{\link[=export_data]{export_data()}}. A character string, used for file names.
-\item \strong{output_dir}: Used by \code{\link[=export_data]{export_data()}}. Path to save the data. Defaults to a temporary directory
+and \code{\link[=create_std]{create_std()}}. Default is a platform- and user-dependent data directory
+\code{\link[rappdirs:user_data_dir]{rappdirs::user_data_dir()}} created when QAQC files are generated.
+\item \strong{qaqc_method}:
+\item \strong{filename}: Used by \code{\link[=export_data]{export_data()}}. A character string, used to write output file names.
+\item \strong{output_dir}: Used by \code{\link[=export_data]{export_data()}}. Path to save the data. Defaults to NA, which saves to a temporary directory
 if not specified.
-\item \strong{readme}: Starts as NULL, used to store notes and warnings about processing.
+\item \strong{spectra_to_csv}: Used by \code{\link[=export_data]{export_data()}}. Logical. If \code{TRUE}, processed EEM and absorbance data and metadata are
+written to \code{output_dir} as \code{.csv} files.
+\item \strong{sum_plot}: Used by \code{\link[=export_data]{export_data()}}. Logical. If \code{TRUE}, individual plots are exported as a single large figure
+along with the individual plots.
+\item \strong{package_version}: the version of eemanalyzeR currently installed on the system.
 }
 }
 \usage{

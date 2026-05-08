@@ -45,6 +45,6 @@ qaqc_dir: .na.character
 qaqc_method: .na.character
 filename: "eemanalyzeR-output"
 output_dir: .na.character
-csv: FALSE
+spectra_to_csv: FALSE
 sum_plot: TRUE
 package_version: .na.character
