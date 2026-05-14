@@ -44,8 +44,8 @@
 \item{equal_scale}{Logical. If \code{TRUE}, sets the scale the same for all
 plots in an \code{eemlist}.}
 
-\item{pal}{Color palette for the fill scale. Defaults to \code{\link[pals:parula]{pals::parula()}}.
-If fewer colors are provided than required, \code{\link[grDevices:colorRampPalette]{grDevices::colorRampPalette()}}
+\item{pal}{Color palette for the fill scale. Defaults to \code{\link[pals:continuous]{pals::parula()}}.
+If fewer colors are provided than required, \code{\link[grDevices:colorRamp]{grDevices::colorRampPalette()}}
 is used to fill in colors.}
 
 \item{title}{Either "none", "sample_id", "sample_name", or "sample" which indicates what to use for the plot title.}

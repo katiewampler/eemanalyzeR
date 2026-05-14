@@ -60,7 +60,8 @@ test_that("check works when there are multiple methods", {
   #only one set in dir -> return without anything
     dummy_dir <- withr::local_tempfile()
     dir.create(file.path(dummy_dir,"default"), showWarnings = FALSE, recursive = TRUE)
-    stds <- list.files(system.file("extdata", package = "eemanalyzeR"), pattern= "check-std.rds|mdl.rds", full.names = TRUE)
+    stds <- list.files(system.file("extdata", package = "eemanalyzeR"), pattern= "check-std.rds|mdl.rds",
+                       full.names = TRUE, recursive=TRUE)
     file.copy(stds, file.path(dummy_dir,"default"))
 
     one_set <- check_std(example_processed_eems, abs, qaqc_dir = dummy_dir)

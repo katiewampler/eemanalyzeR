@@ -26,8 +26,6 @@
 -   Added an option to use the `sample_name` as the plot title,
     previously only `sample_id` and `sample` were supported.
 
--   
-
 # eemanalyzeR 1.3.0
 
 (2026-05-07)

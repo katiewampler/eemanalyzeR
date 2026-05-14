@@ -114,7 +114,7 @@ specify the file path to the file you want loaded. See [Using Different
 Processing Methods] for more details on this.
 
 To restore your `user_config` back to the package defaults, you can use
-`reset_user_config()`. If there are issues with the `user_config`, you 
+`reset_user_config()`. If there are issues with the `user_config`, you
 can attempt to repair it using `repair_user_config`, which will check
 for invalid or missing values and replace them with package defaults.
 

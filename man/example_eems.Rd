@@ -26,6 +26,6 @@ example_eems
 \description{
 A subset of water samples run on a Horiba Aqualog for excitation emission matrices (EEMs). This data includes
 both the samples and blanks. Data was loaded using \code{\link[=eem_dir_read]{eem_dir_read()}}.
-For more details on the format of an eemlist, see the \link[eemR:eemR]{eemR} package.
+For more details on the format of an eemlist, see the \link[eemR:eemR-package]{eemR::eemR} package.
 }
 \keyword{datasets}

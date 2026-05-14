@@ -37,10 +37,10 @@ a single metadata file and errors if multiple files are present.}
 if the metadata is not on the first sheet of an \code{.xlsx} file).}
 
 \item{abs_pattern}{A character string containing a
-\link[base:regular expression]{base::regular expression} used to identify absorbance files.}
+\link[base:regex]{base::regular expression} used to identify absorbance files.}
 
 \item{iblank}{Optional. A character string containing a
-\link[base:regular expression]{base::regular expression} used to identify instrument blanks.}
+\link[base:regex]{base::regular expression} used to identify instrument blanks.}
 
 \item{type}{Which MDL to calculate: either "eem" or "abs".}
 

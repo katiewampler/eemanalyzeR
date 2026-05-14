@@ -1,7 +1,7 @@
 test_that("we can get the mdl for eems data", {
 
   #set up testing data
-  mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),"default-eem-mdl.rds"))
+  mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),"default/default-eem-mdl.rds"))
   abslist <- add_metadata(metadata, example_abs)
   eemlist <- add_metadata(metadata, example_eems)
   blanklist <- subset_type(eemlist, type = "iblank")
@@ -41,7 +41,7 @@ test_that("we can get the mdl for eems data", {
 
 test_that("we can get the mdl for abs data", {
   #set up testing data
-  mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),"default-abs-mdl.rds"))
+  mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"),"default/default-abs-mdl.rds"))
   abslist <- example_processed_abs
 
   #works with a single sample

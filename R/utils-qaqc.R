@@ -36,7 +36,7 @@ update_qaqc_dir <- function(){
     }
 
   }
-  
+
   qaqc_dir <- get_qaqc_dir()
 
   invisible(qaqc_dir)

@@ -47,10 +47,9 @@ existing methods.
 `abs_index` and `eem_index` should both be a `data.frame` with the
 following columns:
 
--   `sample_name`: a character, the name of the sample
+-   `sample_id`: sample identifier for the sample (if provided, otherwise uses sample: the sample's file name)
 
--   `meta_name`: a character, the name of the sample in the metadata if
-    metadata has been added, otherwise the sample name again
+-   `sample_name`: sample name or description (if provided, otherwise uses sample: the sample's file name)
 
 -   `index`: a character, the name of the index being reported
 
@@ -199,7 +198,7 @@ that are returned are based on "real" data.
 #checking absorbance data
   #get mdl 
     abs_mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"), 
-                                 "default-abs-mdl.rds"))
+                                 "default/default-abs-mdl.rds"))
 
   #data is fully above the MDL so NA is returned 
     check_abs_mdl(abslist[[2]], abs_mdl, wl=254)
@@ -210,7 +209,7 @@ that are returned are based on "real" data.
 #checking fluorescence data
   #get mdl 
     eem_mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"), 
-                                 "default-eem-mdl.rds"))
+                                 "default/default-eem-mdl.rds"))
     
   #data is completely above the MDL so NA is returned
    check_eem_mdl(eemlist[[2]], mdl = eem_mdl, ex=270:280, em=300:320)

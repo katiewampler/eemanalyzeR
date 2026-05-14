@@ -11,7 +11,7 @@ abs_interp(abs, type = "linear")
 
 \item{type}{The interpolation method, either "linear" for linear interpolation
 using \code{\link[zoo:na.approx]{zoo::na.approx()}}, or "spline" for spline interpolation using
-\code{\link[zoo:na.spline]{zoo::na.spline()}}.}
+\code{\link[zoo:na.approx]{zoo::na.spline()}}.}
 }
 \value{
 An \code{abs} or \code{abslist} object.

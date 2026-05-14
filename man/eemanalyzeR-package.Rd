@@ -24,7 +24,6 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Katie A. Wampler \email{katie.wampler@oregonstate.edu} (\href{https://orcid.org/0000-0002-5584-7554}{ORCID})
   \item Ryan P. Cole \email{ryan.cole@oregonstate.edu}
 }
 
