@@ -7,15 +7,15 @@
 \format{
 A list of length 33:
 \itemize{
-\item \strong{abs_pattern}: Used by \code{\link[=abs_dir_read]{abs_dir_read()}}. A character string containing a \code{\link[base:regex]{base::regular expression()}}
+\item \strong{abs_pattern}: Used by \code{\link[=abs_dir_read]{abs_dir_read()}}. A character string containing a \code{\link[base:regular expression]{base::regular expression()}}
 to match files in \code{input_dir}. Only files matching the pattern will be loaded.
-\item \strong{abs_skip}: Used by \code{\link[=abs_dir_read]{abs_dir_read()}}. A character string containing a \code{\link[base:regex]{base::regular expression()}}
+\item \strong{abs_skip}: Used by \code{\link[=abs_dir_read]{abs_dir_read()}}. A character string containing a \code{\link[base:regular expression]{base::regular expression()}}
 to match files in \code{input_dir} that should be ignored.
 \item \strong{abs_file_ext}: Used by \code{\link[=abs_dir_read]{abs_dir_read()}}. The file extension of the absorbance files.
 \item \strong{abs_recurse_read}: Used by \code{\link[=eem_dir_read]{eem_dir_read()}}. Logical. Should the function recursively search directories?
-\item \strong{eem_pattern}: Used by \code{\link[=eem_dir_read]{eem_dir_read()}}. A character string containing a \code{\link[base:regex]{base::regular expression()}}
+\item \strong{eem_pattern}: Used by \code{\link[=eem_dir_read]{eem_dir_read()}}. A character string containing a \code{\link[base:regular expression]{base::regular expression()}}
 to match files in \code{input_dir}. Only files matching the pattern will be loaded.
-\item \strong{eem_skip}: Used by \code{\link[=eem_dir_read]{eem_dir_read()}}. A character string containing a \code{\link[base:regex]{base::regular expression()}}
+\item \strong{eem_skip}: Used by \code{\link[=eem_dir_read]{eem_dir_read()}}. A character string containing a \code{\link[base:regular expression]{base::regular expression()}}
 to match files in \code{input_dir} that should be ignored.
 \item \strong{eem_file_ext}: Used by \code{\link[=eem_dir_read]{eem_dir_read()}}. The file extension of the EEMs files.
 \item \strong{eem_recurse_read}: Used by \code{\link[=eem_dir_read]{eem_dir_read()}}. Logical. Should the function recursively search directories?

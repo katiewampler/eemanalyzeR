@@ -16,7 +16,7 @@ Description: Tools for processing and analyzing raw excitation-emission
     consistent analysis and simplify the coding required to process the
     data.
 License: AGPL (>= 3)
-URL:   https://CRAN.R-project.org/package=eemanalyzeR, https://katiewampler.github.io/eemanalyzeR/
+URL: https://CRAN.R-project.org/package=eemanalyzeR, https://katiewampler.github.io/eemanalyzeR/
 BugReports: https://github.com/katiewampler/eemanalyzeR/issues
 Depends: 
     R (>= 4.1.0)
@@ -60,4 +60,4 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
 LazyData: true
-RoxygenNote: 7.3.3
+Config/roxygen2/version: 8.0.0

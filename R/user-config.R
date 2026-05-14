@@ -150,8 +150,7 @@ repair_user_config <- function(user_config_file = .user_config_path()) {
   user_config <- suppressPackageStartupMessages(read_user_config(user_config_file))
 
   # Test if the repair is even necessary
-
-  validation <- tryCatch(validate_user_config(user_config_file),
+  validation <- tryCatch(suppressWarnings(validate_user_config(user_config_file)),
                          error = function(e) NULL)
   if(is.list(validation)) {
     message("User config is valid, no repair needed.")
@@ -168,6 +167,7 @@ repair_user_config <- function(user_config_file = .user_config_path()) {
   # missing options   - just go with the default option
 
   # Messages about the repair
+  # TODO - we could tailor messages to specific types of repair (bad_types, bad lengths, invalid_options) in future
   message("Attempting to repair configuration options: ", paste(bad_types, bad_lengths, invalid_options, collapse = ", "))
 
   # In reality I want to subset the user config with the good options
@@ -194,6 +194,7 @@ repair_user_config <- function(user_config_file = .user_config_path()) {
   if(anyproblems) {
     stop("Error: repairing config failed. New config not saved. See warning messages above for details and manually fix the config file.")
   } else{ 
+    message("Repair attempt success! Writing user config to: ", user_config_file)
     .write_config_yaml(new_config, user_config_file)
   }
   return(invisible(new_config))
