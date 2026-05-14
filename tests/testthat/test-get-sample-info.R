@@ -19,7 +19,7 @@ test_that("correct info is grabbed", {
   expect_equal(get_sample_info(eemlist[[5]], "doc_mgL"), 1.94)
 
   abslist <- add_metadata(metadata, example_abs)
-  expect_equal(get_sample_info(abslist[[2]], "meta_name"), "ExampleTeaStd")
+  expect_equal(get_sample_info(abslist[[2]], "sample_id"), "ExampleTeaStd")
 
   #test getting a matrix for absorbance
   expect_true(is.matrix(get_sample_info(example_abs, "data")))

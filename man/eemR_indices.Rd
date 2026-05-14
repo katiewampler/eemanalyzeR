@@ -25,8 +25,8 @@ A list with two elements:
 
 Each \code{data.frame} contains the following columns:
 \itemize{
-\item \strong{sample_name}: name of the sample from the EEM or absorbance list
-\item \strong{meta_name}: sample name from metadata if provided; otherwise same as \code{sample_name}
+\item \strong{sample_id}: sample identifier for the sample (if provided, otherwise uses sample: the sample's file name)
+\item \strong{sample_name}: sample name or description (if provided, otherwise uses sample: the sample's file name)
 \item \strong{index}: name of the index
 \item \strong{value}: calculated value of the index
 }

@@ -29,7 +29,7 @@ test_that("pkg environment can be modified by modify_session_config and then res
     iblank_pattern = "test_iblank",
     sblank_pattern = "test_sblank",
     check_pattern = "test_tea"
-  
+
   )
 
   expect_true(rlang::is_environment(.pkgenv))

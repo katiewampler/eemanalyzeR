@@ -6,7 +6,7 @@
 
   if(inherits(x, c("eem","abs"))){
     items <- names(x)
-    augment_names <- c("meta_name","dilution","analysis_date", "description","doc_mgL","notes")
+    augment_names <- c("sample_id","dilution","analysis_date", "sample_name","doc_mgL","notes")
     augmented <- all(augment_names %in% items)
   }else{
     augmented <- unlist(lapply(x, .meta_added))

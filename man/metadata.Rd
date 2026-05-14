@@ -9,8 +9,8 @@ A data.frame with 4 rows and 11 columns:
 \itemize{
 \item \strong{index}: Numeric order of entry (e.g., 1, 2, 3, etc.)
 \item \strong{analysis_date}: Optional, date samples were run on instrument (not collected in the field)
-\item \strong{description}: Optional, brief description of the sample collected
-\item \strong{data_identifier}: REQUIRED, file name from the aqualog, must match exactly
+\item \strong{sample_name}: Optional, brief description of the sample collected
+\item \strong{sample_id}: REQUIRED, file name from the Aqualog without the file extension, must match exactly
 \item \strong{replicate_no}: REQUIRED, number indicating if the sample was replicated; unreplicated = 1
 \item \strong{integration_time_s}: REQUIRED, integration time of sample (e.g., 1, 2, etc.)
 \item \strong{dilution}: REQUIRED, dilution factor as decimal (e.g., 0.5 for 2-fold dilution); 1 if no dilution

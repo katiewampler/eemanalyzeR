@@ -2,7 +2,7 @@ test_that("tea checks work", {
   #check that error is thrown if processing is different
     expect_warning(flags <- check_std(example_eems, example_abs, qaqc_dir = system.file("extdata", package = "eemanalyzeR")),
                    "No check standard samples found")
-    expect_true(unique(flags$meta_name) == "notea")
+    expect_true(unique(flags$sample_id) == "notea")
 
   #check when tea is fully out
     abs <- example_processed_abs
@@ -28,18 +28,18 @@ test_that("tea checks work", {
   #check when there are two tea samples
     abs <- example_processed_abs
     abs[[4]] <- example_processed_abs[[2]]
-    abs[[4]]$meta_name <- "example_tea2"
+    abs[[4]]$sample_id <- "example_tea2"
     class(abs) <- "abslist"
 
     eems <- example_processed_eems
     eems[[4]] <- example_processed_eems[[2]]
-    eems[[4]]$meta_name <- "example_tea2"
+    eems[[4]]$sample_id <- "example_tea2"
     class(eems) <- "eemlist"
 
     check <- check_std(eems, abs, qaqc_dir = system.file("extdata", package = "eemanalyzeR"))
 
     expect_equal(dim(check), c(30, 4))
-    expect_equal(unique(check$meta_name), c("ExampleTeaStd", "example_tea2"))
+    expect_equal(unique(check$sample_id), c("ExampleTeaStd", "example_tea2"))
 
   #check the readme
     expect_true(grepl("0% (n=8) of the absorbance indices", get_readme()$check_std, fixed=TRUE))

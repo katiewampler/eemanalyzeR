@@ -47,7 +47,7 @@ A list with two data frames:
 If \code{return = "long"}, each data frame includes:
 \itemize{
 \item \code{sample_name}: sample ID
-\item \code{meta_name}: sample name in metadata (or \code{sample_name} if missing)
+\item \code{sample_id}: sample name in metadata (or \code{sample_name} if missing)
 \item \code{index}: index name
 \item \code{value}: index value
 \item \code{QAQC_flag}: any associated flags

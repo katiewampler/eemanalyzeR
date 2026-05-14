@@ -20,10 +20,10 @@
 #'
 #' For each sample, the following fields may be added (if present in the metadata):
 #'
-#' - **meta_name**: identifier for the sample
+#' - **sample_id**: sample identifier for the sample
 #' - **dilution**: sample dilution factor
 #' - **analysis_date**: date the sample was run
-#' - **description**: optional description
+#' - **sample_name**: optional sample name or description
 #' - **sample_type**: optional flag (e.g., `sample` for a sample,
 #'    `sblank` for an analytical blank, `check` for a check standard).
 #'   Default values match Horiba Aqualog exports.
@@ -48,7 +48,6 @@ add_metadata <- function(meta, x,
                            sblank_pattern = "Blank|blank|BLK",
                            check_pattern = "Tea|tea"
                          ) {
-
   class_type <- class(x)
 
   stopifnot("data.frame" %in% class(meta), class_type %in% c("abslist", "eemlist"),
@@ -61,12 +60,12 @@ add_metadata <- function(meta, x,
 
   .get_row_meta <- function(name, meta) {
     name <- gsub("([\\(\\)\\-])", "\\\\\\1", name) # escape special characters
-    meta$data_identifier <- gsub("([\\(\\)\\-])", "\\\\\\1", meta$data_identifier)
+    meta$sample_id <- gsub("([\\(\\)\\-])", "\\\\\\1", meta$sample_id)
 
-    row <- which(sapply(meta$data_identifier, grep, name, fixed = T) == 1)
+    row <- which(sapply(meta$sample_id, grep, name, fixed = T) == 1)
 
     if (length(row) > 1) {
-      row <- row[which.max(nchar(meta$data_identifier)[row])]
+      row <- row[which.max(nchar(meta$sample_id)[row])]
     }
 
     if (length(row) == 0) {
@@ -101,7 +100,7 @@ add_metadata <- function(meta, x,
   if (length(unique(meta_order)) < nrow(meta)) {
     warning(
       "the following sample is in metadata but was missing in data:\n",
-      paste(meta$data_identifier[setdiff(1:nrow(meta), meta_order)], collapse = "\n"),
+      paste(meta$sample_id[setdiff(1:nrow(meta), meta_order)], collapse = "\n"),
       "\nthese sample will be removed from further processing"
     )
     meta <- meta[-setdiff(1:nrow(meta), meta_order), ]
@@ -118,7 +117,7 @@ add_metadata <- function(meta, x,
 
   if (!("sample_type" %in% names(meta))) {
     # Warn the user if sample types are pattern matched?
-    warning("No sample_type in Metadata. Guessing sample_types by pattern matching data_identifier")
+    warning("No sample_type in Metadata. Guessing sample_types by pattern matching sample_id")
     # Guess instrument blanks
     inst_blank_flags <- sapply(names,
       \(s) grepl(
@@ -196,23 +195,23 @@ add_metadata <- function(meta, x,
   # Get data from metadata, keeping as numeric/character
   meta_data <- list(
     # Required
-    meta_name = meta$data_identifier[meta_order],
+    sample_id = meta$sample_id[meta_order],
     dilution = meta$dilution[meta_order],
     integration_time_s = meta$integration_time_s[meta_order],
     raman_area_1s = meta$RSU_area_1s[meta_order],
 
     # Optional
     analysis_date = if ("analysis_date" %in% colnames(meta)) meta$analysis_date[meta_order] else NA,
-    description = if ("description" %in% colnames(meta)) meta$description[meta_order] else NA,
+    sample_name = if ("sample_name" %in% colnames(meta)) meta$sample_name[meta_order] else NA,
     doc_mgL = if ("DOC_mg_L" %in% colnames(meta)) meta$DOC_mg_L[meta_order] else NA,
-    notes = if ("Notes" %in% colnames(meta)) meta$Notes[meta_order] else NA
+    notes = if ("notes" %in% colnames(meta)) meta$notes[meta_order] else NA
   )
 
   # remove samples in metadata that don't have samples, do after because otherwise the meta_order doesn't match meta
   if (length(unique(meta_order)) < nrow(meta)) {
     warning(
       "the following sample is in metadata but was missing in data:\n",
-      paste(meta$data_identifier[setdiff(1:nrow(meta), meta_order)], collapse = "\n"),
+      paste(meta$sample_id[setdiff(1:nrow(meta), meta_order)], collapse = "\n"),
       "\nthese sample will be removed from further processing"
     )
     meta <- meta[-setdiff(1:nrow(meta), meta_order), ]
@@ -223,7 +222,7 @@ add_metadata <- function(meta, x,
     obj <- x[[y]]
 
     # assign sample name and dilution
-    obj$meta_name <- meta_data$meta_name[y]
+    obj$sample_id <- meta_data$sample_id[y]
     obj$dilution <- meta_data$dilution[y]
 
     if (.is_eemlist(x)) {
@@ -233,7 +232,7 @@ add_metadata <- function(meta, x,
 
     # assign values if they are in metadata
     obj$analysis_date <- meta_data$analysis_date[y]
-    obj$description <- meta_data$description[y]
+    obj$sample_name <- meta_data$sample_name[y]
     obj$doc_mgL <- meta_data$doc_mgL[y]
     obj$notes <- meta_data$notes[y]
 

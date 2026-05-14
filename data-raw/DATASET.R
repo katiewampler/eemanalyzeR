@@ -93,11 +93,11 @@ for(x in files){
 
   #make a test mdl file for functions
     create_mdl(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
-                      meta_name="longtermblank-metadata.csv",
+                      meta_file="longtermblank-metadata.csv",
                       type="eem", qaqc_dir = system.file("extdata", package = "eemanalyzeR"))
 
     create_mdl(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
-            meta_name="longtermblank-metadata.csv",
+               meta_file="longtermblank-metadata.csv",
             type="abs", qaqc_dir = system.file("extdata", package = "eemanalyzeR"))
 
 #do the same for the tea samples
@@ -116,11 +116,11 @@ for(x in files){
 
     #make a test tea file for functions
     create_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-std"),
-            meta_name="longterm-checkstd-metadata.csv", abs_pattern="ABS",
+               meta_file="longterm-checkstd-metadata.csv", abs_pattern="ABS",
             type="eem", qaqc_dir = system.file("extdata", package = "eemanalyzeR"))
 
     create_std(file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-std"),
-            meta_name="longterm-checkstd-metadata.csv", abs_pattern="ABS",
+               meta_file="longterm-checkstd-metadata.csv", abs_pattern="ABS",
             type="abs", qaqc_dir = system.file("extdata", package = "eemanalyzeR"))
 
 #save index ranges as data.frame ------

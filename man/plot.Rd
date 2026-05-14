@@ -48,7 +48,7 @@ plots in an \code{eemlist}.}
 If fewer colors are provided than required, \code{\link[grDevices:colorRamp]{grDevices::colorRampPalette()}}
 is used to fill in colors.}
 
-\item{title}{Either "none", "meta_name", or "sample" which indicates what to use for the plot title.}
+\item{title}{Either "none", "sample_id", "sample_name", or "sample" which indicates what to use for the plot title.}
 
 \item{remove_lower}{Logical. If \code{TRUE}, sets values below the first-order
 Rayleigh line to \code{NA}, which can reduce artifacts affecting the color scale.}

@@ -43,8 +43,8 @@ eem_subset <- subset_samples(example_eems, "sample", names[1], keep = TRUE) # ke
 
 # Subset by metadata name
 eemlist <- add_metadata(metadata, example_eems)
-names <- get_sample_info(eemlist, "meta_name")
-eem_subset <- subset_samples(eemlist, "meta_name", names[1]) # removes by default
+names <- get_sample_info(eemlist, "sample_id")
+eem_subset <- subset_samples(eemlist, "sample_id", names[1]) # removes by default
 }
 \seealso{
 \code{\link[=get_sample_info]{get_sample_info()}}

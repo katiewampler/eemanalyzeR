@@ -19,9 +19,8 @@ format_index(x, index, value, flag)
 \value{
 A data frame with four columns:
 \itemize{
-\item \strong{sample_name}: the sample name
-\item \strong{meta_name}: the sample name in metadata (if provided),
-otherwise repeats \code{sample_name}
+\item \strong{sample_id}: sample identifier for the sample (if provided, otherwise uses sample: the sample's file name)
+\item \strong{sample_name}: sample name or description (if provided, otherwise uses sample: the sample's file name)
 \item \strong{index}: the name of the index
 \item \strong{value}: the index value (with \code{MDL01} values removed)
 }

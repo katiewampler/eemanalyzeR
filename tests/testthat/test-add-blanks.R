@@ -3,7 +3,7 @@
 
 #test that gives error if blanklist is NULL isn't added
     test_that("error is returned if no blanklist is provided", {
-     expect_error(add_blanks(example_eems, blanklist = NULL), 
+     expect_error(add_blanks(example_eems, blanklist = NULL),
       "Invalid blanklist provided: blanklist is not an eem or eemlist.") # fails if provided blanklist isn't eem or eemlist
     })
 
@@ -24,9 +24,9 @@
 
       expect_s3_class(augment_eemlist, "eemlist")
       expect_equal(names(augment_eemlist[[1]]), c("file", "sample", "x", "ex", "em",
-                                                  "location", "meta_name", "dilution",
+                                                  "location", "sample_id", "dilution",
                                                   "integration_time_s", "raman_area_1s",
-                                                  "analysis_date", "description", "doc_mgL",
+                                                  "analysis_date", "sample_name", "doc_mgL",
                                                   "notes", "blk_file", "blk_x"))
       expect_equal(get_sample_info(augment_eemlist, "blk_file"),
                    c("data-raw/B1S1ExampleBlankBEM.dat","data-raw/B1S2ExampleTeaStdBEM.dat",
@@ -49,10 +49,10 @@
       augment_eemlist <- add_blanks(eemlist, blanklist[1])
       expect_s3_class(augment_eemlist, "eemlist")
       expect_equal(names(augment_eemlist[[1]]), c("file", "sample", "x", "ex", "em",
-                                                  "location", "meta_name", "dilution",
+                                                  "location", "sample_id", "dilution",
                                                   "integration_time_s", "raman_area_1s",
-                                                  "analysis_date", "description", "doc_mgL",
-                                                  "notes", "blk_file", "blk_x"))      
+                                                  "analysis_date", "sample_name", "doc_mgL",
+                                                  "notes", "blk_file", "blk_x"))
       expect_equal(get_sample_info(augment_eemlist, "blk_file"),
                    rep("data-raw/B1S1ExampleBlankBEM.dat",5))
       expect_equal(as.vector(augment_eemlist[[1]]$blk_x),as.vector(example_eems[[1]]$x))
@@ -82,12 +82,12 @@
       # EEM has wrong name
       eemlist <- add_metadata(metadata, example_eems)
       blanklist <- subset_type(eemlist, "iblank")
-      eemlist[[2]]$meta_name <- "wrong name"
+      eemlist[[2]]$sample_id <- "wrong name"
       expect_error(add_blanks(eemlist, blanklist), "more than one blank was provided, but blank names do not match samples")
 
       # Blank has wrong name
       eemlist <- add_metadata(metadata, example_eems)
       blanklist <- subset_type(eemlist, "iblank")
-      blanklist[[1]]$meta_name <- "wrong name"
+      blanklist[[1]]$sample_id <- "wrong name"
       expect_error(add_blanks(eemlist, blanklist), "more than one blank was provided, but blank names do not match samples")
     })

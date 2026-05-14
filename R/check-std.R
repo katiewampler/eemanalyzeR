@@ -23,7 +23,7 @@
 #'
 #' If `vals = FALSE`, returns a `data.frame` with four columns:
 #'
-#' - `meta_name`: metadata name of the check standard
+#' - `sample_id`: metadata name of the check standard
 #' - `type`: `abs` or `eem` indicating the index type
 #' - `index`: name of the index
 #' - `flag`: "STD01" if outside tolerance, otherwise `NA`
@@ -52,7 +52,7 @@ check_std <- function(eemlist, abslist, qaqc_dir = get_qaqc_dir(), tolerance = 0
     warning("No check standard samples found")
     .write_readme_line("No check standards were included in the sample data\n", "check_std")
 
-    return(data.frame(meta_name = rep("notea", each = 2), index = NA, type = c("abs", "eem"), flag = NA))
+    return(data.frame(sample_id = rep("notea", each = 2), index = NA, type = c("abs", "eem"), flag = NA))
   }
 
   # get std data
@@ -61,8 +61,8 @@ check_std <- function(eemlist, abslist, qaqc_dir = get_qaqc_dir(), tolerance = 0
   abs_std <- std$abs_check_std
 
   if(is.null(eem_std) | is.null(abs_std)){
-    names <- get_sample_info(subset_type(eemlist, type = "check"), "meta_name")
-    return(data.frame(meta_name = rep(names, each = 2), index = NA, type = c("abs", "eem"), flag = NA))
+    names <- get_sample_info(subset_type(eemlist, type = "check"), "sample_id")
+    return(data.frame(sample_id = rep(names, each = 2), index = NA, type = c("abs", "eem"), flag = NA))
   }
 
   # get attributes to make sure they're processed the same as the standard
@@ -95,7 +95,7 @@ check_std <- function(eemlist, abslist, qaqc_dir = get_qaqc_dir(), tolerance = 0
       dplyr::rename(std_val = "value"), by = "index") %>% mutate(type = "abs")
   } else {
     abs_ind <- data.frame(
-      index = character(), sample_name = character(), meta_name = character(),
+      index = character(), sample_name = character(), sample_id = character(),
       value = numeric(), std_val = numeric(), type = character
     )
   }
@@ -105,7 +105,7 @@ check_std <- function(eemlist, abslist, qaqc_dir = get_qaqc_dir(), tolerance = 0
       dplyr::rename(std_val = "value"), by = "index") %>% mutate(type = "eem")
   } else {
     eem_ind <- data.frame(
-      index = character(), sample_name = character(), meta_name = character(),
+      index = character(), sample_name = character(), sample_id = character(),
       value = numeric(), std_val = numeric(), type = character
     )
   }
@@ -124,7 +124,7 @@ check_std <- function(eemlist, abslist, qaqc_dir = get_qaqc_dir(), tolerance = 0
     indices$flag <- ifelse(indices$per_dif > tolerance, "STD01", NA)
 
     # format nice for returning
-    report <- indices %>% select(any_of(c("meta_name", "type", "index", "flag")))
+    report <- indices %>% select(any_of(c("sample_id", "type", "index", "flag")))
 
     # calculate percentage that are outside threshold (per sample??) -> mark tea only??? -> similar to blanks
     sum <- indices %>%
@@ -146,7 +146,7 @@ check_std <- function(eemlist, abslist, qaqc_dir = get_qaqc_dir(), tolerance = 0
 
     return(as.data.frame(report))
   } else {
-    names <- get_sample_info(subset_type(eemlist, type = "check"), "meta_name")
-    return(data.frame(meta_name = rep(names, each = 2), index = NA, type = c("abs", "eem"), flag = NA))
+    names <- get_sample_info(subset_type(eemlist, type = "check"), "sample_id")
+    return(data.frame(sample_id = rep(names, each = 2), index = NA, type = c("abs", "eem"), flag = NA))
   }
 }

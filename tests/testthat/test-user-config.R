@@ -35,7 +35,7 @@ test_that(
     expect_s3_class(problems$invalid_types,   "config_option_type_warn")
     # Test that we can detect invalid user config option lengths
     expect_s3_class(problems$invalid_lengths, "config_option_lengths_warn")
-    
+
   }
 
 )
@@ -58,25 +58,25 @@ test_that("User Config can be correctly loaded",
     badmode_config <- template_config
     badmode_config$eem_import_func <- TRUE
     .write_config_yaml(
-      badmode_config, 
+      badmode_config,
       config_path = file.path(dummy_dir, "badmode_config.yaml")
     )
     # Remove an option
     missingoption_config <- template_config
     missingoption_config$eem_skip <- NULL
-    .write_config_yaml(missingoption_config, 
+    .write_config_yaml(missingoption_config,
       config_path = file.path(dummy_dir, "missingoption_config.yaml")
     )
     # Invalid option
     invalidoption_config <- template_config
     invalidoption_config$eemm_skip <- "test"
-    .write_config_yaml(invalidoption_config, 
+    .write_config_yaml(invalidoption_config,
       config_path = file.path(dummy_dir, "invalidoption_config.yaml")
     )
     # Change length of list option
     badlength_config <- template_config
     badlength_config$width <- c(1, 2, 3)
-    .write_config_yaml(badlength_config, 
+    .write_config_yaml(badlength_config,
       config_path = file.path(dummy_dir, "badlength_config.yaml")
     )
 
@@ -97,7 +97,7 @@ test_that("User Config can be correctly loaded",
         expect_no_error(load_user_config(env = .testenv))
         expect_equal(list_session_config(env = .testenv)$abs_file_ext, template_config$abs_file_ext)
 
-          
+
       },
       .user_data_dir = function() dummy_dir,
       .user_config_path = function() dummy_config_path,
@@ -122,7 +122,7 @@ test_that("User Config can be repaired if there are bad options",
     t_config <- template_config
     t_config$eem_import_func <- TRUE  # BAD modify storage mode
     t_config$sum_plot <- 4            # BAD change bool to numeric
-    t_config$eem_skip <- NULL         # BAD remove good option  
+    t_config$eem_skip <- NULL         # BAD remove good option
     t_config$eemm_skip <- "test"      # BAD make up option
     t_config$width <- c(1, 2, 3)      # BAD Change length of list option
 
@@ -131,13 +131,13 @@ test_that("User Config can be repaired if there are bad options",
     t_config$ex_clip[1] <- 249        # OK  modify numeric value
 
     # write the bad config to the dummy_config_path
-    .write_config_yaml(t_config, 
+    .write_config_yaml(t_config,
       config_path = dummy_config_path)
-    
+
 
     with_mocked_bindings(
       code = {
-        # Repair the user config 
+        # Repair the user config
         suppressWarnings(repair_user_config())
 
         # No error in the template config

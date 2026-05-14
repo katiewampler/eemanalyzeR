@@ -28,10 +28,10 @@ An object of the same class as the input (\code{abslist} or \code{eemlist}), wit
 
 For each sample, the following fields may be added (if present in the metadata):
 \itemize{
-\item \strong{meta_name}: identifier for the sample
+\item \strong{sample_id}: sample identifier for the sample
 \item \strong{dilution}: sample dilution factor
 \item \strong{analysis_date}: date the sample was run
-\item \strong{description}: optional description
+\item \strong{sample_name}: optional sample name or description
 \item \strong{sample_type}: optional flag (e.g., \code{sample} for a sample,
 \code{sblank} for an analytical blank, \code{check} for a check standard).
 Default values match Horiba Aqualog exports.

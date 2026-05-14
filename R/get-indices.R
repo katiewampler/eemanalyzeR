@@ -29,7 +29,7 @@
 #' If `return = "long"`, each data frame includes:
 #'
 #' - `sample_name`: sample ID
-#' - `meta_name`: sample name in metadata (or `sample_name` if missing)
+#' - `sample_id`: sample name in metadata (or `sample_name` if missing)
 #' - `index`: index name
 #' - `value`: index value
 #' - `QAQC_flag`: any associated flags
@@ -231,7 +231,7 @@ get_indices <- function(eemlist,
     if (!is.data.frame(index)) {
       return(index)
     }
-    index <- index %>% dplyr::left_join(std_check, by = c("index", "meta_name"))
+    index <- index %>% dplyr::left_join(std_check, by = c("index", "sample_id"))
     index$QAQC_flag <- .combine_flags(index$QAQC_flag, index$flag)
     index <- index %>% select(-c("type", "flag"))
     return(index)

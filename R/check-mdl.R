@@ -75,7 +75,7 @@ check_eem_mdl <- function(eem, mdl = NULL, ex, em, vals = FALSE) {
     if (vals) {
       mdl_table <- lapply(eem, function(x) {
         table <- check_eem_mdl(x, mdl, ex, em, vals)
-        table$sample <- x$meta_name
+        table$sample <- x$sample_id
         return(table)
       }) %>% dplyr::bind_rows()
       return(mdl_table)
@@ -153,7 +153,7 @@ check_abs_mdl <- function(abs, mdl = NULL, wl, vals = FALSE) {
     if (vals) {
       mdl_table <- lapply(abs, function(x) {
         table <- check_abs_mdl(x, mdl, wl, vals)
-        table$sample <- x$meta_name
+        table$sample <- x$sample_id
         return(table)
       }) %>% dplyr::bind_rows()
       return(mdl_table)

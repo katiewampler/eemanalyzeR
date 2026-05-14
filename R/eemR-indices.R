@@ -12,8 +12,8 @@
 #'
 #' Each `data.frame` contains the following columns:
 #'
-#' - **sample_name**: name of the sample from the EEM or absorbance list
-#' - **meta_name**: sample name from metadata if provided; otherwise same as `sample_name`
+#' - **sample_id**: sample identifier for the sample (if provided, otherwise uses sample: the sample's file name)
+#' - **sample_name**: sample name or description (if provided, otherwise uses sample: the sample's file name)
 #' - **index**: name of the index
 #' - **value**: calculated value of the index
 #'

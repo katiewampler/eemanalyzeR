@@ -12,9 +12,8 @@
 #'
 #' @return A data frame with four columns:
 #'
-#' - **sample_name**: the sample name
-#' - **meta_name**: the sample name in metadata (if provided),
-#'   otherwise repeats `sample_name`
+#' - **sample_id**: sample identifier for the sample (if provided, otherwise uses sample: the sample's file name)
+#' - **sample_name**: sample name or description (if provided, otherwise uses sample: the sample's file name)
 #' - **index**: the name of the index
 #' - **value**: the index value (with `MDL01` values removed)
 #'
@@ -38,12 +37,15 @@ format_index <- function(x, index, value, flag){
   stopifnot(length(value) == length(flag), .is_eemlist(x) | .is_abslist(x))
 
   #get sample names
-    sample_name <- get_sample_info(x, "sample")
     #get meta name if metadata has been added, else get sample again
     if(all(.meta_added(x))){
-      meta_name <- get_sample_info(x, "meta_name")
+      sample_id <- get_sample_info(x, "sample_id")
+      sample_name <- get_sample_info(x, "sample_name")
+
     }else{
-      meta_name <-  get_sample_info(x, "sample")}
+      sample_id <-  get_sample_info(x, "sample")
+      sample_name <- get_sample_info(x, "sample")
+    }
 
   #set values below MDL to NA
     value[grep("MDL01|MDL03", flag)] <- NA
@@ -54,8 +56,8 @@ format_index <- function(x, index, value, flag){
     value[merge] <- paste0(value[merge], "_", flag[merge])
 
   #format as data.frame
-    res <- data.frame(sample_name=sample_name,
-                      meta_name=meta_name,
+    res <- data.frame(sample_id=sample_id,
+                      sample_name=sample_name,
                       index=index,
                       value=unname(value))
 

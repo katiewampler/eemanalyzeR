@@ -13,7 +13,7 @@ abs_read(file)
 An object of class \code{abs} containing:
 \itemize{
 \item \strong{file}: The filename of the absorbance data
-\item \strong{sample}: The sample name
+\item \strong{sample}: The name of the sample's file without the file extension
 \item \strong{n}: The number of wavelengths measured
 \item \strong{data}: A matrix where the first column is wavelength (nm) and the second column is absorbance
 \item \strong{location}: Directory where the absorbance file is stored

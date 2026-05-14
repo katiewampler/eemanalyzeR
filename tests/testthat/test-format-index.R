@@ -18,12 +18,12 @@ test_that("output is correct", {
 
   expect_equal(dim(index), c(8,4))
   expect_true(class(index) == "data.frame")
-  expect_equal(colnames(index), c("sample_name", "meta_name", "index", "value"))
+  expect_equal(colnames(index), c("sample_id", "sample_name", "index", "value"))
 
   eems <- add_metadata(metadata, example_eems)
   index <- format_index(eems, "test_index", vals, flags)
 
-  expect_false(all(index$sample_name == index$meta_name))
+  expect_false(all(index$sample_name == index$sample_id))
 })
 
 test_that("flags are carried over", {

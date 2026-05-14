@@ -30,7 +30,7 @@
 #'
 #' @details
 #' ## Metadata
-#' Absorbance and EEM data are linked via the `meta_name` in the metadata.
+#' Absorbance and EEM data are linked via the `sample_id` in the metadata.
 #' Metadata must already be added to the samples using [add_metadata()].
 #'
 #' ## Tracking Processing Steps

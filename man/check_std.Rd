@@ -32,7 +32,7 @@ from the long-term values without being flagged.}
 \value{
 If \code{vals = FALSE}, returns a \code{data.frame} with four columns:
 \itemize{
-\item \code{meta_name}: metadata name of the check standard
+\item \code{sample_id}: metadata name of the check standard
 \item \code{type}: \code{abs} or \code{eem} indicating the index type
 \item \code{index}: name of the index
 \item \code{flag}: "STD01" if outside tolerance, otherwise \code{NA}

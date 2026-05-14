@@ -13,12 +13,12 @@ test_that("mdls are calculated and saved when dir is specified", {
 
   #ensure it returns warning with example data
     expect_warning(eem_mdl <- create_mdl(dir=file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
-                       meta_name="longtermblank-metadata.csv",
+                                         meta_file="longtermblank-metadata.csv",
                        type="eem", qaqc_dir = test_dir), "Calculating MDL based on less than 20 samples")
 
     #ensure it returns warning with example data
     expect_warning(abs_mdl <- create_mdl(dir=file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
-                                         meta_name="longtermblank-metadata.csv",
+                                         meta_file="longtermblank-metadata.csv",
                                          type="abs", qaqc_dir =test_dir))
 
 
@@ -43,7 +43,7 @@ test_that("mdls are calculated and saved when dir is specified", {
 test_that("mdls are exported when dir is NA and not updated", {
     #ensure it returns warning with example data
     expect_warning(eem_mdl <- create_mdl(dir=file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
-                                         meta_name="longtermblank-metadata.csv",
+                                         meta_file="longtermblank-metadata.csv",
                                          type="eem", qaqc_dir = NA, update_config=FALSE), "Calculating MDL based on less than 20 samples")
 
     #make sure it's returned and it's what we expect
@@ -66,12 +66,12 @@ test_that("mdls are exported when dir is NA and updated",{
       #ensure it returns warning with example data
       expect_warning(eem_mdl <- create_mdl(dir=file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
                                            method = "testthat-checks",
-                                           meta_name="longtermblank-metadata.csv",
+                                           meta_file="longtermblank-metadata.csv",
                                            type="eem", qaqc_dir = NA),"Calculating MDL based on less than 20 samples")
 
       expect_warning(abs_mdl <- create_mdl(dir=file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks"),
                                            method = "testthat-checks",
-                                           meta_name="longtermblank-metadata.csv",
+                                           meta_file="longtermblank-metadata.csv",
                                            type="abs", qaqc_dir = NA),"Calculating MDL based on less than 20 samples")
     },
     .user_data_dir = function() dummy_dir,

@@ -13,7 +13,7 @@ U.S. Geological Survey. \doi{10.3133/ofr20181096}
 create_std(
   dir,
   method = "default",
-  meta_name = NULL,
+  meta_file = NULL,
   sheet = NULL,
   abs_pattern = "Abs",
   iblank = "BEM",
@@ -29,7 +29,7 @@ All files in this directory will be loaded.}
 
 \item{method}{A character string describing the method associated with the MDL files.}
 
-\item{meta_name}{Name of the metadata file. Optional if the metadata file is the
+\item{meta_file}{Name of the metadata file. Optional if the metadata file is the
 only \code{.xlsx} or \code{.csv} file in \code{dir}. If not specified, the function attempts to find
 a single metadata file and errors if multiple files are present.}
 
@@ -85,7 +85,7 @@ formatted as a metadata file (see \link{metadata})
 }
 \examples{
 eem_std <- create_std(file.path(system.file("extdata", package = "eemanalyzeR"),"long-term-std"),
-meta_name="longterm-checkstd-metadata.csv", abs_pattern = "ABS",
+meta_file="longterm-checkstd-metadata.csv", abs_pattern = "ABS",
 type="eem", qaqc_dir = NA, update_config=FALSE)
 
 plot(eem_std)

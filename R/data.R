@@ -69,8 +69,8 @@
 #' @format A data.frame with 4 rows and 11 columns:
 #' - **index**: Numeric order of entry (e.g., 1, 2, 3, etc.)
 #' - **analysis_date**: Optional, date samples were run on instrument (not collected in the field)
-#' - **description**: Optional, brief description of the sample collected
-#' - **data_identifier**: REQUIRED, file name from the aqualog, must match exactly
+#' - **sample_name**: Optional, brief description of the sample collected
+#' - **sample_id**: REQUIRED, file name from the Aqualog without the file extension, must match exactly
 #' - **replicate_no**: REQUIRED, number indicating if the sample was replicated; unreplicated = 1
 #' - **integration_time_s**: REQUIRED, integration time of sample (e.g., 1, 2, etc.)
 #' - **dilution**: REQUIRED, dilution factor as decimal (e.g., 0.5 for 2-fold dilution); 1 if no dilution
@@ -169,7 +169,7 @@
 #' - **eem_recurse_read**: Used by [eem_dir_read()]. Logical. Should the function recursively search directories?
 #' - **eem_import_func**: Used by [abs_dir_read()]. Character or a user-defined function to import an EEM.
 #'   For more details, see [`vignette("custom-indices")`](../doc/custom-indices.html).
-#' - **meta_file**: Used by [meta_read()]. Name of the metadata file the program is expecting. 
+#' - **meta_file**: Used by [meta_read()]. Name of the metadata file the program is expecting.
 #'   Defaults to NA, which auto-detects the metadata file in the data directory, for flexibility.
 #' - **meta_sheet**: Used by [meta_read()]. Name of the sheet containing metadata (only required if the
 #'   metadata is not on the first sheet of an `.xlsx` file).
@@ -206,7 +206,7 @@
 #' - **qaqc_dir**: Used by [get_indices()]. File path to the QAQC files generated with [create_mdl()]
 #'     and [create_std()]. Default is a platform- and user-dependent data directory
 #'     [rappdirs::user_data_dir()] created when QAQC files are generated.
-#' - **qaqc_method**: 
+#' - **qaqc_method**:
 #' - **filename**: Used by [export_data()]. A character string, used to write output file names.
 #' - **output_dir**: Used by [export_data()]. Path to save the data. Defaults to NA, which saves to a temporary directory
 #'   if not specified.

@@ -7,7 +7,7 @@
 #' @param z_max Maximum intensity value to plot. If `NULL`, uses the maximum
 #'   value from the EEM.
 #' @param pal Color palette for the fill scale. Defaults to [pals::parula()].
-#' @param title Either "none", "meta_name", or "sample" which indicates what to use for the plot title.
+#' @param title Either "none", "sample_id", or "sample" which indicates what to use for the plot title.
 #' @param annotate Logical. If `TRUE`, shows index regions on the plot.
 #' @param index_method Character. Specifies index method for annotations.
 #'   Currently supports "eemanalyzeR", "eemR", and "usgs".
@@ -94,11 +94,14 @@
                                                  reverse=TRUE)) +
     ggplot2::scale_fill_manual(labels=labs$label, values=pal, drop=FALSE)
 
-  if(title == "meta_name"){
-    plot_name <- eem$meta_name
+  if(title == "sample_id"){
+    plot_name <- eem$sample_id
     title <- TRUE
   }else if(title == "sample"){
     plot_name <- eem$sample
+    title <- TRUE
+  }else if(title == "sample_name"){
+    plot_name <- eem$sample_name
     title <- TRUE
   }else{
       title <- FALSE

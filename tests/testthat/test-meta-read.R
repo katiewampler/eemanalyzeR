@@ -18,7 +18,7 @@ test_that("metadata loads", {
   expect_error(suppressMessages(meta_read(test_path("testdata"))), "Multiple possible metadata files in directory.")
   # Specifying filename fixes this error
   expect_s3_class(suppressMessages(meta_read(test_path("testdata"),
-                                             meta_file = "metadata_example.csv")), 
+                                             meta_file = "metadata_example.csv")),
                   "data.frame")
 })
 

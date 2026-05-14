@@ -48,7 +48,7 @@ ife_correct <- function(eemlist, abslist, cuvle=1, arg_names=NULL){
   is_between <- function (x, a, b) {x >= a & x <= b }
 
   abs_table <- get_sample_info(abslist,"data")
-  colnames(abs_table)[-1] <- get_sample_info(abslist, "meta_name")
+  colnames(abs_table)[-1] <- get_sample_info(abslist, "sample_id")
   abs_table <- as.data.frame(abs_table)
 
   #clip eems if necessary
@@ -81,7 +81,7 @@ ife_correct <- function(eemlist, abslist, cuvle=1, arg_names=NULL){
         stop("absorbance wavelengths are not in the range of\n         excitation wavelengths",
              call. = FALSE)
       }
-      index <- which(names(absorbance) == eem$meta_name)
+      index <- which(names(absorbance) == eem$sample_id)
       if (length(index) == 0) {
         warning("Absorbance spectrum for ", eem$sample, " was not found. Returning uncorrected EEM.",
                 call. = FALSE)

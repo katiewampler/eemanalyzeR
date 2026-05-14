@@ -13,7 +13,7 @@ U.S. Geological Survey. \doi{10.3133/ofr20181096}
 create_mdl(
   dir,
   method = "default",
-  meta_name = NULL,
+  meta_file = NULL,
   sheet = NULL,
   iblank = "BEM",
   type = "eem",
@@ -28,7 +28,7 @@ All files in this directory will be loaded.}
 
 \item{method}{A character string describing the method associated with the MDL files.}
 
-\item{meta_name}{Name of the metadata file. Optional if the metadata file is the
+\item{meta_file}{Name of the metadata file. Optional if the metadata file is the
 only \code{.xlsx} or \code{.csv} file in \code{dir}. If not specified, the function attempts to find
 a single metadata file and errors if multiple files are present.}
 

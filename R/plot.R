@@ -10,7 +10,7 @@
 #' @param pal Color palette for the fill scale. Defaults to [pals::parula()].
 #'   If fewer colors are provided than required, [grDevices::colorRampPalette()]
 #'   is used to fill in colors.
-#' @param title Either "none", "meta_name", or "sample" which indicates what to use for the plot title.
+#' @param title Either "none", "sample_id", "sample_name", or "sample" which indicates what to use for the plot title.
 #' @param remove_lower Logical. If `TRUE`, sets values below the first-order
 #'   Rayleigh line to `NA`, which can reduce artifacts affecting the color scale.
 #' @param annotate Logical. If `TRUE`, displays index regions on EEM plots.

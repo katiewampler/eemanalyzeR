@@ -3,7 +3,7 @@ test_that("missing columns are caught",{
   meta <- suppressMessages(meta_read(system.file("extdata", package = "eemanalyzeR")))
 
   #check for missing columns
-  expect_error(meta_check(meta[,-which(colnames(meta) == "data_identifier")]), "missing required column")
+  expect_error(meta_check(meta[,-which(colnames(meta) == "sample_id")]), "missing required column")
   expect_error(meta_check(meta[,-which(colnames(meta) == "replicate_no")]), "missing required column")
   expect_error(meta_check(meta[,-which(colnames(meta) == "integration_time_s")]), "missing required column")
 #  expect_error(meta_check(meta[,-which(colnames(meta) == "run_type")]), "missing required column")
@@ -29,12 +29,12 @@ test_that("missing data identifiers are caught",{
   meta <- suppressMessages(meta_read(system.file("extdata", package = "eemanalyzeR")))
 
   #if one is missing
-  meta$data_identifier[-2] <- NA
-  expect_error(meta_check(meta), "missing data identifiers for one or more samples")
+  meta$sample_id[-2] <- NA
+  expect_error(meta_check(meta), "missing sample_id for one or more samples")
 
   #if all are missing
-  meta$data_identifier <- NA
-  expect_error(meta_check(meta), "missing data identifiers for one or more samples")
+  meta$sample_id <- NA
+  expect_error(meta_check(meta), "missing sample_id for one or more samples")
 
 })
 
@@ -55,7 +55,7 @@ test_that("duplicated ID's are caught",{
   meta <- suppressMessages(meta_read(system.file("extdata", package = "eemanalyzeR")))
   meta <- rbind(meta, meta[1,])
 
-  expect_error(meta_check(meta), "duplicate samples found with the same data_identifier")
+  expect_error(meta_check(meta), "duplicate samples found with the same sample_id")
 })
 
 test_that("dilutions get corrected",{

@@ -63,7 +63,7 @@ streamlined workflow. The processing steps include:
 \details{
 \subsection{Metadata}{
 
-Absorbance and EEM data are linked via the \code{meta_name} in the metadata.
+Absorbance and EEM data are linked via the \code{sample_id} in the metadata.
 Metadata must already be added to the samples using \code{\link[=add_metadata]{add_metadata()}}.
 }
 

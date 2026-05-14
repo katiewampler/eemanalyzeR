@@ -33,7 +33,7 @@ validate_blanks <- function(blanklist) {
         valid_blanklist <- try_sblank
 
         #write to readme
-        .write_readme_line(paste0("Instrument blank was replaced with analytical blank: ", try_sblank$meta_name), "eem_add_blank", NULL)
+        .write_readme_line(paste0("Instrument blank was replaced with analytical blank: ", try_sblank$sample_id), "eem_add_blank", NULL)
 
       }else {
         #remove non accepted blank and try again

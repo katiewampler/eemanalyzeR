@@ -7,7 +7,7 @@
 #' @param dir Path to a folder containing long-term EEMs and/or absorbance files.
 #'   All files in this directory will be loaded.
 #' @param method A character string describing the method associated with the MDL files.
-#' @param meta_name Name of the metadata file. Optional if the metadata file is the
+#' @param meta_file Name of the metadata file. Optional if the metadata file is the
 #'   only `.xlsx` or `.csv` file in `dir`. If not specified, the function attempts to find
 #'   a single metadata file and errors if multiple files are present.
 #' @param sheet Name of the sheet containing metadata (only required
@@ -56,13 +56,13 @@
 #'
 #' @examples
 #' eem_std <- create_std(file.path(system.file("extdata", package = "eemanalyzeR"),"long-term-std"),
-#' meta_name="longterm-checkstd-metadata.csv", abs_pattern = "ABS",
+#' meta_file="longterm-checkstd-metadata.csv", abs_pattern = "ABS",
 #' type="eem", qaqc_dir = NA, update_config=FALSE)
 #'
 #' plot(eem_std)
 #'
 #'
-create_std <- function(dir, method = "default", meta_name=NULL, sheet=NULL,
+create_std <- function(dir, method = "default", meta_file=NULL, sheet=NULL,
                        abs_pattern="Abs", iblank="BEM",type = "eem",
                        recursive=FALSE, qaqc_dir= get_qaqc_dir(),
                        update_config = TRUE){
@@ -87,7 +87,7 @@ create_std <- function(dir, method = "default", meta_name=NULL, sheet=NULL,
 
 
   #get metadata
-    if(!is.null(meta_name)){input <- file.path(dir, meta_name)}else{input <- dir}
+    if(!is.null(meta_file)){input <- file.path(dir, meta_file)}else{input <- dir}
     tea_meta <- meta_read(input, sheet=sheet)
 
   #get all tea samples in directory with instrument blanks
@@ -153,12 +153,12 @@ create_std <- function(dir, method = "default", meta_name=NULL, sheet=NULL,
                     ex = get_sample_info(tea_eems, "ex")[,1],
                     em = get_sample_info(tea_eems, "em")[,1],
                     location=dir,
-                    meta_name="long-term-check-std",
+                    sample_id ="long-term-check-std",
                     dilution=NA,
                     integration_time_s = NA,
                     raman_area_1s = NA,
                     analysis_date = paste(min(dates, na.rm=TRUE), max(dates, na.rm=TRUE), sep=":"),
-                    description = "long-term average of check standard for EEMs",
+                    sample_name = "long-term average of check standard for EEMs",
                     doc_mgL = NA,
                     notes=paste0("long-term average of check standard for EEMs based on ", length(tea_eems), " samples collected from ",
                                  min(dates, na.rm=TRUE), " to ", max(dates, na.rm=TRUE),
@@ -208,10 +208,10 @@ create_std <- function(dir, method = "default", meta_name=NULL, sheet=NULL,
                     n = length(unique(tea_abs_df$wavelength)),
                     data = unname(as.matrix(abs_tea[order(abs_tea$wavelength, decreasing=TRUE),])),
                     location=dir,
-                    meta_name="long-term-check-std",
+                    sample_id ="long-term-check-std",
                     dilution=NA,
                     analysis_date = paste(min(dates, na.rm=TRUE), max(dates, na.rm=TRUE), sep=":"),
-                    description = "long-term check standard for absorbance",
+                    sample_name = "long-term check standard for absorbance",
                     doc_mgL = NA,
                     notes=paste0("long-term average of check standard absorbance based on ", length(tea), " samples collected from ",
                                  min(dates, na.rm=TRUE), " to ", max(dates, na.rm=TRUE),

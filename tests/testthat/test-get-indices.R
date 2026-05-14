@@ -57,8 +57,8 @@
     expect_true(all(apply(indices$abs_index, 1, class) == "character"))
     expect_true(all(apply(indices$eem_index, 1, class) == "character"))
 
-    expect_length(unique(indices$eem_index$meta_name), 4)
-    expect_length(unique(indices$abs_index$meta_name), 4)
+    expect_length(unique(indices$eem_index$sample_id), 4)
+    expect_length(unique(indices$abs_index$sample_id), 4)
 
     expect_length(unique(indices$abs_index$sample_name), 4)
     expect_length(unique(indices$eem_index$sample_name), 4)
@@ -114,7 +114,7 @@
     #check for flag on missing DOC
       doc_index <- function(eemlist, abslist, cuvle=1, qaqc_dir=tempdir()){
         return(list(abs_index = data.frame(sample_name="test_samp",
-                                           meta_name="test_samp",
+                                           sample_id="test_samp",
                                            index="DOC_test",
                                            value=NA), eem_index=NA))}
       indices <- get_indices(eemlist, abslist, qaqc_dir=qaqc_dir, index_method = doc_index, return = "long")
@@ -123,7 +123,7 @@
     #check for flag on negative values
       neg_index <- function(eemlist, abslist, cuvle=1, qaqc_dir=tempdir()){
         return(list(abs_index = data.frame(sample_name="test_samp",
-                                           meta_name="test_samp",
+                                           sample_id="test_samp",
                                            index="test",
                                            value=-1), eem_index=NA))}
       indices <- get_indices(eemlist, abslist, qaqc_dir=qaqc_dir, index_method = neg_index, return = "long")
@@ -132,7 +132,7 @@
     #check for flag on infinite
       inf_index <- function(eemlist, abslist, cuvle=1, qaqc_dir=tempdir()){
         return(list(abs_index = data.frame(sample_name="test_samp",
-                                           meta_name="test_samp",
+                                           sample_id="test_samp",
                                            index="test",
                                            value=Inf), eem_index=NA))}
       indices <- get_indices(eemlist, abslist, qaqc_dir=qaqc_dir, index_method = inf_index,

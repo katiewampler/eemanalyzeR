@@ -16,7 +16,7 @@ test_that("correct values are returned", {
                 1168.224,
                 4900.536), tolerance=1e-3)
 
-  expect_equal(as.numeric(get_fluorescence(example_eems, ex=390, em=509)), 
+  expect_equal(as.numeric(get_fluorescence(example_eems, ex=390, em=509)),
   c(11.477041,
     7.143219,
     11.477041,

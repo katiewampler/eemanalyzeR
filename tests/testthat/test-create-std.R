@@ -12,12 +12,12 @@ test_that("std are calculated and saved when dir is specified", {
 
   #ensure it returns warning with example data
   expect_warning(eem_std <- create_std(dir = file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-std"),
-                                       meta_name="longterm-checkstd-metadata.csv",abs_pattern = "ABS",
+                                       meta_file="longterm-checkstd-metadata.csv",abs_pattern = "ABS",
                                        type="eem", qaqc_dir = test_dir), "average may be unreliable")
 
   #ensure it returns warning with example data
   expect_warning(abs_std <- create_std(file.path(dir=system.file("extdata", package = "eemanalyzeR"), "long-term-std"),
-                                       meta_name="longterm-checkstd-metadata.csv", abs_pattern = "ABS",
+                                       meta_file="longterm-checkstd-metadata.csv", abs_pattern = "ABS",
                                        type="abs", qaqc_dir = test_dir), "average may be unreliable")
 
 
@@ -42,7 +42,7 @@ test_that("std are calculated and saved when dir is specified", {
 test_that("std are exported when dir is NA and not updated", {
   #ensure it returns warning with example data
   expect_warning(std <- create_std(dir = file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-std"),
-                                       meta_name="longterm-checkstd-metadata.csv", abs_pattern = "ABS",
+                                   meta_file="longterm-checkstd-metadata.csv", abs_pattern = "ABS",
                                        type="eem", qaqc_dir = NA, update_config=FALSE), "average may be unreliable")
 
   #make sure it's returned and it's what we expect
@@ -58,20 +58,20 @@ test_that("std are exported when dir is NA and updated",{
   dummy_config_path <- file.path(dummy_dir, "user-config.yaml")
   file.copy(
     file.path(system.file("extdata", package = "eemanalyzeR"),"eemanalyzeR-config.yaml"),
-    dummy_config_path)  
+    dummy_config_path)
   with_mocked_bindings(
     code = {
       #setting qaqc_dir to NA while creating should trigger asking to fill
       #ensure it returns warning with example data
       #ensure it returns warning with example data
       expect_warning(eem_std <- create_std(dir = file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-std"),
-                                           meta_name="longterm-checkstd-metadata.csv",abs_pattern = "ABS",
+                                           meta_file="longterm-checkstd-metadata.csv",abs_pattern = "ABS",
                                            method = "testthat-checks",
                                            type="eem", qaqc_dir = NA), "average may be unreliable")
 
       #ensure it returns warning with example data
       expect_warning(abs_std <- create_std(file.path(dir=system.file("extdata", package = "eemanalyzeR"), "long-term-std"),
-                                           meta_name="longterm-checkstd-metadata.csv", abs_pattern = "ABS",
+                                           meta_file="longterm-checkstd-metadata.csv", abs_pattern = "ABS",
                                            method = "testthat-checks",
                                            type="abs", qaqc_dir = NA), "average may be unreliable")
     },

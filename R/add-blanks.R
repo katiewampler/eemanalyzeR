@@ -85,8 +85,8 @@ add_blanks <- function(eemlist,
     class(eemlist) <- "eemlist"
   } else if (length(blanklist) == length(eemlist)) {
     # if same as eemlist try to match
-    eem_names <- get_sample_info(eemlist, "meta_name")
-    blank_names <- get_sample_info(blanklist, "meta_name")
+    eem_names <- get_sample_info(eemlist, "sample_id")
+    blank_names <- get_sample_info(blanklist, "sample_id")
     if (length(setdiff(eem_names, blank_names)) > 0) {
       stop("more than one blank was provided, but blank names do not match samples")
     } else {

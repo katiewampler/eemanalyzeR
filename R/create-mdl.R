@@ -8,7 +8,7 @@
 #' @param dir Path to a folder containing long-term EEMs and/or absorbance files.
 #'   All files in this directory will be loaded.
 #' @param method A character string describing the method associated with the MDL files.
-#' @param meta_name Name of the metadata file. Optional if the metadata file is the
+#' @param meta_file Name of the metadata file. Optional if the metadata file is the
 #'   only `.xlsx` or `.csv` file in `dir`. If not specified, the function attempts to find
 #'   a single metadata file and errors if multiple files are present.
 #' @param sheet Name of the sheet containing metadata (only required
@@ -56,7 +56,7 @@
 #'
 #' plot(eem_mdl)
 #'
-create_mdl <- function(dir, method="default", meta_name = NULL, sheet = NULL, iblank = "BEM",
+create_mdl <- function(dir, method="default", meta_file = NULL, sheet = NULL, iblank = "BEM",
                        type = "eem", recursive = FALSE, qaqc_dir = get_qaqc_dir(),
                        update_config = TRUE) {
   stopifnot(type %in% c("eem", "abs"), dir.exists(dir))
@@ -74,8 +74,8 @@ create_mdl <- function(dir, method="default", meta_name = NULL, sheet = NULL, ib
   }
 
   # get metadata
-  if (!is.null(meta_name)) {
-    input <- file.path(dir, meta_name)
+  if (!is.null(meta_file)) {
+    input <- file.path(dir, meta_file)
   } else {
     input <- dir
   }
@@ -139,12 +139,12 @@ create_mdl <- function(dir, method="default", meta_name = NULL, sheet = NULL, ib
       ex = unique(blank_df$ex, MARGIN=2),
       em = unique(blank_df$em, MARGIN=2),
       location = dir,
-      meta_name = "long-term-mdl",
+      sample_id = "long-term-mdl",
       dilution = NA,
       integration_time_s = NA,
       raman_area_1s = NA,
       analysis_date = paste(min(dates, na.rm = TRUE), max(dates, na.rm = TRUE), sep = ":"),
-      description = "long-term method detection limit for EEMs",
+      sample_name = "long-term method detection limit for EEMs",
       doc_mgL = NA,
       notes = paste0(
         "long-term method detection limit (MDL) for EEMs samples based on ", length(blank_eems), " samples collected from ",
@@ -219,10 +219,10 @@ create_mdl <- function(dir, method="default", meta_name = NULL, sheet = NULL, ib
       n = length(unique(blank_abs_df$wavelength)),
       data = unname(as.matrix(abs_mdls[order(abs_mdls$wavelength, decreasing = TRUE), ])),
       location = dir,
-      meta_name = "long-term-mdl",
+      sample_id = "long-term-mdl",
       dilution = NA,
       analysis_date = paste(min(dates, na.rm = TRUE), max(dates, na.rm = TRUE), sep = ":"),
-      description = "long-term method detection limit for absorbance",
+      sample_name = "long-term method detection limit for absorbance",
       doc_mgL = NA,
       notes = paste0(
         "long-term method detection limit (MDL) for absorbance samples based on ", length(blank), " samples collected from ",
