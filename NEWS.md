@@ -23,6 +23,12 @@
 
     -   `Notes` is now `notes`
 
+-   The names returned in the index outputs were updated. The column
+    names are now `sample_id` and `sample_name` which corresponds to
+    those entries in the `eem`. Previously these were `sample_name` and
+    `sample` which corresponded to the `description` and `sample`
+    entries.
+
 -   Added an option to use the `sample_name` as the plot title,
     previously only `sample_id` and `sample` were supported.
 
