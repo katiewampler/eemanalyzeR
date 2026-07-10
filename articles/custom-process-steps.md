@@ -59,13 +59,9 @@ defaults:
     be applied.
 
 3.  **Set temporary defaults for the R session:** More temporary
-    defaults can be changed using
-    [`modify_config()`](https://katiewampler.github.io/eemanalyzeR/reference/modify_config.md).
-    Before using the
+    defaults can be changed using `modify_config()`. Before using the
     [`run_eems()`](https://katiewampler.github.io/eemanalyzeR/reference/run_eems.md)
-    function use
-    [`modify_config()`](https://katiewampler.github.io/eemanalyzeR/reference/modify_config.md)
-    to set argument values (i.e.,
+    function use `modify_config()` to set argument values (i.e.,
     `modify_config(cuvle = 2, eem_skip = "badeem")`). This modifies the
     settings for the R session and will be applied to any data
     processing that occurs until the package is reloaded or the R
@@ -177,10 +173,13 @@ want loaded. See [Using Different Processing
 Methods](#using-different-processing-methods) for more details on this.
 
 To restore your `user_config` back to the package defaults, you can use
-[`reset_user_config()`](https://katiewampler.github.io/eemanalyzeR/reference/reset_user_config.md).
+[`reset_user_config()`](https://katiewampler.github.io/eemanalyzeR/reference/user_config.md).
+If there are issues with the `user_config`, you can attempt to repair it
+using `repair_user_config`, which will check for invalid or missing
+values and replace them with package defaults.
 
 > To prevent fully overwriting any old settings, your last old file will
-> be saved in the same location with the extension `.old` appended to
+> be saved in the same location with the extension `.backup` appended to
 > the file name.
 
   
@@ -197,6 +196,7 @@ methods consist of:
   load the method specific config file:
 
   ``` r
+
   load_user_config(config_path = "eemanalyzeR-methods/method1_user_config.yaml")
   run_eems("test-dir")
   ```
@@ -212,6 +212,7 @@ methods consist of:
   be used when naming the files (i.e., `test-method-eem-mdl.rds`).
 
   ``` r
+
   eem_mdl <- create_mdl(dir = "long-term-blanks",
                         type = "eem",
                         method = "test-method")

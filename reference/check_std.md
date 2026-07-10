@@ -52,7 +52,7 @@ check_std(
 
 If `vals = FALSE`, returns a `data.frame` with four columns:
 
-- `meta_name`: metadata name of the check standard
+- `sample_id`: metadata name of the check standard
 
 - `type`: `abs` or `eem` indicating the index type
 
@@ -85,7 +85,7 @@ check_std(
   example_processed_abs,
   qaqc_dir = system.file("extdata", package = "eemanalyzeR")
 )
-#>           meta_name type    index  flag
+#>           sample_id type    index  flag
 #> 1     ExampleTeaStd  eem      BIX  <NA>
 #> 2  ManualExampleTea  eem      BIX  <NA>
 #> 3     ExampleTeaStd  eem       FI  <NA>

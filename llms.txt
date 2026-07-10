@@ -26,6 +26,7 @@ You can install the development version of eemanalyzeR from
 [GitHub](https://github.com/) with:
 
 ``` r
+
 # install.packages("remotes")
 remotes::install_github("katiewampler/eemanalyzeR")
 ```
@@ -151,19 +152,20 @@ Functions to aid in QA/QC checks.
 
 Functions to create and maintain processing configuration files.
 
-- [`list_config()`](https://katiewampler.github.io/eemanalyzeR/reference/list_config.md)
+- [`list_session_config()`](https://katiewampler.github.io/eemanalyzeR/reference/list_session_config.md)
   : List current eemanalyzeR configuration
-- [`modify_config()`](https://katiewampler.github.io/eemanalyzeR/reference/modify_config.md)
+- [`modify_session_config()`](https://katiewampler.github.io/eemanalyzeR/reference/modify_session_config.md)
   : Modify the eemanalyzeR configuration settings
-- [`reset_config()`](https://katiewampler.github.io/eemanalyzeR/reference/reset_config.md)
+- [`reset_session_config()`](https://katiewampler.github.io/eemanalyzeR/reference/reset_session_config.md)
   : Reset all eemanalyzeR settings to package defaults
-- [`reset_user_config()`](https://katiewampler.github.io/eemanalyzeR/reference/reset_user_config.md)
-  : Reset all eemanalyzeR settings in the user configuration file to
-  package defaults
 - [`edit_user_config()`](https://katiewampler.github.io/eemanalyzeR/reference/user_config.md)
+  [`reset_user_config()`](https://katiewampler.github.io/eemanalyzeR/reference/user_config.md)
+  [`read_user_config()`](https://katiewampler.github.io/eemanalyzeR/reference/user_config.md)
+  [`validate_user_config()`](https://katiewampler.github.io/eemanalyzeR/reference/user_config.md)
   [`load_user_config()`](https://katiewampler.github.io/eemanalyzeR/reference/user_config.md)
+  [`repair_user_config()`](https://katiewampler.github.io/eemanalyzeR/reference/user_config.md)
   : Set up and apply user defaults for data processing
-- [`validate_config()`](https://katiewampler.github.io/eemanalyzeR/reference/validate_config.md)
+- [`validate_session_config()`](https://katiewampler.github.io/eemanalyzeR/reference/validate_session_config.md)
   : Validate the eemanalyzeR configuration
 
 ## Utilities

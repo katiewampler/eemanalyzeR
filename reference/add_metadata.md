@@ -49,13 +49,13 @@ metadata added.
 For each sample, the following fields may be added (if present in the
 metadata):
 
-- **meta_name**: identifier for the sample
+- **sample_id**: sample identifier for the sample
 
 - **dilution**: sample dilution factor
 
 - **analysis_date**: date the sample was run
 
-- **description**: optional description
+- **sample_name**: optional sample name or description
 
 - **sample_type**: optional flag (e.g., `sample` for a sample, `sblank`
   for an analytical blank, `check` for a check standard). Default values

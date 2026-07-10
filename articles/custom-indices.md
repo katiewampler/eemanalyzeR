@@ -30,10 +30,11 @@ existing methods.
 `abs_index` and `eem_index` should both be a `data.frame` with the
 following columns:
 
-- `sample_name`: a character, the name of the sample
+- `sample_id`: sample identifier for the sample (if provided, otherwise
+  uses sample: the sample’s file name)
 
-- `meta_name`: a character, the name of the sample in the metadata if
-  metadata has been added, otherwise the sample name again
+- `sample_name`: sample name or description (if provided, otherwise uses
+  sample: the sample’s file name)
 
 - `index`: a character, the name of the index being reported
 
@@ -51,6 +52,7 @@ function can be used. This function can additionally provide specific
 absorbance (like SUVA 254).
 
 ``` r
+
 abslist <- example_processed_abs
 
 #absorbance at 254 nm
@@ -75,22 +77,23 @@ will be returned.
 
 ``` r
 
+
 eemlist <- example_processed_eems
 
 #get maximum fluorescence across ranges for Peak A and D
 pA <- get_fluorescence(eemlist, ex=250:260, em=380:480, stat="max")
 pA
-#> [1] "0.0103767473213219" "0.280569719363854"  "0.340345670357128" 
+#> [1] "0.0103767473213219" "0.280569719363857"  "0.340345670357128" 
 #> [4] "0.721431003125204"
 pD <- get_fluorescence(eemlist, ex=390, em=509, stat="max")
 pD 
-#> [1] "0.000304395508989419" "0.0199829245761789"   "0.0978435434033769"  
+#> [1] "0.000304395508989419" "0.0199829245761789"   "0.0978435434033764"  
 #> [4] "0.0372706531424358"
 
 #get sum of fluorescence across range of Peak A
 pA_sum <- get_fluorescence(eemlist, ex=250:260, em=380:480, stat="sum")
 pA_sum
-#> [1] "0.398846395176876" "15.4652173718784"  "29.1296537896885" 
+#> [1] "0.398846395176868" "15.4652173718784"  "29.1296537896885" 
 #> [4] "34.0595693438647"
 ```
 
@@ -100,6 +103,7 @@ which will convert the absorbance to absorption, interpolate the data if
 needed, and return the spectral slope within a wavelength range.
 
 ``` r
+
 S275_295 <- get_abs_slope(abslist, lim=c(275,295))
 S275_295
 #> [1] 0.01654700 0.02306185 0.01302367 0.02306070
@@ -138,12 +142,13 @@ where a missing value will result in an `NA` or a value of 0 in the
 denominator will result in an infinite value.
 
 ``` r
+
 #calculate the ratio of Peak A to Peak T
  pA <- get_fluorescence(eemlist, ex=250:260, em=380:480)
  pT <- get_fluorescence(eemlist, ex=270:280, em=320:350)
  rAT <- get_ratios(pA, pT)
  rAT
-#> [1] "1.72750162152656"  "0.423565751341601" "4.07129094367473" 
+#> [1] "1.72750162152655"  "0.423565751341601" "4.07129094367473" 
 #> [4] "0.450601408727671"
  
   #if Peak T is all 0, will return DATA_03 flag, indicating index couldn't 
@@ -173,6 +178,7 @@ This is useful to check when calculating indices to flag why certain
 indices might be returning `NA` values.
 
 ``` r
+
 #checking absorbance data
   #data exists, so there are no flags, NA is returned
   flag_missing(abslist, wl=400) 
@@ -209,10 +215,11 @@ This is useful to ensure that the blanks are actually blank and ratio
 values that are returned are based on “real” data.
 
 ``` r
+
 #checking absorbance data
   #get mdl 
     abs_mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"), 
-                                 "default-abs-mdl.rds"))
+                                 "default/default-abs-mdl.rds"))
 
   #data is fully above the MDL so NA is returned 
     check_abs_mdl(abslist[[2]], abs_mdl, wl=254)
@@ -225,7 +232,7 @@ values that are returned are based on “real” data.
 #checking fluorescence data
   #get mdl 
     eem_mdl <- readRDS(file.path(system.file("extdata", package = "eemanalyzeR"), 
-                                 "default-eem-mdl.rds"))
+                                 "default/default-eem-mdl.rds"))
     
   #data is completely above the MDL so NA is returned
    check_eem_mdl(eemlist[[2]], mdl = eem_mdl, ex=270:280, em=300:320)
@@ -247,6 +254,7 @@ data and an MDL flag) you can use the
 function to nicely combine the flags.
 
 ``` r
+
   #works with a single set of flags 
     .combine_flags("DATA01", NA)
 #> [1] "DATA01"
@@ -281,22 +289,18 @@ function. To do this we can use the
 function.
 
 ``` r
+
   ex <- 240:260
   em <- 300:320
   vals <- get_fluorescence(eemlist, ex, em, stat = "max")
   flags <- flag_missing(eemlist, ex=ex, em=em, all=FALSE)
   index_formatted <- format_index(eemlist, "test_index", vals, flags)
   index_formatted
-#>                           sample_name        meta_name      index
-#> 1                 B1S1ExampleBlankSEM     ExampleBlank test_index
-#> 2                B1S2ExampleTeaStdSEM    ExampleTeaStd test_index
-#> 3                B1S3ExampleSampleSEM    ExampleSample test_index
-#> 4 ManualExampleTeaWaterfallPlotSample ManualExampleTea test_index
-#>                         value
-#> 1 0.000532084537187422_DATA02
-#> 2    0.520903992822657_DATA02
-#> 3   0.0851942070835534_DATA02
-#> 4     1.48625281995149_DATA02
+#>          sample_id    sample_name      index                       value
+#> 1     ExampleBlank Sample Blank 1 test_index 0.000532084537187436_DATA02
+#> 2    ExampleTeaStd  PreTea 1% SRM test_index    0.520903992822664_DATA02
+#> 3    ExampleSample Example Sample test_index   0.0851942070835534_DATA02
+#> 4 ManualExampleTea     1% SRM tea test_index     1.48625281995149_DATA02
 ```
 
 ## Example 1
@@ -306,16 +310,23 @@ requirements for the custom function let’s do an example. Let’s create a
 custom function to calculate some new fluorescence indices presented in
 [**Zhang et al. 2025:**](https://doi.org/10.1016/j.psep.2025.107553)
 
-$$\text{U-SoI} = \frac{U1_{ex:245,em:440}}{U2_{ex:230,em:260}}$$
+``` math
+ \text{U-SoI} =\frac{U1_{ex:245, em:440}}{U2_{ex:230, em:260}}  
+```
 
-$$\text{A-SoI} = \frac{A1_{ex:245,em:325}}{A2_{ex:260,em:430}}$$
+``` math
+ \text{A-SoI} =\frac{A1_{ex:245, em:325}}{A2_{ex:260, em:430}}  
+```
 
-$$\text{T-SoI} = \frac{T1_{ex:260,em:430}}{T2_{ex:285,em:365}}$$
+``` math
+ \text{T-SoI} =\frac{T1_{ex:260, em:430}}{T2_{ex:285, em:365}}  
+```
 
 First let’s turn the different indices into a list of excitation and
 emission wavelengths.
 
 ``` r
+
 zhang_indices <- list(USoI = list(ex=c(245,230), em=c(440,260)),
                      ASoI = list(ex=c(245,260), em=c(325,430)),
                      TSoI = list(ex=c(260,285), em=c(430,365)))
@@ -330,16 +341,18 @@ helper function to get the ratio. For a single index this would look
 like:
 
 ``` r
+
 eemlist <- example_processed_eems
 get_ratios(get_fluorescence(eemlist, zhang_indices$TSoI$ex[1], zhang_indices$TSoI$em[1]), 
            get_fluorescence(eemlist, zhang_indices$TSoI$ex[2], zhang_indices$TSoI$em[2]))
-#> [1] "4.93586355290875"  "0.528716173072758" "3.87515734359415" 
-#> [4] "0.486202102785104"
+#> [1] "4.93586355290846"  "0.528716173072744" "3.87515734359415" 
+#> [4] "0.48620210278511"
 ```
 
 To get all the indices let’s use the lapply function.
 
 ``` r
+
 results <- lapply(names(zhang_indices), function(index_name) {
   index <- zhang_indices[[index_name]]
   get_ratios(get_fluorescence(eemlist, index$ex[1], index$em[1]), 
@@ -360,6 +373,7 @@ to combine the returned MDL flags. Lastly, we’ll use the
 function to make sure everything is correctly formatted.
 
 ``` r
+
 results <- lapply(names(zhang_indices), function(index_name){
   #get values
   index <- zhang_indices[[index_name]]
@@ -389,6 +403,7 @@ still run. We can use the
 function
 
 ``` r
+
  mdl <- get_qaqc(file.path(system.file("extdata", package = "eemanalyzeR")), type = "mdl")
 ```
 
@@ -396,31 +411,33 @@ Lastly, we just need to return the results as a list. Since we don’t
 have any absorbance data we’ll just make it NA.
 
 ``` r
+
   list(abs_index = NA,
        eem_index=results)
 #> $abs_index
 #> [1] NA
 #> 
 #> $eem_index
-#>                            sample_name        meta_name index             value
-#> 1                  B1S1ExampleBlankSEM     ExampleBlank  USoI            DATA01
-#> 2                 B1S2ExampleTeaStdSEM    ExampleTeaStd  USoI            DATA01
-#> 3                 B1S3ExampleSampleSEM    ExampleSample  USoI            DATA01
-#> 4  ManualExampleTeaWaterfallPlotSample ManualExampleTea  USoI            DATA01
-#> 5                  B1S1ExampleBlankSEM     ExampleBlank  ASoI      DATA01_MDL03
-#> 6                 B1S2ExampleTeaStdSEM    ExampleTeaStd  ASoI            DATA01
-#> 7                 B1S3ExampleSampleSEM    ExampleSample  ASoI            DATA01
-#> 8  ManualExampleTeaWaterfallPlotSample ManualExampleTea  ASoI            DATA01
-#> 9                  B1S1ExampleBlankSEM     ExampleBlank  TSoI             MDL01
-#> 10                B1S2ExampleTeaStdSEM    ExampleTeaStd  TSoI 0.528716173072758
-#> 11                B1S3ExampleSampleSEM    ExampleSample  TSoI  3.87515734359415
-#> 12 ManualExampleTeaWaterfallPlotSample ManualExampleTea  TSoI 0.486202102785104
+#>           sample_id    sample_name index             value
+#> 1      ExampleBlank Sample Blank 1  USoI            DATA01
+#> 2     ExampleTeaStd  PreTea 1% SRM  USoI            DATA01
+#> 3     ExampleSample Example Sample  USoI            DATA01
+#> 4  ManualExampleTea     1% SRM tea  USoI            DATA01
+#> 5      ExampleBlank Sample Blank 1  ASoI      DATA01_MDL03
+#> 6     ExampleTeaStd  PreTea 1% SRM  ASoI            DATA01
+#> 7     ExampleSample Example Sample  ASoI            DATA01
+#> 8  ManualExampleTea     1% SRM tea  ASoI            DATA01
+#> 9      ExampleBlank Sample Blank 1  TSoI             MDL01
+#> 10    ExampleTeaStd  PreTea 1% SRM  TSoI 0.528716173072744
+#> 11    ExampleSample Example Sample  TSoI  3.87515734359415
+#> 12 ManualExampleTea     1% SRM tea  TSoI  0.48620210278511
 ```
 
 Great, that all looks good, now we just need to combine all that code to
 a custom function.
 
 ``` r
+
 zhang2025 <- function(eemlist, abslist, cuvle=1, qaqc_dir){
   #making sure eemlist and abslist are correct objects
     stopifnot(eemanalyzeR:::.is_eemlist(eemlist), eemanalyzeR:::.is_abslist(abslist), 
@@ -464,6 +481,7 @@ Now let’s test our custom function with the
 function.
 
 ``` r
+
 indices <- get_indices(example_processed_eems, 
                        example_processed_abs, 
                        index_method = zhang2025, 
@@ -472,12 +490,12 @@ indices <- get_indices(example_processed_eems,
 
 indices$eem_index
 #> # A tibble: 4 × 5
-#>   sample_name                         meta_name        USoI   ASoI         TSoI 
-#>   <chr>                               <chr>            <chr>  <chr>        <chr>
-#> 1 B1S1ExampleBlankSEM                 ExampleBlank     DATA01 DATA01_MDL03 MDL01
-#> 2 B1S2ExampleTeaStdSEM                ExampleTeaStd    DATA01 DATA01       0.52…
-#> 3 B1S3ExampleSampleSEM                ExampleSample    DATA01 DATA01       3.875
-#> 4 ManualExampleTeaWaterfallPlotSample ManualExampleTea DATA01 DATA01       0.48…
+#>   sample_id        sample_name    USoI   ASoI         TSoI  
+#>   <chr>            <chr>          <chr>  <chr>        <chr> 
+#> 1 ExampleBlank     Sample Blank 1 DATA01 DATA01_MDL03 MDL01 
+#> 2 ExampleTeaStd    PreTea 1% SRM  DATA01 DATA01       0.5287
+#> 3 ExampleSample    Example Sample DATA01 DATA01       3.875 
+#> 4 ManualExampleTea 1% SRM tea     DATA01 DATA01       0.4862
 ```
 
   
@@ -507,6 +525,7 @@ those two values, so we’re making that a vector of all the wavelengths
 between those two wavelengths.
 
 ``` r
+
 erlandsson_index <- list(a254=254,
                          a420=420,
                          a220_a254=c(220,250),
@@ -522,6 +541,7 @@ helper function to calculate the absorbance at 254 and 420. For a single
 wavelength that looks like:
 
 ``` r
+
 abslist <- example_processed_abs
 a254 <- get_absorbance(abslist, wl=erlandsson_index[[1]])
 a254
@@ -535,6 +555,7 @@ correctly. We’ll use
 lists of indices together.
 
 ``` r
+
 abs_data <- lapply(names(erlandsson_index[1:2]), function(index_name){
        index <- erlandsson_index[[index_name]]
 
@@ -564,6 +585,7 @@ helper function to get the ratio with any flags. In the case below, we
 don’t have absorbance at 220 nm, so we get flags of DATA01
 
 ``` r
+
 a220 <- get_absorbance(abslist, wl=220) 
 a254 <- get_absorbance(abslist, wl=254)
 a220_a254 <- get_ratios(a220, a254)
@@ -576,6 +598,7 @@ Since we’re getting multiple different sets of ratios, let’s use
 ratios at once.
 
 ``` r
+
 ratios <- lapply(names(erlandsson_index[3:5]), function(index_name){
        index <- erlandsson_index[[index_name]]
 
@@ -595,6 +618,7 @@ function to make sure everything is correctly formatted. We’ll use
 lists of indices together.
 
 ``` r
+
 ratios <- lapply(names(erlandsson_index[3:5]), function(index_name){
        index <- erlandsson_index[[index_name]]
 
@@ -623,6 +647,7 @@ we’ll use the
 function.
 
 ``` r
+
 index <- "S275_295"
 vals <- get_abs_slope(abslist, c(275,295))
 missflags <- flag_missing(abslist, wl=erlandsson_index[[index]])
@@ -644,6 +669,7 @@ check our values. If the MDL is NULL, we want to have a warning, but
 still run.
 
 ``` r
+
  mdl <- get_qaqc(file.path(system.file("extdata", package = "eemanalyzeR")), type = "mdl")
 ```
 
@@ -653,69 +679,41 @@ return the results as a list using another
 have any EEMs data we’ll just make it NA.
 
 ``` r
+
  results <- do.call(rbind, list(abs_data, ratios, S275_295, SR))
 
  list(abs_index = results,
        eem_index=NA)
 #> $abs_index
-#>                         sample_name        meta_name     index
-#> 1               B1S1ExampleBlankABS     ExampleBlank      a254
-#> 2              B1S2ExampleTeaStdABS    ExampleTeaStd      a254
-#> 3              B1S3ExampleSampleABS    ExampleSample      a254
-#> 4  ManualExampleTeaAbsSpectraGraphs ManualExampleTea      a254
-#> 5               B1S1ExampleBlankABS     ExampleBlank      a420
-#> 6              B1S2ExampleTeaStdABS    ExampleTeaStd      a420
-#> 7              B1S3ExampleSampleABS    ExampleSample      a420
-#> 8  ManualExampleTeaAbsSpectraGraphs ManualExampleTea      a420
-#> 9               B1S1ExampleBlankABS     ExampleBlank a220_a254
-#> 10             B1S2ExampleTeaStdABS    ExampleTeaStd a220_a254
-#> 11             B1S3ExampleSampleABS    ExampleSample a220_a254
-#> 12 ManualExampleTeaAbsSpectraGraphs ManualExampleTea a220_a254
-#> 13              B1S1ExampleBlankABS     ExampleBlank a254_a364
-#> 14             B1S2ExampleTeaStdABS    ExampleTeaStd a254_a364
-#> 15             B1S3ExampleSampleABS    ExampleSample a254_a364
-#> 16 ManualExampleTeaAbsSpectraGraphs ManualExampleTea a254_a364
-#> 17              B1S1ExampleBlankABS     ExampleBlank a300_a400
-#> 18             B1S2ExampleTeaStdABS    ExampleTeaStd a300_a400
-#> 19             B1S3ExampleSampleABS    ExampleSample a300_a400
-#> 20 ManualExampleTeaAbsSpectraGraphs ManualExampleTea a300_a400
-#> 21              B1S1ExampleBlankABS     ExampleBlank  S275_295
-#> 22             B1S2ExampleTeaStdABS    ExampleTeaStd  S275_295
-#> 23             B1S3ExampleSampleABS    ExampleSample  S275_295
-#> 24 ManualExampleTeaAbsSpectraGraphs ManualExampleTea  S275_295
-#> 25              B1S1ExampleBlankABS     ExampleBlank        SR
-#> 26             B1S2ExampleTeaStdABS    ExampleTeaStd        SR
-#> 27             B1S3ExampleSampleABS    ExampleSample        SR
-#> 28 ManualExampleTeaAbsSpectraGraphs ManualExampleTea        SR
-#>                 value
-#> 1               MDL01
-#> 2   0.163215306070913
-#> 3  0.0806502356009794
-#> 4   0.300921250392953
-#> 5               MDL01
-#> 6  0.0097782541629343
-#> 7   0.005703926210965
-#> 8  0.0174349110598922
-#> 9        DATA01_MDL01
-#> 10             DATA01
-#> 11             DATA01
-#> 12             DATA01
-#> 13              MDL01
-#> 14   4.30029009047272
-#> 15   5.03597089422996
-#> 16   4.47739151485424
-#> 17              MDL01
-#> 18   6.02242754070733
-#> 19   5.46607410055233
-#> 20   6.50764672772594
-#> 21              MDL01
-#> 22 0.0230618505221762
-#> 23 0.0130236674635653
-#> 24 0.0230606966213098
-#> 25              MDL01
-#> 26   1.03003744636482
-#> 27  0.740240611049655
-#> 28   1.00357361747553
+#>           sample_id    sample_name     index              value
+#> 1      ExampleBlank Sample Blank 1      a254              MDL01
+#> 2     ExampleTeaStd  PreTea 1% SRM      a254  0.163215306070913
+#> 3     ExampleSample Example Sample      a254 0.0806502356009794
+#> 4  ManualExampleTea     1% SRM tea      a254  0.300921250392953
+#> 5      ExampleBlank Sample Blank 1      a420              MDL01
+#> 6     ExampleTeaStd  PreTea 1% SRM      a420 0.0097782541629343
+#> 7     ExampleSample Example Sample      a420  0.005703926210965
+#> 8  ManualExampleTea     1% SRM tea      a420 0.0174349110598922
+#> 9      ExampleBlank Sample Blank 1 a220_a254       DATA01_MDL01
+#> 10    ExampleTeaStd  PreTea 1% SRM a220_a254             DATA01
+#> 11    ExampleSample Example Sample a220_a254             DATA01
+#> 12 ManualExampleTea     1% SRM tea a220_a254             DATA01
+#> 13     ExampleBlank Sample Blank 1 a254_a364              MDL01
+#> 14    ExampleTeaStd  PreTea 1% SRM a254_a364   4.30029009047272
+#> 15    ExampleSample Example Sample a254_a364   5.03597089422996
+#> 16 ManualExampleTea     1% SRM tea a254_a364   4.47739151485424
+#> 17     ExampleBlank Sample Blank 1 a300_a400              MDL01
+#> 18    ExampleTeaStd  PreTea 1% SRM a300_a400   6.02242754070733
+#> 19    ExampleSample Example Sample a300_a400   5.46607410055233
+#> 20 ManualExampleTea     1% SRM tea a300_a400   6.50764672772594
+#> 21     ExampleBlank Sample Blank 1  S275_295              MDL01
+#> 22    ExampleTeaStd  PreTea 1% SRM  S275_295 0.0230618505221762
+#> 23    ExampleSample Example Sample  S275_295 0.0130236674635653
+#> 24 ManualExampleTea     1% SRM tea  S275_295 0.0230606966213098
+#> 25     ExampleBlank Sample Blank 1        SR              MDL01
+#> 26    ExampleTeaStd  PreTea 1% SRM        SR   1.03003744636482
+#> 27    ExampleSample Example Sample        SR  0.740240611049655
+#> 28 ManualExampleTea     1% SRM tea        SR   1.00357361747553
 #> 
 #> $eem_index
 #> [1] NA
@@ -725,6 +723,7 @@ Great, that all looks good, now we just need to combine all that code to
 a custom function.
 
 ``` r
+
 erlandsson2012 <- function(eemlist, abslist, cuvle=1, qaqc_dir){
   #making sure eemlist and abslist are correct objects
     stopifnot(eemanalyzeR:::.is_eemlist(eemlist), eemanalyzeR:::.is_abslist(abslist), 
@@ -814,17 +813,18 @@ Now let’s test our custom function with the
 function.
 
 ``` r
+
 indices <- get_indices(example_processed_eems, example_processed_abs, index_method = erlandsson2012, 
                        qaqc_dir = file.path(system.file("extdata", package = "eemanalyzeR")), return="wide")
 
 indices$abs_index
 #> # A tibble: 4 × 9
-#>   sample_name meta_name a254  a420  a220_a254 a254_a364 a300_a400 S275_295 SR   
-#>   <chr>       <chr>     <chr> <chr> <chr>     <chr>     <chr>     <chr>    <chr>
-#> 1 B1S1Exampl… ExampleB… MDL01 MDL01 DATA01_M… MDL01     MDL01     MDL01    MDL01
-#> 2 B1S2Exampl… ExampleT… 0.16… 0.00… DATA01    4.3       6.022     0.02306  1.03 
-#> 3 B1S3Exampl… ExampleS… 0.08… 0.00… DATA01    5.036     5.466     0.01302  0.74…
-#> 4 ManualExam… ManualEx… 0.30… 0.01… DATA01    4.477     6.508     0.02306  1.004
+#>   sample_id sample_name a254  a420  a220_a254 a254_a364 a300_a400 S275_295 SR   
+#>   <chr>     <chr>       <chr> <chr> <chr>     <chr>     <chr>     <chr>    <chr>
+#> 1 ExampleB… Sample Bla… MDL01 MDL01 DATA01_M… MDL01     MDL01     MDL01    MDL01
+#> 2 ExampleT… PreTea 1% … 0.16… 0.00… DATA01    4.3       6.022     0.02306  1.03 
+#> 3 ExampleS… Example Sa… 0.08… 0.00… DATA01    5.036     5.466     0.01302  0.74…
+#> 4 ManualEx… 1% SRM tea  0.30… 0.01… DATA01    4.477     6.508     0.02306  1.004
 ```
 
 ## References

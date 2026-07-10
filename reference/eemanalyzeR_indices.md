@@ -3,7 +3,7 @@
 Calculates commonly used absorbance and fluorescence optical indices
 from `eemlist` and `abslist`. For detailed descriptions and references
 for indices, see the vignette
-[[`vignette("eemanalyzeR-indices")`](https://katiewampler.github.io/eemanalyzeR/articles/eemanalyzeR-indices.md)](https://katiewampler.github.io/eemanalyzeR/doc/eemanalyzeR-indices.md).
+[`vignette("eemanalyzeR-indices")`](https://katiewampler.github.io/eemanalyzeR/doc/eemanalyzeR-indices.md).
 
 ## Usage
 
@@ -45,10 +45,11 @@ A list with two elements:
 
 Each `data.frame` contains the following columns:
 
-- **sample_name**: name of the sample from the EEM or absorbance list
+- **sample_id**: sample identifier for the sample (if provided,
+  otherwise uses sample: the sample's file name)
 
-- **meta_name**: sample name from metadata if provided; otherwise same
-  as `sample_name`
+- **sample_name**: sample name or description (if provided, otherwise
+  uses sample: the sample's file name)
 
 - **index**: name of the index
 

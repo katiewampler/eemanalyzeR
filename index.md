@@ -26,6 +26,7 @@ You can install the development version of eemanalyzeR from
 [GitHub](https://github.com/) with:
 
 ``` r
+
 # install.packages("remotes")
 remotes::install_github("katiewampler/eemanalyzeR")
 ```

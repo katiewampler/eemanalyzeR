@@ -106,7 +106,7 @@ configuration defaults.
 
 - **Option 3:** User modifies the defaults *BEFORE* using the `run_eems`
   function using
-  [`modify_config()`](https://katiewampler.github.io/eemanalyzeR/reference/modify_config.md)
+  [`modify_session_config()`](https://katiewampler.github.io/eemanalyzeR/reference/modify_session_config.md)
   function. This modifies the settings for the R session and will be
   applied to any data processing that occurs until the package is
   reloaded or the R session is restarted. After the package is reloaded
@@ -138,5 +138,5 @@ run_eems(input_dir = system.file("extdata", package = "eemanalyzeR"), interactiv
 #> Warning: Fluorescence long-term standards is missing and will not be used for checks
 #> Warning: Absorbance long-term standards is missing and will not be used for checks
 #> Calculated absorbance and fluorescence indices.
-#> Data successfully exported to: /tmp/RtmpRncDmg/eemanalyzeR-output
+#> Data successfully exported to: /tmp/RtmpHxc4qr/eemanalyzeR-output
 ```

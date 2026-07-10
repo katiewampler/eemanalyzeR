@@ -22,7 +22,7 @@ An object of class `abs` containing:
 
 - **file**: The filename of the absorbance data
 
-- **sample**: The sample name
+- **sample**: The name of the sample's file without the file extension
 
 - **n**: The number of wavelengths measured
 

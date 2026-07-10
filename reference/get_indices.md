@@ -74,7 +74,7 @@ If `return = "long"`, each data frame includes:
 
 - `sample_name`: sample ID
 
-- `meta_name`: sample name in metadata (or `sample_name` if missing)
+- `sample_id`: sample name in metadata (or `sample_name` if missing)
 
 - `index`: index name
 
@@ -107,7 +107,7 @@ Three preset index sets are available:
   [`usgs_indices()`](https://katiewampler.github.io/eemanalyzeR/reference/usgs_indices.md)
 
 You may also pass a custom index-generating function. See
-[[`vignette("custom-indices")`](https://katiewampler.github.io/eemanalyzeR/articles/custom-indices.md)](https://katiewampler.github.io/eemanalyzeR/doc/custom-indices.md)
+[`vignette("custom-indices")`](https://katiewampler.github.io/eemanalyzeR/doc/custom-indices.md)
 for instructions.
 
 ### QA/QC flags

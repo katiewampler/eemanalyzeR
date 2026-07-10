@@ -46,10 +46,11 @@ A list with two elements:
 
 Each `data.frame` contains the following columns:
 
-- **sample_name**: name of the sample from the EEM or absorbance list
+- **sample_id**: sample identifier for the sample (if provided,
+  otherwise uses sample: the sample's file name)
 
-- **meta_name**: sample name from metadata if provided; otherwise same
-  as `sample_name`
+- **sample_name**: sample name or description (if provided, otherwise
+  uses sample: the sample's file name)
 
 - **index**: name of the index
 
@@ -88,21 +89,21 @@ indices <- eemR_indices(
 
 # View fluorescence indices
 head(indices$eem_index)
-#>                           sample_name        meta_name index             value
-#> 1                 B1S1ExampleBlankSEM     ExampleBlank     b            DATA01
-#> 2                B1S2ExampleTeaStdSEM    ExampleTeaStd     b            DATA01
-#> 3                B1S3ExampleSampleSEM    ExampleSample     b            DATA01
-#> 4 ManualExampleTeaWaterfallPlotSample ManualExampleTea     b            DATA01
-#> 5                 B1S1ExampleBlankSEM     ExampleBlank     t             MDL01
-#> 6                B1S2ExampleTeaStdSEM    ExampleTeaStd     t 0.589498543201255
+#>          sample_id    sample_name index             value
+#> 1     ExampleBlank Sample Blank 1     b            DATA01
+#> 2    ExampleTeaStd  PreTea 1% SRM     b            DATA01
+#> 3    ExampleSample Example Sample     b            DATA01
+#> 4 ManualExampleTea     1% SRM tea     b            DATA01
+#> 5     ExampleBlank Sample Blank 1     t             MDL01
+#> 6    ExampleTeaStd  PreTea 1% SRM     t 0.589498543201252
 
 # View absorbance indices
 head(indices$abs_index)
-#>                        sample_name        meta_name index            value
-#> 1              B1S1ExampleBlankABS     ExampleBlank  a254            MDL01
-#> 2             B1S2ExampleTeaStdABS    ExampleTeaStd  a254 37.5817130707345
-#> 3             B1S3ExampleSampleABS    ExampleSample  a254 18.5704030241273
-#> 4 ManualExampleTeaAbsSpectraGraphs ManualExampleTea  a254 69.2896785319941
-#> 5              B1S1ExampleBlankABS     ExampleBlank  a300            MDL01
-#> 6             B1S2ExampleTeaStdABS    ExampleTeaStd  a300 20.2099169663529
+#>          sample_id    sample_name index            value
+#> 1     ExampleBlank Sample Blank 1  a254            MDL01
+#> 2    ExampleTeaStd  PreTea 1% SRM  a254 37.5817130707345
+#> 3    ExampleSample Example Sample  a254 18.5704030241273
+#> 4 ManualExampleTea     1% SRM tea  a254 69.2896785319941
+#> 5     ExampleBlank Sample Blank 1  a300            MDL01
+#> 6    ExampleTeaStd  PreTea 1% SRM  a300 20.2099169663529
 ```

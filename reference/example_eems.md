@@ -5,7 +5,7 @@ emission matrices (EEMs). This data includes both the samples and
 blanks. Data was loaded using
 [`eem_dir_read()`](https://katiewampler.github.io/eemanalyzeR/reference/dir_read.md).
 For more details on the format of an eemlist, see the
-[eemR::eemR](https://rdrr.io/pkg/eemR/man/eemR-package.html) package.
+[eemR](https://rdrr.io/pkg/eemR/man/eemR-package.html) package.
 
 ## Usage
 

@@ -1,5 +1,81 @@
 # Changelog
 
+## eemanalyzeR 1.4.0
+
+(2026-05-14)
+
+- Renamed metadata default column names to be more descriptive. If an
+  old metadata sheet is read in, the column names will automatically be
+  renamed to `sample_id` and `sample_name`.
+
+  - `data_identifier` is now `sample_id`
+
+  - `description` is now `sample_name`
+
+  - `Notes` is now `notes`
+
+- Renamed a few of the items within `eem` and `abs` to be consistent
+  with the metadata sheet.
+
+  - `meta_name` is now `sample_id`
+
+  - `description` is now `sample_name`
+
+  - `Notes` is now `notes`
+
+- The names returned in the index outputs were updated. The column names
+  are now `sample_id` and `sample_name` which corresponds to those
+  entries in the `eem`. Previously these were `sample_name` and `sample`
+  which corresponded to the `description` and `sample` entries.
+
+- Added an option to use the `sample_name` as the plot title, previously
+  only `sample_id` and `sample` were supported.
+
+## eemanalyzeR 1.3.0
+
+(2026-05-07)
+
+- Major updates to how the user interacts with the user and session
+  configurations. Now there is a more unified vocabulary among the
+  session and the user configuration functions.
+
+  - `list_session_config` and `read_user_config` both return lists of
+    their the corresponding configuration options
+  - `validate_session_config` and `validate_user_config` will check the
+    configuration options against package defaults to make sure they are
+    valid options to use for EEMs processing
+  - `reset_session_config` and `reset_user_config` will reset the
+    current session configuration and user configuration file back to
+    package defaults, respectively.
+  - `modify_session_config` and `edit_user_config` allow the user to
+    apply changes to either the session or the saved user configuration
+    file. Modifying the user configuration can be done by hand or by
+    providing name-value pairs to the function arguments.
+  - `load_user_config` checks that the saved user configuration file is
+    valid and, if so, applies these configuration options to the
+    session.
+  - `repair_user_config` attempts to repair the user configuration by
+    replacing any invalid options in the user configuration file with
+    default options from the package.
+
+- Package install, loading, and updates.
+
+  - On package loading, we now provide some default behavior and
+    messaging if this is a new or upgraded installation.
+    - First we check that eemanalyzeR is installed into the default
+      installation directory (which depends on the type of system).
+    - Next, we check that the user configuration file exists, and if it
+      doesn’t we prompt the user to create one.
+    - If the user configuration file exists, we check the saved package
+      version against the installed package. A version mismatch may
+      indicate that the user has upgraded the package and needs to
+      update the user configuration files, as these may have changed
+      since the last package version.
+    - Finally, we validate and load the saved configuration so it is
+      used for processing EEMs in the R session.
+
+- 
+
 ## eemanalyzeR 1.2.0
 
 (2026-04-16)

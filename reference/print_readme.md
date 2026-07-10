@@ -19,29 +19,29 @@ None (invisible NULL).
 
 ``` r
 print_readme()
-#> 2026-04-17 00:58
-#> Data processed using eemanalyzeR 1.2.0 package in R.
+#> 2026-07-10 17:47
+#> Data processed using eemanalyzeR 1.3.0 package in R.
 #> For details on processing steps, indices, and QA/QC flags see the package website: https://katiewampler.github.io/eemanalyzeR/articles/output-documentation.html
 #> ______________________________
 #> 
-#> 2026-04-17 00:58:05: data was corrected for inner filter effects via 'ife_correct' function
+#> 2026-07-10 17:47:42: data was corrected for inner filter effects via 'ife_correct' function
 #>    function parameters:
 #>   cuvle: 1
 #>    warning: removed the following wavelengths in EEM's to match absorbance data wavelengths
 #>  excitation: 
 #>  emission: 806.452 - 820.768
 #> 
-#> 2026-04-17 00:58:04: Absorbance and fluorescence indices were calculated using the 'get_indices' function
+#> 2026-07-10 17:47:41: Absorbance and fluorescence indices were calculated using the 'get_indices' function
 #>    function parameters:
 #>   index_method: eemanalyzeR
 #>   return: wide
 #>   cuvle: 1
 #>   qaqc_dir: /home/runner/work/_temp/Library/eemanalyzeR/extdata
 #> 
-#> 2026-04-17 00:58:04: Fluorescence indices were not checked against method detection limits (MDL)
+#> 2026-07-10 17:47:41: Fluorescence indices were not checked against method detection limits (MDL)
 #> Absorbance indices were not checked against method detection limits (MDL)
 #> 
-#> 2026-04-17 00:58:04: 0% (n=8) of the absorbance indices were greater than 20% of the long-term check standard
+#> 2026-07-10 17:47:41: 0% (n=8) of the absorbance indices were greater than 20% of the long-term check standard
 #> 27% (n=22) of the fluorescence indices were greater than 20% of the long-term check standard
 #> 
 ```

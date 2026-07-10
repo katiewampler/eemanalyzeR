@@ -36,10 +36,11 @@ format_index(x, index, value, flag)
 
 A data frame with four columns:
 
-- **sample_name**: the sample name
+- **sample_id**: sample identifier for the sample (if provided,
+  otherwise uses sample: the sample's file name)
 
-- **meta_name**: the sample name in metadata (if provided), otherwise
-  repeats `sample_name`
+- **sample_name**: sample name or description (if provided, otherwise
+  uses sample: the sample's file name)
 
 - **index**: the name of the index
 

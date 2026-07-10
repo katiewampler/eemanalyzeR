@@ -55,6 +55,7 @@ checks to ensure samples can be rerun within hold times.
 Install and load the most recent approved version from CRAN by running
 
 ``` r
+
 install.packages("eemanalyzeR")
 ```
 
@@ -62,6 +63,7 @@ Install and load the most recent version of `eemanalyzeR` from GitHub by
 running
 
 ``` r
+
 # Installing from GitHub requires you first install the remotes package
 install.packages("remotes")
 
@@ -73,6 +75,7 @@ Install and load the most recent **development** version of
 `eemanalyzeR` from GitHub by running
 
 ``` r
+
 # Installing from GitHub requires you first install the remotes package
 install.packages("remotes")
 
@@ -83,11 +86,12 @@ remotes::install_github("katiewampler/eemanalyzeR", ref = "dev")
 Load the package
 
 ``` r
+
 library(eemanalyzeR)
 #> Registered S3 method overwritten by 'eemanalyzeR':
 #>   method       from
 #>   plot.eemlist eemR
-#> User configuration loaded from file:
+#> User configuration read from file:
 #> ~/.local/share/eemanalyzeR/user-config.yaml
 ```
 
@@ -105,6 +109,7 @@ function. At a minimum this requires the following arguments:
   files.
 
 ``` r
+
   run_eems(input_dir = system.file("extdata", package = "eemanalyzeR"),
            filename = "eemanalyzeR-example")
 ```
@@ -129,15 +134,21 @@ plots by default. We can look at the function outputs:
 
 - **\* .png:** Plots of the individual EEMs
 
-  ![](eemanalyzeR-example/B1S2ExampleTeaStdSEM.png)
+  ![Contour plot of a single
+  EEM.](eemanalyzeR-example/B1S2ExampleTeaStdSEM.png)
+  Contour plot of a single EEM.
 
 - **absorbance_plot_filename.png:** Plot showing the absorbance spectra
 
-  ![](eemanalyzeR-example/absorbance_plot_eemanalyzeR-example.png)
+  ![Line plot of absorbance for each
+  sample.](eemanalyzeR-example/absorbance_plot_eemanalyzeR-example.png)
+  Line plot of absorbance for each sample.
 
 - **summary_plots_filename.png:** Plot showing all of the EEMs together
 
-  ![](eemanalyzeR-example/summary_plots_eemanalyzeR-example.png)
+  ![Four contour plots for each EEM within the example
+  dataset.](eemanalyzeR-example/summary_plots_eemanalyzeR-example.png)
+  Four contour plots for each EEM within the example dataset.
 
 - **\*\_indices_filename.csv**:The absorbance and fluorescence indices
 
@@ -230,6 +241,7 @@ These by default will be stored in your user-specific data directory and
 loaded when needed to process samples.
 
 ``` r
+
 #specify where the long-term blank files live
 dir <- file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-blanks")
 
@@ -241,6 +253,7 @@ abs_mdl <- create_mdl(dir, type = "abs")
 We can use a similar process to create the check standard files.
 
 ``` r
+
 #specify where the long-term blank files live
 dir <- file.path(system.file("extdata", package = "eemanalyzeR"), "long-term-std")
 

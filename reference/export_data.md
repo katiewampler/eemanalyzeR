@@ -15,7 +15,7 @@ export_data(
   indices = NULL,
   eem_plot = NULL,
   abs_plot = NULL,
-  csv = FALSE,
+  spectra_to_csv = FALSE,
   sum_plot = TRUE,
   output_dir = NA
 )
@@ -58,7 +58,7 @@ export_data(
   [`plot.abslist()`](https://katiewampler.github.io/eemanalyzeR/reference/plot.md)
   for plotting.
 
-- csv:
+- spectra_to_csv:
 
   Logical. If `TRUE`, processed EEM and absorbance data and metadata are
   written to `output_dir` as `.csv` files.
@@ -110,5 +110,5 @@ data <- export_data(
   abs_plot = abs_plot,
   meta = metadata
 )
-#> Data successfully exported to: /tmp/RtmpRncDmg/eemanalyzeR_example
+#> Data successfully exported to: /tmp/RtmpHxc4qr/eemanalyzeR_example
 ```

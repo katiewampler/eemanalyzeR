@@ -24,4 +24,7 @@ Useful links:
 
 Authors:
 
+- Katie A. Wampler <katie.wampler@oregonstate.edu>
+  ([ORCID](https://orcid.org/0000-0002-5584-7554))
+
 - Ryan P. Cole <ryan.cole@oregonstate.edu>

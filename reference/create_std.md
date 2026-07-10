@@ -10,7 +10,7 @@ standard can be checked against for consistency.
 create_std(
   dir,
   method = "default",
-  meta_name = NULL,
+  meta_file = NULL,
   sheet = NULL,
   abs_pattern = "Abs",
   iblank = "BEM",
@@ -42,7 +42,7 @@ fluorescence from dissolved organic matter* (USGS Numbered Series No.
   A character string describing the method associated with the MDL
   files.
 
-- meta_name:
+- meta_file:
 
   Name of the metadata file. Optional if the metadata file is the only
   `.xlsx` or `.csv` file in `dir`. If not specified, the function
@@ -120,7 +120,7 @@ To calculate the average check standard you need:
 
 ``` r
 eem_std <- create_std(file.path(system.file("extdata", package = "eemanalyzeR"),"long-term-std"),
-meta_name="longterm-checkstd-metadata.csv", abs_pattern = "ABS",
+meta_file="longterm-checkstd-metadata.csv", abs_pattern = "ABS",
 type="eem", qaqc_dir = NA, update_config=FALSE)
 #> NOTE: removed previous 'readme' file
 #> Warning: Calculating average check standard based on less than 20 samples, average may be unreliable

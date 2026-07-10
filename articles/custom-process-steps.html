@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Customizing Processing Steps">
 </head>
@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">eemanalyzeR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -130,9 +130,9 @@ this file has been saved, it will be loaded on package load, and the
 processing defaults specified in the <code>user_config</code> file will
 be applied.</p></li>
 <li><p><strong>Set temporary defaults for the R session:</strong> More
-temporary defaults can be changed using <code><a href="../reference/modify_config.html">modify_config()</a></code>.
+temporary defaults can be changed using <code>modify_config()</code>.
 Before using the <code><a href="../reference/run_eems.html">run_eems()</a></code> function use
-<code><a href="../reference/modify_config.html">modify_config()</a></code> to set argument values (i.e.,
+<code>modify_config()</code> to set argument values (i.e.,
 <code>modify_config(cuvle = 2, eem_skip = "badeem")</code>). This
 modifies the settings for the R session and will be applied to any data
 processing that occurs until the package is reloaded or the R session is
@@ -232,11 +232,14 @@ argument <code>config_path</code> to specify the file path to the file
 you want loaded. See <a href="#using-different-processing-methods">Using
 Different Processing Methods</a> for more details on this.</p>
 <p>To restore your <code>user_config</code> back to the package
-defaults, you can use <code><a href="../reference/reset_user_config.html">reset_user_config()</a></code>.</p>
+defaults, you can use <code><a href="../reference/user_config.html">reset_user_config()</a></code>. If there are
+issues with the <code>user_config</code>, you can attempt to repair it
+using <code>repair_user_config</code>, which will check for invalid or
+missing values and replace them with package defaults.</p>
 <blockquote>
 <p>To prevent fully overwriting any old settings, your last old file
-will be saved in the same location with the extension <code>.old</code>
-appended to the file name.</p>
+will be saved in the same location with the extension
+<code>.backup</code> appended to the file name.</p>
 </blockquote>
 <p><br></p>
 </div>
@@ -295,7 +298,7 @@ run only.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

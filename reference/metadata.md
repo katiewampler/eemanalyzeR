@@ -22,10 +22,10 @@ A data.frame with 4 rows and 11 columns:
 - **analysis_date**: Optional, date samples were run on instrument (not
   collected in the field)
 
-- **description**: Optional, brief description of the sample collected
+- **sample_name**: Optional, brief description of the sample collected
 
-- **data_identifier**: REQUIRED, file name from the aqualog, must match
-  exactly
+- **sample_id**: REQUIRED, file name from the Aqualog without the file
+  extension, must match exactly
 
 - **replicate_no**: REQUIRED, number indicating if the sample was
   replicated; unreplicated = 1

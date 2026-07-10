@@ -46,18 +46,17 @@
 <url><loc>https://katiewampler.github.io/eemanalyzeR/reference/ife_correct.html</loc></url>
 <url><loc>https://katiewampler.github.io/eemanalyzeR/reference/index.html</loc></url>
 <url><loc>https://katiewampler.github.io/eemanalyzeR/reference/indice_ranges.html</loc></url>
-<url><loc>https://katiewampler.github.io/eemanalyzeR/reference/list_config.html</loc></url>
+<url><loc>https://katiewampler.github.io/eemanalyzeR/reference/list_session_config.html</loc></url>
 <url><loc>https://katiewampler.github.io/eemanalyzeR/reference/meta_check.html</loc></url>
 <url><loc>https://katiewampler.github.io/eemanalyzeR/reference/meta_read.html</loc></url>
 <url><loc>https://katiewampler.github.io/eemanalyzeR/reference/metadata.html</loc></url>
-<url><loc>https://katiewampler.github.io/eemanalyzeR/reference/modify_config.html</loc></url>
+<url><loc>https://katiewampler.github.io/eemanalyzeR/reference/modify_session_config.html</loc></url>
 <url><loc>https://katiewampler.github.io/eemanalyzeR/reference/plot.html</loc></url>
 <url><loc>https://katiewampler.github.io/eemanalyzeR/reference/print_readme.html</loc></url>
 <url><loc>https://katiewampler.github.io/eemanalyzeR/reference/process_eem.html</loc></url>
 <url><loc>https://katiewampler.github.io/eemanalyzeR/reference/raman_normalize.html</loc></url>
 <url><loc>https://katiewampler.github.io/eemanalyzeR/reference/remove_scattering.html</loc></url>
-<url><loc>https://katiewampler.github.io/eemanalyzeR/reference/reset_config.html</loc></url>
-<url><loc>https://katiewampler.github.io/eemanalyzeR/reference/reset_user_config.html</loc></url>
+<url><loc>https://katiewampler.github.io/eemanalyzeR/reference/reset_session_config.html</loc></url>
 <url><loc>https://katiewampler.github.io/eemanalyzeR/reference/run_eems.html</loc></url>
 <url><loc>https://katiewampler.github.io/eemanalyzeR/reference/sub-.abslist.html</loc></url>
 <url><loc>https://katiewampler.github.io/eemanalyzeR/reference/sub-.eemlist.html</loc></url>
@@ -68,7 +67,7 @@
 <url><loc>https://katiewampler.github.io/eemanalyzeR/reference/user_config.html</loc></url>
 <url><loc>https://katiewampler.github.io/eemanalyzeR/reference/usgs_indices.html</loc></url>
 <url><loc>https://katiewampler.github.io/eemanalyzeR/reference/validate_blanks.html</loc></url>
-<url><loc>https://katiewampler.github.io/eemanalyzeR/reference/validate_config.html</loc></url>
+<url><loc>https://katiewampler.github.io/eemanalyzeR/reference/validate_session_config.html</loc></url>
 <url><loc>https://katiewampler.github.io/eemanalyzeR/reference/validate_std.html</loc></url>
 </urlset>
 

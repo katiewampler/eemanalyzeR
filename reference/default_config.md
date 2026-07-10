@@ -14,7 +14,7 @@ default_config
 
 ## Format
 
-A list of length 27:
+A list of length 33:
 
 - **abs_pattern**: Used by
   [`abs_dir_read()`](https://katiewampler.github.io/eemanalyzeR/reference/dir_read.md).
@@ -62,7 +62,13 @@ A list of length 27:
   [`abs_dir_read()`](https://katiewampler.github.io/eemanalyzeR/reference/dir_read.md).
   Character or a user-defined function to import an EEM. For more
   details, see
-  [[`vignette("custom-indices")`](https://katiewampler.github.io/eemanalyzeR/articles/custom-indices.md)](https://katiewampler.github.io/eemanalyzeR/doc/custom-indices.md).
+  [`vignette("custom-indices")`](https://katiewampler.github.io/eemanalyzeR/doc/custom-indices.md).
+
+- **meta_file**: Used by
+  [`meta_read()`](https://katiewampler.github.io/eemanalyzeR/reference/meta_read.md).
+  Name of the metadata file the program is expecting. Defaults to NA,
+  which auto-detects the metadata file in the data directory, for
+  flexibility.
 
 - **meta_sheet**: Used by
   [`meta_read()`](https://katiewampler.github.io/eemanalyzeR/reference/meta_read.md).
@@ -154,20 +160,33 @@ A list of length 27:
   [`create_mdl()`](https://katiewampler.github.io/eemanalyzeR/reference/create_mdl.md)
   and
   [`create_std()`](https://katiewampler.github.io/eemanalyzeR/reference/create_std.md).
-  Default is a user-specific data directory
-  [`rappdirs::user_data_dir()`](https://rappdirs.r-lib.org/reference/user_data_dir.html).
+  Default is a platform- and user-dependent data directory
+  [`rappdirs::user_data_dir()`](https://rappdirs.r-lib.org/reference/user_data_dir.html)
+  created when QAQC files are generated.
+
+- **qaqc_method**:
 
 - **filename**: Used by
   [`export_data()`](https://katiewampler.github.io/eemanalyzeR/reference/export_data.md).
-  A character string, used for file names.
+  A character string, used to write output file names.
 
 - **output_dir**: Used by
   [`export_data()`](https://katiewampler.github.io/eemanalyzeR/reference/export_data.md).
-  Path to save the data. Defaults to a temporary directory if not
-  specified.
+  Path to save the data. Defaults to NA, which saves to a temporary
+  directory if not specified.
 
-- **readme**: Starts as NULL, used to store notes and warnings about
-  processing.
+- **spectra_to_csv**: Used by
+  [`export_data()`](https://katiewampler.github.io/eemanalyzeR/reference/export_data.md).
+  Logical. If `TRUE`, processed EEM and absorbance data and metadata are
+  written to `output_dir` as `.csv` files.
+
+- **sum_plot**: Used by
+  [`export_data()`](https://katiewampler.github.io/eemanalyzeR/reference/export_data.md).
+  Logical. If `TRUE`, individual plots are exported as a single large
+  figure along with the individual plots.
+
+- **package_version**: the version of eemanalyzeR currently installed on
+  the system.
 
 ## Details
 
@@ -177,7 +196,7 @@ These values can be edited by:
   [`edit_user_config()`](https://katiewampler.github.io/eemanalyzeR/reference/user_config.md)
 
 - the user for the current R session using
-  [`modify_config()`](https://katiewampler.github.io/eemanalyzeR/reference/modify_config.md)
+  [`modify_session_config()`](https://katiewampler.github.io/eemanalyzeR/reference/modify_session_config.md)
 
 - or within the
   [`run_eems()`](https://katiewampler.github.io/eemanalyzeR/reference/run_eems.md)

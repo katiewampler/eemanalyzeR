@@ -64,8 +64,8 @@ plot(x, pal = NULL, ...)
 
 - title:
 
-  Either "none", "meta_name", or "sample" which indicates what to use
-  for the plot title.
+  Either "none", "sample_id", "sample_name", or "sample" which indicates
+  what to use for the plot title.
 
 - remove_lower:
 

@@ -12,7 +12,7 @@ blank)**.
 create_mdl(
   dir,
   method = "default",
-  meta_name = NULL,
+  meta_file = NULL,
   sheet = NULL,
   iblank = "BEM",
   type = "eem",
@@ -43,7 +43,7 @@ fluorescence from dissolved organic matter* (USGS Numbered Series No.
   A character string describing the method associated with the MDL
   files.
 
-- meta_name:
+- meta_file:
 
   Name of the metadata file. Optional if the metadata file is the only
   `.xlsx` or `.csv` file in `dir`. If not specified, the function

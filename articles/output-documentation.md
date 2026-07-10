@@ -10,15 +10,21 @@ functions contains the following files:
 
 - **\* .png:** Plots of the individual EEMs
 
-  ![](eemanalyzeR-example/B1S2ExampleTeaStdSEM.png)
+  ![Contour plot of a single
+  EEM.](eemanalyzeR-example/B1S2ExampleTeaStdSEM.png)
+  Contour plot of a single EEM.
 
 - **absorbance_plot_filename.png:** Plot showing the absorbance spectra
 
-  ![](eemanalyzeR-example/absorbance_plot_eemanalyzeR-example.png)
+  ![Line plot of absorbance for each
+  sample.](eemanalyzeR-example/absorbance_plot_eemanalyzeR-example.png)
+  Line plot of absorbance for each sample.
 
 - **summary_plots_filename.png:** Plot showing all of the EEMs together
 
-  ![](eemanalyzeR-example/summary_plots_eemanalyzeR-example.png)
+  ![Four contour plots for each EEM within the example
+  dataset.](eemanalyzeR-example/summary_plots_eemanalyzeR-example.png)
+  Four contour plots for each EEM within the example dataset.
 
 - **\*\_indices_filename.csv**:The absorbance and fluorescence indices
 
@@ -65,7 +71,7 @@ functions contains the following files:
       #> Registered S3 method overwritten by 'eemanalyzeR':
       #>   method       from
       #>   plot.eemlist eemR
-      #> User configuration loaded from file:
+      #> User configuration read from file:
       #> ~/.local/share/eemanalyzeR/user-config.yaml
       #> <list>
       #> ├─eemlist: S3<eemlist>...
@@ -105,7 +111,11 @@ There’s a clear peak in the 300-400 nm emission range. This indicates
 likely contamination in the blank and it should not be used for blank
 subtraction.
 
-![](figures/blk-cont.png)
+![A contour plot with a clear peak in the area where peaks are typically
+observed.](figures/blk-cont.png)
+
+A contour plot with a clear peak in the area where peaks are typically
+observed.
 
 ##### Narrow Blank Contamination
 
@@ -114,7 +124,10 @@ sticks out. This is often caused by small particles in the sample
 causing small localized areas of high fluorescence. This blank should
 also not be used for blank subtraction.
 
-![](figures/point-blk-cont.png)
+![Contour plot showing a small localized peak at ex: 350 nm, em: 500
+nm.](figures/point-blk-cont.png)
+
+Contour plot showing a small localized peak at ex: 350 nm, em: 500 nm.
 
 ##### Weird Artifacts
 
@@ -122,7 +135,10 @@ Around emission 420 nm, there’s a long “peak” and the intensity is fully
 negative. Both these issues indicate likely problems with the instrument
 blank and it should not be used for blank subtraction.
 
-![](figures/blk-artifact.png)
+![Contour plot showing a strong fluorescence line with negative
+intensity.](figures/blk-artifact.png)
+
+Contour plot showing a strong fluorescence line with negative intensity.
 
 ##### What a Blank Should Look Like
 
@@ -133,7 +149,10 @@ the sides of the removed scattering regions. These are normal and just
 indicate that the scattering regions were perhaps wider than standard,
 but not cause to reject the blank.
 
-![](figures/good-blk.png)
+![Contour plot showing random noise at low
+intensities.](figures/good-blk.png)
+
+Contour plot showing random noise at low intensities.
 
   
 
@@ -145,7 +164,9 @@ distinguish a measurement from zero and from analytical blanks. Here,
 the MDL is calculated using the approach proposed by Hansen et al.
 (2018):
 
-$$\text{MDL} = \text{mean}\left( \text{long-term blank} \right) + 3 \times \text{SD}\left( \text{long-term blank} \right)$$
+``` math
+ \text{MDL} = \text{mean}(\text{long-term blank}) + 3 × \text{SD}(\text{long-term blank})
+```
 where **long-term blank** is the fluorescence for a specific wavelength
 pair or absorbance at a specific wavelength, **mean** is the average
 signal, and **SD** is the standard deviation.
@@ -215,41 +236,41 @@ format. See `get-indices()` for more details.
 The absorbance indices reported by the default index method
 (`eemanalyzeR`) and their **typical** interpretations are:
 
-| Index Name               | Index Abbreviation | Interpretation                              |
-|:-------------------------|:-------------------|:--------------------------------------------|
-| SUVA 254                 | SUVA254            | proxy for aromaticity                       |
-| SUVA 280                 | SUVA280            | proxy for aromaticity                       |
-| SVA 412                  | SVA412             | proxy for aromaticity                       |
-| Spectral Slope (275-295) | S275_295           | related to molecular weight and aromaticity |
-| Spectral Slope (350-400) | S350_400           | related to molecular weight and aromaticity |
-| Spectral Slope Ratio     | SR                 | related to molecular weight                 |
-| E₂/E₃                    | E2_E3              | related to molecular weight and aromaticity |
-| E₄/E₆                    | E4_E6              | related to humic-like organic matter        |
+| Index Name | Index Abbreviation | Interpretation |
+|:---|:---|:---|
+| SUVA 254 | SUVA254 | proxy for aromaticity |
+| SUVA 280 | SUVA280 | proxy for aromaticity |
+| SVA 412 | SVA412 | proxy for aromaticity |
+| Spectral Slope (275-295) | S275_295 | related to molecular weight and aromaticity |
+| Spectral Slope (350-400) | S350_400 | related to molecular weight and aromaticity |
+| Spectral Slope Ratio | SR | related to molecular weight |
+| E₂/E₃ | E2_E3 | related to molecular weight and aromaticity |
+| E₄/E₆ | E4_E6 | related to humic-like organic matter |
 
   
 
 The fluorescence indices reported by the default index method
 (`eemanalyzeR`) and their **typical** interpretations are:
 
-| Index Name                 | Index Abbreviation | Interpretation                                    |
-|:---------------------------|:-------------------|:--------------------------------------------------|
-| Peak B                     | pB                 | tyrosine-like, protein-like organic matter        |
-| Peak T                     | pT                 | tryptophan-like, protein-like organic matter      |
-| Peak A                     | pA                 | UV humic-like organic matter                      |
-| Peak M                     | pM                 | marine humic-like organic matter                  |
-| Peak C                     | pC                 | visible humic-like organic matter                 |
-| Peak D                     | pD                 | soil fulvic acid-like organic matter              |
-| Peak E                     | pE                 | soil fulvic acid-like organic matter              |
-| Peak N                     | pN                 | related to phytoplankton productivity             |
-| Ratio of Peak A to Peak T  | rAT                | ratio of humic-like to fresh organic matter       |
-| Ratio of Peak C to Peak A  | rCA                | ratio of humic-like to fulvic-like organic matter |
-| Ratio of Peak C to Peak M  | rCM                | amount of blueshifted organic matter              |
-| Ratio of Peak C to Peak T  | rCT                | related to biochemical oxygen demand              |
-| Fluorescence Index         | FI                 | terrestrial versus microbial sources              |
-| Humification Index-Zsolnay | HIX                | indication of humic substances                    |
-| Humification Index-Ohno    | HIX_ohno           | indication of humic substances                    |
-| Freshness Index            | fresh              | indication of recently produced organic matter    |
-| Biological Index           | BIX                | indicator of autotrophic activity                 |
+| Index Name | Index Abbreviation | Interpretation |
+|:---|:---|:---|
+| Peak B | pB | tyrosine-like, protein-like organic matter |
+| Peak T | pT | tryptophan-like, protein-like organic matter |
+| Peak A | pA | UV humic-like organic matter |
+| Peak M | pM | marine humic-like organic matter |
+| Peak C | pC | visible humic-like organic matter |
+| Peak D | pD | soil fulvic acid-like organic matter |
+| Peak E | pE | soil fulvic acid-like organic matter |
+| Peak N | pN | related to phytoplankton productivity |
+| Ratio of Peak A to Peak T | rAT | ratio of humic-like to fresh organic matter |
+| Ratio of Peak C to Peak A | rCA | ratio of humic-like to fulvic-like organic matter |
+| Ratio of Peak C to Peak M | rCM | amount of blueshifted organic matter |
+| Ratio of Peak C to Peak T | rCT | related to biochemical oxygen demand |
+| Fluorescence Index | FI | terrestrial versus microbial sources |
+| Humification Index-Zsolnay | HIX | indication of humic substances |
+| Humification Index-Ohno | HIX_ohno | indication of humic substances |
+| Freshness Index | fresh | indication of recently produced organic matter |
+| Biological Index | BIX | indicator of autotrophic activity |
 
   
 

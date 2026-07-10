@@ -1,7 +1,7 @@
 # Read absorbance and fluorescence data from directory
 
-Wrappers for
-[`eemR::eem_read()`](https://rdrr.io/pkg/eemR/man/eem_read.html) and
+Wrappers for [`eem_read()`](https://rdrr.io/pkg/eemR/man/eem_read.html)
+and
 [`abs_read()`](https://katiewampler.github.io/eemanalyzeR/reference/abs_read.md)
 to read all EEMs or absorbance files in a directory into R, even when
 the directory contains other files.
@@ -60,7 +60,7 @@ abs_dir_read(
 
   Character or a user-defined function to import an EEM. For more
   details, see
-  [[`vignette("custom-indices")`](https://katiewampler.github.io/eemanalyzeR/articles/custom-indices.md)](https://katiewampler.github.io/eemanalyzeR/doc/custom-indices.md).
+  [`vignette("custom-indices")`](https://katiewampler.github.io/eemanalyzeR/doc/custom-indices.md).
 
 - verbose:
 

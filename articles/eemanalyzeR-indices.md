@@ -17,22 +17,22 @@ calculated from the absorbance or fluorescence spectra. The benefit is a
 single value which is easily derived and plotted. However,
 interpretation can be challenging as many of these metrics were derived
 in specific environments, and the interpretation may not be transferable
-to other environments or sample types ([Gabor et
-al. 2014](https://doi.org/10.1017/CBO9781139045452.015), [Serène et
-al. 2025](https://doi.org/10.1016/j.jhydrol.2024.132524)).
+to other environments or sample types ([Gabor et al.
+2014](https://doi.org/10.1017/CBO9781139045452.015), [Serène et al.
+2025](https://doi.org/10.1016/j.jhydrol.2024.132524)).
 
 ## Absorbance Indices
 
-| Index Name               | Index Abbreviation | Interpretation                              |
-|:-------------------------|:-------------------|:--------------------------------------------|
-| SUVA 254                 | SUVA254            | proxy for aromaticity                       |
-| SUVA 280                 | SUVA280            | proxy for aromaticity                       |
-| SVA 412                  | SVA412             | proxy for aromaticity                       |
-| Spectral Slope (275-295) | S275_295           | related to molecular weight and aromaticity |
-| Spectral Slope (350-400) | S350_400           | related to molecular weight and aromaticity |
-| Spectral Slope Ratio     | SR                 | related to molecular weight                 |
-| E₂/E₃                    | E2_E3              | related to molecular weight and aromaticity |
-| E₄/E₆                    | E4_E6              | related to humic-like organic matter        |
+| Index Name | Index Abbreviation | Interpretation |
+|:---|:---|:---|
+| SUVA 254 | SUVA254 | proxy for aromaticity |
+| SUVA 280 | SUVA280 | proxy for aromaticity |
+| SVA 412 | SVA412 | proxy for aromaticity |
+| Spectral Slope (275-295) | S275_295 | related to molecular weight and aromaticity |
+| Spectral Slope (350-400) | S350_400 | related to molecular weight and aromaticity |
+| Spectral Slope Ratio | SR | related to molecular weight |
+| E₂/E₃ | E2_E3 | related to molecular weight and aromaticity |
+| E₄/E₆ | E4_E6 | related to humic-like organic matter |
 
   
 
@@ -44,8 +44,8 @@ index units of L mg-C⁻¹ m⁻¹.
 **Interpretation:** SUVA 254 is considered an proxy for aromatic content
 of the dissolved organic matter, where higher values indicate higher
 aromaticity. It has also been found to be correlated with some
-disinfection by-product precursors ([Rostad et
-al. 2000](https://doi.org/10.1021/es9900407)).
+disinfection by-product precursors ([Rostad et al.
+2000](https://doi.org/10.1021/es9900407)).
 
 **Source(s):** [Weishaar et al. 2003](https://doi.org/10.1021/es030360x)
 
@@ -60,13 +60,13 @@ index units of L mg-C⁻¹ m⁻¹.
 for aromatic content of the dissolved organic matter, where higher
 values indicate higher aromaticity. This index has been proposed as an
 alternative to SUVA 254, with some evidence that 280 nm may be a better
-wavelength to determine aromaticity at since $\pi$ to $\pi*$ transitions
-occur here for many aromatic molecules ([Chin et
-al. 1994](https://doi.org/10.2136/sssaj1977.03615995004100020037x)).
+wavelength to determine aromaticity at since $`\pi`$ to $`\pi*`$
+transitions occur here for many aromatic molecules ([Chin et al.
+1994](https://doi.org/10.2136/sssaj1977.03615995004100020037x)).
 
-**Source(s):** [Chin et
-al. 1994](https://doi.org/10.2136/sssaj1977.03615995004100020037x),
-[Hansen et al. 2016](https://doi.org/10.1002/lno.10270)
+**Source(s):** [Chin et al.
+1994](https://doi.org/10.2136/sssaj1977.03615995004100020037x), [Hansen
+et al. 2016](https://doi.org/10.1002/lno.10270)
 
   
 
@@ -91,9 +91,9 @@ the absorbance spectrum between 275-295 nm.
 **Interpretation:** Higher values are typically associated with lower
 molecular weight materials and/or lower aromaticity.
 
-**Source(s):** [Helms et
-al. 2008](https://doi.org/10.4319/lo.2008.53.3.0955), [Hansen et
-al. 2016](https://doi.org/10.1002/lno.10270)
+**Source(s):** [Helms et al.
+2008](https://doi.org/10.4319/lo.2008.53.3.0955), [Hansen et al.
+2016](https://doi.org/10.1002/lno.10270)
 
   
 
@@ -105,9 +105,9 @@ the absorbance spectrum between 350-400 nm
 **Interpretation:** Higher values are typically associated with lower
 molecular weight materials and/or lower aromaticity.
 
-**Source(s):** [Helms et
-al. 2008](https://doi.org/10.4319/lo.2008.53.3.0955), [Hansen et
-al. 2016](https://doi.org/10.1002/lno.10270)
+**Source(s):** [Helms et al.
+2008](https://doi.org/10.4319/lo.2008.53.3.0955), [Hansen et al.
+2016](https://doi.org/10.1002/lno.10270)
 
   
 
@@ -119,9 +119,9 @@ slope between 350 to 400 nm.
 **Interpretation:** Negatively correlated to molecular weight and
 generally increases on irradiation.
 
-**Source(s):** [Helms et
-al. 2008](https://doi.org/10.4319/lo.2008.53.3.0955), [Hansen et
-al. 2016](https://doi.org/10.1002/lno.10270)
+**Source(s):** [Helms et al.
+2008](https://doi.org/10.4319/lo.2008.53.3.0955), [Hansen et al.
+2016](https://doi.org/10.1002/lno.10270)
 
   
 
@@ -148,33 +148,33 @@ nm.
 aromaticity of organic matter, it’s been found that this metric is a
 better descriptor of the amount of humic-like organic matter.
 
-**Source(s):** [Helms et
-al. 2008](https://doi.org/10.4319/lo.2008.53.3.0955), [Chen et
-al. 1977](https://doi.org/10.2136/sssaj1977.03615995004100020037x)
+**Source(s):** [Helms et al.
+2008](https://doi.org/10.4319/lo.2008.53.3.0955), [Chen et al.
+1977](https://doi.org/10.2136/sssaj1977.03615995004100020037x)
 
   
 
 ## Fluorescence Indices
 
-| Index Name                 | Index Abbreviation | Interpretation                                    |
-|:---------------------------|:-------------------|:--------------------------------------------------|
-| Peak B                     | pB                 | tyrosine-like, protein-like organic matter        |
-| Peak T                     | pT                 | tryptophan-like, protein-like organic matter      |
-| Peak A                     | pA                 | UV humic-like organic matter                      |
-| Peak M                     | pM                 | marine humic-like organic matter                  |
-| Peak C                     | pC                 | visible humic-like organic matter                 |
-| Peak D                     | pD                 | soil fulvic acid-like organic matter              |
-| Peak E                     | pE                 | soil fulvic acid-like organic matter              |
-| Peak N                     | pN                 | related to phytoplankton productivity             |
-| Ratio of Peak A to Peak T  | rAT                | ratio of humic-like to fresh organic matter       |
-| Ratio of Peak C to Peak A  | rCA                | ratio of humic-like to fulvic-like organic matter |
-| Ratio of Peak C to Peak M  | rCM                | amount of blueshifted organic matter              |
-| Ratio of Peak C to Peak T  | rCT                | related to biochemical oxygen demand              |
-| Fluorescence Index         | FI                 | terrestrial versus microbial sources              |
-| Humification Index-Zsolnay | HIX                | indication of humic substances                    |
-| Humification Index-Ohno    | HIX_ohno           | indication of humic substances                    |
-| Freshness Index            | fresh              | indication of recently produced organic matter    |
-| Biological Index           | BIX                | indicator of autotrophic activity                 |
+| Index Name | Index Abbreviation | Interpretation |
+|:---|:---|:---|
+| Peak B | pB | tyrosine-like, protein-like organic matter |
+| Peak T | pT | tryptophan-like, protein-like organic matter |
+| Peak A | pA | UV humic-like organic matter |
+| Peak M | pM | marine humic-like organic matter |
+| Peak C | pC | visible humic-like organic matter |
+| Peak D | pD | soil fulvic acid-like organic matter |
+| Peak E | pE | soil fulvic acid-like organic matter |
+| Peak N | pN | related to phytoplankton productivity |
+| Ratio of Peak A to Peak T | rAT | ratio of humic-like to fresh organic matter |
+| Ratio of Peak C to Peak A | rCA | ratio of humic-like to fulvic-like organic matter |
+| Ratio of Peak C to Peak M | rCM | amount of blueshifted organic matter |
+| Ratio of Peak C to Peak T | rCT | related to biochemical oxygen demand |
+| Fluorescence Index | FI | terrestrial versus microbial sources |
+| Humification Index-Zsolnay | HIX | indication of humic substances |
+| Humification Index-Ohno | HIX_ohno | indication of humic substances |
+| Freshness Index | fresh | indication of recently produced organic matter |
+| Biological Index | BIX | indicator of autotrophic activity |
 
   
 
@@ -187,8 +187,8 @@ and em: 300-320 nm.
 tyrosine-like, protein-like organic matter.
 
 **Source(s):** [Coble
-1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et
-al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
+1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et al.
+2014](https://doi.org/10.1017/CBO9781139045452.015)
 
   
 
@@ -201,8 +201,8 @@ and em: 320-350 nm.
 tryptophan-like, protein-like organic matter.
 
 **Source(s):** [Coble
-1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et
-al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
+1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et al.
+2014](https://doi.org/10.1017/CBO9781139045452.015)
 
   
 
@@ -215,8 +215,8 @@ and em: 380-480 nm.
 organic matter.
 
 **Source(s):** [Coble
-1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et
-al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
+1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et al.
+2014](https://doi.org/10.1017/CBO9781139045452.015)
 
   
 
@@ -230,8 +230,8 @@ humic-like organic matter. However, this component has been observed in
 non-humic environments.
 
 **Source(s):** [Coble
-1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et
-al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
+1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et al.
+2014](https://doi.org/10.1017/CBO9781139045452.015)
 
   
 
@@ -244,8 +244,8 @@ and em: 420-480 nm.
 humic-like organic matter.
 
 **Source(s):** [Coble
-1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et
-al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
+1996](https://doi.org/10.1016/0304-4203(95)00062-3), [Gabor et al.
+2014](https://doi.org/10.1017/CBO9781139045452.015)
 
   
 
@@ -256,8 +256,8 @@ al. 2014](https://doi.org/10.1017/CBO9781139045452.015)
 **Interpretation:** This peak is typically associated with soil fulvic
 acid-like organic matter.
 
-**Source(s):** [Stedmon et
-al. 2003](https://doi.org/10.1016/S0304-4203(03)00072-0), [Aiken,
+**Source(s):** [Stedmon et al.
+2003](https://doi.org/10.1016/S0304-4203(03)00072-0), [Aiken,
 2014](https://doi.org/10.1017/CBO9781139045452.005)
 
   
@@ -269,8 +269,8 @@ al. 2003](https://doi.org/10.1016/S0304-4203(03)00072-0), [Aiken,
 **Interpretation:** This peak is typically associated with soil fulvic
 acid-like organic matter.
 
-**Source(s):** [Stedmon et
-al. 2003](https://doi.org/10.1016/S0304-4203(03)00072-0), [Aiken,
+**Source(s):** [Stedmon et al.
+2003](https://doi.org/10.1016/S0304-4203(03)00072-0), [Aiken,
 2014](https://doi.org/10.1017/CBO9781139045452.005)
 
   
@@ -282,8 +282,8 @@ al. 2003](https://doi.org/10.1016/S0304-4203(03)00072-0), [Aiken,
 **Interpretation:** This peak is typically associated with associated
 with phytoplankton productivity.
 
-**Source(s):** [Stedmon et
-al. 2003](https://doi.org/10.1016/S0304-4203(03)00072-0), [Aiken,
+**Source(s):** [Stedmon et al.
+2003](https://doi.org/10.1016/S0304-4203(03)00072-0), [Aiken,
 2014](https://doi.org/10.1017/CBO9781139045452.005)
 
   
@@ -348,10 +348,10 @@ this metric can also be used to assess the complexity and aromaticity of
 humic-like dissolved organic matter, with lower values indicating more
 complex and aromatic organic matter.
 
-**Source(s):** [McKnight et
-al. 2001](https://doi.org/10.4319/lo.2001.46.1.0038), [Cory and McKnight
-2005](https://doi.org/10.1021/es0506962), [Serène et
-al. 2025](https://doi.org/10.1016/j.jhydrol.2024.132524)
+**Source(s):** [McKnight et al.
+2001](https://doi.org/10.4319/lo.2001.46.1.0038), [Cory and McKnight
+2005](https://doi.org/10.1021/es0506962), [Serène et al.
+2025](https://doi.org/10.1016/j.jhydrol.2024.132524)
 
   
 
@@ -368,9 +368,9 @@ to the ratio of complex, aromatic molecules to simple, less aromatic
 molecules, where higher values indicate more aromatic and polycondensed
 organic matter.
 
-**Source(s):** [Zsolnay et
-al. 1999](https://doi.org/10.1016/S0045-6535(98)00166-0), [Serène et
-al. 2025](https://doi.org/10.1016/j.jhydrol.2024.132524)  
+**Source(s):** [Zsolnay et al.
+1999](https://doi.org/10.1016/S0045-6535(98)00166-0), [Serène et al.
+2025](https://doi.org/10.1016/j.jhydrol.2024.132524)  
 
 ### Humification Index-Ohno (HIX_ohno)
 
@@ -414,9 +414,9 @@ that the biological index should be used as an indicator of humic
 origin, were higher values indicate more microbial origins while lower
 values indicate more lignin or soil derived organic matter.
 
-**Source(s):** [Huguet et
-al. 2009](https://doi.org/10.1016/j.orggeochem.2009.03.002), [Serène et
-al. 2025](https://doi.org/10.1016/j.jhydrol.2024.132524)
+**Source(s):** [Huguet et al.
+2009](https://doi.org/10.1016/j.orggeochem.2009.03.002), [Serène et al.
+2025](https://doi.org/10.1016/j.jhydrol.2024.132524)
 
   
 
