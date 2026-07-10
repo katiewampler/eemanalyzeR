@@ -21,17 +21,20 @@ Every data export from `eemanalyzeR` using the `export_data()` or
 
 -   **\* .png:** Plots of the individual EEMs
 
-    ![](eemanalyzeR-example/B1S2ExampleTeaStdSEM.png){width="500"}
+    ![Contour plot of a single
+    EEM.](eemanalyzeR-example/B1S2ExampleTeaStdSEM.png){width="500"}
 
 -   **absorbance_plot_filename.png:** Plot showing the absorbance
     spectra
 
-    ![](eemanalyzeR-example/absorbance_plot_eemanalyzeR-example.png){width="500"}
+    ![Line plot of absorbance for each
+    sample.](eemanalyzeR-example/absorbance_plot_eemanalyzeR-example.png){width="500"}
 
 -   **summary_plots_filename.png:** Plot showing all of the EEMs
     together
 
-    ![](eemanalyzeR-example/summary_plots_eemanalyzeR-example.png){width="1000"}
+    ![Four contour plots for each EEM within the example
+    dataset.](eemanalyzeR-example/summary_plots_eemanalyzeR-example.png){width="1000"}
 
 -   **\*\_indices_filename.csv**:The absorbance and fluorescence indices
 
@@ -87,7 +90,8 @@ There's a clear peak in the 300-400 nm emission range. This indicates
 likely contamination in the blank and it should not be used for blank
 subtraction.
 
-![](figures/blk-cont.png){width="500"}
+![A contour plot with a clear peak in the area where peaks are typically
+observed.](figures/blk-cont.png){width="500"}
 
 #### Narrow Blank Contamination
 
@@ -96,7 +100,8 @@ sticks out. This is often caused by small particles in the sample
 causing small localized areas of high fluorescence. This blank should
 also not be used for blank subtraction.
 
-![](figures/point-blk-cont.png){width="500"}
+![Contour plot showing a small localized peak at ex: 350 nm, em: 500
+nm.](figures/point-blk-cont.png){width="500"}
 
 #### Weird Artifacts
 
@@ -104,7 +109,8 @@ Around emission 420 nm, there's a long "peak" and the intensity is fully
 negative. Both these issues indicate likely problems with the instrument
 blank and it should not be used for blank subtraction.
 
-![](figures/blk-artifact.png){width="500"}
+![Contour plot showing a strong fluorescence line with negative
+intensity.](figures/blk-artifact.png){width="500"}
 
 #### What a Blank Should Look Like
 
@@ -115,7 +121,8 @@ the sides of the removed scattering regions. These are normal and just
 indicate that the scattering regions were perhaps wider than standard,
 but not cause to reject the blank.
 
-![](figures/good-blk.png){width="500"}
+![Contour plot showing random noise at low
+intensities.](figures/good-blk.png){width="500"}
 
 <br>
 

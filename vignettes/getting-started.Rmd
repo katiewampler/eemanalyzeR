@@ -140,17 +140,20 @@ cat(tree_output, sep = "\n")
 
 -   **\* .png:** Plots of the individual EEMs
 
-    ![](eemanalyzeR-example/B1S2ExampleTeaStdSEM.png){width="500"}
+    ![Contour plot of a single
+    EEM.](eemanalyzeR-example/B1S2ExampleTeaStdSEM.png){width="500"}
 
 -   **absorbance_plot_filename.png:** Plot showing the absorbance
     spectra
 
-    ![](eemanalyzeR-example/absorbance_plot_eemanalyzeR-example.png){width="500"}
+    ![Line plot of absorbance for each
+    sample.](eemanalyzeR-example/absorbance_plot_eemanalyzeR-example.png){width="500"}
 
 -   **summary_plots_filename.png:** Plot showing all of the EEMs
     together
 
-    ![](eemanalyzeR-example/summary_plots_eemanalyzeR-example.png){width="1000"}
+    ![Four contour plots for each EEM within the example
+    dataset.](eemanalyzeR-example/summary_plots_eemanalyzeR-example.png){width="1000"}
 
 -   **\*\_indices_filename.csv**:The absorbance and fluorescence indices
 

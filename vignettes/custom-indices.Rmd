@@ -47,9 +47,11 @@ existing methods.
 `abs_index` and `eem_index` should both be a `data.frame` with the
 following columns:
 
--   `sample_id`: sample identifier for the sample (if provided, otherwise uses sample: the sample's file name)
+-   `sample_id`: sample identifier for the sample (if provided,
+    otherwise uses sample: the sample's file name)
 
--   `sample_name`: sample name or description (if provided, otherwise uses sample: the sample's file name)
+-   `sample_name`: sample name or description (if provided, otherwise
+    uses sample: the sample's file name)
 
 -   `index`: a character, the name of the index being reported
 
@@ -108,7 +110,7 @@ S275_295 <- get_abs_slope(abslist, lim=c(275,295))
 S275_295
 ```
 
-<br> 
+<br>
 
 ## QA/QC Flags
 

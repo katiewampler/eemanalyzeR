@@ -72,13 +72,13 @@ reference:
   desc: |
     Functions to create and maintain processing configuration files.
   contents:
-  - list_config
-  - modify_config
-  - reset_config
+  - list_session_config
+  - modify_session_config
+  - reset_session_config
   - reset_user_config
   - edit_user_config
   - load_user_config
-  - validate_config
+  - validate_session_config
 - title: Utilities
   desc: |
     Helper functions and internal utilities.

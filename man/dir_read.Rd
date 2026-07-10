@@ -28,10 +28,10 @@ abs_dir_read(
 \arguments{
 \item{input_dir}{Path to folder containing raw EEMs and/or absorbance files.}
 
-\item{pattern}{Optional. A character string containing a \code{\link[base:regex]{base::regular expression()}}
+\item{pattern}{Optional. A character string containing a \code{\link[base:regular expression]{base::regular expression()}}
 to match files in \code{input_dir}. Only files matching the pattern will be loaded.}
 
-\item{skip}{Optional. A character string containing a \code{\link[base:regex]{base::regular expression()}}
+\item{skip}{Optional. A character string containing a \code{\link[base:regular expression]{base::regular expression()}}
 to match files in \code{input_dir} that should be ignored.}
 
 \item{file_ext}{The file extension of the EEMs or absorbance files.}
@@ -50,7 +50,7 @@ For more details, see \href{../doc/custom-indices.html}{\code{vignette("custom-i
 }
 }
 \description{
-Wrappers for \code{\link[eemR:eem_read]{eemR::eem_read()}} and \code{\link[=abs_read]{abs_read()}} to read all EEMs or absorbance
+Wrappers for \code{\link[eemR:eem_read]{eem_read()}} and \code{\link[=abs_read]{abs_read()}} to read all EEMs or absorbance
 files in a directory into R, even when the directory contains other files.
 }
 \examples{
