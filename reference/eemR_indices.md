@@ -95,7 +95,7 @@ head(indices$eem_index)
 #> 3    ExampleSample Example Sample     b            DATA01
 #> 4 ManualExampleTea     1% SRM tea     b            DATA01
 #> 5     ExampleBlank Sample Blank 1     t             MDL01
-#> 6    ExampleTeaStd  PreTea 1% SRM     t 0.589498543201252
+#> 6    ExampleTeaStd  PreTea 1% SRM     t 0.589498543201255
 
 # View absorbance indices
 head(indices$abs_index)
