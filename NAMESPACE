@@ -2,6 +2,8 @@
 
 S3method("[",abslist)
 S3method("[",eemlist)
+S3method("[[",abslist)
+S3method("[[",eemlist)
 S3method(plot,abs)
 S3method(plot,abslist)
 S3method(plot,eem)

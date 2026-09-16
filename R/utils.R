@@ -16,6 +16,23 @@
   structure(sublist, class = "eemlist")
 }
 
+# Overload the bracket operator for eemlist subsetting
+#' Subsetting using `[[` for eemlist - we want this to return an eem
+#'
+#' @param eemlist the eemlist to subset
+#' @param i the index for subsetting
+#'
+#' @export
+#' @keywords internal
+#' @md
+#' @returns an object of class `eem`
+#' @method [[ eemlist
+#'
+`[[.eemlist` <- function(eemlist, i) {
+  sublist <- NextMethod()
+  structure(sublist, class = "eem")
+}
+
 # Overload the bracket operator for abslist subsetting
 # we want to always return an abslist
 
@@ -33,6 +50,25 @@
 `[.abslist` <- function(abslist, i) {
   sublist <- NextMethod()
   structure(sublist, class = "abslist")
+}
+
+# Overload the bracket operator for abslist subsetting
+# we want to always return an abs
+
+#'Subsetting using `[[` for an abslist
+#'
+#' @param abslist the abslist to subset
+#' @param i the index for subsetting
+#'
+#' @export
+#' @keywords internal
+#' @md
+#' @returns an object of class `abs`
+#' @method [[ abslist
+#'
+`[[.abslist` <- function(abslist, i) {
+  sublist <- NextMethod()
+  structure(sublist, class = "abs")
 }
 
 
