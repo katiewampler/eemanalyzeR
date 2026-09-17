@@ -64,11 +64,11 @@ running
 
 ``` r
 
-# Installing from GitHub requires you first install the remotes package
-install.packages("remotes")
+# Installing from GitHub requires you first install the pak package
+install.packages("pak")
 
 # install the most recent version from GitHub
-remotes::install_github("katiewampler/eemanalyzeR", ref = "master")
+pak::pak("katiewampler/eemanalyzeR")
 ```
 
 Install and load the most recent **development** version of
@@ -77,10 +77,10 @@ Install and load the most recent **development** version of
 ``` r
 
 # Installing from GitHub requires you first install the remotes package
-install.packages("remotes")
+install.packages("pak")
 
 # install the most recent development version from GitHub
-remotes::install_github("katiewampler/eemanalyzeR", ref = "dev")
+pak::pak("katiewampler/eemanalyzeR@dev")
 ```
 
 Load the package
