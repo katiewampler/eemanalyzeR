@@ -11,9 +11,9 @@ analysis and simplify the coding required to process the data.
 
 Useful links:
 
-- <https://CRAN.R-project.org/package=eemanalyzeR>
-
 - <https://katiewampler.github.io/eemanalyzeR/>
+
+- <https://CRAN.R-project.org/package=eemanalyzeR>,
 
 - Report bugs at <https://github.com/katiewampler/eemanalyzeR/issues>
 

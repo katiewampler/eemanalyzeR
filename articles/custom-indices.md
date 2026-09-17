@@ -83,17 +83,17 @@ eemlist <- example_processed_eems
 #get maximum fluorescence across ranges for Peak A and D
 pA <- get_fluorescence(eemlist, ex=250:260, em=380:480, stat="max")
 pA
-#> [1] "0.0103767473213219" "0.280569719363854"  "0.340345670357128" 
+#> [1] "0.0103767473213219" "0.280569719363857"  "0.340345670357128" 
 #> [4] "0.721431003125204"
 pD <- get_fluorescence(eemlist, ex=390, em=509, stat="max")
 pD 
-#> [1] "0.000304395508989419" "0.0199829245761789"   "0.0978435434033769"  
+#> [1] "0.000304395508989419" "0.0199829245761789"   "0.0978435434033764"  
 #> [4] "0.0372706531424358"
 
 #get sum of fluorescence across range of Peak A
 pA_sum <- get_fluorescence(eemlist, ex=250:260, em=380:480, stat="sum")
 pA_sum
-#> [1] "0.398846395176876" "15.4652173718784"  "29.1296537896885" 
+#> [1] "0.398846395176868" "15.4652173718784"  "29.1296537896885" 
 #> [4] "34.0595693438647"
 ```
 
@@ -148,7 +148,7 @@ denominator will result in an infinite value.
  pT <- get_fluorescence(eemlist, ex=270:280, em=320:350)
  rAT <- get_ratios(pA, pT)
  rAT
-#> [1] "1.72750162152656"  "0.423565751341601" "4.07129094367473" 
+#> [1] "1.72750162152655"  "0.423565751341601" "4.07129094367473" 
 #> [4] "0.450601408727671"
  
   #if Peak T is all 0, will return DATA_03 flag, indicating index couldn't 
@@ -297,8 +297,8 @@ function.
   index_formatted <- format_index(eemlist, "test_index", vals, flags)
   index_formatted
 #>          sample_id    sample_name      index                       value
-#> 1     ExampleBlank Sample Blank 1 test_index 0.000532084537187422_DATA02
-#> 2    ExampleTeaStd  PreTea 1% SRM test_index    0.520903992822657_DATA02
+#> 1     ExampleBlank Sample Blank 1 test_index 0.000532084537187436_DATA02
+#> 2    ExampleTeaStd  PreTea 1% SRM test_index    0.520903992822664_DATA02
 #> 3    ExampleSample Example Sample test_index   0.0851942070835534_DATA02
 #> 4 ManualExampleTea     1% SRM tea test_index     1.48625281995149_DATA02
 ```
@@ -345,8 +345,8 @@ like:
 eemlist <- example_processed_eems
 get_ratios(get_fluorescence(eemlist, zhang_indices$TSoI$ex[1], zhang_indices$TSoI$em[1]), 
            get_fluorescence(eemlist, zhang_indices$TSoI$ex[2], zhang_indices$TSoI$em[2]))
-#> [1] "4.93586355290875"  "0.528716173072758" "3.87515734359415" 
-#> [4] "0.486202102785104"
+#> [1] "4.93586355290846"  "0.528716173072744" "3.87515734359415" 
+#> [4] "0.48620210278511"
 ```
 
 To get all the indices let’s use the lapply function.
@@ -428,9 +428,9 @@ have any absorbance data we’ll just make it NA.
 #> 7     ExampleSample Example Sample  ASoI            DATA01
 #> 8  ManualExampleTea     1% SRM tea  ASoI            DATA01
 #> 9      ExampleBlank Sample Blank 1  TSoI             MDL01
-#> 10    ExampleTeaStd  PreTea 1% SRM  TSoI 0.528716173072758
+#> 10    ExampleTeaStd  PreTea 1% SRM  TSoI 0.528716173072744
 #> 11    ExampleSample Example Sample  TSoI  3.87515734359415
-#> 12 ManualExampleTea     1% SRM tea  TSoI 0.486202102785104
+#> 12 ManualExampleTea     1% SRM tea  TSoI  0.48620210278511
 ```
 
 Great, that all looks good, now we just need to combine all that code to

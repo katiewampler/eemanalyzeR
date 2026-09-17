@@ -1,5 +1,12 @@
 # Changelog
 
+## eemanalyzeR 1.4.1
+
+(2026-09-16)
+
+- Added a new utility function to use `eemlist[[x]]]` and `abslist[[x]]`
+  to return an `eem` and `abs` respectively.
+
 ## eemanalyzeR 1.4.0
 
 (2026-05-14)
