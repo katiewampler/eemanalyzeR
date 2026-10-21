@@ -47,16 +47,16 @@ existing methods.
 `abs_index` and `eem_index` should both be a `data.frame` with the
 following columns:
 
--   `sample_id`: sample identifier for the sample (if provided,
-    otherwise uses sample: the sample's file name)
+- `sample_id`: sample identifier for the sample (if provided, otherwise
+  uses sample: the sample's file name)
 
--   `sample_name`: sample name or description (if provided, otherwise
-    uses sample: the sample's file name)
+- `sample_name`: sample name or description (if provided, otherwise uses
+  sample: the sample's file name)
 
--   `index`: a character, the name of the index being reported
+- `index`: a character, the name of the index being reported
 
--   `value`: the value of the index, also accepts flag values (see
-    details below)
+- `value`: the value of the index, also accepts flag values (see details
+  below)
 
 ## Helper Functions
 

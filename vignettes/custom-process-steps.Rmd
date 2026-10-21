@@ -130,35 +130,35 @@ If you're consistently processing samples using different defaults you
 might consider developing unique methods (see [When are Different
 Defaults Needed?]). The unique methods consist of:
 
--   **A method specific `user_config` file.** Prior to using
-    `run_eems()` load the method specific config file:
+- **A method specific `user_config` file.** Prior to using `run_eems()`
+  load the method specific config file:
 
-    ```{r eval=FALSE}
-    load_user_config(config_path = "eemanalyzeR-methods/method1_user_config.yaml")
-    run_eems("test-dir")
-    ```
+  ```{r eval=FALSE}
+  load_user_config(config_path = "eemanalyzeR-methods/method1_user_config.yaml")
+  run_eems("test-dir")
+  ```
 
--   **Method specific QA/QC files (MDL and check standard).** These
-    should be created using blanks and check standards that were run
-    consistent with the method (same instrument, wavelengths, etc.).
-    When generating the files using `create_mdl()` and `create_std()`
-    you can specify a method name using the argument `method`. This will
-    be used when naming the files (i.e., `test-method-eem-mdl.rds`).
+- **Method specific QA/QC files (MDL and check standard).** These should
+  be created using blanks and check standards that were run consistent
+  with the method (same instrument, wavelengths, etc.). When generating
+  the files using `create_mdl()` and `create_std()` you can specify a
+  method name using the argument `method`. This will be used when naming
+  the files (i.e., `test-method-eem-mdl.rds`).
 
-    ```{r, eval=FALSE}
-    eem_mdl <- create_mdl(dir = "long-term-blanks",
-                          type = "eem",
-                          method = "test-method")
-    ```
+  ```{r, eval=FALSE}
+  eem_mdl <- create_mdl(dir = "long-term-blanks",
+                        type = "eem",
+                        method = "test-method")
+  ```
 
-    If the argument `qaqc_dir` is set to `NA` (the package default), you
-    will be prompted to update your `user_config` with the default
-    location specific to your computer,
-    `file.path(rappdirs::user_data_dir("eemanalyzeR"), "qaqc-stds")`.
-    You can also specify a different directory to store your QA/QC files
-    in, but you will need to manually update your `user_config`.
+  If the argument `qaqc_dir` is set to `NA` (the package default), you
+  will be prompted to update your `user_config` with the default
+  location specific to your computer,
+  `file.path(rappdirs::user_data_dir("eemanalyzeR"), "qaqc-stds")`. You
+  can also specify a different directory to store your QA/QC files in,
+  but you will need to manually update your `user_config`.
 
-    > If there are multiple sets of QA/QC files detected in your
-    > `qaqc_dir` when processing, the code will prompt you to select the
-    > method you want to use, this will be used for that processing run
-    > only.
+  > If there are multiple sets of QA/QC files detected in your
+  > `qaqc_dir` when processing, the code will prompt you to select the
+  > method you want to use, this will be used for that processing run
+  > only.

@@ -17,4 +17,8 @@ an object of class \code{eem}
 \description{
 Subsetting using \code{[[} for eemlist - we want this to return an eem
 }
+\examples{
+eem <- example_eems[[1]]
+
+}
 \keyword{internal}

@@ -10,6 +10,10 @@
 #' @md
 #' @returns an object of class `eemlist`
 #' @method [ eemlist
+#' @examples
+#' eem <- example_eems[1] #can get a single eem (still as eemlist)
+#'
+#' eems <- example_eems[1:3] #or get several
 #'
 `[.eemlist` <- function(eemlist, i) {
   sublist <- NextMethod()
@@ -27,6 +31,8 @@
 #' @md
 #' @returns an object of class `eem`
 #' @method [[ eemlist
+#' @examples
+#' eem <- example_eems[[1]]
 #'
 `[[.eemlist` <- function(eemlist, i) {
   sublist <- NextMethod()
@@ -46,6 +52,10 @@
 #' @md
 #' @returns an object of class `abslist`
 #' @method [ abslist
+#' @examples
+#' abs <- example_abs[1] #can get a single absorbance (still as abslist)
+#'
+#' abs_multiple <- example_abs[1:3] #or get several
 #'
 `[.abslist` <- function(abslist, i) {
   sublist <- NextMethod()
@@ -65,6 +75,8 @@
 #' @md
 #' @returns an object of class `abs`
 #' @method [[ abslist
+#' @examples
+#' abs <- example_abs[[1]]
 #'
 `[[.abslist` <- function(abslist, i) {
   sublist <- NextMethod()

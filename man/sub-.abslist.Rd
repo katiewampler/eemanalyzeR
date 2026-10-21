@@ -17,4 +17,10 @@ an object of class \code{abslist}
 \description{
 Subsetting using \code{[} for an abslist
 }
+\examples{
+abs <- example_abs[1] #can get a single absorbance (still as abslist)
+
+abs_multiple <- example_abs[1:3] #or get several
+
+}
 \keyword{internal}

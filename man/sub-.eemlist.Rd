@@ -17,4 +17,10 @@ an object of class \code{eemlist}
 \description{
 Subsetting using \code{[} for eemlist
 }
+\examples{
+eem <- example_eems[1] #can get a single eem (still as eemlist)
+
+eems <- example_eems[1:3] #or get several
+
+}
 \keyword{internal}

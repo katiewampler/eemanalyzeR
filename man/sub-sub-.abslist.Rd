@@ -17,4 +17,8 @@ an object of class \code{abs}
 \description{
 Subsetting using \code{[[} for an abslist
 }
+\examples{
+abs <- example_abs[[1]]
+
+}
 \keyword{internal}

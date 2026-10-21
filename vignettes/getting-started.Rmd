@@ -18,11 +18,11 @@ knitr::opts_chunk$set(
 analyzing raw excitation-emission matrices (EEMs) and absorbance data.
 Includes functions for:
 
--   data cleaning
--   quality assurance
--   calculation of indices
--   generating visualizations
--   exported cleaned data
+- data cleaning
+- quality assurance
+- calculation of indices
+- generating visualizations
+- exported cleaned data
 
 The package is designed to create a streamlined and automated workflow
 that ensures consistent analysis and simplifies the coding required to
@@ -45,8 +45,8 @@ However, MATLAB is a proprietary software, limiting its accessibly.
 Two R packages have been created to provide open access processing
 tools:
 
--   [`eemR`](https://CRAN.R-project.org/package=eemR)
--   [`staRdom`](https://CRAN.R-project.org/package=staRdom)
+- [`eemR`](https://CRAN.R-project.org/package=eemR)
+- [`staRdom`](https://CRAN.R-project.org/package=staRdom)
 
 However, these tools require a fair bit of coding knowledge to set up a
 processing procedure. The `eemanalyzeR` package aims to be simple enough
@@ -56,11 +56,11 @@ checks to ensure samples can be rerun within hold times.
 
 **This package aims to fill the following gaps:**
 
--   More comprehensive dealing with absorbance data
--   Applying QA/QC checks to ensure quality data
--   Automate processing via a single function to make it easy for
-    beginner coders to use
--   Retain the ability to customize processing steps
+- More comprehensive dealing with absorbance data
+- Applying QA/QC checks to ensure quality data
+- Automate processing via a single function to make it easy for beginner
+  coders to use
+- Retain the ability to customize processing steps
 
 ------------------------------------------------------------------------
 
@@ -107,10 +107,10 @@ library(eemanalyzeR)
 To go from raw data to processed and clean data use the `run_eems()`
 function. At a minimum this requires the following arguments:
 
--   **input_dir:** the file path to the folder containing the raw EEMs
-    and absorbance files on your computer.
--   **filename:** the name of your project, used to name your exported
-    files.
+- **input_dir:** the file path to the folder containing the raw EEMs and
+  absorbance files on your computer.
+- **filename:** the name of your project, used to name your exported
+  files.
 
 ```{r eval=FALSE}
   run_eems(input_dir = system.file("extdata", package = "eemanalyzeR"),
@@ -138,49 +138,47 @@ cat(tree_output, sep = "\n")
 
 ## The Outputs
 
--   **\* .png:** Plots of the individual EEMs
+- **\* .png:** Plots of the individual EEMs
 
-    ![Contour plot of a single
-    EEM.](eemanalyzeR-example/B1S2ExampleTeaStdSEM.png){width="500"}
+  ![Contour plot of a single
+  EEM.](eemanalyzeR-example/B1S2ExampleTeaStdSEM.png){width="500"}
 
--   **absorbance_plot_filename.png:** Plot showing the absorbance
-    spectra
+- **absorbance_plot_filename.png:** Plot showing the absorbance spectra
 
-    ![Line plot of absorbance for each
-    sample.](eemanalyzeR-example/absorbance_plot_eemanalyzeR-example.png){width="500"}
+  ![Line plot of absorbance for each
+  sample.](eemanalyzeR-example/absorbance_plot_eemanalyzeR-example.png){width="500"}
 
--   **summary_plots_filename.png:** Plot showing all of the EEMs
-    together
+- **summary_plots_filename.png:** Plot showing all of the EEMs together
 
-    ![Four contour plots for each EEM within the example
-    dataset.](eemanalyzeR-example/summary_plots_eemanalyzeR-example.png){width="1000"}
+  ![Four contour plots for each EEM within the example
+  dataset.](eemanalyzeR-example/summary_plots_eemanalyzeR-example.png){width="1000"}
 
--   **\*\_indices_filename.csv**:The absorbance and fluorescence indices
+- **\*\_indices_filename.csv**:The absorbance and fluorescence indices
 
-    ```{r echo=FALSE}
-    indices <- read.csv("eemanalyzeR-example/fluorindices_eemanalyzeR-example.csv")
-    head(indices)
-    ```
+  ```{r echo=FALSE}
+  indices <- read.csv("eemanalyzeR-example/fluorindices_eemanalyzeR-example.csv")
+  head(indices)
+  ```
 
--   **readme_filename.txt:** A text file detailing the processing steps
-    and any warnings that occurred during data processing
+- **readme_filename.txt:** A text file detailing the processing steps
+  and any warnings that occurred during data processing
 
-    ```{r echo=FALSE}
-    readme <- readLines("eemanalyzeR-example/readme_eemanalyzeR-example.txt")
-    head(readme)
-    ```
+  ```{r echo=FALSE}
+  readme <- readLines("eemanalyzeR-example/readme_eemanalyzeR-example.txt")
+  head(readme)
+  ```
 
--   **processed_data_filename.rds:** An R readable object containing all
-    of the exported data. Read in using `readRDS()` function.
+- **processed_data_filename.rds:** An R readable object containing all
+  of the exported data. Read in using `readRDS()` function.
 
-    ```{r echo=FALSE}
-    data_file <- readRDS("eemanalyzeR-example/processed_data_eemanalyzeR-example.rds")
+  ```{r echo=FALSE}
+  data_file <- readRDS("eemanalyzeR-example/processed_data_eemanalyzeR-example.rds")
 
-    if (requireNamespace("lobstr", quietly = TRUE)) {
-       lobstr::tree(data_file, max_depth = 1)
-    }
+  if (requireNamespace("lobstr", quietly = TRUE)) {
+     lobstr::tree(data_file, max_depth = 1)
+  }
 
-    ```
+  ```
 
 ------------------------------------------------------------------------
 
@@ -210,7 +208,7 @@ recommended to use at least 20 for stability.
 wavelength spacing. Differences in integration time is okay as the files
 are normalized for integration time.** To make multiple method based
 QAQC files, see the vignette
-[`creating-multiple-methods`](creating-multiple-methods.html).
+[`creating-multiple-methods`](custom-process-steps.html).
 
 Use the following code to create the method detection limit (MDL) files.
 These by default will be stored in your user-specific data directory and
@@ -241,13 +239,13 @@ indices to ensure:
 
 1.  Sample index values are "real" and distinguishable above a blank
     (above MDL)
-    -   Prevents reporting of values that are just noise
+    - Prevents reporting of values that are just noise
 2.  The analytical blanks in the sample run are blank (below MDL)
-    -   Checks for potential contamination
+    - Checks for potential contamination
 3.  Check standard index values in the sample run are consistent with a
     long-term standard (within 20 % of mean standard)
-    -   Checks for potential run issues (air bubbles, equipment issues,
-        calculation issues)
+    - Checks for potential run issues (air bubbles, equipment issues,
+      calculation issues)
 
 ```{r, include=FALSE, eval=TRUE}
 #clean up temp files from vignette

@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Tools for processing and analyzing raw excitation-emission matrices (EEMs) and absorbance data. Includes functions for data cleaning, quality assurance, calculation of indices, and generating visualizations. Builds upon the 'eemR' and 'staRdom' packages to create a more streamlined and automated workflow that ensures consistent analysis and simplify the coding required to process the data.
+Processes and analyzes raw excitation-emission matrices (EEMs) and absorbance data. Includes functions for data cleaning, quality assurance, calculation of indices, and generating visualizations. Builds upon the 'eemR' and 'staRdom' packages to create a more streamlined and automated workflow that ensures consistent analysis and simplify the coding required to process the data.
 }
 \seealso{
 Useful links:
@@ -26,6 +26,12 @@ Authors:
 \itemize{
   \item Katie A. Wampler \email{katie.wampler@oregonstate.edu} (\href{https://orcid.org/0000-0002-5584-7554}{ORCID})
   \item Ryan P. Cole \email{ryan.cole@oregonstate.edu}
+}
+
+Other contributors:
+\itemize{
+  \item Allison Myers-Pigg \email{allison.myers-pigg@pnnl.gov} (\href{https://orcid.org/0000-0002-6905-6841}{ORCID}) [contributor]
+  \item Kevin D. Bladon \email{kevin.bladon@oregonstate.edu} (\href{https://orcid.org/0000-0002-4182-6883}{ORCID}) [contributor]
 }
 
 }

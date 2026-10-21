@@ -19,49 +19,47 @@ knitr::opts_chunk$set(
 Every data export from `eemanalyzeR` using the `export_data()` or
 `run_eems()` functions contains the following files:
 
--   **\* .png:** Plots of the individual EEMs
+- **\* .png:** Plots of the individual EEMs
 
-    ![Contour plot of a single
-    EEM.](eemanalyzeR-example/B1S2ExampleTeaStdSEM.png){width="500"}
+  ![Contour plot of a single
+  EEM.](eemanalyzeR-example/B1S2ExampleTeaStdSEM.png){width="500"}
 
--   **absorbance_plot_filename.png:** Plot showing the absorbance
-    spectra
+- **absorbance_plot_filename.png:** Plot showing the absorbance spectra
 
-    ![Line plot of absorbance for each
-    sample.](eemanalyzeR-example/absorbance_plot_eemanalyzeR-example.png){width="500"}
+  ![Line plot of absorbance for each
+  sample.](eemanalyzeR-example/absorbance_plot_eemanalyzeR-example.png){width="500"}
 
--   **summary_plots_filename.png:** Plot showing all of the EEMs
-    together
+- **summary_plots_filename.png:** Plot showing all of the EEMs together
 
-    ![Four contour plots for each EEM within the example
-    dataset.](eemanalyzeR-example/summary_plots_eemanalyzeR-example.png){width="1000"}
+  ![Four contour plots for each EEM within the example
+  dataset.](eemanalyzeR-example/summary_plots_eemanalyzeR-example.png){width="1000"}
 
--   **\*\_indices_filename.csv**:The absorbance and fluorescence indices
+- **\*\_indices_filename.csv**:The absorbance and fluorescence indices
 
-    ```{r echo=FALSE}
-    indices <- read.csv("eemanalyzeR-example/fluorindices_eemanalyzeR-example.csv")
-    head(indices)
-    ```
+  ```{r echo=FALSE}
+  indices <- read.csv("eemanalyzeR-example/fluorindices_eemanalyzeR-example.csv")
+  head(indices)
+  ```
 
--   **readme_filename.txt:** A text file detailing the processing steps
-    and any warnings that occurred during data processing
+- **readme_filename.txt:** A text file detailing the processing steps
+  and any warnings that occurred during data processing
 
-    ```{r echo=FALSE}
-    readme <- readLines("eemanalyzeR-example/readme_eemanalyzeR-example.txt")
-    head(readme)
-    ```
+  ```{r echo=FALSE}
+  readme <- readLines("eemanalyzeR-example/readme_eemanalyzeR-example.txt")
+  head(readme)
+  ```
 
--   **processed_data_filename.rds:** An R readable object containing all
-    of the exported data. Read in using `readRDS()` function.
+- **processed_data_filename.rds:** An R readable object containing all
+  of the exported data. Read in using `readRDS()` function.
 
-    ```{r echo=FALSE}
-    data_file <- readRDS("eemanalyzeR-example/processed_data_eemanalyzeR-example.rds")
+  ```{r echo=FALSE}
+  data_file <- readRDS("eemanalyzeR-example/processed_data_eemanalyzeR-example.rds")
 
-    if (requireNamespace("lobstr", quietly = TRUE)) {
-       lobstr::tree(data_file, max_depth = 1)
-    }
+  if (requireNamespace("lobstr", quietly = TRUE)) {
+     lobstr::tree(data_file, max_depth = 1)
+  }
 
-    ```
+  ```
 
 <br>
 
@@ -73,14 +71,14 @@ The instrument blank can be plotted and visually validated by the user.
 This step is used to visually look for blank contamination or errant
 peaks that could impact data during blank subtraction.
 
--   If this step is performed the **readme** will contain a line that
-    this visual check occurred and the user processing the data accepted
-    the data.
+- If this step is performed the **readme** will contain a line that this
+  visual check occurred and the user processing the data accepted the
+  data.
 
--   The `validate_blanks()` function also has the option that if the
-    user does **not** accept the instrument blank, it may be replaced
-    with one of the analytical blanks. In this case the **readme** will
-    note the blank that was used instead of the instrument blank.
+- The `validate_blanks()` function also has the option that if the user
+  does **not** accept the instrument blank, it may be replaced with one
+  of the analytical blanks. In this case the **readme** will note the
+  blank that was used instead of the instrument blank.
 
 ### What a Blank Should NOT Look Like
 
@@ -154,16 +152,16 @@ To use the check standard checks, the user must create average standard
 files for both absorbance and fluorescence data using the `create_std()`
 function.
 
--   **If no standard files are found**: a warning will appear in the
-    **readme** file.
+- **If no standard files are found**: a warning will appear in the
+  **readme** file.
 
--   **If a standard file exists**: all available index values will be
-    compared between the check standards within the run and the long
-    term standard. If the value is outside the tolerance range (default
-    is 20%), it will be flagged in the index file. Additionally the
-    **readme** file will contain a summary of the number of indices
-    outside the tolerance range across the entire run and the tolerance
-    used.
+- **If a standard file exists**: all available index values will be
+  compared between the check standards within the run and the long term
+  standard. If the value is outside the tolerance range (default is
+  20%), it will be flagged in the index file. Additionally the
+  **readme** file will contain a summary of the number of indices
+  outside the tolerance range across the entire run and the tolerance
+  used.
 
 <br>
 
@@ -179,20 +177,20 @@ format. See `get-indices()` for more details.
 
 **The following flags may appear in the indices output files:**
 
--   **DATA01**: Missing data required for calculation
--   **DATA02**: Missing required wavelengths; value may be inaccurate
--   **DATA03**: Ratio denominator was zero
--   **DATA04**: Spectral slope could not be calculated
--   **DOC01**: Missing dissolved organic carbon (DOC) data
--   **INF01**: Infinite value
--   **MDL01**: All values below MDL
--   **MDL02**: One or more values below MDL; use cautiously
--   **MDL03**: Ratio index where numerator or denominator was entirely
-    below MDL
--   **NEG01**: Negative value
--   **STD01**: Check standard value outside tolerance
--   **VAL01**: Value below typical range
--   **VAL02**: Value above typical range
+- **DATA01**: Missing data required for calculation
+- **DATA02**: Missing required wavelengths; value may be inaccurate
+- **DATA03**: Ratio denominator was zero
+- **DATA04**: Spectral slope could not be calculated
+- **DOC01**: Missing dissolved organic carbon (DOC) data
+- **INF01**: Infinite value
+- **MDL01**: All values below MDL
+- **MDL02**: One or more values below MDL; use cautiously
+- **MDL03**: Ratio index where numerator or denominator was entirely
+  below MDL
+- **NEG01**: Negative value
+- **STD01**: Check standard value outside tolerance
+- **VAL01**: Value below typical range
+- **VAL02**: Value above typical range
 
 <br>
 
