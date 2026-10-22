@@ -47,4 +47,4 @@ filename: "eemanalyzeR-output"
 output_dir: .na.character
 spectra_to_csv: FALSE
 sum_plot: TRUE
-package_version: .na.character
+package_version: "eemanalyzeR 1.4.1"

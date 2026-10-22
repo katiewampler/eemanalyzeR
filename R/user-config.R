@@ -72,7 +72,7 @@ edit_user_config <- function(..., interactive = TRUE, user_config_file = .user_c
       .write_config_yaml(new_config, user_config_file)
     }
   }
-  packageStartupMessage("Changes to user configuration applied, please re-load the new user config")
+  packageStartupMessage("Changes to user configuration applied, please re-load the new user config using `load_user_config`")
 }
 #' @rdname user_config
 #' @export
@@ -107,7 +107,7 @@ validate_user_config <- function(user_config_file = .user_config_path()) {
   # Get the default config template from the system files
   default_user_config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"))
   # Read in the config
-  current_user_config <- read_user_config(user_config_file)
+  current_user_config <- suppressMessages(read_user_config(user_config_file))
 
   # Validate the config
   problem_msg <- .validate_config(
@@ -117,7 +117,9 @@ validate_user_config <- function(user_config_file = .user_config_path()) {
   anyproblems <- any(!sapply(problem_msg, is.null, simplify = TRUE))
   if(anyproblems) {
     stop("Error: Malformed user configuration in ", user_config_file, "\nSee warning messages above for details.")
-  }  
+  } else{
+    packageStartupMessage("User Configuration read from ", user_config_file, " is valid.")
+  }
   # If it's valid, return the user config, otherwise print the error messages
   return(invisible(current_user_config))
 

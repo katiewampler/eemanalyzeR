@@ -41,12 +41,19 @@
     .check_config_option_lengths(config, template_config)
   )
 
+  # TODO: Check whether the config has the same version as currently installed eemanalyzeR
+  # If not, recommend repairing config since options may have changed.
+  mismatch_version <- withCallingHandlers(
+    .check_config_version_mismatch(config, template_config)
+  )
+
   # Put them in a list
   problem_list <- list(
     invalid_options = invalid_options,
     missing_options = missing_options,
     invalid_types   = invalid_types,
-    invalid_lengths = invalid_lengths
+    invalid_lengths = invalid_lengths,
+    mismatch_version= mismatch_version
   )
 }
 
@@ -86,6 +93,19 @@
   # Signal some conditions?
   invisible(NULL)
 }
+
+.check_config_version_mismatch <- function(config, template_config) {
+
+  # Logic for checking the user config package version
+  if(is.null(config$package_version) ||
+    is.na(config$package_version)    || 
+    config$package_version != .eemanalyzeR_ver()) {
+    return(.config_version_mismatch_warn(config$package_version))
+  }
+  invisible(NULL)
+
+}
+
 
 # Helper to check option valid types
 .compare_types <- function(
@@ -213,6 +233,17 @@ warn_config<- function(.subclass, message, call = NULL, ...) {
         " are missing from user config. Please check your config\n")
   warn_config(
     "config_option_missing_warn",
+    message = message
+  )
+}
+
+# Version mismatch between User Config and Installed Package
+.config_version_mismatch_warn <- function(char) {
+    message <- c(
+        "Warning! User config is from eemanalyzeR version", char, "\n",
+        "But currently installed is eemanalzyeR version  ", .eemanalyzeR_ver())
+  warn_config(
+    "config_version_mismatch_warn",
     message = message
   )
 }

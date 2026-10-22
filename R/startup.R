@@ -76,8 +76,6 @@ rlang::on_load({
   if(user_config_exists) {
   # 3) Load and validate the user config
   .validate_and_load_user_config()
-  # 4) Check the user config has the right version
-  .check_user_config_version()
   }
 
   # Future - maybe check on qaqc stds?
