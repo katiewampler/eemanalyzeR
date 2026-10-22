@@ -43,6 +43,7 @@
 #' load_user_config()
 edit_user_config <- function(..., interactive = TRUE, user_config_file = .user_config_path()) {
   default_user_config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"))
+  default_user_config$package_version <- .eemanalyzeR_ver()
 
   # if file doesn't exist, write template
   if (!file.exists(user_config_file)) {
@@ -65,7 +66,7 @@ edit_user_config <- function(..., interactive = TRUE, user_config_file = .user_c
      new_config,
      default_user_config
     )
-    anyproblems <- any(!sapply(problem_msg, is.null, simplify = TRUE))
+    anyproblems <- any(!sapply(problem_msg[names(problem_msg) != "mismatch_version"], is.null, simplify = TRUE))
     if(anyproblems) {
       stop("Error: Bad options applied to config. New config not saved. See warning messages above for details.")
     } else{ 
@@ -106,6 +107,7 @@ read_user_config <- function(user_config_file = .user_config_path()) {
 validate_user_config <- function(user_config_file = .user_config_path()) {
   # Get the default config template from the system files
   default_user_config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"))
+  default_user_config$package_version <- .eemanalyzeR_ver()
   # Read in the config
   current_user_config <- suppressMessages(read_user_config(user_config_file))
 
@@ -114,7 +116,7 @@ validate_user_config <- function(user_config_file = .user_config_path()) {
     current_user_config,
     default_user_config
   )
-  anyproblems <- any(!sapply(problem_msg, is.null, simplify = TRUE))
+  anyproblems <- any(!sapply(problem_msg[names(problem_msg) != "mismatch_version"], is.null, simplify = TRUE))
   if(anyproblems) {
     stop("Error: Malformed user configuration in ", user_config_file, "\nSee warning messages above for details.")
   } else{
@@ -149,12 +151,16 @@ repair_user_config <- function(user_config_file = .user_config_path()) {
   }
 
   default_user_config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"))
+  default_user_config$package_version <- .eemanalyzeR_ver()
   user_config <- suppressPackageStartupMessages(read_user_config(user_config_file))
+  has_stale_version <- is.null(user_config$package_version) ||
+    is.na(user_config$package_version) ||
+    user_config$package_version != .eemanalyzeR_ver()
 
   # Test if the repair is even necessary
   validation <- tryCatch(suppressWarnings(validate_user_config(user_config_file)),
                          error = function(e) NULL)
-  if(is.list(validation)) {
+  if(is.list(validation) && !has_stale_version) {
     message("User config is valid, no repair needed.")
     return(invisible(user_config))
   }  
@@ -192,7 +198,7 @@ repair_user_config <- function(user_config_file = .user_config_path()) {
     new_config,
     default_user_config
   )
-  anyproblems <- any(!sapply(problem_msg, is.null, simplify = TRUE))
+  anyproblems <- any(!sapply(problem_msg[names(problem_msg) != "mismatch_version"], is.null, simplify = TRUE))
   if(anyproblems) {
     stop("Error: repairing config failed. New config not saved. See warning messages above for details and manually fix the config file.")
   } else{ 

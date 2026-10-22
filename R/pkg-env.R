@@ -9,6 +9,7 @@ default_config <- yaml::read_yaml(file.path(
   system.file("extdata", package = "eemanalyzeR"),
   "eemanalyzeR-config.yaml"
 ))
+default_config$package_version <- paste0("eemanalyzeR ", utils::packageVersion("eemanalyzeR"))
 
 .pkgenv <- rlang::new_environment(
   data = list(config = default_config,
@@ -63,7 +64,7 @@ validate_session_config <- function(env = .pkgenv) {
     current_session_config,
     default_config
   )
-  anyproblems <- any(!sapply(problem_msg, is.null, simplify = TRUE))
+  anyproblems <- any(!sapply(problem_msg[names(problem_msg) != "mismatch_version"], is.null, simplify = TRUE))
   if(anyproblems) {
     stop("Error: Malformed session configuration. See warning messages above for details.")
   }  
@@ -143,7 +144,7 @@ modify_session_config <- function(..., env = .pkgenv) {
     new_config,
     default_config
   )
-  anyproblems <- any(!sapply(problem_msg, is.null, simplify = TRUE))
+  anyproblems <- any(!sapply(problem_msg[names(problem_msg) != "mismatch_version"], is.null, simplify = TRUE))
   if(anyproblems) {
     stop("Error: Bad options applied to session config. See warning messages above for details.")
   }

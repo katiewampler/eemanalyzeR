@@ -79,6 +79,18 @@ test_that("User Config can be correctly loaded",
     .write_config_yaml(badlength_config,
       config_path = file.path(dummy_dir, "badlength_config.yaml")
     )
+    # Stale package version should warn but still be loadable
+    staleversion_config <- template_config
+    staleversion_config$package_version <- "eemanalyzeR 0.0.0"
+    .write_config_yaml(staleversion_config,
+      config_path = file.path(dummy_dir, "staleversion_config.yaml")
+    )
+    # Missing package version should warn but still be loadable
+    missingversion_config <- template_config
+    missingversion_config$package_version <- NULL
+    .write_config_yaml(missingversion_config,
+      config_path = file.path(dummy_dir, "missingversion_config.yaml")
+    )
 
     # The actual expectations
     with_mocked_bindings(
@@ -91,6 +103,10 @@ test_that("User Config can be correctly loaded",
         expect_error(suppressWarnings(load_user_config(file.path(dummy_dir, "invalidoption_config.yaml"), env = .testenv)))
         # Error in loading badlength_config
         expect_error(suppressWarnings(load_user_config(file.path(dummy_dir, "badlength_config.yaml"),     env = .testenv)))
+        # No error for stale package version
+        expect_no_error(suppressWarnings(load_user_config(file.path(dummy_dir, "staleversion_config.yaml"), env = .testenv)))
+        # No error for missing package version
+        expect_no_error(suppressWarnings(load_user_config(file.path(dummy_dir, "missingversion_config.yaml"), env = .testenv)))
         # Loading the config correctly modifies the session config
         modify_session_config(abs_file_ext = "testtext", env = .testenv)
         # No error in the template config
@@ -104,6 +120,43 @@ test_that("User Config can be correctly loaded",
       )
   }
 )
+
+test_that("Reset and repair stamp current package version", {
+  dummy_dir <- withr::local_tempdir()
+  dummy_config_path <- file.path(dummy_dir, "user-config.yaml")
+  file.copy(
+    file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"),
+    dummy_config_path
+  )
+
+  with_mocked_bindings(
+    code = {
+      # Reset creates config and stamps current version
+      reset_user_config()
+      expect_identical(
+        suppressPackageStartupMessages(read_user_config())$package_version,
+        .eemanalyzeR_ver()
+      )
+
+      # Stale version survives simple edits until an explicit repair/reset
+      suppressPackageStartupMessages(edit_user_config(package_version = "eemanalyzeR 0.0.0", interactive = FALSE))
+      suppressPackageStartupMessages(edit_user_config(abs_file_ext = "csv", interactive = FALSE))
+      expect_identical(
+        suppressPackageStartupMessages(read_user_config())$package_version,
+        "eemanalyzeR 0.0.0"
+      )
+
+      # Repair updates stale version to current package version
+      suppressWarnings(repair_user_config())
+      expect_identical(
+        suppressPackageStartupMessages(read_user_config())$package_version,
+        .eemanalyzeR_ver()
+      )
+    },
+    .user_data_dir = function() dummy_dir,
+    .user_config_path = function() dummy_config_path
+  )
+})
 
 # Test repairing the config
 test_that("User Config can be repaired if there are bad options",

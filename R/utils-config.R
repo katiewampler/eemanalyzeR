@@ -68,9 +68,11 @@
 }
 
 .find_missing_options <- function(config, template_config) {
+  # package_version is managed dynamically and should not be required in file templates.
+  required_template_names <- setdiff(names(template_config), "package_version")
   # Figure out which names don't match the defaults
-  missing_options_from_config <- names(template_config)[
-    which(!names(template_config) %in% names(config))
+  missing_options_from_config <- required_template_names[
+    which(!required_template_names %in% names(config))
   ]
   return(missing_options_from_config)
 }
