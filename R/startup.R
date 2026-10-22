@@ -40,8 +40,7 @@
     is.na(user_config$package_version)    || 
     user_config$package_version != .eemanalyzeR_ver()) {
     packageStartupMessage(
-      "NOTE: Your user configuration file is from an older version of eemanalyzeR.\n",
-      "Attempting to update your user config using `repair_user_config`"
+      "NOTE: Your user configuration file is from an older version of eemanalyzeR."
     )
     return(TRUE)
   }

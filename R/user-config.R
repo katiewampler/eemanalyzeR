@@ -46,13 +46,14 @@ edit_user_config <- function(..., interactive = TRUE, user_config_file = .user_c
 
   # if file doesn't exist, write template
   if (!file.exists(user_config_file)) {
-    reset_user_config()
+    reset_user_config(user_config_file)
     }
 
   # Open in user's editor
   if(interactive){
     file.edit(user_config_file)
-    packageStartupMessage("User configuration file edited manually.")
+    packageStartupMessage("User configuration file edited manually. Please load using 'load_user_config`")
+    invisible(NULL)
   } else {
     # Capture the varargs as a list
     newdefaults <- rlang::list2(...)
@@ -65,14 +66,17 @@ edit_user_config <- function(..., interactive = TRUE, user_config_file = .user_c
      new_config,
      default_user_config
     )
-    anyproblems <- any(!sapply(problem_msg[names(problem_msg) != "mismatch_version"], is.null, simplify = TRUE))
-    if(anyproblems) {
+
+    # If there are any problems besides a eemanalzyeR version mismatch, error
+    badproblems <- any(!sapply(problem_msg[names(problem_msg) != "mismatch_version"], is.null, simplify = TRUE))
+    if(badproblems) {
       stop("Error: Bad options applied to config. New config not saved. See warning messages above for details.")
     } else{ 
       .write_config_yaml(new_config, user_config_file)
+      packageStartupMessage("Changes to user configuration applied, please re-load the new user config using `load_user_config`")
+      invisible(new_config)
     }
   }
-  packageStartupMessage("Changes to user configuration applied, please re-load the new user config using `load_user_config`")
 }
 #' @rdname user_config
 #' @export
@@ -118,7 +122,7 @@ validate_user_config <- function(user_config_file = .user_config_path()) {
   if(anyproblems) {
     stop("Error: Malformed user configuration in ", user_config_file, "\nSee warning messages above for details.")
   } else{
-    packageStartupMessage("User Configuration read from ", user_config_file, " is valid.")
+    packageStartupMessage("Valid user configuration read from ", user_config_file)
   }
   # If it's valid, return the user config, otherwise print the error messages
   return(invisible(current_user_config))
@@ -171,10 +175,13 @@ repair_user_config <- function(user_config_file = .user_config_path()) {
   # invalid options   - remove them
   invalid_options <- .find_invalid_options(user_config, default_user_config)
   # missing options   - just go with the default option
+  if(has_stale_version) stale_version <- 'eemanalyzer_version'
 
   # Messages about the repair
-  # TODO - we could tailor messages to specific types of repair (bad_types, bad lengths, invalid_options) in future
-  message("Attempting to repair configuration options: ", paste(bad_types, bad_lengths, invalid_options, collapse = ", "))
+  # We could tailor messages to specific types of repair (bad_types, bad lengths, invalid_options) in future
+  packageStartupMessage("Attempting to repair configuration options: ", 
+    paste(bad_types, bad_lengths, invalid_options, stale_version, collapse = ", ")
+  )
 
   # In reality I want to subset the user config with the good options
   # and then put them in the default config

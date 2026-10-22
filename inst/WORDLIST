@@ -11,7 +11,7 @@ Baigar
 Batiot
 Beltrone
 Bergamaschi
-Changelog
+CMD
 Chemosphere
 Chimica
 Chromophoric
@@ -130,7 +130,6 @@ Zhang
 Zsolnay
 abslist
 al
-aqualog
 aromaticity
 autochthonous
 autotrophic
@@ -141,6 +140,7 @@ chromophoric
 csv
 cuvette
 cuvle
+de
 diagenetically
 drEEM
 eem
@@ -197,6 +197,7 @@ snowmelt
 staRdom
 tyrosine
 unreplicated
+uri
 usgs
 von
 yaml

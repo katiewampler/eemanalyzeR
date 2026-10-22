@@ -1,7 +1,7 @@
 Type: Package
 Package: eemanalyzeR
 Title: Semi-Automated Processing of Excitation Emission Matrices
-Version: 1.4.1.9001
+Version: 1.4.1.9002
 Date: 2026-10-22
 Authors@R: c(
     person("Katie A.", "Wampler", , "katie.wampler@oregonstate.edu", role = c("aut", "cre"),

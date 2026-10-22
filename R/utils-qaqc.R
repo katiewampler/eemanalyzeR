@@ -14,7 +14,7 @@ update_qaqc_dir <- function(){
   new_dir <- file.path(user_dir, "qaqc-stds")
 
   #see what is in file
-  old_qaqc_dir <- read_user_config(user_config_file)$qaqc_dir
+  old_qaqc_dir <- suppressPackageStartupMessages(read_user_config(user_config_file)$qaqc_dir)
 
   #only ask if it would change what's there
   if(!file.exists(user_config_file) || is.na(old_qaqc_dir) || old_qaqc_dir != new_dir){

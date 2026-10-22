@@ -242,8 +242,8 @@ warn_config<- function(.subclass, message, call = NULL, ...) {
 # Version mismatch between User Config and Installed Package
 .config_version_mismatch_warn <- function(char) {
     message <- c(
-        "Warning! User config is from eemanalyzeR version", char, "\n",
-        "But currently installed is eemanalzyeR version  ", .eemanalyzeR_ver())
+        "User config is from: ", char, "\n",
+        "Currently installed: ", .eemanalyzeR_ver())
   warn_config(
     "config_version_mismatch_warn",
     message = message
