@@ -1,4 +1,4 @@
-citHeader("To cite demopkg in publications use:")
+citHeader("To cite eemanalyzeR in publications use:")
 
 year  <- sub("-.*", "", meta$Date)
 note  <- sprintf("R package version %s", meta$Version)
@@ -15,8 +15,9 @@ bibentry(
   year = year,
   note = note,
   url = meta$URL,
+  doi = "10.11578/dc.20260915.4",
   textVersion = sprintf(
-    "%s, (%s). %s: %s. %s, %s",
-    text_authors, year, meta$Package, meta$Title, note, meta$URL
+    "%s, (%s). %s: %s. %s, %s, %s.",
+    text_authors, year, meta$Package, meta$Title, note, unlist(strsplit(meta$URL, ", "))[1], "doi: 10.11578/dc.20260915.4"
   )
 )

@@ -4,14 +4,17 @@
 
 
 # Create an environment to store EEMS processing arguments and parameters
-# TODO: Manually update the system file with the updated package version before moving to master
-default_config <- yaml::read_yaml(file.path(
-  system.file("extdata", package = "eemanalyzeR"),
-  "eemanalyzeR-config.yaml"
-))
+.default_config <- function() {
+  config <- yaml::read_yaml(file.path(
+    system.file("extdata", package = "eemanalyzeR"),
+    "eemanalyzeR-config.yaml"
+  ))
+  config$package_version <- paste0("eemanalyzeR ", utils::packageVersion("eemanalyzeR"))
+  return(config)
+}
 
 .pkgenv <- rlang::new_environment(
-  data = list(config = default_config,
+  data = list(config = .default_config(),
               user_config_path = file.path(fs::path_norm(rappdirs::user_data_dir("eemanalyzeR")), "user-config.yaml")),
   parent = rlang::empty_env()
 )
@@ -54,16 +57,16 @@ list_session_config <- function(env = .pkgenv) {
 #' validate_session_config()
 validate_session_config <- function(env = .pkgenv) {
   # Get the default config template from the system files
-  default_config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"))
+  template_config <- .default_config()
   # Read in the config
   current_session_config <- suppressMessages(list_session_config(env))
   
   # Validate the config
   problem_msg <- .validate_config(
     current_session_config,
-    default_config
+    template_config
   )
-  anyproblems <- any(!sapply(problem_msg, is.null, simplify = TRUE))
+  anyproblems <- any(!sapply(problem_msg[names(problem_msg) != "mismatch_version"], is.null, simplify = TRUE))
   if(anyproblems) {
     stop("Error: Malformed session configuration. See warning messages above for details.")
   }  
@@ -91,7 +94,7 @@ validate_session_config <- function(env = .pkgenv) {
 #' # Reset the configuration back to package defaults
 #' reset_session_config()
 reset_session_config <- function(env = .pkgenv) {
-  rlang::env_bind(env, config = default_config)
+  rlang::env_bind(env, config = .default_config())
   invisible(list_session_config(env = env))
 }
 
@@ -141,9 +144,9 @@ modify_session_config <- function(..., env = .pkgenv) {
   # Validate the new config
   problem_msg <- .validate_config(
     new_config,
-    default_config
+    .default_config()
   )
-  anyproblems <- any(!sapply(problem_msg, is.null, simplify = TRUE))
+  anyproblems <- any(!sapply(problem_msg[names(problem_msg) != "mismatch_version"], is.null, simplify = TRUE))
   if(anyproblems) {
     stop("Error: Bad options applied to session config. See warning messages above for details.")
   }

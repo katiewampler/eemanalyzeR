@@ -13,8 +13,8 @@ Processes and analyzes raw excitation-emission matrices (EEMs) and absorbance da
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://CRAN.R-project.org/package=eemanalyzeR}
   \item \url{https://katiewampler.github.io/eemanalyzeR/}
+  \item \url{https://CRAN.R-project.org/package=eemanalyzeR},
   \item Report bugs at \url{https://github.com/katiewampler/eemanalyzeR/issues}
 }
 
