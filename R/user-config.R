@@ -42,8 +42,7 @@
 #' @examples
 #' load_user_config()
 edit_user_config <- function(..., interactive = TRUE, user_config_file = .user_config_path()) {
-  default_user_config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"))
-  default_user_config$package_version <- .eemanalyzeR_ver()
+  default_user_config <- .default_config()
 
   # if file doesn't exist, write template
   if (!file.exists(user_config_file)) {
@@ -106,8 +105,7 @@ read_user_config <- function(user_config_file = .user_config_path()) {
 #' @export
 validate_user_config <- function(user_config_file = .user_config_path()) {
   # Get the default config template from the system files
-  default_user_config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"))
-  default_user_config$package_version <- .eemanalyzeR_ver()
+  default_user_config <- .default_config()
   # Read in the config
   current_user_config <- suppressMessages(read_user_config(user_config_file))
 
@@ -150,15 +148,15 @@ repair_user_config <- function(user_config_file = .user_config_path()) {
     return(invisible(NULL))
   }
 
-  default_user_config <- yaml::read_yaml(file.path(system.file("extdata", package = "eemanalyzeR"), "eemanalyzeR-config.yaml"))
-  default_user_config$package_version <- .eemanalyzeR_ver()
+  default_user_config <- .default_config()
+
   user_config <- suppressPackageStartupMessages(read_user_config(user_config_file))
   has_stale_version <- is.null(user_config$package_version) ||
     is.na(user_config$package_version) ||
     user_config$package_version != .eemanalyzeR_ver()
 
   # Test if the repair is even necessary
-  validation <- tryCatch(suppressWarnings(validate_user_config(user_config_file)),
+  validation <- tryCatch(suppressPackageStartupMessages(suppressWarnings(validate_user_config(user_config_file))),
                          error = function(e) NULL)
   if(is.list(validation) && !has_stale_version) {
     message("User config is valid, no repair needed.")

@@ -10,7 +10,7 @@ test_that("pkg environment has correct defaults", {
 
   # TODO - update the default comparisons using new functions
   # list of wanted defaults (have to make sure they are in the same order)
-  package_default_list <- default_config[order(names(default_config))]
+  package_default_list <- eemanalyzeR:::.default_config()[order(names(eemanalyzeR:::.default_config()))]
   package_defaults_from_env <- list_session_config()[order(names(list_session_config()))]
   expect_identical(package_default_list, package_defaults_from_env)
 })
@@ -50,7 +50,7 @@ test_that("pkg environment can be modified by modify_session_config and then res
   new_default_list)
 
   # Check the package resets back to defaults
-  package_default_list <- default_config[order(names(default_config))]
+  package_default_list <- eemanalyzeR:::.default_config()[order(names(eemanalyzeR:::.default_config()))]
 
   reset_session_config()
   package_defaults_from_env <- list_session_config()[order(names(list_session_config()))]
