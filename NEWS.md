@@ -1,4 +1,4 @@
-# eemanalyzeR 
+# eemanalyzeR
 
 # eemanalyzeR 1.4.2
 
@@ -8,6 +8,10 @@
   CRAN submission.
 
 - Adding missing examples for subset utility functions.
+
+- Updating the config functions to prevent unnecessary errors and limit
+  extra warnings and messages to ensure tests will hopefully pass on
+  CRAN.
 
 # eemanalyzeR 1.4.1
 

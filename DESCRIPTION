@@ -19,10 +19,10 @@ Description: Processes and analyzes raw excitation-emission
     data.
 License: AGPL (>= 3)
 Copyright: Oregon State University and Battelle Memorial Institute 
-URL: https://CRAN.R-project.org/package=eemanalyzeR, 
+URL: https://github.com/katiewampler/eemanalyzeR, https://CRAN.R-project.org/package=eemanalyzeR
 BugReports: https://github.com/katiewampler/eemanalyzeR/issues
 Depends: 
-    R (>= 4.1.0)
+    R (>= 4.5.0)
 Imports: 
     dplyr,
     eemR,
