@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">eemanalyzeR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -146,12 +146,11 @@ of <code>eemanalyzeR</code> from GitHub by running</p>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"katiewampler/eemanalyzeR@dev"</span><span class="op">)</span></span></code></pre></div>
 <p>Load the package</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://katiewampler.github.io/eemanalyzeR/">eemanalyzeR</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/katiewampler/eemanalyzeR" class="external-link">eemanalyzeR</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Registered S3 method overwritten by 'eemanalyzeR':</span></span>
 <span><span class="co">#&gt;   method       from</span></span>
 <span><span class="co">#&gt;   plot.eemlist eemR</span></span>
-<span><span class="co">#&gt; User configuration read from file:</span></span>
-<span><span class="co">#&gt; ~/.local/share/eemanalyzeR/user-config.yaml</span></span></code></pre></div>
+<span><span class="co">#&gt; Valid user configuration read from ~/.local/share/eemanalyzeR/user-config.yaml</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level2">
@@ -294,7 +293,7 @@ for stability.</p>
 <p><strong>QA/QC files should all come from the same instrument, using
 the same wavelength spacing. Differences in integration time is okay as
 the files are normalized for integration time.</strong> To make multiple
-method based QAQC files, see the vignette <a href="creating-multiple-methods.html"><code>creating-multiple-methods</code></a>.</p>
+method based QAQC files, see the vignette <a href="custom-process-steps.html">custom-process-steps</a>.</p>
 <p>Use the following code to create the method detection limit (MDL)
 files. These by default will be stored in your user-specific data
 directory and loaded when needed to process samples.</p>

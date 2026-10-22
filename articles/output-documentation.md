@@ -71,8 +71,7 @@ functions contains the following files:
       #> Registered S3 method overwritten by 'eemanalyzeR':
       #>   method       from
       #>   plot.eemlist eemR
-      #> User configuration read from file:
-      #> ~/.local/share/eemanalyzeR/user-config.yaml
+      #> Valid user configuration read from ~/.local/share/eemanalyzeR/user-config.yaml
       #> <list>
       #> ├─eemlist: S3<eemlist>...
       #> ├─abslist: S3<abslist>...

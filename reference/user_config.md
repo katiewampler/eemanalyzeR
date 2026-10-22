@@ -104,6 +104,5 @@ repair_user_config(user_config_file = .user_config_path())
 
 ``` r
 load_user_config()
-#> User configuration read from file:
-#> ~/.local/share/eemanalyzeR/user-config.yaml
+#> Valid user configuration read from ~/.local/share/eemanalyzeR/user-config.yaml
 ```

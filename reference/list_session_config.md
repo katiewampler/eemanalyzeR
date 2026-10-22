@@ -31,7 +31,7 @@ configuration resets to either the package defaults (stored in package
 data as eemanalyzeR-config.yaml) or in the user's default settings
 (stored in a separate yaml file on user's computer) when the package is
 re-loaded (such as via
-[`library(eemanalyzeR)`](https://katiewampler.github.io/eemanalyzeR/))
+[`library(eemanalyzeR)`](https://github.com/katiewampler/eemanalyzeR))
 
 ## Examples
 

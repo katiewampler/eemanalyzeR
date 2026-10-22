@@ -1,5 +1,18 @@
 # Changelog
 
+## eemanalyzeR 1.4.2
+
+(2026-10-21)
+
+- Updating copyright, license, and description files in preparation for
+  CRAN submission.
+
+- Adding missing examples for subset utility functions.
+
+- Updating the config functions to prevent unnecessary errors and limit
+  extra warnings and messages to ensure tests will hopefully pass on
+  CRAN.
+
 ## eemanalyzeR 1.4.1
 
 (2026-09-16)
@@ -80,8 +93,6 @@
       since the last package version.
     - Finally, we validate and load the saved configuration so it is
       used for processing EEMs in the R session.
-
-- 
 
 ## eemanalyzeR 1.2.0
 

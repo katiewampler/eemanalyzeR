@@ -22,3 +22,9 @@ eemlist[[i]]
 ## Value
 
 an object of class `eem`
+
+## Examples
+
+``` r
+eem <- example_eems[[1]]
+```

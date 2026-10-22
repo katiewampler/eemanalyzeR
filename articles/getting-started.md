@@ -91,8 +91,7 @@ library(eemanalyzeR)
 #> Registered S3 method overwritten by 'eemanalyzeR':
 #>   method       from
 #>   plot.eemlist eemR
-#> User configuration read from file:
-#> ~/.local/share/eemanalyzeR/user-config.yaml
+#> Valid user configuration read from ~/.local/share/eemanalyzeR/user-config.yaml
 ```
 
 ------------------------------------------------------------------------
@@ -234,7 +233,7 @@ its recommended to use at least 20 for stability.
 wavelength spacing. Differences in integration time is okay as the files
 are normalized for integration time.** To make multiple method based
 QAQC files, see the vignette
-[`creating-multiple-methods`](https://katiewampler.github.io/eemanalyzeR/articles/creating-multiple-methods.md).
+[custom-process-steps](https://katiewampler.github.io/eemanalyzeR/articles/custom-process-steps.md).
 
 Use the following code to create the method detection limit (MDL) files.
 These by default will be stored in your user-specific data directory and

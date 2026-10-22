@@ -22,3 +22,9 @@ abslist[[i]]
 ## Value
 
 an object of class `abs`
+
+## Examples
+
+``` r
+abs <- example_abs[[1]]
+```
