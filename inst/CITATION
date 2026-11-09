@@ -14,7 +14,7 @@ bibentry(
   author = authors,
   year = year,
   note = note,
-  url = meta$URL,
+  url = strsplit(meta$URL, ",")[[1]][1],
   doi = "10.11578/dc.20260915.4",
   textVersion = sprintf(
     "%s, (%s). %s: %s. %s, %s, %s.",
