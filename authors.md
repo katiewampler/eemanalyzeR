@@ -29,6 +29,6 @@ https://github.com/katiewampler/eemanalyzeR, doi:
       author = {Katie A. Wampler and Ryan P. Cole and Allison Myers-Pigg and Kevin D. Bladon},
       year = {2026},
       note = {R package version 1.4.2},
-      url = {https://github.com/katiewampler/eemanalyzeR, https://CRAN.R-project.org/package=eemanalyzeR},
+      url = {https://github.com/katiewampler/eemanalyzeR},
       doi = {10.11578/dc.20260915.4},
     }
